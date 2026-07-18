@@ -87,6 +87,18 @@ function MapDrawControl({ onPolygonDrawn }) {
   return null;
 }
 
+
+function MapUpdater({ properties }) {
+  const map = useMap();
+  React.useEffect(() => {
+    if (properties && properties.length > 0) {
+      const bounds = L.latLngBounds(properties.map(p => [p.location.lat, p.location.lng]));
+      map.fitBounds(bounds, { padding: [50, 50], maxZoom: 15 });
+    }
+  }, [properties, map]);
+  return null;
+}
+
 export default function SearchPage() {
   const { properties } = useProperties();
   const { addToCompare, removeFromCompare, compareList } = useCompare();
@@ -533,6 +545,7 @@ export default function SearchPage() {
             url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
           />
           <MapDrawControl onPolygonDrawn={handlePolygonDrawn} />
+          <MapUpdater properties={filteredProperties} />
           {filteredProperties.map(prop => (
             <Marker key={prop.id} position={[prop.location.lat, prop.location.lng]}>
               <Popup className="property-popup">
