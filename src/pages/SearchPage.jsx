@@ -464,12 +464,27 @@ export default function SearchPage() {
             </div>
           </div>
 
-          <div className="filter-group">
-            <label>งบประมาณ (ไม่เกิน {filters.priceSlider} ล้านบาท)</label>
-            <input type="range" min="1" max="20" className="range-slider" value={filters.priceSlider} onChange={e => setFilterSingle('priceSlider', parseFloat(e.target.value))} />
-            <div className="flex justify-between text-xs text-light">
-              <span>1.0M</span>
-              <span>20M+</span>
+          <div className="filter-group mb-6">
+            <label>งบประมาณ ({filters.priceRange[0]} - {filters.priceRange[1]} ล้านบาท)</label>
+            <div className="price-slider-container" style={{ padding: '0 8px', marginTop: '16px' }}>
+              <Slider
+                range
+                min={1}
+                max={50}
+                step={0.1}
+                value={filters.priceRange}
+                onChange={(val) => setFilters(prev => ({...prev, priceRange: val}))}
+                trackStyle={[{ backgroundColor: 'var(--primary)' }]}
+                handleStyle={[
+                  { borderColor: 'var(--primary)', backgroundColor: 'var(--primary)' },
+                  { borderColor: 'var(--primary)', backgroundColor: 'var(--primary)' }
+                ]}
+              />
+              <div className="flex justify-between text-xs text-light mt-2" style={{ display: 'flex', justifyContent: 'space-between', color: '#888' }}>
+                <span>1M</span>
+                <span style={{ fontWeight: 'bold', color: 'var(--primary)' }}>{filters.priceRange[0].toFixed(1)}M - {filters.priceRange[1].toFixed(1)}M</span>
+                <span>50M+</span>
+              </div>
             </div>
           </div>
 
