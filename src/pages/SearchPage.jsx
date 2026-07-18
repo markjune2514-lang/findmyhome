@@ -179,7 +179,14 @@ export default function SearchPage() {
     }
 
     // Transit
-    if (transitStation && prop.station !== transitStation) return false;
+    if (transitStation) {
+      if (prop.station !== transitStation) return false;
+    } else if (transitLine) {
+      if (!transitData[transitSystem][transitLine].includes(prop.station)) return false;
+    } else if (transitSystem) {
+      const allStationsInSystem = Object.values(transitData[transitSystem]).flat();
+      if (!allStationsInSystem.includes(prop.station)) return false;
+    }
 
     // Property Type Filter
     if (activePropertyType === 'condo' && !['High Rise', 'Low Rise', 'Mixed Use'].includes(prop.projectType)) return false;
