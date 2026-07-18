@@ -176,12 +176,7 @@ export default function AddPropertyPage() {
                   <option value="ที่ดิน">ที่ดินเปล่า (Land)</option>
                 </select>
               </div>
-              <div className="form-group">
-                <label>ประเภทย่อย (Project Type)</label>
-                <select name="projectType" value={formData.projectType} onChange={handleChange}>
-                  {projectTypes.map(pt => <option key={pt} value={pt}>{pt}</option>)}
-                </select>
-              </div>
+
               <div className="form-group">
                 <label>สถานะการก่อสร้าง</label>
                 <select name="status" value={formData.status} onChange={handleChange}>
