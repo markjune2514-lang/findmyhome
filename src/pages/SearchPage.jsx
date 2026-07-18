@@ -92,8 +92,16 @@ function MapUpdater({ properties }) {
   const map = useMap();
   React.useEffect(() => {
     if (properties && properties.length > 0) {
-      const bounds = L.latLngBounds(properties.map(p => [p.location.lat, p.location.lng]));
-      map.fitBounds(bounds, { padding: [50, 50], maxZoom: 15 });
+      const validPoints = properties
+        .filter(p => p.location && p.location.lat && p.location.lng)
+        .map(p => [p.location.lat, p.location.lng]);
+        
+      if (validPoints.length > 0) {
+        const bounds = L.latLngBounds(validPoints);
+        setTimeout(() => {
+          map.fitBounds(bounds, { padding: [50, 50], maxZoom: 15 });
+        }, 50);
+      }
     }
   }, [properties, map]);
   return null;
