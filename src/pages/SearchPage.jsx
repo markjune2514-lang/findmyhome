@@ -6,6 +6,8 @@ import { Link } from 'react-router-dom';
 import { useProperties } from '../PropertiesContext';
 import { useCompare } from '../CompareContext';
 import './SearchPage.css';
+import Slider from 'rc-slider';
+import 'rc-slider/assets/index.css';
 import L from 'leaflet';
 import 'leaflet-draw';
 
@@ -121,7 +123,7 @@ export default function SearchPage() {
     services: [],
     security: [],
     priceRangeStr: 'ไม่จำกัด',
-    priceSlider: 20
+    priceRange: [1, 50]
   };
   const [filters, setFilters] = useState(initialFiltersState);
 
@@ -188,7 +190,7 @@ export default function SearchPage() {
     if (filters.projectType && filters.projectType.length > 0 && !filters.projectType.includes(prop.projectType)) return false;
 
     // Price logic
-    if (filters.priceSlider < 20 && prop.price > filters.priceSlider) return false;
+    if (prop.price < filters.priceRange[0] || prop.price > filters.priceRange[1]) return false;
 
     return true;
   });
@@ -230,17 +232,7 @@ export default function SearchPage() {
             </div>
             
             <div className="modal-content" style={{ maxHeight: '60vh', overflowY: 'auto' }}>
-              <div className="filter-section-block mb-4">
-                <h4>งบประมาณไม่เกิน (ล้านบาท)</h4>
-                <div className="price-slider-container px-2 pt-2">
-                  <input type="range" min="1" max="50" className="range-slider" style={{ width: '100%' }} value={filters.priceSlider} onChange={(e) => setFilterSingle('priceSlider', e.target.value)} />
-                  <div className="flex justify-between text-xs text-light mt-2" style={{ display: 'flex', justifyContent: 'space-between', color: '#888' }}>
-                    <span>1M</span>
-                    <span style={{ fontWeight: 'bold', color: 'var(--primary)' }}>{filters.priceSlider}M</span>
-                    <span>50M+</span>
-                  </div>
-                </div>
-              </div>
+              
 
               {activePropertyType === 'condo' && (
                 <>
