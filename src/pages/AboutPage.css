@@ -1,0 +1,93 @@
+.about-hero {
+  background-image: url('https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80');
+  background-size: cover;
+  background-position: center;
+  border-radius: var(--radius-xl);
+  padding: 4rem;
+  min-height: 400px;
+  display: flex;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.about-hero::before {
+  content: '';
+  position: absolute;
+  top: 0; bottom: 0; left: 0; width: 60%;
+  background: linear-gradient(to right, var(--neutral-1) 50%, transparent);
+}
+
+.hero-text {
+  position: relative;
+  z-index: 1;
+  max-width: 500px;
+}
+
+.text-primary {
+  color: var(--primary);
+}
+
+.icon-wrapper {
+  background-color: var(--secondary);
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem auto;
+}
+
+.contact-section {
+  background-color: var(--white);
+  padding: 3rem;
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-soft);
+  margin-bottom: 4rem;
+}
+
+.flex-2 { flex: 2; }
+.flex-1 { flex: 1; }
+
+.social-btn {
+  background-color: var(--neutral-1);
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--text-main);
+  transition: all 0.2s;
+}
+
+.social-btn:hover {
+  background-color: var(--primary);
+  color: var(--white);
+}
+
+.map-placeholder {
+  background-color: var(--secondary);
+  border-radius: var(--radius-lg);
+  height: 100%;
+  min-height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background-image: url('https://images.unsplash.com/photo-1524661135-423995f22d0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');
+  background-size: cover;
+}
+
+.map-card {
+  position: absolute;
+  bottom: 2rem;
+  background-color: var(--white);
+  padding: 1rem 2rem;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-medium);
+  text-align: center;
+}

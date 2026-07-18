@@ -1,0 +1,551 @@
+import React, { useState } from 'react';
+import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
+import { Search, SlidersHorizontal, Heart, Map as MapIcon, Star, X, ChevronDown, Plus, Check } from 'lucide-react';
+import { provincesAndDistricts, transitData } from '../data/locations';
+import { Link } from 'react-router-dom';
+import { useProperties } from '../PropertiesContext';
+import { useCompare } from '../CompareContext';
+import './SearchPage.css';
+import L from 'leaflet';
+import 'leaflet-draw';
+
+// Fix leaflet icon issue in react
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
+  iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
+  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+});
+
+// Ray-casting algorithm to check if point is inside a polygon
+function isPointInPolygon(point, vs) {
+  let x = point[0], y = point[1];
+  let inside = false;
+  for (let i = 0, j = vs.length - 1; i < vs.length; j = i++) {
+      let xi = vs[i][0], yi = vs[i][1];
+      let xj = vs[j][0], yj = vs[j][1];
+      let intersect = ((yi > y) !== (yj > y)) && (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
+      if (intersect) inside = !inside;
+  }
+  return inside;
+}
+
+function MapDrawControl({ onPolygonDrawn }) {
+  const map = useMap();
+
+  React.useEffect(() => {
+    if (map.__drawControlAdded) return;
+    map.__drawControlAdded = true;
+
+    const drawnItems = new L.FeatureGroup();
+    map.addLayer(drawnItems);
+
+    const drawControl = new L.Control.Draw({
+      position: 'topright',
+      draw: {
+        polygon: {
+          allowIntersection: false,
+          shapeOptions: { color: '#d38764' }
+        },
+        circle: {
+          shapeOptions: { color: '#d38764' }
+        },
+        polyline: false,
+        rectangle: false,
+        circlemarker: false,
+        marker: false,
+      },
+      edit: {
+        featureGroup: drawnItems,
+        remove: true
+      }
+    });
+
+    map.addControl(drawControl);
+
+    map.on(L.Draw.Event.CREATED, (e) => {
+      drawnItems.clearLayers(); 
+      const layer = e.layer;
+      drawnItems.addLayer(layer);
+      
+      if (onPolygonDrawn) onPolygonDrawn(layer, e.layerType);
+    });
+
+    map.on(L.Draw.Event.DELETED, () => {
+      if (onPolygonDrawn) onPolygonDrawn(null, null);
+    });
+
+    return () => {
+      map.removeControl(drawControl);
+      map.removeLayer(drawnItems);
+      map.__drawControlAdded = false;
+    };
+  }, [map]);
+
+  return null;
+}
+
+export default function SearchPage() {
+  const { properties } = useProperties();
+  const { addToCompare, removeFromCompare, compareList } = useCompare();
+  const [activeTab, setActiveTab] = useState('buy');
+  const [polygonFilter, setPolygonFilter] = useState(null);
+  
+  // Location Filter State
+  const [selectedProvince, setSelectedProvince] = useState('กรุงเทพมหานคร');
+  const [selectedDistrict, setSelectedDistrict] = useState('');
+
+  // Transit Filter State
+  const [transitSystem, setTransitSystem] = useState('');
+  const [transitLine, setTransitLine] = useState('');
+  const [transitStation, setTransitStation] = useState('');
+
+  // Search State
+  const [searchQuery, setSearchQuery] = useState('');
+
+  // Property Type State
+  const [activePropertyType, setActivePropertyType] = useState('condo');
+
+  // Advanced Filter State
+  const [showAdvanced, setShowAdvanced] = useState(false);
+  const [filters, setFilters] = useState({
+    projectType: ['High Rise'],
+    facilities: ['สระว่ายน้ำ', 'ฟิตเนส', 'Rooftop'],
+    transport: [],
+    lifestyle: [],
+    status: [],
+    promotions: [],
+    developer: [],
+    priceRangeStr: '2 - 3 ลบ.',
+    priceSlider: 2.5
+  });
+
+  const toggleFilter = (category, value) => {
+    setFilters(prev => {
+      const list = prev[category];
+      if (list.includes(value)) {
+        return { ...prev, [category]: list.filter(item => item !== value) };
+      } else {
+        return { ...prev, [category]: [...list, value] };
+      }
+    });
+  };
+
+  const setFilterSingle = (category, value) => {
+    setFilters(prev => ({ ...prev, [category]: value }));
+  };
+
+  const handlePolygonDrawn = (layer, layerType) => {
+    if (!layer) {
+      setPolygonFilter(null);
+      return;
+    }
+    let areaSqKm = 0;
+    if (layerType === 'circle') {
+      const radius = layer.getRadius();
+      areaSqKm = (Math.PI * radius * radius) / 1000000;
+    } else {
+      const latlngs = layer.getLatLngs()[0];
+      areaSqKm = L.GeometryUtil.geodesicArea(latlngs) / 1000000;
+    }
+    setPolygonFilter({ layer, layerType, areaSqKm });
+  };
+
+  const filteredProperties = properties.filter(prop => {
+    if (polygonFilter) {
+      const { layer, layerType } = polygonFilter;
+      if (layerType === 'circle') {
+        const center = layer.getLatLng();
+        const distance = center.distanceTo(L.latLng(prop.location.lat, prop.location.lng));
+        if (distance > layer.getRadius()) return false;
+      } else {
+        const latlngs = layer.getLatLngs()[0];
+        const polygonVertices = latlngs.map(ll => [ll.lat, ll.lng]);
+        const point = [prop.location.lat, prop.location.lng];
+        if (!isPointInPolygon(point, polygonVertices)) return false;
+      }
+    }
+    
+    // Search Query
+    if (searchQuery && !prop.name.toLowerCase().includes(searchQuery.toLowerCase()) && !prop.station.toLowerCase().includes(searchQuery.toLowerCase())) {
+      return false;
+    }
+
+    // Transit
+    if (transitStation && prop.station !== transitStation) return false;
+
+    // Property Type Filter (Simplified mock: condo -> High/Low rise, house -> others)
+    if (activePropertyType === 'condo' && !['High Rise', 'Low Rise', 'Mixed Use'].includes(prop.projectType)) return false;
+    if (activePropertyType === 'house' && !['บ้านเดี่ยว', 'บ้านแฝด', 'ทาวน์โฮม'].includes(prop.projectType)) return false;
+
+    // Advanced Project Type
+    if (filters.projectType.length > 0 && !filters.projectType.includes(prop.projectType)) return false;
+
+    // Price logic
+    if (filters.priceRangeStr === '2 - 3 ลบ.' && (prop.price < 2 || prop.price > 3)) return false;
+    if (filters.priceRangeStr === '1 - 2 ลบ.' && (prop.price < 1 || prop.price > 2)) return false;
+    if (prop.price > filters.priceSlider) return false;
+
+    return true;
+  });
+
+  const handleSearchClick = () => {
+    alert(`กำลังค้นหา ${filteredProperties.length} โครงการ ตามเงื่อนไขของคุณ...`);
+  };
+
+  const handleResetFilters = () => {
+    setSearchQuery('');
+    setActiveTab('buy');
+    setActivePropertyType('condo');
+    setSelectedProvince('กรุงเทพมหานคร');
+    setSelectedDistrict('');
+    setTransitSystem('');
+    setTransitLine('');
+    setTransitStation('');
+    setPolygonFilter(null);
+    setFilters({
+      projectType: [],
+      facilities: [],
+      transport: [],
+      lifestyle: [],
+      status: [],
+      promotions: [],
+      developer: [],
+      priceRangeStr: 'ไม่จำกัด',
+      priceSlider: 20
+    });
+  };
+
+  return (
+    <div className="search-page relative">
+      {/* Advanced Filters Drawer/Modal */}
+      {showAdvanced && (
+        <div className="advanced-modal-overlay">
+          <div className="advanced-modal">
+            <div className="flex justify-between items-center mb-4 pb-2 border-b">
+              <h3 className="font-semibold">ตัวกรองเพิ่มเติม</h3>
+              <div className="flex items-center gap-4">
+                <button 
+                  className="btn-ghost text-primary text-sm font-semibold flex items-center" 
+                  onClick={() => setFilters({ projectType: [], facilities: [], transport: [], lifestyle: [], status: [], promotions: [], developer: [], priceRangeStr: 'ไม่จำกัด', priceSlider: 20 })}
+                >
+                  รีเซ็ตทั้งหมด <ChevronDown size={14} className="ml-1" />
+                </button>
+                <button className="icon-btn" onClick={() => setShowAdvanced(false)}><X size={20} /></button>
+              </div>
+            </div>
+            
+            <div className="modal-content">
+              {/* ประเภทโครงการ */}
+              <div className="filter-section-block">
+                <h4>ประเภทโครงการ</h4>
+                <div className="pill-grid">
+                  {['Low Rise', 'High Rise', 'Mixed Use', 'บ้านเดี่ยว', 'บ้านแฝด', 'ทาวน์โฮม'].map(opt => (
+                    <button key={opt} className={`pill-btn ${filters.projectType.includes(opt) ? 'active' : ''}`} onClick={() => toggleFilter('projectType', opt)}>
+                      {opt}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* ส่วนกลาง */}
+              <div className="filter-section-block">
+                <div className="flex justify-between items-end mb-2">
+                  <h4>ส่วนกลาง (Facilities)</h4>
+                  <button className="text-xs text-light flex items-center" style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>ดูเพิ่มเติม <ChevronDown size={12} /></button>
+                </div>
+                <div className="pill-grid">
+                  {['สระว่ายน้ำ', 'ฟิตเนส', 'Co-working Space', 'Sky Lounge', 'Rooftop', 'สวนส่วนกลาง', 'สนามเด็กเล่น', 'ห้องประชุม', 'EV Charger', 'Pet Friendly', 'คลินิกการแพทย์', 'ทางลาดสำหรับวีลแชร์', 'ปุ่มฉุกเฉินในห้อง'].map(opt => (
+                    <button key={opt} className={`pill-btn ${filters.facilities.includes(opt) ? 'active' : ''}`} onClick={() => toggleFilter('facilities', opt)}>
+                      {opt}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* การเดินทาง */}
+              <div className="filter-section-block">
+                <h4>การเดินทาง</h4>
+                <div className="pill-grid">
+                  {['ใกล้ BTS', 'ใกล้ MRT', 'ใกล้ทางด่วน', 'ใกล้สนามบิน', 'ใกล้รถไฟฟ้า'].map(opt => (
+                    <button key={opt} className={`pill-btn ${filters.transport.includes(opt) ? 'active' : ''}`} onClick={() => toggleFilter('transport', opt)}>
+                      {opt}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* ไลฟ์สไตล์ */}
+              <div className="filter-section-block">
+                <h4>ไลฟ์สไตล์</h4>
+                <div className="pill-grid">
+                  {['เหมาะกับครอบครัว', 'คนทำงาน', 'นักศึกษา', 'เลี้ยงสัตว์ได้', 'ลงทุนปล่อยเช่า', 'ผู้สูงอายุ (Senior Living)', 'ดูแลสุขภาพ (Wellness)'].map(opt => (
+                    <button key={opt} className={`pill-btn ${filters.lifestyle.includes(opt) ? 'active' : ''}`} onClick={() => toggleFilter('lifestyle', opt)}>
+                      {opt}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* สถานะ */}
+              <div className="filter-section-block">
+                <h4>ความพร้อมเข้าอยู่</h4>
+                <div className="pill-grid">
+                  {['พร้อมอยู่', 'กำลังก่อสร้าง', 'เปิด Presale'].map(opt => (
+                    <button key={opt} className={`pill-btn ${filters.status.includes(opt) ? 'active' : ''}`} onClick={() => toggleFilter('status', opt)}>
+                      {opt}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* โปรโมชัน */}
+              <div className="filter-section-block">
+                <h4>โปรโมชัน</h4>
+                <div className="pill-grid">
+                  {['ฟรีค่าโอน', 'ฟรีจดจำนอง', 'ฟรีเฟอร์นิเจอร์', 'ฟรีเครื่องใช้ไฟฟ้า', 'ส่วนลดพิเศษ'].map(opt => (
+                    <button key={opt} className={`pill-btn ${filters.promotions.includes(opt) ? 'active' : ''}`} onClick={() => toggleFilter('promotions', opt)}>
+                      {opt}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* ผู้พัฒนาโครงการ */}
+              <div className="filter-section-block">
+                <h4>ผู้พัฒนาโครงการ</h4>
+                <div className="pill-grid">
+                  {['AP', 'SANSIRI', 'SC ASSET', 'ORIGIN', 'ANANDA', 'LH', 'SUPALAI', 'MQDC'].map(opt => (
+                    <button key={opt} className={`pill-btn developer-pill ${filters.developer.includes(opt) ? 'active' : ''}`} onClick={() => toggleFilter('developer', opt)} style={{ minWidth: '60px', height: '40px', display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '0.25rem', fontSize: '0.7rem', fontWeight: 'bold' }}>
+                      {opt}
+                    </button>
+                  ))}
+                </div>
+                <div className="text-right mt-1">
+                  <button className="text-xs text-light flex items-center justify-end w-full" style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>ดูเพิ่มเติม <ChevronDown size={12} /></button>
+                </div>
+              </div>
+
+              {/* ช่วงราคา */}
+              <div className="filter-section-block mb-8">
+                <h4>ช่วงราคา (บาท)</h4>
+                <div className="pill-grid mb-4">
+                  {['ไม่จำกัด', '1 - 2 ลบ.', '2 - 3 ลบ.', '3 - 5 ลบ.', '5 - 10 ลบ.', '10 ลบ. ขึ้นไป'].map(opt => (
+                    <button key={opt} className={`pill-btn ${filters.priceRangeStr === opt ? 'active' : ''}`} onClick={() => setFilterSingle('priceRangeStr', opt)}>
+                      {opt}
+                    </button>
+                  ))}
+                </div>
+                <div className="price-slider-container">
+                  <input type="range" min="1" max="20" className="range-slider" value={filters.priceSlider} onChange={(e) => setFilterSingle('priceSlider', e.target.value)} />
+                  <div className="flex justify-between text-xs text-light mt-1">
+                    <span>1M</span>
+                    <span>20M+</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="modal-footer flex gap-4 mt-4 pt-4 border-t">
+              <button className="btn btn-secondary flex-1" style={{ backgroundColor: 'var(--neutral-1)', border: 'none' }} onClick={() => setShowAdvanced(false)}>ยกเลิก</button>
+              <button className="btn btn-primary flex-2" onClick={() => setShowAdvanced(false)}>ดูโครงการ {filteredProperties.length} โครงการ</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Left Sidebar - Filters */}
+      <aside className="filter-sidebar">
+        <div className="search-box">
+          <Search size={18} className="search-icon" />
+          <input type="text" placeholder="ค้นหาโครงการ, ทำเล, BTS, MRT" className="search-input" value={searchQuery} onChange={e => setSearchQuery(e.target.value)} />
+        </div>
+
+        <div className="filter-section">
+          <h3>ค้นหาบ้านและคอนโด</h3>
+          <div className="toggle-group">
+            <button className={`toggle-btn ${activeTab === 'buy' ? 'active' : ''}`} onClick={() => setActiveTab('buy')}>ซื้อ</button>
+            <button className={`toggle-btn ${activeTab === 'rent' ? 'active' : ''}`} onClick={() => setActiveTab('rent')}>เช่า</button>
+          </div>
+          
+          <div className="filter-group">
+            <label>ประเภทอสังหาฯ</label>
+            <div className="toggle-group">
+              <button className={`toggle-btn ${activePropertyType === 'condo' ? 'active' : ''}`} onClick={() => setActivePropertyType('condo')}>คอนโด</button>
+              <button className={`toggle-btn ${activePropertyType === 'house' ? 'active' : ''}`} onClick={() => setActivePropertyType('house')}>บ้าน</button>
+            </div>
+          </div>
+
+          <div className="filter-group">
+            <label>ทำเล (จังหวัด / เขต)</label>
+            <div className="flex gap-2" style={{ display: 'flex', gap: '0.5rem' }}>
+              <select className="select-input flex-1" value={selectedProvince} onChange={(e) => { setSelectedProvince(e.target.value); setSelectedDistrict(''); }}>
+                {Object.keys(provincesAndDistricts).map(prov => (
+                  <option key={prov} value={prov}>{prov}</option>
+                ))}
+              </select>
+              <select className="select-input flex-1" value={selectedDistrict} onChange={(e) => setSelectedDistrict(e.target.value)}>
+                <option value="">ทุกเขต/อำเภอ</option>
+                {provincesAndDistricts[selectedProvince]?.map(d => (
+                  <option key={d} value={d}>{d}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          <div className="filter-group">
+            <label>สถานีรถไฟฟ้า (ระบบ / สาย / สถานี)</label>
+            <div className="flex flex-col gap-2" style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+              <div className="flex gap-2" style={{ display: 'flex', gap: '0.5rem' }}>
+                <select className="select-input flex-1" value={transitSystem} onChange={(e) => { setTransitSystem(e.target.value); setTransitLine(''); setTransitStation(''); }}>
+                  <option value="">เลือกระบบ</option>
+                  <option value="BTS">BTS</option>
+                  <option value="MRT">MRT</option>
+                  <option value="ARL">ARL (Airport Link)</option>
+                  <option value="SRT">SRT (สายสีแดง)</option>
+                </select>
+                <select className="select-input flex-1" value={transitLine} onChange={(e) => { setTransitLine(e.target.value); setTransitStation(''); }} disabled={!transitSystem}>
+                  <option value="">เลือกสาย</option>
+                  {transitSystem && Object.keys(transitData[transitSystem]).map(line => (
+                    <option key={line} value={line}>{line}</option>
+                  ))}
+                </select>
+              </div>
+              <select className="select-input w-full" value={transitStation} onChange={(e) => setTransitStation(e.target.value)} disabled={!transitLine}>
+                <option value="">เลือกสถานี</option>
+                {transitLine && transitData[transitSystem][transitLine].map(station => (
+                  <option key={station} value={station}>{station}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          <div className="filter-group">
+            <label>งบประมาณ (ไม่เกิน {filters.priceSlider} ล้านบาท)</label>
+            <input type="range" min="1" max="20" className="range-slider" value={filters.priceSlider} onChange={e => setFilterSingle('priceSlider', parseFloat(e.target.value))} />
+            <div className="flex justify-between text-xs text-light">
+              <span>1.0M</span>
+              <span>20M+</span>
+            </div>
+          </div>
+
+          <button 
+            className="btn btn-secondary w-full justify-center mt-4" 
+            style={{ backgroundColor: showAdvanced ? 'var(--secondary)' : 'var(--white)' }}
+            onClick={() => setShowAdvanced(true)}
+          >
+            <SlidersHorizontal size={16} /> 
+            ตัวกรองเพิ่มเติม
+          </button>
+
+          <button className="btn btn-primary w-full justify-center mt-4" onClick={handleSearchClick}>
+            ค้นหาโครงการ
+          </button>
+
+          <button 
+            className="w-full text-center mt-4 text-light text-sm hover:text-primary transition-colors"
+            onClick={handleResetFilters}
+            style={{ padding: '0.5rem', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}
+          >
+            ล้างตัวกรองทั้งหมด
+          </button>
+          
+          {polygonFilter && (
+            <div className="mt-4 p-3 bg-secondary rounded text-sm text-primary text-center font-bold flex flex-col gap-1">
+              <span>📍 ค้นหาเฉพาะในพื้นที่นี้</span>
+              <span className="text-xs font-normal">ขนาดพื้นที่: {polygonFilter.areaSqKm.toFixed(2)} ตร.กม.</span>
+            </div>
+          )}
+        </div>
+      </aside>
+
+      {/* Main Map Area */}
+      <main className="map-area">
+        <MapContainer center={[13.6700, 100.6200]} zoom={12} style={{ height: '100%', width: '100%' }}>
+          <TileLayer
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
+          />
+          <MapDrawControl onPolygonDrawn={handlePolygonDrawn} />
+          {filteredProperties.map(prop => (
+            <Marker key={prop.id} position={[prop.location.lat, prop.location.lng]}>
+              <Popup className="property-popup">
+                <div className="popup-card">
+                  <div className="popup-img" style={{ backgroundImage: `url(${prop.image})` }}>
+                    <button className="like-btn"><Heart size={16} color="white" /></button>
+                  </div>
+                  <div className="popup-content">
+                    <h4>{prop.name}</h4>
+                    <p className="developer">{prop.developer}</p>
+                    <div className="flex justify-between items-center mt-2">
+                      <div className="location-info">
+                        <MapIcon size={12} /> {prop.station}
+                      </div>
+                      <div className="rating-info">
+                        <Star size={12} fill="gold" color="gold" /> {prop.rating}
+                      </div>
+                    </div>
+                    <div className="price-specs flex justify-between mt-2">
+                      <div>
+                        <span className="label">ราคาเริ่มต้น</span>
+                        <div className="price">{prop.price} ล้านบาท</div>
+                      </div>
+                    </div>
+                    <Link to={`/property/${prop.id}`} className="btn btn-primary w-full mt-3">
+                      ดูรายละเอียดโครงการ
+                    </Link>
+                  </div>
+                </div>
+              </Popup>
+            </Marker>
+          ))}
+        </MapContainer>
+      </main>
+
+      {/* Right Sidebar - List */}
+      <aside className="list-sidebar">
+        <div className="list-header">
+          <h3>โครงการในพื้นที่นี้</h3>
+          <p>{filteredProperties.length} โครงการ {polygonFilter && `| ขอบเขต ${polygonFilter.areaSqKm?.toFixed(2) || 0} ตร.กม.`}</p>
+        </div>
+        <div className="property-list">
+          {filteredProperties.length > 0 ? (
+            filteredProperties.map(prop => {
+              const isCompared = compareList.some(item => item.id === prop.id);
+              return (
+                <Link to={`/property/${prop.id}`} key={prop.id} className="prop-card-small" style={{ position: 'relative' }}>
+                  <img src={prop.image} alt={prop.name} />
+                  <div className="prop-card-info" style={{ paddingRight: '30px' }}>
+                    <h4>{prop.name}</h4>
+                    <p className="developer">{prop.developer}</p>
+                    <p className="price">เริ่มต้น {prop.price} ลบ.</p>
+                  </div>
+                  <button 
+                    className="compare-mini-btn"
+                    style={{
+                      position: 'absolute', right: '8px', top: '50%', transform: 'translateY(-50%)',
+                      width: '28px', height: '28px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      backgroundColor: 'var(--white)', border: isCompared ? '1px solid var(--primary)' : '1px solid var(--neutral-2)',
+                      color: isCompared ? 'var(--primary)' : 'var(--text-light)', cursor: 'pointer', boxShadow: 'var(--shadow-sm)'
+                    }}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      isCompared ? removeFromCompare(prop.id) : addToCompare(prop);
+                    }}
+                    title={isCompared ? "ลบออกจากการเปรียบเทียบ" : "เพิ่มเข้าเปรียบเทียบ"}
+                  >
+                    {isCompared ? <Check size={14} /> : <Plus size={14} />}
+                  </button>
+                </Link>
+              );
+            })
+          ) : (
+            <div className="text-center p-4 text-light text-sm">
+              ไม่พบโครงการที่ตรงกับเงื่อนไข
+            </div>
+          )}
+        </div>
+      </aside>
+    </div>
+  );
+}
