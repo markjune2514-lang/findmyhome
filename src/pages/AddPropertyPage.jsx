@@ -309,58 +309,7 @@ export default function AddPropertyPage() {
             )}
           </section>
 
-          {/* สิ่งอำนวยความสะดวก และอื่นๆ */}
-          <section className="form-section">
-            <h3 className="section-title">คุณสมบัติและโปรโมชัน (ตรงกับตัวกรอง)</h3>
-            
-            <div className="mb-6">
-              <label className="font-semibold text-sm mb-3 block">สิ่งอำนวยความสะดวก (Facilities)</label>
-              <div className="facilities-grid">
-                {facilityOptions.map(fac => (
-                  <label key={fac} className="facility-checkbox">
-                    <input type="checkbox" checked={formData.facilities.includes(fac)} onChange={() => toggleArrayItem('facilities', fac)} />
-                    <span>{fac}</span>
-                  </label>
-                ))}
-              </div>
-            </div>
 
-            <div className="mb-6">
-              <label className="font-semibold text-sm mb-3 block">ไลฟ์สไตล์</label>
-              <div className="facilities-grid">
-                {lifestyleOptions.map(opt => (
-                  <label key={opt} className="facility-checkbox">
-                    <input type="checkbox" checked={formData.lifestyle.includes(opt)} onChange={() => toggleArrayItem('lifestyle', opt)} />
-                    <span>{opt}</span>
-                  </label>
-                ))}
-              </div>
-            </div>
-
-            <div className="mb-6">
-              <label className="font-semibold text-sm mb-3 block">จุดเด่นการเดินทาง</label>
-              <div className="facilities-grid">
-                {transportOptions.map(opt => (
-                  <label key={opt} className="facility-checkbox">
-                    <input type="checkbox" checked={formData.transport.includes(opt)} onChange={() => toggleArrayItem('transport', opt)} />
-                    <span>{opt}</span>
-                  </label>
-                ))}
-              </div>
-            </div>
-
-            <div className="mb-2">
-              <label className="font-semibold text-sm mb-3 block">โปรโมชัน</label>
-              <div className="facilities-grid">
-                {promotionOptions.map(opt => (
-                  <label key={opt} className="facility-checkbox">
-                    <input type="checkbox" checked={formData.promotions.includes(opt)} onChange={() => toggleArrayItem('promotions', opt)} />
-                    <span>{opt}</span>
-                  </label>
-                ))}
-              </div>
-            </div>
-          </section>
 
           <div className="form-actions flex justify-end gap-4 mt-8 pt-8 border-t">
             <button type="button" className="btn btn-secondary px-8" onClick={() => navigate(-1)}>ยกเลิก</button>
