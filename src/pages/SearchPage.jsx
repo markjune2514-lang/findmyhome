@@ -216,6 +216,17 @@ export default function SearchPage() {
     // Advanced Project Type
     if (filters.projectType && filters.projectType.length > 0 && !filters.projectType.includes(prop.projectType)) return false;
 
+    // Advanced Filters (Array matching)
+    if (filters.size && filters.size.length > 0 && !filters.size.includes(prop.size)) return false;
+    if (filters.roomType && filters.roomType.length > 0 && !filters.roomType.includes(prop.roomType)) return false;
+    if (filters.special && filters.special.length > 0 && !filters.special.some(s => prop.special?.includes(s))) return false;
+    if (filters.facilities && filters.facilities.length > 0 && !filters.facilities.some(f => prop.facilities?.includes(f))) return false;
+    if (filters.healthFacilities && filters.healthFacilities.length > 0 && !filters.healthFacilities.some(f => prop.healthFacilities?.includes(f))) return false;
+    if (filters.services && filters.services.length > 0 && !filters.services.some(s => prop.services?.includes(s))) return false;
+    if (filters.security && filters.security.length > 0 && !filters.security.some(s => prop.security?.includes(s))) return false;
+    if (filters.landSize && filters.landSize.length > 0 && !filters.landSize.includes(prop.landSize)) return false;
+    if (filters.livingFormat && filters.livingFormat.length > 0 && !filters.livingFormat.includes(prop.livingFormat)) return false;
+
     // Price logic
     if (prop.price < filters.priceRange[0] || prop.price > filters.priceRange[1]) return false;
 
