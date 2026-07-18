@@ -108,17 +108,22 @@ export default function SearchPage() {
 
   // Advanced Filter State
   const [showAdvanced, setShowAdvanced] = useState(false);
-  const [filters, setFilters] = useState({
-    projectType: ['High Rise'],
-    facilities: ['สระว่ายน้ำ', 'ฟิตเนส', 'Rooftop'],
-    transport: [],
-    lifestyle: [],
-    status: [],
-    promotions: [],
-    developer: [],
-    priceRangeStr: '2 - 3 ลบ.',
-    priceSlider: 2.5
-  });
+  const initialFiltersState = {
+    budget: [],
+    size: [],
+    landSize: [],
+    roomType: [],
+    livingFormat: [],
+    projectType: [],
+    special: [],
+    facilities: [],
+    healthFacilities: [],
+    services: [],
+    security: [],
+    priceRangeStr: 'ไม่จำกัด',
+    priceSlider: 20
+  };
+  const [filters, setFilters] = useState(initialFiltersState);
 
   const toggleFilter = (category, value) => {
     setFilters(prev => {
@@ -203,17 +208,7 @@ export default function SearchPage() {
     setTransitLine('');
     setTransitStation('');
     setPolygonFilter(null);
-    setFilters({
-      projectType: [],
-      facilities: [],
-      transport: [],
-      lifestyle: [],
-      status: [],
-      promotions: [],
-      developer: [],
-      priceRangeStr: 'ไม่จำกัด',
-      priceSlider: 20
-    });
+    setFilters(initialFiltersState);
   };
 
   return (
@@ -227,7 +222,7 @@ export default function SearchPage() {
               <div className="flex items-center gap-4">
                 <button 
                   className="btn-ghost text-primary text-sm font-semibold flex items-center" 
-                  onClick={() => setFilters({ projectType: [], facilities: [], transport: [], lifestyle: [], status: [], promotions: [], developer: [], priceRangeStr: 'ไม่จำกัด', priceSlider: 20 })}
+                  onClick={() => setFilters(initialFiltersState)}
                 >
                   รีเซ็ตทั้งหมด <ChevronDown size={14} className="ml-1" />
                 </button>
@@ -370,9 +365,10 @@ export default function SearchPage() {
           
           <div className="filter-group">
             <label>ประเภทอสังหาฯ</label>
-            <div className="toggle-group">
-              <button className={`toggle-btn ${activePropertyType === 'condo' ? 'active' : ''}`} onClick={() => setActivePropertyType('condo')}>คอนโด</button>
-              <button className={`toggle-btn ${activePropertyType === 'house' ? 'active' : ''}`} onClick={() => setActivePropertyType('house')}>บ้าน</button>
+            <div className="toggle-group flex" style={{ display: 'flex' }}>
+              <button className={`toggle-btn flex-1 ${activePropertyType === 'condo' ? 'active' : ''}`} onClick={() => { setActivePropertyType('condo'); setFilters(initialFiltersState); }}>คอนโด</button>
+              <button className={`toggle-btn flex-1 ${activePropertyType === 'house' ? 'active' : ''}`} onClick={() => { setActivePropertyType('house'); setFilters(initialFiltersState); }}>บ้าน</button>
+              <button className={`toggle-btn flex-1 ${activePropertyType === 'senior' ? 'active' : ''}`} onClick={() => { setActivePropertyType('senior'); setFilters(initialFiltersState); }}>ผู้สูงอายุ</button>
             </div>
           </div>
 
