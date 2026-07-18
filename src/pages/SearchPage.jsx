@@ -179,17 +179,16 @@ export default function SearchPage() {
     // Transit
     if (transitStation && prop.station !== transitStation) return false;
 
-    // Property Type Filter (Simplified mock: condo -> High/Low rise, house -> others)
+    // Property Type Filter
     if (activePropertyType === 'condo' && !['High Rise', 'Low Rise', 'Mixed Use'].includes(prop.projectType)) return false;
     if (activePropertyType === 'house' && !['บ้านเดี่ยว', 'บ้านแฝด', 'ทาวน์โฮม'].includes(prop.projectType)) return false;
+    if (activePropertyType === 'senior' && !['Wellness Residence', 'Senior Living Community', 'Active Aging Residence', 'Independent Living', 'Assisted Living', 'Nursing Care'].includes(prop.projectType)) return false;
 
     // Advanced Project Type
-    if (filters.projectType.length > 0 && !filters.projectType.includes(prop.projectType)) return false;
+    if (filters.projectType && filters.projectType.length > 0 && !filters.projectType.includes(prop.projectType)) return false;
 
     // Price logic
-    if (filters.priceRangeStr === '2 - 3 ลบ.' && (prop.price < 2 || prop.price > 3)) return false;
-    if (filters.priceRangeStr === '1 - 2 ลบ.' && (prop.price < 1 || prop.price > 2)) return false;
-    if (prop.price > filters.priceSlider) return false;
+    if (filters.priceSlider < 20 && prop.price > filters.priceSlider) return false;
 
     return true;
   });
@@ -230,115 +229,181 @@ export default function SearchPage() {
               </div>
             </div>
             
-            <div className="modal-content">
-              {/* ประเภทโครงการ */}
-              <div className="filter-section-block">
-                <h4>ประเภทโครงการ</h4>
-                <div className="pill-grid">
-                  {['Low Rise', 'High Rise', 'Mixed Use', 'บ้านเดี่ยว', 'บ้านแฝด', 'ทาวน์โฮม'].map(opt => (
-                    <button key={opt} className={`pill-btn ${filters.projectType.includes(opt) ? 'active' : ''}`} onClick={() => toggleFilter('projectType', opt)}>
-                      {opt}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* ส่วนกลาง */}
-              <div className="filter-section-block">
-                <div className="flex justify-between items-end mb-2">
-                  <h4>ส่วนกลาง (Facilities)</h4>
-                  <button className="text-xs text-light flex items-center" style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>ดูเพิ่มเติม <ChevronDown size={12} /></button>
-                </div>
-                <div className="pill-grid">
-                  {['สระว่ายน้ำ', 'ฟิตเนส', 'Co-working Space', 'Sky Lounge', 'Rooftop', 'สวนส่วนกลาง', 'สนามเด็กเล่น', 'ห้องประชุม', 'EV Charger', 'Pet Friendly', 'คลินิกการแพทย์', 'ทางลาดสำหรับวีลแชร์', 'ปุ่มฉุกเฉินในห้อง'].map(opt => (
-                    <button key={opt} className={`pill-btn ${filters.facilities.includes(opt) ? 'active' : ''}`} onClick={() => toggleFilter('facilities', opt)}>
-                      {opt}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* การเดินทาง */}
-              <div className="filter-section-block">
-                <h4>การเดินทาง</h4>
-                <div className="pill-grid">
-                  {['ใกล้ BTS', 'ใกล้ MRT', 'ใกล้ทางด่วน', 'ใกล้สนามบิน', 'ใกล้รถไฟฟ้า'].map(opt => (
-                    <button key={opt} className={`pill-btn ${filters.transport.includes(opt) ? 'active' : ''}`} onClick={() => toggleFilter('transport', opt)}>
-                      {opt}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* ไลฟ์สไตล์ */}
-              <div className="filter-section-block">
-                <h4>ไลฟ์สไตล์</h4>
-                <div className="pill-grid">
-                  {['เหมาะกับครอบครัว', 'คนทำงาน', 'นักศึกษา', 'เลี้ยงสัตว์ได้', 'ลงทุนปล่อยเช่า', 'ผู้สูงอายุ (Senior Living)', 'ดูแลสุขภาพ (Wellness)'].map(opt => (
-                    <button key={opt} className={`pill-btn ${filters.lifestyle.includes(opt) ? 'active' : ''}`} onClick={() => toggleFilter('lifestyle', opt)}>
-                      {opt}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* สถานะ */}
-              <div className="filter-section-block">
-                <h4>ความพร้อมเข้าอยู่</h4>
-                <div className="pill-grid">
-                  {['พร้อมอยู่', 'กำลังก่อสร้าง', 'เปิด Presale'].map(opt => (
-                    <button key={opt} className={`pill-btn ${filters.status.includes(opt) ? 'active' : ''}`} onClick={() => toggleFilter('status', opt)}>
-                      {opt}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* โปรโมชัน */}
-              <div className="filter-section-block">
-                <h4>โปรโมชัน</h4>
-                <div className="pill-grid">
-                  {['ฟรีค่าโอน', 'ฟรีจดจำนอง', 'ฟรีเฟอร์นิเจอร์', 'ฟรีเครื่องใช้ไฟฟ้า', 'ส่วนลดพิเศษ'].map(opt => (
-                    <button key={opt} className={`pill-btn ${filters.promotions.includes(opt) ? 'active' : ''}`} onClick={() => toggleFilter('promotions', opt)}>
-                      {opt}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* ผู้พัฒนาโครงการ */}
-              <div className="filter-section-block">
-                <h4>ผู้พัฒนาโครงการ</h4>
-                <div className="pill-grid">
-                  {['AP', 'SANSIRI', 'SC ASSET', 'ORIGIN', 'ANANDA', 'LH', 'SUPALAI', 'MQDC'].map(opt => (
-                    <button key={opt} className={`pill-btn developer-pill ${filters.developer.includes(opt) ? 'active' : ''}`} onClick={() => toggleFilter('developer', opt)} style={{ minWidth: '60px', height: '40px', display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '0.25rem', fontSize: '0.7rem', fontWeight: 'bold' }}>
-                      {opt}
-                    </button>
-                  ))}
-                </div>
-                <div className="text-right mt-1">
-                  <button className="text-xs text-light flex items-center justify-end w-full" style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>ดูเพิ่มเติม <ChevronDown size={12} /></button>
-                </div>
-              </div>
-
-              {/* ช่วงราคา */}
-              <div className="filter-section-block mb-8">
-                <h4>ช่วงราคา (บาท)</h4>
-                <div className="pill-grid mb-4">
-                  {['ไม่จำกัด', '1 - 2 ลบ.', '2 - 3 ลบ.', '3 - 5 ลบ.', '5 - 10 ลบ.', '10 ลบ. ขึ้นไป'].map(opt => (
-                    <button key={opt} className={`pill-btn ${filters.priceRangeStr === opt ? 'active' : ''}`} onClick={() => setFilterSingle('priceRangeStr', opt)}>
-                      {opt}
-                    </button>
-                  ))}
-                </div>
-                <div className="price-slider-container">
-                  <input type="range" min="1" max="20" className="range-slider" value={filters.priceSlider} onChange={(e) => setFilterSingle('priceSlider', e.target.value)} />
-                  <div className="flex justify-between text-xs text-light mt-1">
-                    <span>1M</span>
-                    <span>20M+</span>
+            <div className="modal-content" style={{ maxHeight: '60vh', overflowY: 'auto' }}>
+              {activePropertyType === 'condo' && (
+                <>
+                  <div className="filter-section-block">
+                    <h4>ข้อมูลพื้นฐาน (งบประมาณ)</h4>
+                    <div className="pill-grid">
+                      {['1–2 ล้านบาท', '2–3 ล้านบาท', '3–5 ล้านบาท', '5–8 ล้านบาท', '8–10 ล้านบาท', '10–15 ล้านบาท', '15–20 ล้านบาท'].map(opt => (
+                        <button key={opt} className={`pill-btn ${filters.budget.includes(opt) ? 'active' : ''}`} onClick={() => toggleFilter('budget', opt)}>{opt}</button>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              </div>
+                  <div className="filter-section-block">
+                    <h4>พื้นที่ใช้สอย</h4>
+                    <div className="pill-grid">
+                      {['25 ตร.ม.', '25–30 ตร.ม.', '31–40 ตร.ม.', '41–60 ตร.ม.', '61–80 ตร.ม.'].map(opt => (
+                        <button key={opt} className={`pill-btn ${filters.size.includes(opt) ? 'active' : ''}`} onClick={() => toggleFilter('size', opt)}>{opt}</button>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="filter-section-block">
+                    <h4>ประเภทห้อง</h4>
+                    <div className="pill-grid">
+                      {['1 Bed', '1 Bed Plus', '2 Bed', 'Loft'].map(opt => (
+                        <button key={opt} className={`pill-btn ${filters.roomType.includes(opt) ? 'active' : ''}`} onClick={() => toggleFilter('roomType', opt)}>{opt}</button>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="filter-section-block">
+                    <h4>ประเภทโครงการ</h4>
+                    <div className="pill-grid">
+                      {['Low Rise', 'High Rise', 'Mixed Use'].map(opt => (
+                        <button key={opt} className={`pill-btn ${filters.projectType.includes(opt) ? 'active' : ''}`} onClick={() => toggleFilter('projectType', opt)}>{opt}</button>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="filter-section-block">
+                    <h4>จุดเด่นพิเศษ</h4>
+                    <div className="pill-grid">
+                      {['Pet Friendly'].map(opt => (
+                        <button key={opt} className={`pill-btn ${filters.special.includes(opt) ? 'active' : ''}`} onClick={() => toggleFilter('special', opt)}>{opt}</button>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="filter-section-block">
+                    <h4>สิ่งอำนวยความสะดวก</h4>
+                    <div className="pill-grid">
+                      {['สระว่ายน้ำ', 'Fitness', 'Co-working Space', 'Cafe', 'Garden', 'Kids Room', 'Game Room', 'Yoga Room', 'Sky Lounge', 'EV Charger', 'Smart Locker', 'Shuttle Bus', 'Co kitchen', 'Sauna / Steam', 'Meeting Room', 'Auto Parking'].map(opt => (
+                        <button key={opt} className={`pill-btn ${filters.facilities.includes(opt) ? 'active' : ''}`} onClick={() => toggleFilter('facilities', opt)}>{opt}</button>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="filter-section-block mb-8">
+                    <h4>การรักษาความปลอดภัย</h4>
+                    <div className="pill-grid">
+                      {['Key Card Access', 'ระบบอ่านป้ายทะเบียนรถ (LPR)', 'Digital Door Lock', 'Emergency Button', 'Visitor Management'].map(opt => (
+                        <button key={opt} className={`pill-btn ${filters.security.includes(opt) ? 'active' : ''}`} onClick={() => toggleFilter('security', opt)}>{opt}</button>
+                      ))}
+                    </div>
+                  </div>
+                </>
+              )}
+
+              {activePropertyType === 'house' && (
+                <>
+                  <div className="filter-section-block">
+                    <h4>ข้อมูลพื้นฐาน (งบประมาณ)</h4>
+                    <div className="pill-grid">
+                      {['2–3 ล้านบาท', '3–5 ล้านบาท', '5–8 ล้านบาท', '8–10 ล้านบาท', '10–15 ล้านบาท', '15–20 ล้านบาท'].map(opt => (
+                        <button key={opt} className={`pill-btn ${filters.budget.includes(opt) ? 'active' : ''}`} onClick={() => toggleFilter('budget', opt)}>{opt}</button>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="filter-section-block">
+                    <h4>ขนาดที่ดิน</h4>
+                    <div className="pill-grid">
+                      {['ไม่ต่ำกว่า 16 ตารางวา', 'ไม่ต่ำกว่า 35 ตารางวา', 'ไม่ต่ำกว่า 50 ตารางวา', '60-80 ตารางวา', '80-100 ตารางวา', '100-200 ตารางวา', 'มากกว่า 200 ตารางวา'].map(opt => (
+                        <button key={opt} className={`pill-btn ${filters.landSize.includes(opt) ? 'active' : ''}`} onClick={() => toggleFilter('landSize', opt)}>{opt}</button>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="filter-section-block">
+                    <h4>พื้นที่ใช้สอย</h4>
+                    <div className="pill-grid">
+                      {['100 ตร.ม.', '100–150 ตร.ม.', '151–200 ตร.ม.', '201–250 ตร.ม.', '251–300 ตร.ม.', '301–400 ตร.ม.', '401–500 ตร.ม.', 'มากกว่า 500 ตร.ม.'].map(opt => (
+                        <button key={opt} className={`pill-btn ${filters.size.includes(opt) ? 'active' : ''}`} onClick={() => toggleFilter('size', opt)}>{opt}</button>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="filter-section-block">
+                    <h4>ประเภทโครงการ</h4>
+                    <div className="pill-grid">
+                      {['บ้านเดี่ยว', 'บ้านแฝด', 'ทาวน์โฮม'].map(opt => (
+                        <button key={opt} className={`pill-btn ${filters.projectType.includes(opt) ? 'active' : ''}`} onClick={() => toggleFilter('projectType', opt)}>{opt}</button>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="filter-section-block">
+                    <h4>สิ่งอำนวยความสะดวก</h4>
+                    <div className="pill-grid">
+                      {['Clubhouse', 'สระว่ายน้ำ', 'Fitness', 'สวน', 'สนามเด็กเล่น', 'สนามกีฬา', 'EV Charger', 'กล้องวงจรปิด'].map(opt => (
+                        <button key={opt} className={`pill-btn ${filters.facilities.includes(opt) ? 'active' : ''}`} onClick={() => toggleFilter('facilities', opt)}>{opt}</button>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="filter-section-block mb-8">
+                    <h4>การรักษาความปลอดภัย</h4>
+                    <div className="pill-grid">
+                      {['CCTV', 'Security 24 ชั่วโมง', 'Double Gate', 'ระบบอ่านป้ายทะเบียนรถ (LPR)'].map(opt => (
+                        <button key={opt} className={`pill-btn ${filters.security.includes(opt) ? 'active' : ''}`} onClick={() => toggleFilter('security', opt)}>{opt}</button>
+                      ))}
+                    </div>
+                  </div>
+                </>
+              )}
+
+              {activePropertyType === 'senior' && (
+                <>
+                  <div className="filter-section-block">
+                    <h4>งบประมาณ</h4>
+                    <div className="pill-grid">
+                      {['ต่ำกว่า 3 ล้านบาท', '3–5 ล้านบาท', '5–8 ล้านบาท', '8–10 ล้านบาท', '10–15 ล้านบาท', '15–20 ล้านบาท'].map(opt => (
+                        <button key={opt} className={`pill-btn ${filters.budget.includes(opt) ? 'active' : ''}`} onClick={() => toggleFilter('budget', opt)}>{opt}</button>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="filter-section-block">
+                    <h4>พื้นที่ใช้สอย</h4>
+                    <div className="pill-grid">
+                      {['ต่ำกว่า 35 ตร.ม.', '35–50 ตร.ม.', '51–70 ตร.ม.', '71–100 ตร.ม.'].map(opt => (
+                        <button key={opt} className={`pill-btn ${filters.size.includes(opt) ? 'active' : ''}`} onClick={() => toggleFilter('size', opt)}>{opt}</button>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="filter-section-block">
+                    <h4>รูปแบบการอยู่อาศัย</h4>
+                    <div className="pill-grid">
+                      {['Wellness Residence', 'Senior Living Community', 'Active Aging Residence', 'Independent Living', 'Assisted Living', 'Nursing Care'].map(opt => (
+                        <button key={opt} className={`pill-btn ${filters.livingFormat.includes(opt) ? 'active' : ''}`} onClick={() => toggleFilter('livingFormat', opt)}>{opt}</button>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="filter-section-block">
+                    <h4>สิ่งอำนวยความสะดวกพื้นฐาน</h4>
+                    <div className="pill-grid">
+                      {['Laundry service*', 'Housekeeping service*', 'Shuttle service*', 'Waste management service*', 'Delivery assistance', 'Parcel and package service', 'Electric vehicle (EV) charging stations', 'Large elevators (sized to accommodate hospital beds)'].map(opt => (
+                        <button key={opt} className={`pill-btn ${filters.services.includes(opt) ? 'active' : ''}`} onClick={() => toggleFilter('services', opt)}>{opt}</button>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="filter-section-block">
+                    <h4>สิ่งอำนวยความสะดวกด้านสุขภาพและสันทนาการ</h4>
+                    <div className="pill-grid">
+                      {['First-aid room', 'Treatment room', 'Exercise room for seniors', 'Healing stone court', 'Meditation room', 'สระว่ายน้ำ', 'สระ Hydrotherapy', 'Fitness', 'Walking Track', 'Bike Lane', 'Yoga Studio', 'ห้องสมุด', 'ห้องกิจกรรม', 'โปรแกรมพาเที่ยว'].map(opt => (
+                        <button key={opt} className={`pill-btn ${filters.healthFacilities.includes(opt) ? 'active' : ''}`} onClick={() => toggleFilter('healthFacilities', opt)}>{opt}</button>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="filter-section-block">
+                    <h4>บริการและระบบฉุกเฉิน</h4>
+                    <div className="pill-grid">
+                      {['บริการฉุกเฉินตลอด 24 ชั่วโมง', 'มีแพทย์ประจำ', 'กายภาพบำบัด', 'ศูนย์ฟื้นฟู', 'คลินิกในโครงการ', 'รถพยาบาลฉุกเฉิน', 'ตรวจสุขภาพประจำปี', 'มีโรงพยาบาลในเครือ'].map(opt => (
+                        <button key={opt} className={`pill-btn ${filters.special.includes(opt) ? 'active' : ''}`} onClick={() => toggleFilter('special', opt)}>{opt}</button>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="filter-section-block mb-8">
+                    <h4>การรักษาความปลอดภัย</h4>
+                    <div className="pill-grid">
+                      {['Emergency Call Button', 'Emergency alert system', 'CCTV', 'Security 24 ชั่วโมง'].map(opt => (
+                        <button key={opt} className={`pill-btn ${filters.security.includes(opt) ? 'active' : ''}`} onClick={() => toggleFilter('security', opt)}>{opt}</button>
+                      ))}
+                    </div>
+                  </div>
+                </>
+              )}
             </div>
 
             <div className="modal-footer flex gap-4 mt-4 pt-4 border-t">
