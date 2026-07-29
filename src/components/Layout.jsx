@@ -25,7 +25,7 @@ export default function Layout() {
             <Link to="/compare" className={location.pathname === '/compare' ? 'active' : ''}>เปรียบเทียบ</Link>
             <Link to="/blog" className={location.pathname === '/blog' ? 'active' : ''}>บทความ</Link>
             <Link to="/about" className={location.pathname === '/about' ? 'active' : ''}>เกี่ยวกับเรา</Link>
-            <Link to="/admin/add" className={location.pathname === '/admin/add' ? 'active font-semibold text-primary' : 'font-semibold text-primary'}>+ เพิ่มโครงการ</Link>
+
           </nav>
 
           {/* User Actions */}
