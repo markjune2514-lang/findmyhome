@@ -444,6 +444,37 @@ export default function AddPropertyPage() {
             </div>
           </section>
 
+          {/* สิ่งอำนวยความสะดวกและจุดเด่น */}
+          <section className="form-section">
+            <h3 className="section-title">สิ่งอำนวยความสะดวกและจุดเด่น</h3>
+            <div className="bg-neutral-1 p-6 rounded-lg mb-4">
+              {formData.type === 'คอนโด' && (
+                <div className="grid grid-cols-1 gap-6">
+                  {renderCheckboxes('จุดเด่นพิเศษ', 'special', condoSpecials)}
+                  {renderCheckboxes('สิ่งอำนวยความสะดวก (Facilities)', 'facilities', condoFacilities)}
+                  {renderCheckboxes('การรักษาความปลอดภัย (Security)', 'security', condoSecurities)}
+                </div>
+              )}
+              
+              {(formData.type === 'บ้าน' || formData.type === 'ทาวน์โฮม') && (
+                <div className="grid grid-cols-1 gap-6">
+                  {renderCheckboxes('สิ่งอำนวยความสะดวก (Facilities)', 'facilities', houseFacilities)}
+                  {renderCheckboxes('การรักษาความปลอดภัย (Security)', 'security', houseSecurities)}
+                </div>
+              )}
+              
+              {formData.type === 'ผู้สูงอายุ' && (
+                <div className="grid grid-cols-1 gap-6">
+                  {renderCheckboxes('รูปแบบการอยู่อาศัย (Living Format)', 'special', seniorLivingFormats)}
+                  {renderCheckboxes('บริการเสริม (Services)', 'services', seniorServices)}
+                  {renderCheckboxes('สิ่งอำนวยความสะดวก (Facilities)', 'facilities', seniorFacilities)}
+                  {renderCheckboxes('บริการด้านสุขภาพ (Health & Wellness)', 'healthFacilities', seniorHealthFacilities)}
+                  {renderCheckboxes('การรักษาความปลอดภัย (Security)', 'security', seniorSecurities)}
+                </div>
+              )}
+            </div>
+          </section>
+
           {/* รูปภาพ */}
           <section className="form-section">
             <h3 className="section-title">รูปภาพโครงการ</h3>
