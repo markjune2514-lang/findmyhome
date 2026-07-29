@@ -586,7 +586,7 @@ export default function SearchPage() {
                     <div className="price-specs flex justify-between mt-2">
                       <div>
                         <span className="label">ราคาเริ่มต้น</span>
-                        <div className="price">{prop.price} ล้านบาท</div>
+                        <div className="price">{prop.price} {prop.priceTo ? `- ${prop.priceTo} ` : ''}ล้านบาท</div>
                       </div>
                     </div>
                     <Link to={`/property/${prop.id}`} className="btn btn-primary w-full mt-3">

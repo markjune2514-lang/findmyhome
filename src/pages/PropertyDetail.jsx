@@ -31,8 +31,8 @@ export default function PropertyDetail() {
         </div>
         <div className="text-right">
           <p className="text-light text-sm">เริ่มต้น</p>
-          <h2 className="text-primary">{prop.price} ล้าน</h2>
-          <p className="text-light text-sm mt-1">{prop.bedrooms} Bed • {prop.size} ตร.ม.</p>
+          <h2 className="text-primary">{prop.price} {prop.priceTo ? `- ${prop.priceTo}` : ''} ล้าน</h2>
+          <p className="text-light text-sm mt-1">{prop.bedrooms} Bed • {prop.size} {prop.size && !prop.size.includes('ตร') ? 'ตร.ม.' : ''}</p>
         </div>
       </div>
 

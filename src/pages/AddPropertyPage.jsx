@@ -16,6 +16,7 @@ export default function AddPropertyPage() {
     type: 'คอนโด',
     projectType: 'High Rise',
     price: '',
+    priceTo: '',
     priceSqm: '',
     bedrooms: '1',
     size: '30',
@@ -216,7 +217,8 @@ export default function AddPropertyPage() {
     // Prepare the final object shape expected by the app
     const newProperty = {
       ...formData,
-      price: calculatedPrice || parseFloat(formData.price) || 0,
+      price: parseFloat(formData.price) || calculatedPrice || 0,
+      priceTo: parseFloat(formData.priceTo) || 0,
       priceSqm: parseInt(formData.priceSqm) || 0,
       bedrooms: calculatedBedrooms || formData.bedrooms,
       size: calculatedSize || formData.size,
@@ -280,6 +282,17 @@ export default function AddPropertyPage() {
                   <option value="ผู้สูงอายุ">ผู้สูงอายุ (Senior Living)</option>
                   <option value="ที่ดิน">ที่ดินเปล่า (Land)</option>
                 </select>
+              </div>
+
+              <div className="form-group">
+                <label>ราคาเริ่มต้น (ล้านบาท) <span className="text-red-500">*</span></label>
+                <input type="number" step="0.01" name="price" value={formData.price} onChange={handleChange} required placeholder="เช่น 3.5" />
+                <p className="text-xs text-light mt-1">*หากเพิ่ม 'แบบห้อง' ด้านล่าง ระบบจะใช้ราคาต่ำสุดจากแบบห้องอัตโนมัติ</p>
+              </div>
+              <div className="form-group">
+                <label>ราคาสูงสุด (ล้านบาท) <span className="text-light">(ไม่บังคับ)</span></label>
+                <input type="number" step="0.01" name="priceTo" value={formData.priceTo} onChange={handleChange} placeholder="เช่น 5.9" />
+                <p className="text-xs text-light mt-1">หากต้องการแสดงราคาเป็นช่วง (เช่น 3.5 - 5.9 ล้านบาท)</p>
               </div>
 
               <div className="form-group">
@@ -540,19 +553,12 @@ export default function AddPropertyPage() {
 
           {/* รูปภาพ */}
           <section className="form-section">
-            <h3 className="section-title">รูปภาพโครงการ</h3>
-            <div className="form-group">
-              <label>ลิงก์รูปภาพ (Image URL)</label>
-              <div className="flex gap-2">
-                <input type="url" name="image" className="flex-1" value={formData.image} onChange={handleChange} placeholder="https://example.com/image.jpg" />
-              </div>
-              <p className="text-xs text-light mt-1">วางลิงก์รูปภาพจากเว็บ หรือฝากรูปบนเว็บอื่นๆ แล้วนำ URL มาวาง (หากไม่ใส่จะมีภาพพื้นฐานให้)</p>
-            </div>
-            {formData.image && (
-              <div className="mt-4 rounded-lg overflow-hidden border" style={{ height: '200px', width: '300px' }}>
-                <img src={formData.image} alt="Preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} onError={(e) => e.target.style.display = 'none'} />
-              </div>
-            )}
+            <h3 className="section-title">รูปภาพโครงการ (หน้าปก)</h3>
+            <ImageUploader 
+              label="อัปโหลดรูปภาพจากเครื่อง หรือวาง URL"
+              images={formData.image ? [formData.image] : []}
+              onChange={(images) => setFormData(p => ({...p, image: images.length > 0 ? images[0] : ''}))}
+            />
           </section>
 
 
