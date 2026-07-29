@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useProperties } from '../PropertiesContext';
 import { provincesAndDistricts, transitData } from '../data/locations';
 import { Save, Image as ImageIcon, MapPin, X } from 'lucide-react';
@@ -8,7 +8,9 @@ import './AddPropertyPage.css';
 
 export default function AddPropertyPage() {
   const navigate = useNavigate();
-  const { addProperty } = useProperties();
+  const { id } = useParams();
+  const isEditMode = Boolean(id);
+  const { addProperty, updateProperty, properties } = useProperties();
 
   const [formData, setFormData] = useState({
     name: '',
@@ -47,6 +49,16 @@ export default function AddPropertyPage() {
   
   const [customInputs, setCustomInputs] = useState({});
   const [locationInput, setLocationInput] = useState(`${formData.location.lat}, ${formData.location.lng}`);
+
+  useEffect(() => {
+    if (isEditMode && properties.length > 0) {
+      const propToEdit = properties.find(p => p.id === id);
+      if (propToEdit) {
+        setFormData(propToEdit);
+        setLocationInput(`${propToEdit.location.lat}, ${propToEdit.location.lng}`);
+      }
+    }
+  }, [id, isEditMode, properties]);
   
   const handleLocationStringChange = (e) => {
     const val = e.target.value;
@@ -234,12 +246,23 @@ export default function AddPropertyPage() {
     };
 
     try {
-      const newId = await addProperty(newProperty);
-      if (newId) {
-        alert('เพิ่มโครงการสำเร็จ! คุณสามารถดูโครงการใหม่ได้ในหน้าค้นหา');
-        navigate(`/property/${newId}`);
+      let resultId = null;
+      if (isEditMode) {
+        const success = await updateProperty(id, newProperty);
+        if (success) {
+          alert('บันทึกการแก้ไขโครงการเรียบร้อยแล้ว!');
+          navigate('/admin');
+        } else {
+          alert('เกิดข้อผิดพลาดในการแก้ไขข้อมูล กรุณาลองใหม่อีกครั้ง');
+        }
       } else {
-        alert('เกิดข้อผิดพลาดในการบันทึกข้อมูล กรุณาตรวจสอบสิทธิ์การเขียนฐานข้อมูล (RLS) ใน Supabase');
+        resultId = await addProperty(newProperty);
+        if (resultId) {
+          alert('เพิ่มโครงการสำเร็จ! คุณสามารถดูโครงการใหม่ได้ในหน้าค้นหา');
+          navigate(`/property/${resultId}`);
+        } else {
+          alert('เกิดข้อผิดพลาดในการบันทึกข้อมูล กรุณาตรวจสอบสิทธิ์การเขียนฐานข้อมูล (RLS) ใน Supabase');
+        }
       }
     } catch (err) {
       console.error(err);
@@ -252,7 +275,7 @@ export default function AddPropertyPage() {
       <div className="admin-header py-6 bg-white border-b mb-8">
         <div className="container flex justify-between items-center">
           <div>
-            <h1 className="text-2xl font-bold">เพิ่มโครงการใหม่</h1>
+            <h1 className="text-2xl font-bold">{isEditMode ? 'แก้ไขโครงการ' : 'เพิ่มโครงการใหม่'}</h1>
             <p className="text-light">ระบบจัดการข้อมูลโครงการ (Admin)</p>
           </div>
         </div>

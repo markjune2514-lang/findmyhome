@@ -42,6 +42,7 @@ function App() {
               }>
                 <Route index element={<AdminDashboard />} />
                 <Route path="add" element={<AddPropertyPage />} />
+                <Route path="edit/:id" element={<AddPropertyPage />} />
               </Route>
             </Routes>
           </Router>

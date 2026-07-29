@@ -1,10 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useProperties } from '../PropertiesContext';
-import { Plus, Building2, Home as HomeIcon, LayoutList, ArrowRight } from 'lucide-react';
+import { Plus, Building2, Home as HomeIcon, LayoutList, ArrowRight, Edit, Trash2 } from 'lucide-react';
 
 export default function AdminDashboard() {
-  const { properties } = useProperties();
+  const { properties, deleteProperty } = useProperties();
+
+  const handleDelete = async (id) => {
+    if (window.confirm('คุณแน่ใจหรือไม่ว่าต้องการลบโครงการนี้? (ไม่สามารถกู้คืนได้)')) {
+      await deleteProperty(id);
+    }
+  };
 
   const condoCount = properties.filter(p => p.type === 'คอนโด').length;
   const houseCount = properties.filter(p => p.type === 'บ้าน' || p.type === 'ทาวน์โฮม').length;
@@ -94,9 +100,15 @@ export default function AdminDashboard() {
                   </td>
                   <td className="p-5 font-bold text-gray-700">{prop.price} ลบ.</td>
                   <td className="p-5 text-gray-500">{prop.province}</td>
-                  <td className="p-5 text-right">
+                  <td className="p-5 text-right whitespace-nowrap">
+                    <Link to={`/admin/edit/${prop.id}`} className="inline-flex items-center gap-1 text-blue-600 hover:text-blue-700 font-medium text-sm transition-colors bg-blue-50 hover:bg-blue-100 px-3 py-1.5 rounded-lg mr-2">
+                      <Edit size={14} /> แก้ไข
+                    </Link>
+                    <button onClick={() => handleDelete(prop.id)} className="inline-flex items-center gap-1 text-red-600 hover:text-red-700 font-medium text-sm transition-colors bg-red-50 hover:bg-red-100 px-3 py-1.5 rounded-lg mr-2">
+                      <Trash2 size={14} /> ลบ
+                    </button>
                     <Link to={`/property/${prop.id}`} target="_blank" className="inline-flex items-center gap-1 text-primary hover:text-primary-dark font-medium text-sm transition-colors bg-primary/5 hover:bg-primary/10 px-3 py-1.5 rounded-lg">
-                      ดูหน้าเว็บ <ArrowRight size={14} />
+                      หน้าเว็บ <ArrowRight size={14} />
                     </Link>
                   </td>
                 </tr>

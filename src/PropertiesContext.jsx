@@ -55,8 +55,45 @@ export const PropertiesProvider = ({ children }) => {
     return id; 
   };
 
+  const updateProperty = async (id, updatedProperty) => {
+    const dbPayload = { 
+      ...updatedProperty,
+      location_lat: updatedProperty.location?.lat || 13.75,
+      location_lng: updatedProperty.location?.lng || 100.5
+    };
+    delete dbPayload.location;
+    
+    const { error } = await supabase
+      .from('properties')
+      .update(dbPayload)
+      .eq('id', id);
+      
+    if (error) {
+      console.error("Error updating property:", error);
+      return false;
+    }
+    
+    await fetchProperties();
+    return true;
+  };
+
+  const deleteProperty = async (id) => {
+    const { error } = await supabase
+      .from('properties')
+      .delete()
+      .eq('id', id);
+      
+    if (error) {
+      console.error("Error deleting property:", error);
+      return false;
+    }
+    
+    await fetchProperties();
+    return true;
+  };
+
   return (
-    <PropertiesContext.Provider value={{ properties, addProperty, loading }}>
+    <PropertiesContext.Provider value={{ properties, addProperty, updateProperty, deleteProperty, loading }}>
       {children}
     </PropertiesContext.Provider>
   );
