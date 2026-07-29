@@ -43,47 +43,85 @@ export default function AddPropertyPage() {
     transport: [],
     unitTypes: [{ name: '', price: '', landSize: '', size: '', bedrooms: '', bathrooms: '', parking: '', roomType: '', planImages: [], roomImages: [] }]
   });
+  
+  const [customInputs, setCustomInputs] = useState({});
+  
+  const handleAddCustom = (field) => {
+    if (customInputs[field]?.trim()) {
+      const newItem = customInputs[field].trim();
+      if (!formData[field].includes(newItem)) {
+        setFormData(prev => ({ ...prev, [field]: [...prev[field], newItem] }));
+      }
+      setCustomInputs(prev => ({ ...prev, [field]: '' }));
+    }
+  };
   const condoSizes = ['25 ตร.ม.', '25–30 ตร.ม.', '31–40 ตร.ม.', '41–60 ตร.ม.', '61–80 ตร.ม.'];
   const condoRoomTypes = ['1 Bed', '1 Bed Plus', '2 Bed', 'Loft'];
   const condoProjectTypes = ['Low Rise', 'High Rise', 'Mixed Use'];
   const condoSpecials = ['Pet Friendly'];
-  const condoFacilities = ['สระว่ายน้ำ', 'Fitness', 'Co-working Space', 'Cafe', 'Garden', 'Kids Room', 'Game Room', 'Yoga Room', 'Sky Lounge', 'EV Charger', 'Smart Locker', 'Shuttle Bus', 'Co kitchen', 'Sauna / Steam', 'Meeting Room', 'Auto Parking'];
-  const condoSecurities = ['Key Card Access', 'ระบบอ่านป้ายทะเบียนรถ (LPR)', 'Digital Door Lock', 'Emergency Button', 'Visitor Management'];
+  const condoFacilities = ['Clubhouse', 'สระว่ายน้ำ', 'Fitness', 'Co-working Space', 'Cafe', 'Garden', 'Kids Room', 'Game Room', 'Yoga Room', 'Sky Lounge', 'EV Charger', 'Smart Locker', 'Shuttle Bus', 'Co kitchen', 'Sauna / Steam', 'Meeting Room', 'Auto Parking', 'Playground (สนามเด็กเล่น)'];
+  const condoSecurities = ['CCTV', 'Security 24 Hour.', 'Key Card Access', 'ระบบอ่านป้ายทะเบียนรถ (LPR)', 'Digital Door Lock', 'Emergency Button', 'Visitor Management'];
 
   const houseLandSizes = ['ไม่ต่ำกว่า 16 ตารางวา', 'ไม่ต่ำกว่า 35 ตารางวา', 'ไม่ต่ำกว่า 50 ตารางวา', '60-80 ตารางวา', '80-100 ตารางวา', '100-200 ตารางวา', 'มากกว่า 200 ตารางวา'];
   const houseSizes = ['100 ตร.ม.', '100–150 ตร.ม.', '151–200 ตร.ม.', '201–250 ตร.ม.', '251–300 ตร.ม.', '301–400 ตร.ม.', '401–500 ตร.ม.', 'มากกว่า 500 ตร.ม.'];
   const houseProjectTypes = ['บ้านเดี่ยว', 'บ้านแฝด', 'ทาวน์โฮม'];
-  const houseFacilities = ['Clubhouse', 'สระว่ายน้ำ', 'Fitness', 'สวน', 'สนามเด็กเล่น', 'สนามกีฬา', 'EV Charger', 'กล้องวงจรปิด'];
-  const houseSecurities = ['CCTV', 'Security 24 ชั่วโมง', 'Double Gate', 'ระบบอ่านป้ายทะเบียนรถ (LPR)'];
+  const houseFacilities = ['Clubhouse', 'สระว่ายน้ำ', 'Fitness', 'สวน', 'Playground (สนามเด็กเล่น)', 'สนามกีฬา', 'EV Charger'];
+  const houseSecurities = ['CCTV', 'Security 24 Hour.', 'Double Gate', 'ระบบอ่านป้ายทะเบียนรถ (LPR)'];
 
   const seniorSizes = ['ต่ำกว่า 35 ตร.ม.', '35–50 ตร.ม.', '51–70 ตร.ม.', '71–100 ตร.ม.'];
   const seniorLivingFormats = ['Wellness Residence', 'Senior Living Community', 'Active Aging Residence', 'Independent Living', 'Assisted Living', 'Nursing Care'];
-  const seniorServices = ['Laundry service*', 'Housekeeping service*', 'Shuttle service*', 'Waste management service*', 'Delivery assistance', 'Parcel and package service', 'Electric vehicle (EV) charging stations', 'Large elevators (sized to accommodate hospital beds)'];
-  const seniorFacilities = ['First-aid room', 'Treatment room', 'Exercise room for seniors', 'Healing stone court', 'Meditation room', 'สระว่ายน้ำ', 'สระ Hydrotherapy', 'Fitness', 'Walking Track', 'Bike Lane', 'Yoga Studio', 'ห้องสมุด', 'ห้องกิจกรรม', 'โปรแกรมพาเที่ยว'];
+  const seniorServices = ['Laundry service (บริการซักรีด)', 'Housekeeping service (บริการทำความสะอาดห้อง)', 'Waste management service (บริหารจัดการขยะ)', 'Delivery assistance', 'Parcel and package service', 'Electric vehicle (EV) charging stations', 'Large elevators'];
+  const seniorFacilities = ['Clubhouse', 'First-aid room', 'Treatment room', 'Exercise room for seniors', 'Healing stone court', 'Meditation room', 'สระว่ายน้ำ', 'สระ Hydrotherapy', 'Fitness', 'Walking Track', 'Bike Lane', 'ห้องสมุด', 'ห้องกิจกรรม', 'โปรแกรมพาเที่ยว'];
   const seniorHealthFacilities = ['บริการฉุกเฉินตลอด 24 ชั่วโมง', 'มีแพทย์ประจำ', 'กายภาพบำบัด', 'ศูนย์ฟื้นฟู', 'คลินิกในโครงการ', 'รถพยาบาลฉุกเฉิน', 'ตรวจสุขภาพประจำปี', 'มีโรงพยาบาลในเครือ'];
-  const seniorSecurities = ['Emergency Call Button', 'Emergency alert system', 'CCTV', 'Security 24 ชั่วโมง'];
+  const seniorSecurities = ['CCTV', 'Security 24 Hour.', 'Emergency Button', 'Emergency alert system'];
 
   const statuses = ['พร้อมอยู่', 'กำลังก่อสร้าง', 'เปิด Presale'];
 
 
   
-  const renderCheckboxes = (label, field, options) => (
-    <div className="form-group col-span-2">
-      <label>{label}</label>
-      <div className="checkbox-grid">
-        {options.map(opt => (
-          <label key={opt} className="checkbox-label">
-            <input 
-              type="checkbox" 
-              checked={formData[field].includes(opt)}
-              onChange={() => toggleArrayItem(field, opt)}
-            />
-            {opt}
-          </label>
-        ))}
+  const renderCheckboxes = (label, field, options) => {
+    const allOptions = Array.from(new Set([...options, ...formData[field]]));
+    
+    return (
+      <div className="form-group col-span-2">
+        <label>{label}</label>
+        <div className="checkbox-grid">
+          {allOptions.map(opt => (
+            <label key={opt} className="checkbox-label">
+              <input 
+                type="checkbox" 
+                checked={formData[field].includes(opt)}
+                onChange={() => toggleArrayItem(field, opt)}
+              />
+              {opt}
+            </label>
+          ))}
+        </div>
+        <div className="mt-3 flex gap-2 max-w-sm">
+          <input 
+            type="text" 
+            placeholder="เพิ่มอื่นๆ (โปรดระบุ)..." 
+            value={customInputs[field] || ''}
+            onChange={(e) => setCustomInputs(prev => ({ ...prev, [field]: e.target.value }))}
+            onKeyPress={(e) => {
+              if (e.key === 'Enter') {
+                e.preventDefault();
+                handleAddCustom(field);
+              }
+            }}
+            className="flex-1 text-sm px-3 py-1.5 border rounded-lg focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+          />
+          <button 
+            type="button"
+            onClick={() => handleAddCustom(field)}
+            className="px-4 py-1.5 bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-medium rounded-lg transition-colors border"
+          >
+            เพิ่ม
+          </button>
+        </div>
       </div>
-    </div>
-  );
+    );
+  };
   
   const renderSelect = (label, field, options) => (
     <div className="form-group">
