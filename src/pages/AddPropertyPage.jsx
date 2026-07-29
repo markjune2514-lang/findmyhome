@@ -45,6 +45,20 @@ export default function AddPropertyPage() {
   });
   
   const [customInputs, setCustomInputs] = useState({});
+  const [locationInput, setLocationInput] = useState(`${formData.location.lat}, ${formData.location.lng}`);
+  
+  const handleLocationStringChange = (e) => {
+    const val = e.target.value;
+    setLocationInput(val);
+    const parts = val.split(',');
+    if (parts.length >= 2) {
+      const lat = parseFloat(parts[0].trim());
+      const lng = parseFloat(parts[1].trim());
+      if (!isNaN(lat) && !isNaN(lng)) {
+        setFormData(p => ({...p, location: { lat, lng }}));
+      }
+    }
+  };
   
   const handleAddCustom = (field) => {
     if (customInputs[field]?.trim()) {
@@ -469,15 +483,17 @@ export default function AddPropertyPage() {
             </div>
 
             <div className="bg-neutral-1 p-4 rounded-lg">
-              <h4 className="flex items-center gap-2 mb-2 text-sm font-semibold"><MapPin size={16} /> พิกัดแผนที่ (Latitude / Longitude)</h4>
-              <p className="text-xs text-light mb-4">ค้นหาพิกัดจาก Google Maps เพื่อให้โครงการแสดงบนหน้าค้นหาได้อย่างแม่นยำ</p>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="form-group mb-0">
-                  <input type="number" step="0.000001" name="lat" value={formData.location.lat} onChange={(e) => setFormData(p => ({...p, location: {...p.location, lat: parseFloat(e.target.value)}}))} placeholder="Latitude" required />
-                </div>
-                <div className="form-group mb-0">
-                  <input type="number" step="0.000001" name="lng" value={formData.location.lng} onChange={(e) => setFormData(p => ({...p, location: {...p.location, lng: parseFloat(e.target.value)}}))} placeholder="Longitude" required />
-                </div>
+              <h4 className="flex items-center gap-2 mb-2 text-sm font-semibold"><MapPin size={16} /> พิกัดแผนที่ (Latitude, Longitude)</h4>
+              <p className="text-xs text-light mb-4">คัดลอกพิกัดจาก Google Maps มาวางได้เลย (เช่น 13.80238, 100.05228)</p>
+              <div className="form-group mb-0">
+                <input 
+                  type="text" 
+                  value={locationInput} 
+                  onChange={handleLocationStringChange} 
+                  placeholder="เช่น 13.802386110244578, 100.05228075612297" 
+                  required 
+                  className="w-full"
+                />
               </div>
             </div>
           </section>
