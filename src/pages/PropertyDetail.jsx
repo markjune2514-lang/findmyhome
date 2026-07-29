@@ -95,6 +95,9 @@ export default function PropertyDetail() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {prop.unitTypes.map((unit, idx) => (
                     <div key={idx} className="p-4 border rounded-lg bg-white shadow-sm flex flex-col">
+                      {unit.image && (
+                        <div className="w-full h-32 mb-4 rounded-md bg-neutral-1 bg-cover bg-center border" style={{ backgroundImage: `url(${unit.image})` }}></div>
+                      )}
                       <div className="flex justify-between items-start mb-2">
                         <h4 className="text-lg font-bold text-primary">{unit.name || 'ไม่ระบุชื่อแบบ'}</h4>
                         <span className="font-bold text-main">{unit.price} ล้านบาท</span>

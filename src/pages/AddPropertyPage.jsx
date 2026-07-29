@@ -40,7 +40,7 @@ export default function AddPropertyPage() {
     security: [],
     promotions: [],
     transport: [],
-    unitTypes: [{ name: '', price: '', size: '', bedrooms: '', roomType: '' }]
+    unitTypes: [{ name: '', price: '', size: '', bedrooms: '', roomType: '', image: '' }]
   });
   const condoSizes = ['25 ตร.ม.', '25–30 ตร.ม.', '31–40 ตร.ม.', '41–60 ตร.ม.', '61–80 ตร.ม.'];
   const condoRoomTypes = ['1 Bed', '1 Bed Plus', '2 Bed', 'Loft'];
@@ -119,7 +119,7 @@ export default function AddPropertyPage() {
   const handleAddUnitType = () => {
     setFormData(prev => ({
       ...prev,
-      unitTypes: [...prev.unitTypes, { name: '', price: '', size: '', bedrooms: '', roomType: '' }]
+      unitTypes: [...prev.unitTypes, { name: '', price: '', size: '', bedrooms: '', roomType: '', image: '' }]
     }));
   };
 
@@ -317,6 +317,16 @@ export default function AddPropertyPage() {
                         value={unit.bedrooms} 
                         onChange={(e) => handleUnitTypeChange(idx, 'bedrooms', e.target.value)} 
                         placeholder="เช่น 1" 
+                        className="text-sm"
+                      />
+                    </div>
+                    <div className="form-group mb-0 md:col-span-4 mt-2">
+                      <label className="text-xs">ลิงก์รูปแปลนห้อง / ภาพห้อง</label>
+                      <input 
+                        type="url" 
+                        value={unit.image || ''} 
+                        onChange={(e) => handleUnitTypeChange(idx, 'image', e.target.value)} 
+                        placeholder="https://example.com/plan.jpg (ฝากรูปที่เว็บอื่นแล้วนำลิงก์มาวาง)" 
                         className="text-sm"
                       />
                     </div>
