@@ -125,8 +125,11 @@ export default function PropertyDetail() {
                       </div>
                       <div className="text-sm text-light grid grid-cols-2 gap-2 mt-2">
                         <div><strong>รูปแบบ:</strong> {unit.roomType || '-'}</div>
+                        {unit.landSize && <div><strong>ขนาดที่ดิน:</strong> {unit.landSize} ตร.วา</div>}
+                        <div><strong>พื้นที่ใช้สอย:</strong> {unit.size ? `${unit.size.replace('ตร.ม.', '').replace('ตร.วา', '').trim()} ตร.ม.` : '-'}</div>
                         <div><strong>ห้องนอน:</strong> {unit.bedrooms || '-'}</div>
-                        <div><strong>ขนาด:</strong> {unit.size || '-'}</div>
+                        <div><strong>ห้องน้ำ:</strong> {unit.bathrooms || '-'}</div>
+                        <div><strong>ที่จอดรถ:</strong> {unit.parking || '-'}</div>
                       </div>
                     </div>
                   ))}

@@ -41,7 +41,7 @@ export default function AddPropertyPage() {
     security: [],
     promotions: [],
     transport: [],
-    unitTypes: [{ name: '', price: '', size: '', bedrooms: '', roomType: '', planImages: [], roomImages: [] }]
+    unitTypes: [{ name: '', price: '', landSize: '', size: '', bedrooms: '', bathrooms: '', parking: '', roomType: '', planImages: [], roomImages: [] }]
   });
   const condoSizes = ['25 ตร.ม.', '25–30 ตร.ม.', '31–40 ตร.ม.', '41–60 ตร.ม.', '61–80 ตร.ม.'];
   const condoRoomTypes = ['1 Bed', '1 Bed Plus', '2 Bed', 'Loft'];
@@ -120,7 +120,7 @@ export default function AddPropertyPage() {
   const handleAddUnitType = () => {
     setFormData(prev => ({
       ...prev,
-      unitTypes: [...prev.unitTypes, { name: '', price: '', size: '', bedrooms: '', roomType: '', planImages: [], roomImages: [] }]
+      unitTypes: [...prev.unitTypes, { name: '', price: '', landSize: '', size: '', bedrooms: '', bathrooms: '', parking: '', roomType: '', planImages: [], roomImages: [] }]
     }));
   };
 
@@ -292,32 +292,62 @@ export default function AddPropertyPage() {
                       />
                     </div>
                     <div className="form-group mb-0">
-                      <label className="text-xs">ขนาด (ตร.ม. / ตร.วา)</label>
+                      <label className="text-xs">ขนาดที่ดิน (ตร.วา)</label>
+                      <input 
+                        type="text" 
+                        value={unit.landSize || ''} 
+                        onChange={(e) => handleUnitTypeChange(idx, 'landSize', e.target.value)} 
+                        placeholder="เช่น 50" 
+                        className="text-sm"
+                      />
+                    </div>
+                    <div className="form-group mb-0">
+                      <label className="text-xs">พื้นที่ใช้สอย (ตร.ม.)</label>
                       <input 
                         type="text" 
                         value={unit.size} 
                         onChange={(e) => handleUnitTypeChange(idx, 'size', e.target.value)} 
-                        placeholder="เช่น 30 หรือ 50 ตร.วา" 
+                        placeholder="เช่น 150" 
                         className="text-sm"
                       />
                     </div>
                     <div className="form-group mb-0">
-                      <label className="text-xs">รูปแบบ (เช่น 1 Bed, Studio)</label>
+                      <label className="text-xs">รูปแบบห้อง</label>
                       <input 
                         type="text" 
                         value={unit.roomType} 
                         onChange={(e) => handleUnitTypeChange(idx, 'roomType', e.target.value)} 
-                        placeholder="เช่น 1 Bed" 
+                        placeholder="เช่น 1 Bed, Studio" 
                         className="text-sm"
                       />
                     </div>
                     <div className="form-group mb-0">
-                      <label className="text-xs">จำนวนห้องนอน</label>
+                      <label className="text-xs">ห้องนอน</label>
                       <input 
                         type="text" 
                         value={unit.bedrooms} 
                         onChange={(e) => handleUnitTypeChange(idx, 'bedrooms', e.target.value)} 
                         placeholder="เช่น 1" 
+                        className="text-sm"
+                      />
+                    </div>
+                    <div className="form-group mb-0">
+                      <label className="text-xs">ห้องน้ำ</label>
+                      <input 
+                        type="text" 
+                        value={unit.bathrooms || ''} 
+                        onChange={(e) => handleUnitTypeChange(idx, 'bathrooms', e.target.value)} 
+                        placeholder="เช่น 1" 
+                        className="text-sm"
+                      />
+                    </div>
+                    <div className="form-group mb-0">
+                      <label className="text-xs">ที่จอดรถ</label>
+                      <input 
+                        type="text" 
+                        value={unit.parking || ''} 
+                        onChange={(e) => handleUnitTypeChange(idx, 'parking', e.target.value)} 
+                        placeholder="เช่น 1 หรือ 2" 
                         className="text-sm"
                       />
                     </div>
