@@ -1,63 +1,18 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useAuth } from '../AuthContext';
 import { useProperties } from '../PropertiesContext';
-import { Plus, LogOut, Settings, LayoutDashboard, Home, Edit, Trash2 } from 'lucide-react';
+import { Plus } from 'lucide-react';
 
 export default function AdminDashboard() {
-  const { user, logout } = useAuth();
   const { properties } = useProperties();
 
-  const handleLogout = async () => {
-    try {
-      await logout();
-    } catch (error) {
-      console.error('Logout error:', error);
-    }
-  };
-
   return (
-    <div className="min-h-screen bg-gray-50 flex">
-      {/* Sidebar */}
-      <aside className="w-64 bg-white border-r flex flex-col">
-        <div className="p-6 border-b">
-          <h1 className="text-xl font-bold text-primary flex items-center gap-2">
-            <LayoutDashboard size={24} />
-            Admin Panel
-          </h1>
+    <div className="p-8">
+      <div className="flex justify-between items-center mb-8">
+        <div>
+          <h2 className="text-2xl font-bold text-gray-800 mb-1">ภาพรวมระบบ (Dashboard)</h2>
+          <p className="text-gray-500">จัดการข้อมูลโครงการอสังหาริมทรัพย์ทั้งหมดของคุณ</p>
         </div>
-        <nav className="flex-1 p-4 space-y-2">
-          <Link to="/admin" className="flex items-center gap-3 px-4 py-3 bg-primary/10 text-primary rounded-lg font-medium transition-colors">
-            <Home size={20} /> แผงควบคุม
-          </Link>
-          <Link to="/admin/add" className="flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-lg font-medium transition-colors">
-            <Plus size={20} /> เพิ่มโครงการใหม่
-          </Link>
-          <Link to="/" className="flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-lg font-medium transition-colors mt-8">
-            <Home size={20} /> กลับหน้าหลักผู้ใช้
-          </Link>
-        </nav>
-        <div className="p-4 border-t">
-          <div className="mb-4 px-4">
-            <p className="text-xs text-gray-500 font-semibold mb-1">LOGGED IN AS</p>
-            <p className="text-sm font-medium text-gray-800 truncate">{user?.email}</p>
-          </div>
-          <button 
-            onClick={handleLogout}
-            className="w-full flex items-center gap-3 px-4 py-2 text-red-500 hover:bg-red-50 rounded-lg font-medium transition-colors"
-          >
-            <LogOut size={20} /> ออกจากระบบ
-          </button>
-        </div>
-      </aside>
-
-      {/* Main Content */}
-      <main className="flex-1 p-8 overflow-y-auto">
-        <div className="flex justify-between items-center mb-8">
-          <div>
-            <h2 className="text-2xl font-bold text-gray-800 mb-1">ภาพรวมระบบ (Dashboard)</h2>
-            <p className="text-gray-500">จัดการข้อมูลโครงการอสังหาริมทรัพย์ทั้งหมดของคุณ</p>
-          </div>
           <Link to="/admin/add" className="btn btn-primary flex items-center gap-2 px-6 py-2">
             <Plus size={20} /> เพิ่มโครงการใหม่
           </Link>
@@ -124,9 +79,8 @@ export default function AdminDashboard() {
                 ยังไม่มีโครงการในระบบ
               </div>
             )}
-          </div>
         </div>
-      </main>
+      </div>
     </div>
   );
 }

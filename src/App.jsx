@@ -9,6 +9,7 @@ import ProjectsPage from './pages/ProjectsPage';
 import AddPropertyPage from './pages/AddPropertyPage';
 import AdminLoginPage from './pages/AdminLoginPage';
 import AdminDashboard from './pages/AdminDashboard';
+import AdminLayout from './components/AdminLayout';
 import { CompareProvider } from './CompareContext';
 import { PropertiesProvider } from './PropertiesContext';
 import { AuthProvider } from './AuthContext';
@@ -33,16 +34,15 @@ function App() {
 
               {/* Admin Routes */}
               <Route path="/admin/login" element={<AdminLoginPage />} />
+              
               <Route path="/admin" element={
                 <ProtectedRoute>
-                  <AdminDashboard />
+                  <AdminLayout />
                 </ProtectedRoute>
-              } />
-              <Route path="/admin/add" element={
-                <ProtectedRoute>
-                  <AddPropertyPage />
-                </ProtectedRoute>
-              } />
+              }>
+                <Route index element={<AdminDashboard />} />
+                <Route path="add" element={<AddPropertyPage />} />
+              </Route>
             </Routes>
           </Router>
         </CompareProvider>
