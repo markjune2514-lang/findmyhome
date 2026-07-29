@@ -95,8 +95,29 @@ export default function PropertyDetail() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {prop.unitTypes.map((unit, idx) => (
                     <div key={idx} className="p-4 border rounded-lg bg-white shadow-sm flex flex-col">
-                      {unit.image && (
-                        <div className="w-full h-32 mb-4 rounded-md bg-neutral-1 bg-cover bg-center border" style={{ backgroundImage: `url(${unit.image})` }}></div>
+                      {((unit.planImages && unit.planImages.length > 0) || (unit.roomImages && unit.roomImages.length > 0)) && (
+                        <div className="mb-4">
+                          {unit.planImages && unit.planImages.length > 0 && (
+                            <div className="mb-2">
+                              <span className="text-xs font-semibold text-gray-500 mb-1 block">แปลนห้อง (Top View)</span>
+                              <div className="flex gap-2 overflow-x-auto pb-2 snap-x">
+                                {unit.planImages.map((img, i) => (
+                                  <div key={i} className="min-w-[120px] w-[120px] h-[90px] rounded-md bg-neutral-1 bg-cover bg-center border shrink-0 snap-start" style={{ backgroundImage: `url(${img})` }}></div>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+                          {unit.roomImages && unit.roomImages.length > 0 && (
+                            <div>
+                              <span className="text-xs font-semibold text-gray-500 mb-1 block">ภาพบรรยากาศห้อง</span>
+                              <div className="flex gap-2 overflow-x-auto pb-2 snap-x">
+                                {unit.roomImages.map((img, i) => (
+                                  <div key={i} className="min-w-[120px] w-[120px] h-[90px] rounded-md bg-neutral-1 bg-cover bg-center border shrink-0 snap-start" style={{ backgroundImage: `url(${img})` }}></div>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+                        </div>
                       )}
                       <div className="flex justify-between items-start mb-2">
                         <h4 className="text-lg font-bold text-primary">{unit.name || 'ไม่ระบุชื่อแบบ'}</h4>

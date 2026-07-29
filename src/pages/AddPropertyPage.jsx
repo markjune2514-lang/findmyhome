@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useProperties } from '../PropertiesContext';
 import { provincesAndDistricts, transitData } from '../data/locations';
 import { Save, Image as ImageIcon, MapPin, X } from 'lucide-react';
+import ImageUploader from '../components/ImageUploader';
 import './AddPropertyPage.css';
 
 export default function AddPropertyPage() {
@@ -40,7 +41,7 @@ export default function AddPropertyPage() {
     security: [],
     promotions: [],
     transport: [],
-    unitTypes: [{ name: '', price: '', size: '', bedrooms: '', roomType: '', image: '' }]
+    unitTypes: [{ name: '', price: '', size: '', bedrooms: '', roomType: '', planImages: [], roomImages: [] }]
   });
   const condoSizes = ['25 ตร.ม.', '25–30 ตร.ม.', '31–40 ตร.ม.', '41–60 ตร.ม.', '61–80 ตร.ม.'];
   const condoRoomTypes = ['1 Bed', '1 Bed Plus', '2 Bed', 'Loft'];
@@ -119,7 +120,7 @@ export default function AddPropertyPage() {
   const handleAddUnitType = () => {
     setFormData(prev => ({
       ...prev,
-      unitTypes: [...prev.unitTypes, { name: '', price: '', size: '', bedrooms: '', roomType: '', image: '' }]
+      unitTypes: [...prev.unitTypes, { name: '', price: '', size: '', bedrooms: '', roomType: '', planImages: [], roomImages: [] }]
     }));
   };
 
@@ -321,13 +322,17 @@ export default function AddPropertyPage() {
                       />
                     </div>
                     <div className="form-group mb-0 md:col-span-4 mt-2">
-                      <label className="text-xs">ลิงก์รูปแปลนห้อง / ภาพห้อง</label>
-                      <input 
-                        type="url" 
-                        value={unit.image || ''} 
-                        onChange={(e) => handleUnitTypeChange(idx, 'image', e.target.value)} 
-                        placeholder="https://example.com/plan.jpg (ฝากรูปที่เว็บอื่นแล้วนำลิงก์มาวาง)" 
-                        className="text-sm"
+                      <ImageUploader 
+                        label="แปลนห้อง (Top View)"
+                        images={unit.planImages}
+                        onChange={(images) => handleUnitTypeChange(idx, 'planImages', images)}
+                      />
+                    </div>
+                    <div className="form-group mb-0 md:col-span-4 mt-2">
+                      <ImageUploader 
+                        label="รูปภาพห้อง / บรรยากาศ (Gallery)"
+                        images={unit.roomImages}
+                        onChange={(images) => handleUnitTypeChange(idx, 'roomImages', images)}
                       />
                     </div>
                   </div>
