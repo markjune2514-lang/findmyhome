@@ -191,7 +191,7 @@ export default function AddPropertyPage() {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     
     // Auto-calculate min price and starting values from unitTypes
@@ -231,9 +231,18 @@ export default function AddPropertyPage() {
       reviews: 0
     };
 
-    const newId = addProperty(newProperty);
-    alert('เพิ่มโครงการสำเร็จ! คุณสามารถดูโครงการใหม่ได้ในหน้าค้นหา');
-    navigate(`/property/${newId}`);
+    try {
+      const newId = await addProperty(newProperty);
+      if (newId) {
+        alert('เพิ่มโครงการสำเร็จ! คุณสามารถดูโครงการใหม่ได้ในหน้าค้นหา');
+        navigate(`/property/${newId}`);
+      } else {
+        alert('เกิดข้อผิดพลาดในการบันทึกข้อมูล กรุณาตรวจสอบสิทธิ์การเขียนฐานข้อมูล (RLS) ใน Supabase');
+      }
+    } catch (err) {
+      console.error(err);
+      alert('เกิดข้อผิดพลาด: ' + err.message);
+    }
   };
 
   return (
