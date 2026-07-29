@@ -53,7 +53,7 @@ export default function PropertyDetail() {
       </div>
 
       <div className="content-tabs mb-6">
-        {['รายละเอียด', 'แปลนห้อง', 'สิ่งอำนวยความสะดวก', 'ทำเลที่ตั้ง'].map(tab => (
+        {['รายละเอียด', 'แบบบ้าน/ห้อง', 'สิ่งอำนวยความสะดวก', 'ทำเลที่ตั้ง'].map(tab => (
           <button key={tab} className={`tab ${activeTab === tab ? 'active' : ''}`} onClick={() => setActiveTab(tab)}>{tab}</button>
         ))}
       </div>
@@ -88,10 +88,28 @@ export default function PropertyDetail() {
             </>
           )}
 
-          {activeTab === 'แปลนห้อง' && (
+          {activeTab === 'แบบบ้าน/ห้อง' && (
             <div className="mb-8">
-              <h3 className="mb-4">แปลนห้อง</h3>
-              <div className="p-12 text-center bg-neutral-1 rounded-lg text-light">ไม่มีข้อมูลแปลนห้องในขณะนี้</div>
+              <h3 className="mb-4">รูปแบบบ้านและห้องในโครงการ</h3>
+              {prop.unitTypes && prop.unitTypes.length > 0 ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {prop.unitTypes.map((unit, idx) => (
+                    <div key={idx} className="p-4 border rounded-lg bg-white shadow-sm flex flex-col">
+                      <div className="flex justify-between items-start mb-2">
+                        <h4 className="text-lg font-bold text-primary">{unit.name || 'ไม่ระบุชื่อแบบ'}</h4>
+                        <span className="font-bold text-main">{unit.price} ล้านบาท</span>
+                      </div>
+                      <div className="text-sm text-light grid grid-cols-2 gap-2 mt-2">
+                        <div><strong>รูปแบบ:</strong> {unit.roomType || '-'}</div>
+                        <div><strong>ห้องนอน:</strong> {unit.bedrooms || '-'}</div>
+                        <div><strong>ขนาด:</strong> {unit.size || '-'}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="p-12 text-center bg-neutral-1 rounded-lg text-light">ไม่มีข้อมูลแบบบ้าน/ห้องในขณะนี้</div>
+              )}
             </div>
           )}
 

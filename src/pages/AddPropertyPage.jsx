@@ -39,10 +39,9 @@ export default function AddPropertyPage() {
     services: [],
     security: [],
     promotions: [],
-    transport: []
+    transport: [],
+    unitTypes: [{ name: '', price: '', size: '', bedrooms: '', roomType: '' }]
   });
-
-
   const condoSizes = ['25 ตร.ม.', '25–30 ตร.ม.', '31–40 ตร.ม.', '41–60 ตร.ม.', '61–80 ตร.ม.'];
   const condoRoomTypes = ['1 Bed', '1 Bed Plus', '2 Bed', 'Loft'];
   const condoProjectTypes = ['Low Rise', 'High Rise', 'Mixed Use'];
@@ -117,14 +116,58 @@ export default function AddPropertyPage() {
     });
   };
 
+  const handleAddUnitType = () => {
+    setFormData(prev => ({
+      ...prev,
+      unitTypes: [...prev.unitTypes, { name: '', price: '', size: '', bedrooms: '', roomType: '' }]
+    }));
+  };
+
+  const handleRemoveUnitType = (index) => {
+    setFormData(prev => ({
+      ...prev,
+      unitTypes: prev.unitTypes.filter((_, i) => i !== index)
+    }));
+  };
+
+  const handleUnitTypeChange = (index, field, value) => {
+    setFormData(prev => {
+      const newUnitTypes = [...prev.unitTypes];
+      newUnitTypes[index] = { ...newUnitTypes[index], [field]: value };
+      return { ...prev, unitTypes: newUnitTypes };
+    });
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     
+    // Auto-calculate min price and starting values from unitTypes
+    let calculatedPrice = 0;
+    let calculatedSize = '';
+    let calculatedBedrooms = '';
+    let calculatedRoomType = '';
+    
+    if (formData.unitTypes && formData.unitTypes.length > 0) {
+      // Filter out empty prices
+      const validUnits = formData.unitTypes.filter(u => u.price && !isNaN(parseFloat(u.price)));
+      if (validUnits.length > 0) {
+        // Find the unit with the minimum price
+        const minPriceUnit = validUnits.reduce((min, p) => parseFloat(p.price) < parseFloat(min.price) ? p : min, validUnits[0]);
+        calculatedPrice = parseFloat(minPriceUnit.price);
+        calculatedSize = minPriceUnit.size || '';
+        calculatedBedrooms = minPriceUnit.bedrooms || '';
+        calculatedRoomType = minPriceUnit.roomType || '';
+      }
+    }
+
     // Prepare the final object shape expected by the app
     const newProperty = {
       ...formData,
-      price: parseFloat(formData.price) || 0,
+      price: calculatedPrice || parseFloat(formData.price) || 0,
       priceSqm: parseInt(formData.priceSqm) || 0,
+      bedrooms: calculatedBedrooms || formData.bedrooms,
+      size: calculatedSize || formData.size,
+      roomType: calculatedRoomType || formData.roomType,
       floors: parseInt(formData.floors) || 0,
       totalUnits: parseInt(formData.totalUnits) || 0,
       location: {
@@ -186,26 +229,10 @@ export default function AddPropertyPage() {
             </div>
           </section>
 
-          {/* ราคาและรายละเอียด */}
+          {/* รายละเอียดอาคาร */}
           <section className="form-section">
-            <h3 className="section-title">ราคาและรายละเอียดห้อง</h3>
+            <h3 className="section-title">รายละเอียดอาคาร</h3>
             <div className="grid grid-cols-2 gap-4">
-              <div className="form-group">
-                <label>ราคาเริ่มต้น (ล้านบาท) <span className="text-red-500">*</span></label>
-                <input type="number" step="0.01" name="price" value={formData.price} onChange={handleChange} required placeholder="เช่น 2.59" />
-              </div>
-              <div className="form-group">
-                <label>ราคาเฉลี่ยต่อ ตร.ม. (บาท)</label>
-                <input type="number" name="priceSqm" value={formData.priceSqm} onChange={handleChange} placeholder="เช่น 120000" />
-              </div>
-              <div className="form-group">
-                <label>รูปแบบห้องเริ่มต้น (Bedrooms)</label>
-                <input type="text" name="bedrooms" value={formData.bedrooms} onChange={handleChange} placeholder="เช่น 1" />
-              </div>
-              <div className="form-group">
-                <label>ขนาดห้องเริ่มต้น (ตร.ม.)</label>
-                <input type="text" name="size" value={formData.size} onChange={handleChange} placeholder="เช่น 28" />
-              </div>
               <div className="form-group">
                 <label>จำนวนชั้นทั้งหมด</label>
                 <input type="number" name="floors" value={formData.floors} onChange={handleChange} placeholder="เช่น 32" />
@@ -215,6 +242,91 @@ export default function AddPropertyPage() {
                 <input type="number" name="totalUnits" value={formData.totalUnits} onChange={handleChange} placeholder="เช่น 450" />
               </div>
             </div>
+          </section>
+
+          {/* รูปแบบบ้าน / แบบห้อง (Unit Types) */}
+          <section className="form-section">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="section-title mb-0">รูปแบบบ้าน/แบบห้อง (Unit Types)</h3>
+              <button type="button" onClick={handleAddUnitType} className="btn btn-primary text-sm px-4 py-1 rounded-md bg-primary/10 text-primary hover:bg-primary/20 border-none">
+                + เพิ่มแบบห้อง
+              </button>
+            </div>
+            
+            <div className="space-y-4">
+              {formData.unitTypes.map((unit, idx) => (
+                <div key={idx} className="p-4 border rounded-lg bg-neutral-1 relative group">
+                  {formData.unitTypes.length > 1 && (
+                    <button 
+                      type="button" 
+                      onClick={() => handleRemoveUnitType(idx)}
+                      className="absolute top-2 right-2 text-red-500 hover:bg-red-50 p-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity"
+                    >
+                      <X size={16} />
+                    </button>
+                  )}
+                  
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div className="form-group mb-0 md:col-span-2">
+                      <label className="text-xs">ชื่อแบบ (เช่น Type A, 1 Bedroom)</label>
+                      <input 
+                        type="text" 
+                        value={unit.name} 
+                        onChange={(e) => handleUnitTypeChange(idx, 'name', e.target.value)} 
+                        placeholder="ชื่อแบบห้อง" 
+                        required
+                        className="text-sm"
+                      />
+                    </div>
+                    <div className="form-group mb-0">
+                      <label className="text-xs">ราคา (ล้านบาท)</label>
+                      <input 
+                        type="number" 
+                        step="0.01" 
+                        value={unit.price} 
+                        onChange={(e) => handleUnitTypeChange(idx, 'price', e.target.value)} 
+                        placeholder="เช่น 2.59" 
+                        required
+                        className="text-sm"
+                      />
+                    </div>
+                    <div className="form-group mb-0">
+                      <label className="text-xs">ขนาด (ตร.ม. / ตร.วา)</label>
+                      <input 
+                        type="text" 
+                        value={unit.size} 
+                        onChange={(e) => handleUnitTypeChange(idx, 'size', e.target.value)} 
+                        placeholder="เช่น 30 หรือ 50 ตร.วา" 
+                        className="text-sm"
+                      />
+                    </div>
+                    <div className="form-group mb-0">
+                      <label className="text-xs">รูปแบบ (เช่น 1 Bed, Studio)</label>
+                      <input 
+                        type="text" 
+                        value={unit.roomType} 
+                        onChange={(e) => handleUnitTypeChange(idx, 'roomType', e.target.value)} 
+                        placeholder="เช่น 1 Bed" 
+                        className="text-sm"
+                      />
+                    </div>
+                    <div className="form-group mb-0">
+                      <label className="text-xs">จำนวนห้องนอน</label>
+                      <input 
+                        type="text" 
+                        value={unit.bedrooms} 
+                        onChange={(e) => handleUnitTypeChange(idx, 'bedrooms', e.target.value)} 
+                        placeholder="เช่น 1" 
+                        className="text-sm"
+                      />
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <p className="text-xs text-light mt-2">
+              * ระบบจะนำแบบห้องที่มี "ราคาต่ำสุด" ไปตั้งเป็นราคาเริ่มต้นและขนาดเริ่มต้นของโครงการนี้โดยอัตโนมัติ
+            </p>
           </section>
 
           {/* ทำเลที่ตั้ง */}
