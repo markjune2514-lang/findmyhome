@@ -55,7 +55,7 @@ export default function PropertyDetail() {
 
           return (
             <>
-              <div className="main-image transition-all duration-300" style={{ backgroundImage: `url(${selectedImage})`, height: '400px', backgroundSize: 'cover', backgroundPosition: 'center', borderRadius: '12px' }}></div>
+              <div className="main-image transition-all duration-300" style={{ backgroundImage: `url(${selectedImage})`, height: '400px', backgroundSize: 'contain', backgroundRepeat: 'no-repeat', backgroundPosition: 'center', backgroundColor: '#f8f9fa', borderRadius: '12px', border: '1px solid #eee' }}></div>
               
               {(uniqueImages.length > 0 || mainImages.length > 1) && (
                 <div className="thumbnail-list flex gap-3 mt-3 overflow-x-auto pb-2 snap-x">
