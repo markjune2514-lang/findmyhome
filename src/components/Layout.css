@@ -6,21 +6,34 @@
 }
 
 .navbar {
-  height: 72px;
+  height: 64px;
   background-color: var(--white);
   border-bottom: 1px solid var(--neutral-2);
   flex-shrink: 0;
   z-index: 1000;
   position: relative;
+  display: flex;
+  align-items: center;
 }
 
-@media (max-width: 767px) {
+@media (min-width: 768px) {
   .navbar {
-    height: 58px;
+    height: 72px;
   }
 }
 
+.navbar .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+  width: 100%;
+}
+
 .logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   text-decoration: none;
   color: var(--text-main);
 }
@@ -96,7 +109,7 @@
 /* Mobile Drawer Menu */
 .mobile-menu-drawer {
   position: absolute;
-  top: 58px;
+  top: 64px;
   left: 0;
   right: 0;
   background-color: #ffffff;
