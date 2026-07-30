@@ -291,77 +291,71 @@ export default function PropertyDetail() {
 
 
 
-          {activeTab === 'สิ่งอำนวยความสะดวก' && (
-            <div className="space-y-6 mb-8">
-              {prop.special && prop.special.length > 0 && (
-                <div>
-                  <h3 className="mb-3 text-lg font-bold text-gray-800">จุดเด่น / รูปแบบการอยู่อาศัย</h3>
-                  <ul className="flex flex-wrap gap-2">
-                    {prop.special.map((s, i) => (
-                      <li key={i} className="px-4 py-2 bg-pink-50 text-pink-700 rounded-full text-sm font-medium border border-pink-100">{s}</li>
-                    ))}
-                  </ul>
-                </div>
-              )}
+              {/* Facilities Section in Overview */}
+              <div className="mb-8 bg-white p-5 rounded-2xl border border-gray-100 shadow-sm">
+                <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+                  🏊 สิ่งอำนวยความสะดวกในโครงการ (Facilities)
+                </h3>
 
-              {prop.facilities && prop.facilities.length > 0 && (
-                <div>
-                  <h3 className="mb-3 text-lg font-bold text-gray-800">สิ่งอำนวยความสะดวก (Facilities)</h3>
-                  <ul className="flex flex-wrap gap-2">
-                    {prop.facilities.map((f, i) => (
-                      <li key={i} className="px-4 py-2 bg-blue-50 text-blue-700 rounded-full text-sm font-medium border border-blue-100">{f}</li>
-                    ))}
-                  </ul>
-                </div>
-              )}
+                <div className="space-y-4">
+                  {prop.special && prop.special.length > 0 && (
+                    <div>
+                      <span className="text-xs font-bold text-pink-700 block mb-2">✨ จุดเด่น / รูปแบบการอยู่อาศัย:</span>
+                      <div className="flex flex-wrap gap-2">
+                        {prop.special.map((s, i) => (
+                          <span key={i} className="px-3.5 py-1.5 bg-pink-50 text-pink-700 rounded-full text-xs font-semibold border border-pink-100">{s}</span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
 
-              {prop.security && prop.security.length > 0 && (
-                <div>
-                  <h3 className="mb-3 text-lg font-bold text-gray-800">การรักษาความปลอดภัย (Security)</h3>
-                  <ul className="flex flex-wrap gap-2">
-                    {prop.security.map((s, i) => (
-                      <li key={i} className="px-4 py-2 bg-emerald-50 text-emerald-700 rounded-full text-sm font-medium border border-emerald-100">{s}</li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-              
-              {prop.healthFacilities && prop.healthFacilities.length > 0 && (
-                <div>
-                  <h3 className="mb-3 text-lg font-bold text-gray-800">บริการด้านสุขภาพ (Health & Wellness)</h3>
-                  <ul className="flex flex-wrap gap-2">
-                    {prop.healthFacilities.map((h, i) => (
-                      <li key={i} className="px-4 py-2 bg-purple-50 text-purple-700 rounded-full text-sm font-medium border border-purple-100">{h}</li>
-                    ))}
-                  </ul>
-                </div>
-              )}
+                  {prop.facilities && prop.facilities.length > 0 && (
+                    <div>
+                      <span className="text-xs font-bold text-blue-700 block mb-2">🏊 สิ่งอำนวยความสะดวกส่วนกลาง:</span>
+                      <div className="flex flex-wrap gap-2">
+                        {prop.facilities.map((f, i) => (
+                          <span key={i} className="px-3.5 py-1.5 bg-blue-50 text-blue-700 rounded-full text-xs font-semibold border border-blue-100">{f}</span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
 
-              {prop.services && prop.services.length > 0 && (
-                <div>
-                  <h3 className="mb-3 text-lg font-bold text-gray-800">บริการเสริม (Services)</h3>
-                  <ul className="flex flex-wrap gap-2">
-                    {prop.services.map((s, i) => (
-                      <li key={i} className="px-4 py-2 bg-amber-50 text-amber-700 rounded-full text-sm font-medium border border-amber-100">{s}</li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-              
-              {!prop.special?.length && !prop.facilities?.length && !prop.security?.length && !prop.healthFacilities?.length && !prop.services?.length && (
-                <div className="p-8 text-center bg-gray-50 rounded-lg text-gray-500">
-                  ไม่มีข้อมูลสิ่งอำนวยความสะดวก
-                </div>
-              )}
-            </div>
-          )}
+                  {prop.security && prop.security.length > 0 && (
+                    <div>
+                      <span className="text-xs font-bold text-emerald-700 block mb-2">🛡️ ระบบรักษาความปลอดภัย:</span>
+                      <div className="flex flex-wrap gap-2">
+                        {prop.security.map((s, i) => (
+                          <span key={i} className="px-3.5 py-1.5 bg-emerald-50 text-emerald-700 rounded-full text-xs font-semibold border border-emerald-100">{s}</span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
 
-          {activeTab === 'ทำเลที่ตั้ง' && (
-            <div className="mb-8">
-              <h3 className="mb-4">ทำเลที่ตั้ง</h3>
-              <p className="mb-4 text-light">ใกล้ {prop.station} ({prop.distanceToStation})</p>
-            </div>
-          )}
+                  {prop.healthFacilities && prop.healthFacilities.length > 0 && (
+                    <div>
+                      <span className="text-xs font-bold text-purple-700 block mb-2">🏥 บริการด้านสุขภาพ:</span>
+                      <div className="flex flex-wrap gap-2">
+                        {prop.healthFacilities.map((h, i) => (
+                          <span key={i} className="px-3.5 py-1.5 bg-purple-50 text-purple-700 rounded-full text-xs font-semibold border border-purple-100">{h}</span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {prop.services && prop.services.length > 0 && (
+                    <div>
+                      <span className="text-xs font-bold text-amber-700 block mb-2">🛎️ บริการพิเศษ:</span>
+                      <div className="flex flex-wrap gap-2">
+                        {prop.services.map((s, i) => (
+                          <span key={i} className="px-3.5 py-1.5 bg-amber-50 text-amber-700 rounded-full text-xs font-semibold border border-amber-100">{s}</span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </>
+          ) : null}
         </div>
         
         <div className="side-map flex-1">
