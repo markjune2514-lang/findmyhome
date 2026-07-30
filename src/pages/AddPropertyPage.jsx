@@ -579,8 +579,9 @@ export default function AddPropertyPage() {
             <h3 className="section-title">รูปภาพโครงการ (หน้าปก)</h3>
             <ImageUploader 
               label="อัปโหลดรูปภาพจากเครื่อง หรือวาง URL"
+              multiple={false}
               images={formData.image ? [formData.image] : []}
-              onChange={(images) => setFormData(p => ({...p, image: images.length > 0 ? images[0] : ''}))}
+              onChange={(images) => setFormData(p => ({...p, image: images.length > 0 ? images[images.length - 1] : ''}))}
             />
           </section>
 

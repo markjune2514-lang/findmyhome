@@ -2,35 +2,47 @@ import React, { useState } from 'react';
 import { supabase } from '../supabaseClient';
 import { Upload, Link as LinkIcon, X, Loader2 } from 'lucide-react';
 
-export default function ImageUploader({ images = [], onChange, label = 'รูปภาพ' }) {
+export default function ImageUploader({ images = [], onChange, label = 'รูปภาพ', multiple = true }) {
   const [uploading, setUploading] = useState(false);
   const [urlInput, setUrlInput] = useState('');
   const [mode, setMode] = useState('file'); // 'file' or 'url'
 
   const handleFileUpload = async (e) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
+    const files = Array.from(e.target.files || []);
+    if (files.length === 0) return;
 
     try {
       setUploading(true);
-      const fileExt = file.name.split('.').pop();
-      const fileName = `${Math.random().toString(36).substring(2, 15)}_${Date.now()}.${fileExt}`;
-      const filePath = `${fileName}`;
+      const newUrls = [];
+      
+      for (const file of files) {
+        const fileExt = file.name.split('.').pop();
+        const fileName = `${Math.random().toString(36).substring(2, 15)}_${Date.now()}.${fileExt}`;
+        const filePath = `${fileName}`;
 
-      const { error: uploadError } = await supabase.storage
-        .from('property-images')
-        .upload(filePath, file);
+        const { error: uploadError } = await supabase.storage
+          .from('property-images')
+          .upload(filePath, file);
 
-      if (uploadError) {
-        throw uploadError;
+        if (uploadError) {
+          throw uploadError;
+        }
+
+        const { data } = supabase.storage
+          .from('property-images')
+          .getPublicUrl(filePath);
+
+        if (data?.publicUrl) {
+          newUrls.push(data.publicUrl);
+        }
       }
 
-      const { data } = supabase.storage
-        .from('property-images')
-        .getPublicUrl(filePath);
-
-      if (data?.publicUrl) {
-        onChange([...images, data.publicUrl]);
+      if (newUrls.length > 0) {
+        if (multiple) {
+          onChange([...images, ...newUrls]);
+        } else {
+          onChange([newUrls[newUrls.length - 1]]);
+        }
       }
     } catch (error) {
       console.error('Error uploading image:', error);
@@ -81,6 +93,7 @@ export default function ImageUploader({ images = [], onChange, label = 'รู�
             <input 
               type="file" 
               accept="image/*" 
+              multiple={multiple}
               onChange={handleFileUpload}
               disabled={uploading}
               className="absolute inset-0 w-full h-full opacity-0 cursor-pointer disabled:cursor-not-allowed"
