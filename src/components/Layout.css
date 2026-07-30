@@ -14,6 +14,12 @@
   position: relative;
 }
 
+@media (max-width: 767px) {
+  .navbar {
+    height: 58px;
+  }
+}
+
 .logo {
   text-decoration: none;
   color: var(--text-main);
@@ -90,7 +96,7 @@
 /* Mobile Drawer Menu */
 .mobile-menu-drawer {
   position: absolute;
-  top: 72px;
+  top: 58px;
   left: 0;
   right: 0;
   background-color: #ffffff;
@@ -102,6 +108,12 @@
   gap: 0.5rem;
   z-index: 9999;
   animation: drawerSlideDown 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (min-width: 768px) {
+  .mobile-menu-drawer {
+    top: 72px;
+  }
 }
 
 @keyframes drawerSlideDown {
