@@ -46,7 +46,7 @@ export default function ProjectsPage() {
 
       <div className="container py-8">
         {/* Categories */}
-        <div className="category-tabs flex justify-center gap-4 mb-12 flex-wrap">
+        <div className="category-tabs flex gap-2 sm:gap-4 mb-6 sm:mb-12 overflow-x-auto pb-2 whitespace-nowrap">
           {categories.map(cat => (
             <button 
               key={cat.id} 
