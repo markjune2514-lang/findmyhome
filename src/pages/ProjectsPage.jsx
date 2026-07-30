@@ -44,9 +44,9 @@ export default function ProjectsPage() {
         </div>
       </section>
 
-      <div className="container py-8">
+      <div className="container py-3 sm:py-6">
         {/* Categories */}
-        <div className="category-tabs flex gap-2 sm:gap-4 mb-6 sm:mb-12 overflow-x-auto pb-2 whitespace-nowrap">
+        <div className="category-tabs flex gap-2 sm:gap-4 mb-3 sm:mb-6 overflow-x-auto pb-2 whitespace-nowrap">
           {categories.map(cat => (
             <button 
               key={cat.id} 

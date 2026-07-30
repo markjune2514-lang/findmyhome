@@ -3,8 +3,8 @@
   background-size: cover;
   background-position: center;
   border-radius: var(--radius-xl);
-  padding: 2rem 1.25rem;
-  min-height: 280px;
+  padding: 1.25rem 1rem;
+  min-height: 220px;
   display: flex;
   align-items: center;
   position: relative;
@@ -13,8 +13,8 @@
 
 @media (min-width: 640px) {
   .about-hero {
-    padding: 4rem;
-    min-height: 400px;
+    padding: 2rem 2.5rem;
+    min-height: 280px;
   }
 }
 
