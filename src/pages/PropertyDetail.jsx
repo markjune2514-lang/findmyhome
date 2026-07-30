@@ -15,35 +15,38 @@ export default function PropertyDetail() {
 
   const prop = properties.find(p => p.id === id) || (properties.length > 0 ? properties[0] : null);
   
-  const [activeTab, setActiveTab] = useState('รายละเอียด');
+  const [activeTab, setActiveTab] = useState('overview'); // 'overview' or unit index '0', '1', '2'
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [selectedUnitFilter, setSelectedUnitFilter] = useState('0');
 
-  // Selected Unit Type Object (Defaults to 1st unit type)
-  const activeIndex = (prop?.unitTypes && prop.unitTypes[parseInt(selectedUnitFilter)]) ? parseInt(selectedUnitFilter) : 0;
-  const selectedUnit = prop?.unitTypes ? prop.unitTypes[activeIndex] : null;
+  // Determine current unit selected (null if 'overview')
+  const selectedUnit = (activeTab !== 'overview' && prop?.unitTypes && prop.unitTypes[parseInt(activeTab)])
+    ? prop.unitTypes[parseInt(activeTab)]
+    : null;
 
-  // Filter Images: Show selected unit's planImages and roomImages first!
+  // Filter Images based on activeTab
   const mainImages = prop?.image ? prop.image.split(',') : [];
   const selectedUnitImages = selectedUnit
     ? [...(selectedUnit.planImages || []), ...(selectedUnit.roomImages || [])].filter(Boolean)
     : [];
+  const allUnitImages = prop?.unitTypes ? prop.unitTypes.flatMap(u => [...(u.planImages || []), ...(u.roomImages || [])]) : [];
 
-  const allImages = selectedUnitImages.length > 0
+  // When 'overview', show main project images + overview photos; when specific unit, show that unit's images first!
+  const allImages = selectedUnit && selectedUnitImages.length > 0
     ? [...new Set([...selectedUnitImages, ...mainImages])].filter(Boolean)
-    : [...new Set([...mainImages])].filter(Boolean);
+    : [...new Set([...mainImages, ...allUnitImages])].filter(Boolean);
 
   const selectedImage = allImages.length > 0 ? allImages[currentIndex] : '';
 
-  // Dynamic Price and Specs based on selected unit type
+  // Dynamic Price & Specs
+  const displayPriceLabel = selectedUnit ? `ราคาสำหรับ ${selectedUnit.name || 'แบบห้องนี้'}` : 'ราคาเริ่มต้น';
   const displayPrice = selectedUnit?.price ? `${selectedUnit.price}` : prop?.price;
-  const displayPriceTo = '';
+  const displayPriceTo = selectedUnit ? '' : prop?.priceTo;
   const displaySize = selectedUnit?.size || prop?.size;
   const displayBedrooms = selectedUnit?.bedrooms || selectedUnit?.roomType || prop?.bedrooms;
 
   React.useEffect(() => {
     setCurrentIndex(0);
-  }, [selectedUnitFilter, prop?.id]);
+  }, [activeTab, prop?.id]);
 
   if (loading) {
     return (
@@ -90,24 +93,33 @@ export default function PropertyDetail() {
         <span className="text-sm sm:text-lg font-bold text-gray-800 whitespace-nowrap">{prop.developer}</span>
       </div>
 
-      {/* Unit Type Selection Segmented Toggle Switch Pill */}
-      {prop.unitTypes && prop.unitTypes.length > 0 && (
-        <div className="w-full bg-[#fbf7f4] border border-[#f4e4d7] p-1 rounded-2xl flex gap-1 mb-4 overflow-x-auto scrollbar-none shadow-inner">
-          {prop.unitTypes.map((u, i) => (
-            <button
-              key={i}
-              onClick={() => setSelectedUnitFilter(i.toString())}
-              className={`flex-1 min-w-[110px] py-2.5 px-4 text-xs sm:text-sm font-bold rounded-xl transition-all duration-200 text-center whitespace-nowrap ${
-                selectedUnitFilter === i.toString()
-                  ? 'bg-primary text-white shadow-md shadow-primary/20'
-                  : 'text-gray-600 hover:text-gray-900 bg-transparent'
-              }`}
-            >
-              {u.name || `แบบที่ ${i + 1}`}
-            </button>
-          ))}
-        </div>
-      )}
+      {/* Main Tab Bar: 1. ภาพรวมโครงการ | 2. แบบที่ 1 | 3. แบบที่ 2 ... */}
+      <div className="w-full bg-[#fbf7f4] border border-[#f4e4d7] p-1 rounded-2xl flex gap-1 mb-4 overflow-x-auto scrollbar-none shadow-inner">
+        <button
+          onClick={() => setActiveTab('overview')}
+          className={`flex-1 min-w-[140px] py-2.5 px-4 text-xs sm:text-sm font-bold rounded-xl transition-all duration-200 text-center whitespace-nowrap ${
+            activeTab === 'overview'
+              ? 'bg-primary text-white shadow-md shadow-primary/20'
+              : 'text-gray-600 hover:text-gray-900 bg-transparent'
+          }`}
+        >
+          🏢 ภาพรวมโครงการ
+        </button>
+
+        {prop.unitTypes && prop.unitTypes.map((u, i) => (
+          <button
+            key={i}
+            onClick={() => setActiveTab(i.toString())}
+            className={`flex-1 min-w-[120px] py-2.5 px-4 text-xs sm:text-sm font-bold rounded-xl transition-all duration-200 text-center whitespace-nowrap ${
+              activeTab === i.toString()
+                ? 'bg-primary text-white shadow-md shadow-primary/20'
+                : 'text-gray-600 hover:text-gray-900 bg-transparent'
+            }`}
+          >
+            🏡 {u.name || `แบบที่ ${i + 1}`}
+          </button>
+        ))}
+      </div>
 
       {/* Price & Specs Summary Row */}
       <div className="flex justify-between items-end mb-4">
@@ -196,61 +208,91 @@ export default function PropertyDetail() {
         </div>
       </div>
 
-      {/* Content Tabs for Option 1 */}
-      <div className="content-tabs mb-6 overflow-x-auto whitespace-nowrap border-b border-gray-200 flex gap-2 pb-1">
-        {[
-          { id: 'รายละเอียด', label: '🏢 ภาพรวมโครงการ' },
-          { id: 'แบบบ้าน/ห้อง', label: '🏡 แบบบ้าน / แบบห้อง' },
-          { id: 'สิ่งอำนวยความสะดวก', label: '🏊 สิ่งอำนวยความสะดวก' },
-          { id: 'ทำเลที่ตั้ง', label: '📍 ทำเลและสถานที่ใกล้เคียง' }
-        ].map(tab => (
-          <button 
-            key={tab.id} 
-            className={`px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all shrink-0 ${
-              activeTab === tab.id 
-                ? 'bg-primary text-white shadow-md shadow-primary/20 scale-[1.02]' 
-                : 'text-gray-600 hover:bg-gray-100 bg-white border border-gray-200'
-            }`} 
-            onClick={() => setActiveTab(tab.id)}
-          >
-            {tab.label}
-          </button>
-        ))}
-      </div>
-
+      {/* Main Details Area */}
       <div className="flex flex-col md:flex-row gap-6 md:gap-8">
         <div className="main-info flex-2">
-          {activeTab === 'รายละเอียด' && (
+          {activeTab === 'overview' ? (
             <>
-              <h3 className="mb-4">รายละเอียดโครงการ</h3>
-              <div className="specs-grid mb-8">
-                <div className="spec-item">
-                  <Info size={24} color="var(--primary)" />
-                  <p className="label">ผู้พัฒนา</p>
-                  <p className="val">{prop.developer}</p>
+              {/* Project Specs */}
+              <h3 className="mb-4 text-lg font-bold text-gray-900">🏢 รายละเอียดและสเปกโครงการ</h3>
+              <div className="specs-grid mb-8 grid grid-cols-2 sm:grid-cols-4 gap-3">
+                <div className="spec-item p-3 bg-white rounded-xl border border-gray-100 shadow-sm flex flex-col items-center text-center">
+                  <Info size={22} color="var(--primary)" />
+                  <p className="label text-xs text-gray-400 mt-1">ผู้พัฒนา</p>
+                  <p className="val text-sm font-bold text-gray-800">{prop.developer}</p>
                 </div>
-                <div className="spec-item">
-                  <LayoutDashboard size={24} color="var(--primary)" />
-                  <p className="label">จำนวนชั้น</p>
-                  <p className="val">{prop.floors} ชั้น</p>
+                <div className="spec-item p-3 bg-white rounded-xl border border-gray-100 shadow-sm flex flex-col items-center text-center">
+                  <LayoutDashboard size={22} color="var(--primary)" />
+                  <p className="label text-xs text-gray-400 mt-1">จำนวนชั้น</p>
+                  <p className="val text-sm font-bold text-gray-800">{prop.floors} ชั้น</p>
                 </div>
-                <div className="spec-item">
-                  <LayoutDashboard size={24} color="var(--primary)" />
-                  <p className="label">จำนวนยูนิต</p>
-                  <p className="val">{prop.totalUnits} ยูนิต</p>
+                <div className="spec-item p-3 bg-white rounded-xl border border-gray-100 shadow-sm flex flex-col items-center text-center">
+                  <LayoutDashboard size={22} color="var(--primary)" />
+                  <p className="label text-xs text-gray-400 mt-1">จำนวนยูนิต</p>
+                  <p className="val text-sm font-bold text-gray-800">{prop.totalUnits} ยูนิต</p>
                 </div>
-                <div className="spec-item">
-                  <LayoutDashboard size={24} color="var(--primary)" />
-                  <p className="label">จำนวนแบบบ้าน/ห้อง</p>
-                  <p className="val">{prop.unitTypes?.length || 0} แบบ</p>
-                </div>
-                <div className="spec-item">
-                  <Info size={24} color="var(--primary)" />
-                  <p className="label">สถานะ</p>
-                  <p className="val">{prop.status}</p>
+                <div className="spec-item p-3 bg-white rounded-xl border border-gray-100 shadow-sm flex flex-col items-center text-center">
+                  <Info size={22} color="var(--primary)" />
+                  <p className="label text-xs text-gray-400 mt-1">สถานะโครงการ</p>
+                  <p className="val text-sm font-bold text-gray-800">{prop.status}</p>
                 </div>
               </div>
             </>
+          ) : (
+            selectedUnit && (
+              <div className="mb-8 bg-white p-5 rounded-2xl border border-gray-100 shadow-sm">
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="text-lg font-bold text-gray-900 m-0">🏡 รายละเอียดแบบ: {selectedUnit.name}</h3>
+                  <span className="text-lg font-black text-primary">{selectedUnit.price} ล้านบาท</span>
+                </div>
+
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-5">
+                  <div className="p-3 bg-neutral-50 rounded-xl">
+                    <span className="text-xs text-gray-400 block">พื้นที่ใช้สอย</span>
+                    <span className="text-sm font-bold text-gray-800">{selectedUnit.size || selectedUnit.usableArea || prop.size} ตร.ม.</span>
+                  </div>
+                  {selectedUnit.landSize && (
+                    <div className="p-3 bg-neutral-50 rounded-xl">
+                      <span className="text-xs text-gray-400 block">ขนาดที่ดิน</span>
+                      <span className="text-sm font-bold text-gray-800">{selectedUnit.landSize} ตร.วา</span>
+                    </div>
+                  )}
+                  <div className="p-3 bg-neutral-50 rounded-xl">
+                    <span className="text-xs text-gray-400 block">ห้องนอน / ห้องน้ำ</span>
+                    <span className="text-sm font-bold text-gray-800">{selectedUnit.bedrooms || selectedUnit.roomType || prop.bedrooms} Bed</span>
+                  </div>
+                </div>
+
+                {/* Floor Plan Images */}
+                {selectedUnit.planImages && selectedUnit.planImages.length > 0 && (
+                  <div className="mb-5">
+                    <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">📐 แปลนห้อง (Floor Plan)</h4>
+                    <div className="grid grid-cols-2 gap-3">
+                      {selectedUnit.planImages.map((img, i) => (
+                        <div key={i} className="relative rounded-xl overflow-hidden border border-gray-200 group cursor-pointer" onClick={() => { const idx = allImages.indexOf(img); if (idx !== -1) setCurrentIndex(idx); }}>
+                          <img src={img} alt={`plan-${i}`} className="w-full h-44 object-cover group-hover:scale-105 transition-all" />
+                          <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-all flex items-center justify-center text-white font-bold text-xs">🔍 ขยายภาพ</div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Room Photos */}
+                {selectedUnit.roomImages && selectedUnit.roomImages.length > 0 && (
+                  <div>
+                    <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">🛋️ ภาพบรรยากาศห้องจริง</h4>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                      {selectedUnit.roomImages.map((img, i) => (
+                        <div key={i} className="relative rounded-xl overflow-hidden border border-gray-200 group cursor-pointer" onClick={() => { const idx = allImages.indexOf(img); if (idx !== -1) setCurrentIndex(idx); }}>
+                          <img src={img} alt={`room-${i}`} className="w-full h-32 object-cover group-hover:scale-105 transition-all" />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )
           )}
 
           {activeTab === 'แบบบ้าน/ห้อง' && (
