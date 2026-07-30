@@ -6,24 +6,6 @@ import { Plus, LogOut, LayoutDashboard, Home } from 'lucide-react';
 export default function AdminLayout() {
   const { user, logout } = useAuth();
   const location = useLocation();
-
-  const handleLogout = async () => {
-    try {
-      await logout();
-    } catch (error) {
-      console.error('Logout error:', error);
-    }
-  };
-
-  const isActive = (path) => {
-    if (path === '/admin' && location.pathname === '/admin') return true;
-    if (path !== '/admin' && location.pathname.startsWith(path)) return true;
-    return false;
-  };
-
-export default function AdminLayout() {
-  const { user, logout } = useAuth();
-  const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = React.useState(false);
 
   const handleLogout = async () => {
