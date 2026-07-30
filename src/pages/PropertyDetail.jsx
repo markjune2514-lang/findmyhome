@@ -123,9 +123,11 @@ export default function PropertyDetail() {
             {displayPrice} {displayPriceTo ? `- ${displayPriceTo}` : ''} <span className="text-sm font-bold">ล้านบาท</span>
           </div>
         </div>
-        <div className="text-xs sm:text-sm font-semibold text-gray-600 text-right">
-          {displayBedrooms && `${displayBedrooms} Bed • `}{displaySize} {displaySize && !displaySize.includes('ตร') ? 'ตร.ม.' : ''}
-        </div>
+        {selectedUnit && (
+          <div className="text-xs sm:text-sm font-semibold text-gray-600 text-right">
+            {displayBedrooms && `${displayBedrooms} Bed • `}{displaySize} {displaySize && !displaySize.includes('ตร') ? 'ตร.ม.' : ''}
+          </div>
+        )}
       </div>
 
       {/* Main Image Gallery Carousel with Side Arrows Overlayed */}
