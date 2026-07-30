@@ -277,6 +277,18 @@
     box-shadow: none;
   }
 
+  .map-area {
+    width: 100%;
+    height: 380px !important;
+    min-height: 380px;
+    flex-shrink: 0;
+  }
+
+  .list-sidebar {
+    width: 100%;
+    border-left: none;
+  }
+
   .advanced-modal-overlay {
     left: 0;
     width: 100%;

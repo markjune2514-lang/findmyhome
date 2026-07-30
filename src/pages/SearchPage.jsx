@@ -91,6 +91,7 @@ function MapDrawControl({ onPolygonDrawn }) {
 function MapUpdater({ properties }) {
   const map = useMap();
   React.useEffect(() => {
+    map.invalidateSize();
     if (properties && properties.length > 0) {
       const validPoints = properties
         .filter(p => p.location && p.location.lat && p.location.lng)
@@ -99,8 +100,9 @@ function MapUpdater({ properties }) {
       if (validPoints.length > 0) {
         const bounds = L.latLngBounds(validPoints);
         setTimeout(() => {
-          map.fitBounds(bounds, { padding: [50, 50], maxZoom: 15 });
-        }, 50);
+          map.invalidateSize();
+          map.fitBounds(bounds, { padding: [30, 30], maxZoom: 15 });
+        }, 100);
       }
     }
   }, [properties, map]);
