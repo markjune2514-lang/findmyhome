@@ -17,29 +17,27 @@ export default function PropertyDetail() {
   
   const [activeTab, setActiveTab] = useState('รายละเอียด');
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [selectedUnitFilter, setSelectedUnitFilter] = useState('all');
+  const [selectedUnitFilter, setSelectedUnitFilter] = useState('0');
 
-  // Selected Unit Type Object
-  const selectedUnit = (selectedUnitFilter !== 'all' && prop?.unitTypes && prop.unitTypes[parseInt(selectedUnitFilter)])
-    ? prop.unitTypes[parseInt(selectedUnitFilter)]
-    : null;
+  // Selected Unit Type Object (Defaults to 1st unit type)
+  const activeIndex = (prop?.unitTypes && prop.unitTypes[parseInt(selectedUnitFilter)]) ? parseInt(selectedUnitFilter) : 0;
+  const selectedUnit = prop?.unitTypes ? prop.unitTypes[activeIndex] : null;
 
-  // Filter Images: If a unit type is selected, show its planImages and roomImages first!
+  // Filter Images: Show selected unit's planImages and roomImages first!
   const mainImages = prop?.image ? prop.image.split(',') : [];
   const selectedUnitImages = selectedUnit
     ? [...(selectedUnit.planImages || []), ...(selectedUnit.roomImages || [])].filter(Boolean)
     : [];
-  const allUnitImages = prop?.unitTypes ? prop.unitTypes.flatMap(u => [...(u.planImages || []), ...(u.roomImages || [])]) : [];
 
-  const allImages = selectedUnit && selectedUnitImages.length > 0
+  const allImages = selectedUnitImages.length > 0
     ? [...new Set([...selectedUnitImages, ...mainImages])].filter(Boolean)
-    : [...new Set([...mainImages, ...allUnitImages])].filter(Boolean);
+    : [...new Set([...mainImages])].filter(Boolean);
 
   const selectedImage = allImages.length > 0 ? allImages[currentIndex] : '';
 
-  // Dynamic Price and Specs based on selected unit filter
+  // Dynamic Price and Specs based on selected unit type
   const displayPrice = selectedUnit?.price ? `${selectedUnit.price}` : prop?.price;
-  const displayPriceTo = selectedUnit ? '' : prop?.priceTo;
+  const displayPriceTo = '';
   const displaySize = selectedUnit?.size || prop?.size;
   const displayBedrooms = selectedUnit?.bedrooms || selectedUnit?.roomType || prop?.bedrooms;
 
@@ -100,16 +98,6 @@ export default function PropertyDetail() {
       {/* Unit Type Selection Segmented Toggle Switch Pill */}
       {prop.unitTypes && prop.unitTypes.length > 0 && (
         <div className="w-full bg-[#fbf7f4] border border-[#f4e4d7] p-1 rounded-2xl flex gap-1 mb-4 overflow-x-auto scrollbar-none shadow-inner">
-          <button
-            onClick={() => setSelectedUnitFilter('all')}
-            className={`flex-1 min-w-[110px] py-2.5 px-4 text-xs sm:text-sm font-bold rounded-xl transition-all duration-200 text-center whitespace-nowrap ${
-              selectedUnitFilter === 'all'
-                ? 'bg-primary text-white shadow-md shadow-primary/20'
-                : 'text-gray-600 hover:text-gray-900 bg-transparent'
-            }`}
-          >
-            แสดงทั้งหมด ({prop.unitTypes.length})
-          </button>
           {prop.unitTypes.map((u, i) => (
             <button
               key={i}
