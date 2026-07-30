@@ -82,9 +82,9 @@ export default function PropertyDetail() {
   return (
     <div className="container py-3 sm:py-8">
       {/* Title & Developer Row */}
-      <div className="flex justify-between items-baseline mb-3 gap-2">
+      <div className="flex justify-between items-end mb-3 gap-2">
         <h1 className="text-xl sm:text-3xl font-extrabold text-gray-900 leading-tight m-0">{prop.name}</h1>
-        <span className="text-sm sm:text-lg font-bold text-gray-800 whitespace-nowrap">{prop.developer}</span>
+        <span className="text-sm sm:text-base font-semibold text-gray-500 whitespace-nowrap shrink-0">{prop.developer}</span>
       </div>
 
       {/* Main Tab Bar: 1. ภาพรวมโครงการ | 2. แบบที่ 1 | 3. แบบที่ 2 ... */}
