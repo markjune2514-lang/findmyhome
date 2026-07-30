@@ -84,11 +84,6 @@ export default function PropertyDetail() {
 
   return (
     <div className="container py-3 sm:py-8">
-      {/* Breadcrumb */}
-      <div className="breadcrumb mb-2 text-xs sm:text-sm text-gray-500 overflow-x-auto whitespace-nowrap">
-        <Link to="/search" className="hover:underline">หน้าหลัก</Link> &gt; <Link to="/search" className="hover:underline">ค้นหา</Link> &gt; <span className="text-gray-900 font-semibold">{prop.name}</span>
-      </div>
-
       {/* Title & Developer Row */}
       <div className="flex justify-between items-baseline mb-3 gap-2">
         <h1 className="text-xl sm:text-3xl font-extrabold text-gray-900 leading-tight m-0">{prop.name}</h1>
@@ -127,7 +122,7 @@ export default function PropertyDetail() {
         </div>
       </div>
 
-      {/* Main Image Gallery Carousel with Bottom Left Arrows */}
+      {/* Main Image Gallery Carousel with Side Arrows Overlayed */}
       <div className="gallery-section mb-5">
         <div className="relative w-full bg-neutral-900 rounded-3xl overflow-hidden shadow-md group">
           <div 
@@ -139,32 +134,29 @@ export default function PropertyDetail() {
               backgroundPosition: 'center', 
             }}
           ></div>
-        </div>
 
-        {/* Carousel Prev/Next Buttons (Bottom Left under image as requested) */}
-        {allImages.length > 1 && (
-          <div className="flex justify-between items-center mt-2.5 px-1">
-            <div className="flex items-center gap-2">
+          {allImages.length > 1 && (
+            <>
               <button 
                 onClick={handlePrev} 
-                className="w-9 h-9 bg-blue-50 hover:bg-blue-100 text-blue-700 rounded-full flex items-center justify-center shadow-sm active:scale-95 transition-all"
+                className="absolute left-3 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-900 p-2 sm:p-2.5 rounded-full shadow-lg backdrop-blur-md transition-all active:scale-95 z-10"
                 aria-label="Previous image"
               >
-                <ChevronLeft size={20} />
+                <ChevronLeft size={22} />
               </button>
               <button 
                 onClick={handleNext} 
-                className="w-9 h-9 bg-blue-50 hover:bg-blue-100 text-blue-700 rounded-full flex items-center justify-center shadow-sm active:scale-95 transition-all"
+                className="absolute right-3 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-900 p-2 sm:p-2.5 rounded-full shadow-lg backdrop-blur-md transition-all active:scale-95 z-10"
                 aria-label="Next image"
               >
-                <ChevronRight size={20} />
+                <ChevronRight size={22} />
               </button>
-            </div>
-            <span className="text-xs font-semibold text-gray-400">
-              {currentIndex + 1} / {allImages.length}
-            </span>
-          </div>
-        )}
+              <div className="absolute bottom-3 right-3 bg-black/60 text-white text-xs px-2.5 py-1 rounded-full backdrop-blur-md font-semibold z-10">
+                {currentIndex + 1} / {allImages.length}
+              </div>
+            </>
+          )}
+        </div>
 
         {/* Thumbnails row */}
         {allImages.length > 1 && (
