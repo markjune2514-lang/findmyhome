@@ -59,8 +59,6 @@ export default function PropertyDetail() {
 
   const handleAction = (action) => alert(`กำลังดำเนินการ: ${action}`);
 
-  const [selectedUnitFilter, setSelectedUnitFilter] = useState('all');
-
   const filteredUnitTypes = prop.unitTypes
     ? (selectedUnitFilter === 'all'
         ? prop.unitTypes
