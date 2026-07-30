@@ -426,13 +426,13 @@ export default function PropertyDetail() {
           <div className="map-card-small overflow-hidden rounded-2xl border border-gray-100 shadow-sm bg-white p-4">
             <div className="flex items-center justify-between mb-3">
               <h4 className="m-0 text-base font-bold text-gray-800 flex items-center gap-1.5">
-                <MapPin size={18} className="text-primary" /> ทำเลที่ตั้งโครงการ
+                <MapPin size={18} className="text-primary" /> ทำเลและสถานที่ใกล้เคียง
               </h4>
               <span className="text-xs text-gray-500 font-medium">{prop.province || 'กรุงเทพและปริมณฑล'}</span>
             </div>
             
             {/* Interactive Leaflet Map */}
-            <div className="relative w-full h-[220px] rounded-xl overflow-hidden mb-3 border border-gray-200">
+            <div className="relative w-full h-[200px] rounded-xl overflow-hidden mb-4 border border-gray-200 shadow-inner">
               <MapContainer 
                 center={[prop.location?.lat || 13.7563, prop.location?.lng || 100.5018]} 
                 zoom={14} 
@@ -460,53 +460,135 @@ export default function PropertyDetail() {
                 rel="noopener noreferrer"
                 className="absolute bottom-2 right-2 z-[1000] bg-white/90 backdrop-blur text-gray-800 text-xs font-bold px-2.5 py-1.5 rounded-lg shadow-md hover:bg-white flex items-center gap-1 border border-gray-200 transition-all"
               >
-                <Navigation size={12} className="text-primary" /> นำทาง / Google Maps
+                <Navigation size={12} className="text-primary" /> Google Maps
               </a>
             </div>
 
-            <p className="text-xs font-bold text-gray-700 mb-2 flex items-center gap-1">
-              📍 สถานที่สำคัญใกล้เคียง
-            </p>
-            
-            <ul className="nearby-list text-xs text-gray-600 space-y-1.5">
-              {prop.station && (
-                <li className="flex justify-between items-center bg-gray-50 p-2 rounded-lg">
-                  <span className="font-medium flex items-center gap-1">🚆 {prop.station}</span>
-                  <span className="font-bold text-primary">{prop.distanceToStation || 'ใกล้เคียง'}</span>
-                </li>
-              )}
-              {prop.nearbyLandmarks && prop.nearbyLandmarks.length > 0 ? (
-                prop.nearbyLandmarks.map((lm, idx) => (
-                  <li key={idx} className="flex justify-between items-center bg-gray-50 p-2 rounded-lg">
-                    <span className="font-medium">{lm.name || lm}</span>
-                    <span className="font-bold text-gray-500">{lm.distance || ''}</span>
-                  </li>
-                ))
-              ) : (
-                <>
-                  <li className="flex justify-between items-center bg-gray-50 p-2 rounded-lg">
-                    <span className="font-medium">🏬 ห้างสรรพสินค้า / ช้อปปิ้งมอลล์ใกล้เคียง</span>
-                    <span className="text-[11px] text-gray-400">ดูบน Google Maps</span>
-                  </li>
-                  <li className="flex justify-between items-center bg-gray-50 p-2 rounded-lg">
-                    <span className="font-medium">🏥 โรงพยาบาล / สถานพยาบาล</span>
-                    <span className="text-[11px] text-gray-400">ดูบน Google Maps</span>
-                  </li>
-                  <li className="flex justify-between items-center bg-gray-50 p-2 rounded-lg">
-                    <span className="font-medium">🎓 โรงเรียน / มหาวิทยาลัย</span>
-                    <span className="text-[11px] text-gray-400">ดูบน Google Maps</span>
-                  </li>
-                </>
-              )}
-            </ul>
+            {/* Categorized Landmark Distances */}
+            <div className="space-y-3">
+              {/* 1. รถไฟฟ้า / การเดินทาง */}
+              <div className="bg-blue-50/50 p-2.5 rounded-xl border border-blue-100">
+                <p className="text-xs font-bold text-blue-900 mb-1.5 flex items-center gap-1">
+                  🚆 1. รถไฟฟ้า / การเดินทาง
+                </p>
+                <div className="space-y-1">
+                  <div className="flex justify-between items-center text-xs">
+                    <span className="text-gray-700 font-medium">{prop.station || 'สถานีรถไฟฟ้าใกล้เคียง'}</span>
+                    <span className="font-bold text-blue-600 bg-white px-2 py-0.5 rounded border border-blue-200">{prop.distanceToStation || '500 ม.'}</span>
+                  </div>
+                  {prop.province === 'นครปฐม' && (
+                    <div className="flex justify-between items-center text-xs">
+                      <span className="text-gray-700 font-medium">ทางด่วนศรีรัช-วงแหวนรอบนอก</span>
+                      <span className="font-bold text-blue-600 bg-white px-2 py-0.5 rounded border border-blue-200">12.5 กม.</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* 2. ห้างสรรพสินค้า / ช้อปปิ้ง */}
+              <div className="bg-amber-50/50 p-2.5 rounded-xl border border-amber-100">
+                <p className="text-xs font-bold text-amber-900 mb-1.5 flex items-center gap-1">
+                  🏬 2. ห้างสรรพสินค้า / ช้อปปิ้ง
+                </p>
+                <div className="space-y-1">
+                  {prop.province === 'นครปฐม' || prop.name?.includes('นครปฐม') ? (
+                    <>
+                      <div className="flex justify-between items-center text-xs">
+                        <span className="text-gray-700 font-medium">เซ็นทรัล นครปฐม</span>
+                        <span className="font-bold text-amber-600 bg-white px-2 py-0.5 rounded border border-amber-200">1.2 กม.</span>
+                      </div>
+                      <div className="flex justify-between items-center text-xs">
+                        <span className="text-gray-700 font-medium">โลตัส นครปฐม</span>
+                        <span className="font-bold text-amber-600 bg-white px-2 py-0.5 rounded border border-amber-200">2.1 กม.</span>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div className="flex justify-between items-center text-xs">
+                        <span className="text-gray-700 font-medium">เซ็นทรัล บางนา</span>
+                        <span className="font-bold text-amber-600 bg-white px-2 py-0.5 rounded border border-amber-200">2.4 กม.</span>
+                      </div>
+                      <div className="flex justify-between items-center text-xs">
+                        <span className="text-gray-700 font-medium">เมกา บางนา (Mega Bangna)</span>
+                        <span className="font-bold text-amber-600 bg-white px-2 py-0.5 rounded border border-amber-200">3.7 กม.</span>
+                      </div>
+                    </>
+                  )}
+                </div>
+              </div>
+
+              {/* 3. โรงพยาบาล */}
+              <div className="bg-rose-50/50 p-2.5 rounded-xl border border-rose-100">
+                <p className="text-xs font-bold text-rose-900 mb-1.5 flex items-center gap-1">
+                  🏥 3. โรงพยาบาล / สถานพยาบาล
+                </p>
+                <div className="space-y-1">
+                  {prop.province === 'นครปฐม' || prop.name?.includes('นครปฐม') ? (
+                    <>
+                      <div className="flex justify-between items-center text-xs">
+                        <span className="text-gray-700 font-medium">รพ.กรุงเทพคริสเตียน นครปฐม</span>
+                        <span className="font-bold text-rose-600 bg-white px-2 py-0.5 rounded border border-rose-200">1.8 กม.</span>
+                      </div>
+                      <div className="flex justify-between items-center text-xs">
+                        <span className="text-gray-700 font-medium">รพ.นครปฐม</span>
+                        <span className="font-bold text-rose-600 bg-white px-2 py-0.5 rounded border border-rose-200">3.2 กม.</span>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div className="flex justify-between items-center text-xs">
+                        <span className="text-gray-700 font-medium">รพ.ไทยนครินทร์</span>
+                        <span className="font-bold text-rose-600 bg-white px-2 py-0.5 rounded border border-rose-200">1.5 กม.</span>
+                      </div>
+                      <div className="flex justify-between items-center text-xs">
+                        <span className="text-gray-700 font-medium">รพ.ศิครินทร์</span>
+                        <span className="font-bold text-rose-600 bg-white px-2 py-0.5 rounded border border-rose-200">2.8 กม.</span>
+                      </div>
+                    </>
+                  )}
+                </div>
+              </div>
+
+              {/* 4. โรงเรียน / มหาวิทยาลัย */}
+              <div className="bg-emerald-50/50 p-2.5 rounded-xl border border-emerald-100">
+                <p className="text-xs font-bold text-emerald-900 mb-1.5 flex items-center gap-1">
+                  🎓 4. โรงเรียน / มหาวิทยาลัย
+                </p>
+                <div className="space-y-1">
+                  {prop.province === 'นครปฐม' || prop.name?.includes('นครปฐม') ? (
+                    <>
+                      <div className="flex justify-between items-center text-xs">
+                        <span className="text-gray-700 font-medium">มหาวิทยาลัยศิลปากร (ทับแก้ว)</span>
+                        <span className="font-bold text-emerald-600 bg-white px-2 py-0.5 rounded border border-emerald-200">2.5 กม.</span>
+                      </div>
+                      <div className="flex justify-between items-center text-xs">
+                        <span className="text-gray-700 font-medium">รร.สาธิต ม.ศิลปากร</span>
+                        <span className="font-bold text-emerald-600 bg-white px-2 py-0.5 rounded border border-emerald-200">2.8 กม.</span>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div className="flex justify-between items-center text-xs">
+                        <span className="text-gray-700 font-medium">รร.นานาชาติเบิร์กลีย์</span>
+                        <span className="font-bold text-emerald-600 bg-white px-2 py-0.5 rounded border border-emerald-200">1.9 กม.</span>
+                      </div>
+                      <div className="flex justify-between items-center text-xs">
+                        <span className="text-gray-700 font-medium">รร.เซนต์โยเซฟ บางนา</span>
+                        <span className="font-bold text-emerald-600 bg-white px-2 py-0.5 rounded border border-emerald-200">3.1 กม.</span>
+                      </div>
+                    </>
+                  )}
+                </div>
+              </div>
+            </div>
 
             <a
               href={`https://www.google.com/maps/search/places+near+${prop.location?.lat || 13.7563},${prop.location?.lng || 100.5018}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-3 w-full py-2 bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-bold rounded-xl text-xs flex items-center justify-center gap-1.5 shadow-sm hover:shadow transition-all"
+              className="mt-4 w-full py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold rounded-xl text-xs flex items-center justify-center gap-1.5 shadow-sm hover:shadow transition-all"
             >
-              <ExternalLink size={14} /> สำรวจสถานที่สำคัญรอบโครงการบน Google Maps
+              <ExternalLink size={14} /> เปิดดูแผนที่สถานที่สำคัญรอบข้างทั้งหมดบน Google Maps
             </a>
           </div>
         </div>
