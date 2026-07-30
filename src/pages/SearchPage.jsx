@@ -547,9 +547,36 @@ export default function SearchPage() {
             ล้างตัวกรองทั้งหมด
           </button>
           
+          {/* Custom Draw Button */}
+          <div className="mt-4 pt-4 border-t border-gray-200">
+            <button
+              type="button"
+              onClick={() => {
+                const mapEl = document.querySelector('.map-area');
+                if (mapEl) {
+                  mapEl.scrollIntoView({ behavior: 'smooth' });
+                }
+              }}
+              className="w-full py-2.5 px-3 bg-gradient-to-r from-amber-500 to-primary text-white font-bold rounded-xl shadow-sm hover:shadow-md transition-all flex items-center justify-center gap-2 text-xs sm:text-sm"
+            >
+              ✏️ วาดพื้นที่ค้นหาด้วยตนเองบนแผนที่
+            </button>
+            <p className="text-[11px] text-gray-400 text-center mt-1">
+              * ใช้เครื่องมือวาดวงกลมหรือหลายเหลี่ยมขวาบนแผนที่ เพื่อกรองโครงการในพื้นที่ที่ต้องการ
+            </p>
+          </div>
+
           {polygonFilter && (
             <div className="mt-4 p-3 bg-secondary rounded text-sm text-primary text-center font-bold flex flex-col gap-1">
-              <span>📍 ค้นหาเฉพาะในพื้นที่นี้</span>
+              <div className="flex items-center justify-between">
+                <span>📍 ค้นหาเฉพาะในพื้นที่วาดนี้</span>
+                <button 
+                  onClick={() => handlePolygonDrawn(null, null)}
+                  className="text-xs text-red-500 hover:underline font-normal"
+                >
+                  ล้างขอบเขต
+                </button>
+              </div>
               <span className="text-xs font-normal">ขนาดพื้นที่: {polygonFilter.areaSqKm.toFixed(2)} ตร.กม.</span>
             </div>
           )}
