@@ -19,14 +19,33 @@ export default function PropertyDetail() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedUnitFilter, setSelectedUnitFilter] = useState('all');
 
+  // Selected Unit Type Object
+  const selectedUnit = (selectedUnitFilter !== 'all' && prop?.unitTypes && prop.unitTypes[parseInt(selectedUnitFilter)])
+    ? prop.unitTypes[parseInt(selectedUnitFilter)]
+    : null;
+
+  // Filter Images: If a unit type is selected, show its planImages and roomImages first!
   const mainImages = prop?.image ? prop.image.split(',') : [];
+  const selectedUnitImages = selectedUnit
+    ? [...(selectedUnit.planImages || []), ...(selectedUnit.roomImages || [])].filter(Boolean)
+    : [];
   const allUnitImages = prop?.unitTypes ? prop.unitTypes.flatMap(u => [...(u.planImages || []), ...(u.roomImages || [])]) : [];
-  const allImages = [...new Set([...mainImages, ...allUnitImages])].filter(Boolean);
+
+  const allImages = selectedUnit && selectedUnitImages.length > 0
+    ? [...new Set([...selectedUnitImages, ...mainImages])].filter(Boolean)
+    : [...new Set([...mainImages, ...allUnitImages])].filter(Boolean);
+
   const selectedImage = allImages.length > 0 ? allImages[currentIndex] : '';
+
+  // Dynamic Price and Specs based on selected unit filter
+  const displayPrice = selectedUnit?.price ? `${selectedUnit.price}` : prop?.price;
+  const displayPriceTo = selectedUnit ? '' : prop?.priceTo;
+  const displaySize = selectedUnit?.size || prop?.size;
+  const displayBedrooms = selectedUnit?.bedrooms || selectedUnit?.roomType || prop?.bedrooms;
 
   React.useEffect(() => {
     setCurrentIndex(0);
-  }, [prop?.id]);
+  }, [selectedUnitFilter, prop?.id]);
 
   if (loading) {
     return (
@@ -110,13 +129,13 @@ export default function PropertyDetail() {
       {/* Price & Specs Summary Row */}
       <div className="flex justify-between items-end mb-4">
         <div>
-          <span className="text-xs text-gray-500 block">ราคาเริ่มต้น</span>
+          <span className="text-xs text-gray-500 block">{selectedUnit ? `ราคาสำหรับ ${selectedUnit.name || 'แบบห้องนี้'}` : 'ราคาเริ่มต้น'}</span>
           <div className="text-lg sm:text-2xl font-black text-primary leading-none mt-0.5">
-            {prop.price} {prop.priceTo ? `- ${prop.priceTo}` : ''} <span className="text-sm font-bold">ล้านบาท</span>
+            {displayPrice} {displayPriceTo ? `- ${displayPriceTo}` : ''} <span className="text-sm font-bold">ล้านบาท</span>
           </div>
         </div>
         <div className="text-xs sm:text-sm font-semibold text-gray-600 text-right">
-          {prop.bedrooms} Bed • {prop.size} {prop.size && !prop.size.includes('ตร') ? 'ตร.ม.' : ''}
+          {displayBedrooms && `${displayBedrooms} Bed • `}{displaySize} {displaySize && !displaySize.includes('ตร') ? 'ตร.ม.' : ''}
         </div>
       </div>
 
