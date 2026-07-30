@@ -12,6 +12,21 @@ export default function PropertyDetail() {
   const { addToCompare } = useCompare();
   
   const [activeTab, setActiveTab] = useState('รายละเอียด');
+  
+  const mainImages = prop.image ? prop.image.split(',') : [];
+  const allUnitImages = prop.unitTypes ? prop.unitTypes.flatMap(u => [...(u.planImages || []), ...(u.roomImages || [])]) : [];
+  const uniqueMainImages = [...new Set(mainImages)];
+  const uniqueUnitImages = [...new Set(allUnitImages)];
+  
+  const imagesToShow = activeTab === 'แบบบ้าน/ห้อง' ? uniqueUnitImages : uniqueMainImages;
+  const defaultImage = imagesToShow.length > 0 ? imagesToShow[0] : (uniqueMainImages[0] || '');
+
+  const [selectedImage, setSelectedImage] = useState(defaultImage);
+
+  React.useEffect(() => {
+    setSelectedImage(defaultImage);
+  }, [activeTab, prop.id]);
+
   const handleAction = (action) => alert(`กำลังดำเนินการ: ${action}`);
 
   return (
@@ -37,48 +52,21 @@ export default function PropertyDetail() {
       </div>
 
       <div className="gallery-section mb-8">
-        {(() => {
-          const mainImages = prop.image ? prop.image.split(',') : [];
-          const firstImage = mainImages[0] || '';
-          
-          const allGalleryImages = prop.unitTypes ? prop.unitTypes.flatMap(u => u.roomImages || []) : [];
-          // Deduplicate images just in case
-          const otherImages = [...mainImages.slice(1), ...allGalleryImages];
-          const uniqueImages = [...new Set(otherImages)];
-          
-          const [selectedImage, setSelectedImage] = React.useState(firstImage);
-          
-          // Re-sync if prop changes
-          React.useEffect(() => {
-            setSelectedImage(firstImage);
-          }, [firstImage]);
-
-          return (
-            <>
-              <div className="main-image transition-all duration-300" style={{ backgroundImage: `url(${selectedImage})`, height: '400px', backgroundSize: 'contain', backgroundRepeat: 'no-repeat', backgroundPosition: 'center', backgroundColor: '#f8f9fa', borderRadius: '12px', border: '1px solid #eee' }}></div>
-              
-              {(uniqueImages.length > 0 || mainImages.length > 1) && (
-                <div className="thumbnail-list flex gap-3 mt-3 overflow-x-auto pb-2 snap-x">
-                  <img 
-                    src={firstImage} 
-                    alt="cover" 
-                    onClick={() => setSelectedImage(firstImage)}
-                    className={`w-32 h-24 object-cover rounded-md cursor-pointer border-2 shrink-0 snap-start bg-neutral-1 transition-colors ${selectedImage === firstImage ? 'border-primary' : 'border-transparent hover:border-primary/50'}`}
-                  />
-                  {uniqueImages.map((img, idx) => (
-                    <img 
-                      key={idx} 
-                      src={img} 
-                      alt={`thumb-${idx}`} 
-                      onClick={() => setSelectedImage(img)}
-                      className={`w-32 h-24 object-cover rounded-md cursor-pointer border-2 shrink-0 snap-start bg-neutral-1 transition-colors ${selectedImage === img ? 'border-primary' : 'border-transparent hover:border-primary/50'}`} 
-                    />
-                  ))}
-                </div>
-              )}
-            </>
-          );
-        })()}
+        <div className="main-image transition-all duration-300" style={{ backgroundImage: `url(${selectedImage})`, height: '400px', backgroundSize: 'contain', backgroundRepeat: 'no-repeat', backgroundPosition: 'center', backgroundColor: '#f8f9fa', borderRadius: '12px', border: '1px solid #eee' }}></div>
+        
+        {imagesToShow.length > 1 && (
+          <div className="thumbnail-list flex gap-3 mt-3 overflow-x-auto pb-2 snap-x">
+            {imagesToShow.map((img, idx) => (
+              <img 
+                key={idx} 
+                src={img} 
+                alt={`thumb-${idx}`} 
+                onClick={() => setSelectedImage(img)}
+                className={`w-32 h-24 object-cover rounded-md cursor-pointer border-2 shrink-0 snap-start bg-neutral-1 transition-colors ${selectedImage === img ? 'border-primary' : 'border-transparent hover:border-primary/50'}`} 
+              />
+            ))}
+          </div>
+        )}
       </div>
 
       <div className="flex gap-4 mb-8">
@@ -138,7 +126,12 @@ export default function PropertyDetail() {
                               <span className="text-xs font-semibold text-gray-500 mb-1 block">แปลนห้อง (Top View)</span>
                               <div className="flex gap-2 overflow-x-auto pb-2 snap-x">
                                 {unit.planImages.map((img, i) => (
-                                  <div key={i} className="min-w-[120px] w-[120px] h-[90px] rounded-md bg-neutral-1 bg-cover bg-center border shrink-0 snap-start" style={{ backgroundImage: `url(${img})` }}></div>
+                                  <div 
+                                    key={i} 
+                                    onClick={() => { setSelectedImage(img); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                                    className="min-w-[120px] w-[120px] h-[90px] rounded-md bg-neutral-1 bg-cover bg-center border shrink-0 snap-start cursor-pointer hover:border-primary transition-colors" 
+                                    style={{ backgroundImage: `url(${img})` }}
+                                  ></div>
                                 ))}
                               </div>
                             </div>
@@ -148,7 +141,12 @@ export default function PropertyDetail() {
                               <span className="text-xs font-semibold text-gray-500 mb-1 block">ภาพบรรยากาศห้อง</span>
                               <div className="flex gap-2 overflow-x-auto pb-2 snap-x">
                                 {unit.roomImages.map((img, i) => (
-                                  <div key={i} className="min-w-[120px] w-[120px] h-[90px] rounded-md bg-neutral-1 bg-cover bg-center border shrink-0 snap-start" style={{ backgroundImage: `url(${img})` }}></div>
+                                  <div 
+                                    key={i} 
+                                    onClick={() => { setSelectedImage(img); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                                    className="min-w-[120px] w-[120px] h-[90px] rounded-md bg-neutral-1 bg-cover bg-center border shrink-0 snap-start cursor-pointer hover:border-primary transition-colors" 
+                                    style={{ backgroundImage: `url(${img})` }}
+                                  ></div>
                                 ))}
                               </div>
                             </div>
