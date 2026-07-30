@@ -82,7 +82,7 @@ export default function PropertyDetail() {
   return (
     <div className="container pt-6 pb-3 sm:py-8">
       {/* Title & Developer Row */}
-      <div className="flex justify-between gap-2 mb-3" style={{alignItems: 'flex-end'}}>
+      <div className="flex justify-between gap-2 mb-5" style={{alignItems: 'flex-end'}}>
         <h1 style={{fontSize: 'clamp(1.1rem, 5vw, 1.875rem)', fontWeight: 900, color: '#111', lineHeight: 1.2, margin: 0}}>{prop.name}</h1>
         <span style={{fontSize: '0.8rem', fontWeight: 600, color: '#6b7280', whiteSpace: 'nowrap', flexShrink: 0, lineHeight: 1, paddingBottom: '2px'}}>{prop.developer}</span>
       </div>
