@@ -42,7 +42,7 @@ export default function AboutPage() {
         </div>
       </div>
 
-      <div className="contact-section flex gap-8">
+      <div className="contact-section flex flex-col md:flex-row gap-6 md:gap-8">
         <div className="contact-info flex-1">
           <h3 className="mb-6">ติดต่อเรา</h3>
           

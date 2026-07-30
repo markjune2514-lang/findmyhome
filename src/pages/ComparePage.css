@@ -4,13 +4,27 @@
   border-radius: var(--radius-xl);
   box-shadow: var(--shadow-soft);
   overflow-x: auto;
-  min-height: 600px;
+  min-height: 500px;
+  -webkit-overflow-scrolling: touch;
+}
+
+@media (max-width: 640px) {
+  .compare-grid {
+    border-radius: var(--radius-lg);
+    min-height: 400px;
+  }
 }
 
 .compare-column {
   flex: 1;
-  min-width: 250px;
+  min-width: 220px;
   border-right: 1px solid var(--neutral-2);
+}
+
+@media (min-width: 640px) {
+  .compare-column {
+    min-width: 250px;
+  }
 }
 
 .compare-column:last-child {
@@ -18,20 +32,43 @@
 }
 
 .headers-col {
-  min-width: 200px;
+  min-width: 150px;
   background-color: var(--neutral-1);
+  position: sticky;
+  left: 0;
+  z-index: 5;
+}
+
+@media (min-width: 640px) {
+  .headers-col {
+    min-width: 200px;
+  }
 }
 
 .compare-tabs {
   display: flex;
   flex-direction: column;
-  padding: 1rem;
+  padding: 0.5rem;
+}
+
+@media (min-width: 640px) {
+  .compare-tabs {
+    padding: 1rem;
+  }
 }
 
 .compare-tabs .tab {
   text-align: left;
-  padding: 1rem;
+  padding: 0.75rem;
   border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+}
+
+@media (min-width: 640px) {
+  .compare-tabs .tab {
+    padding: 1rem;
+    font-size: 1rem;
+  }
 }
 
 .compare-tabs .tab.active {
@@ -50,8 +87,14 @@
 
 .prop-card-compare img {
   width: 100%;
-  height: 150px;
+  height: 120px;
   object-fit: cover;
+}
+
+@media (min-width: 640px) {
+  .prop-card-compare img {
+    height: 150px;
+  }
 }
 
 .absolute-badge-top {
@@ -86,15 +129,34 @@
 }
 
 .metrics-list {
-  padding: 1rem;
+  padding: 0.75rem;
+}
+
+@media (min-width: 640px) {
+  .metrics-list {
+    padding: 1rem;
+  }
 }
 
 .metric-row {
-  padding: 1rem 0;
+  padding: 0.75rem 0;
   border-bottom: 1px dashed var(--neutral-2);
-  height: 60px;
+  height: 55px;
   display: flex;
   align-items: center;
+  font-size: 0.85rem;
+}
+
+@media (min-width: 640px) {
+  .metric-row {
+    padding: 1rem 0;
+    height: 60px;
+    font-size: 0.9rem;
+  }
+}
+
+.headers-col .metric-row {
+  font-weight: 600;
 }
 
 .headers-col .metric-row {
