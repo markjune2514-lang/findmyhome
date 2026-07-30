@@ -53,38 +53,38 @@ export default function Layout() {
 
         {/* Mobile Navigation Drawer */}
         {mobileMenuOpen && (
-          <div className="md:hidden bg-white border-b border-gray-200 shadow-lg px-4 py-3 flex flex-col gap-3 transition-all animate-fadeIn">
+          <div className="mobile-menu-drawer">
             <Link 
               to="/search" 
-              className={`py-2 px-3 rounded-md font-medium text-sm ${location.pathname === '/search' ? 'bg-primary/10 text-primary font-bold' : 'text-gray-700'}`}
+              className={`mobile-menu-link ${location.pathname === '/search' ? 'active' : ''}`}
               onClick={() => setMobileMenuOpen(false)}
             >
               🔍 ค้นหาโครงการ
             </Link>
             <Link 
               to="/projects" 
-              className={`py-2 px-3 rounded-md font-medium text-sm ${location.pathname === '/projects' ? 'bg-primary/10 text-primary font-bold' : 'text-gray-700'}`}
+              className={`mobile-menu-link ${location.pathname === '/projects' ? 'active' : ''}`}
               onClick={() => setMobileMenuOpen(false)}
             >
               🏢 รวมโครงการ
             </Link>
             <Link 
               to="/compare" 
-              className={`py-2 px-3 rounded-md font-medium text-sm ${location.pathname === '/compare' ? 'bg-primary/10 text-primary font-bold' : 'text-gray-700'}`}
+              className={`mobile-menu-link ${location.pathname === '/compare' ? 'active' : ''}`}
               onClick={() => setMobileMenuOpen(false)}
             >
               ⚖️ เปรียบเทียบโครงการ
             </Link>
             <Link 
               to="/blog" 
-              className={`py-2 px-3 rounded-md font-medium text-sm ${location.pathname === '/blog' ? 'bg-primary/10 text-primary font-bold' : 'text-gray-700'}`}
+              className={`mobile-menu-link ${location.pathname === '/blog' ? 'active' : ''}`}
               onClick={() => setMobileMenuOpen(false)}
             >
               📰 บทความน่ารู้
             </Link>
             <Link 
               to="/about" 
-              className={`py-2 px-3 rounded-md font-medium text-sm ${location.pathname === '/about' ? 'bg-primary/10 text-primary font-bold' : 'text-gray-700'}`}
+              className={`mobile-menu-link ${location.pathname === '/about' ? 'active' : ''}`}
               onClick={() => setMobileMenuOpen(false)}
             >
               ℹ️ เกี่ยวกับเรา
