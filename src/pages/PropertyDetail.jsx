@@ -68,102 +68,117 @@ export default function PropertyDetail() {
   return (
     <div className="container py-3 sm:py-8">
       {/* Breadcrumb */}
-      <div className="breadcrumb mb-3 text-xs sm:text-sm text-light overflow-x-auto whitespace-nowrap">
-        <Link to="/search">หน้าหลัก</Link> &gt; <Link to="/search">ค้นหา</Link> &gt; <span className="text-main">{prop.name}</span>
+      <div className="breadcrumb mb-2 text-xs sm:text-sm text-gray-500 overflow-x-auto whitespace-nowrap">
+        <Link to="/search" className="hover:underline">หน้าหลัก</Link> &gt; <Link to="/search" className="hover:underline">ค้นหา</Link> &gt; <span className="text-gray-900 font-semibold">{prop.name}</span>
       </div>
 
-      {/* Header Info Card */}
-      <div className="bg-white p-4 sm:p-6 rounded-2xl shadow-sm border border-gray-100 mb-4 sm:mb-6">
-        <div className="flex flex-col sm:flex-row justify-between items-start gap-3 sm:gap-4">
-          <div className="flex-1">
-            <h1 className="text-lg sm:text-2xl font-bold text-gray-900 leading-tight">{prop.name}</h1>
-            <p className="text-gray-500 text-xs sm:text-sm mt-1">{prop.developer}</p>
-            
-            <div className="flex flex-wrap items-center gap-1.5 sm:gap-3 mt-3">
-              <span className="badge text-xs">{prop.projectType}</span>
-              <span className="rating-info text-xs flex items-center gap-1 font-semibold text-gray-700 bg-amber-50 px-2.5 py-0.5 rounded-full border border-amber-200">
-                <Star size={14} fill="gold" color="gold" /> {prop.rating} ({prop.reviews || 12})
-              </span>
-              {prop.unitTypes && prop.unitTypes.length > 0 && (
-                <span className="px-2.5 py-0.5 bg-primary/10 text-primary font-semibold rounded-full text-xs border border-primary/20">
-                  🏡 {prop.unitTypes.length} แบบบ้าน/ห้อง
-                </span>
-              )}
-            </div>
-          </div>
+      {/* Title & Developer Row */}
+      <div className="flex justify-between items-baseline mb-3 gap-2">
+        <h1 className="text-xl sm:text-3xl font-extrabold text-gray-900 leading-tight m-0">{prop.name}</h1>
+        <span className="text-sm sm:text-lg font-bold text-gray-800 whitespace-nowrap">{prop.developer}</span>
+      </div>
 
-          <div className="w-full sm:w-auto pt-3 sm:pt-0 border-t border-gray-100 sm:border-0 flex sm:flex-col justify-between items-center sm:items-end">
-            <div>
-              <span className="text-xs text-gray-400 block sm:text-right">ราคาเริ่มต้น</span>
-              <div className="text-xl sm:text-2xl font-black text-primary leading-none mt-0.5">
-                {prop.price} {prop.priceTo ? `- ${prop.priceTo}` : ''} <span className="text-sm font-semibold">ล้านบาท</span>
-              </div>
-            </div>
-            <p className="text-xs text-gray-500 mt-1 sm:text-right font-medium">
-              {prop.bedrooms} Bed • {prop.size} {prop.size && !prop.size.includes('ตร') ? 'ตร.ม.' : ''}
-            </p>
+      {/* Unit Type Selection Pills (Positioned right under title as requested) */}
+      {prop.unitTypes && prop.unitTypes.length > 0 && (
+        <div className="flex gap-2 overflow-x-auto pb-2 mb-3 snap-x scrollbar-none">
+          <button
+            onClick={() => setSelectedUnitFilter('all')}
+            className={`px-5 py-1.5 text-xs sm:text-sm font-semibold rounded-full border-2 transition-all whitespace-nowrap shrink-0 ${
+              selectedUnitFilter === 'all'
+                ? 'bg-gray-900 text-white border-gray-900 shadow-sm'
+                : 'bg-white text-gray-800 border-gray-900 hover:bg-gray-50'
+            }`}
+          >
+            แสดงทั้งหมด ({prop.unitTypes.length})
+          </button>
+          {prop.unitTypes.map((u, i) => (
+            <button
+              key={i}
+              onClick={() => setSelectedUnitFilter(i.toString())}
+              className={`px-5 py-1.5 text-xs sm:text-sm font-semibold rounded-full border-2 transition-all whitespace-nowrap shrink-0 ${
+                selectedUnitFilter === i.toString()
+                  ? 'bg-gray-900 text-white border-gray-900 shadow-sm'
+                  : 'bg-white text-gray-800 border-gray-900 hover:bg-gray-50'
+              }`}
+            >
+              {u.name || `แบบที่ ${i + 1}`}
+            </button>
+          ))}
+        </div>
+      )}
+
+      {/* Price & Specs Summary Row */}
+      <div className="flex justify-between items-end mb-4">
+        <div>
+          <span className="text-xs text-gray-500 block">ราคาเริ่มต้น</span>
+          <div className="text-lg sm:text-2xl font-black text-primary leading-none mt-0.5">
+            {prop.price} {prop.priceTo ? `- ${prop.priceTo}` : ''} <span className="text-sm font-bold">ล้านบาท</span>
           </div>
+        </div>
+        <div className="text-xs sm:text-sm font-semibold text-gray-600 text-right">
+          {prop.bedrooms} Bed • {prop.size} {prop.size && !prop.size.includes('ตร') ? 'ตร.ม.' : ''}
         </div>
       </div>
 
-      {/* Main Image Gallery Carousel */}
-      <div className="gallery-section mb-6 sm:mb-8">
-        <div className="relative w-full bg-neutral-900 rounded-2xl overflow-hidden shadow-sm group">
+      {/* Main Image Gallery Carousel with Bottom Left Arrows */}
+      <div className="gallery-section mb-5">
+        <div className="relative w-full bg-neutral-900 rounded-3xl overflow-hidden shadow-md group">
           <div 
             className="main-image transition-all duration-300 w-full" 
             style={{ 
               backgroundImage: `url(${selectedImage})`, 
-              height: '280px',
-              backgroundSize: 'contain', 
-              backgroundRepeat: 'no-repeat', 
+              height: '320px',
+              backgroundSize: 'cover', 
               backgroundPosition: 'center', 
-              backgroundColor: '#18181b'
             }}
           ></div>
-          
-          {allImages.length > 1 && (
-            <>
+        </div>
+
+        {/* Carousel Prev/Next Buttons (Bottom Left under image as requested) */}
+        {allImages.length > 1 && (
+          <div className="flex justify-between items-center mt-2.5 px-1">
+            <div className="flex items-center gap-2">
               <button 
                 onClick={handlePrev} 
-                className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 p-2 sm:p-2.5 rounded-full shadow-md backdrop-blur-sm transition-all active:scale-95"
+                className="w-9 h-9 bg-blue-50 hover:bg-blue-100 text-blue-700 rounded-full flex items-center justify-center shadow-sm active:scale-95 transition-all"
                 aria-label="Previous image"
               >
                 <ChevronLeft size={20} />
               </button>
               <button 
                 onClick={handleNext} 
-                className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 p-2 sm:p-2.5 rounded-full shadow-md backdrop-blur-sm transition-all active:scale-95"
+                className="w-9 h-9 bg-blue-50 hover:bg-blue-100 text-blue-700 rounded-full flex items-center justify-center shadow-sm active:scale-95 transition-all"
                 aria-label="Next image"
               >
                 <ChevronRight size={20} />
               </button>
-              <div className="absolute bottom-3 right-3 bg-black/60 text-white text-xs px-2.5 py-1 rounded-full backdrop-blur-md">
-                {currentIndex + 1} / {allImages.length}
-              </div>
-            </>
-          )}
-        </div>
-        
-        {/* Thumbnails list */}
+            </div>
+            <span className="text-xs font-semibold text-gray-400">
+              {currentIndex + 1} / {allImages.length}
+            </span>
+          </div>
+        )}
+
+        {/* Thumbnails row */}
         {allImages.length > 1 && (
-          <div className="thumbnail-list flex gap-2 mt-2.5 overflow-x-auto pb-2 snap-x scrollbar-none">
+          <div className="thumbnail-list flex gap-3 mt-3 overflow-x-auto pb-2 snap-x scrollbar-none">
             {allImages.map((img, idx) => (
               <img 
                 key={idx} 
                 src={img} 
                 alt={`thumb-${idx}`} 
                 onClick={() => setCurrentIndex(idx)}
-                className={`w-20 h-14 sm:w-28 sm:h-20 object-cover rounded-lg cursor-pointer border-2 shrink-0 snap-start transition-all ${currentIndex === idx ? 'border-primary shadow-sm scale-95' : 'border-transparent opacity-75 hover:opacity-100'}`} 
+                className={`w-24 h-16 sm:w-32 sm:h-20 object-cover rounded-xl cursor-pointer border-2 shrink-0 snap-start transition-all ${currentIndex === idx ? 'border-primary shadow-md scale-95' : 'border-transparent opacity-75 hover:opacity-100'}`} 
               />
             ))}
           </div>
         )}
       </div>
 
-      {/* Action Buttons */}
-      <div className="flex flex-col gap-2 mb-6 sm:mb-8">
+      {/* Primary Action Button */}
+      <div className="flex flex-col gap-2.5 mb-6 sm:mb-8">
         <button 
-          className="btn btn-primary w-full py-3 text-sm sm:text-base font-bold shadow-md rounded-xl flex items-center justify-center gap-2"
+          className="btn btn-primary w-full py-3.5 text-sm sm:text-base font-bold shadow-md rounded-2xl flex items-center justify-center gap-2"
           onClick={() => handleAction('ฟอร์มติดต่อโครงการ')}
         >
           📞 ติดต่อโครงการ / นัดชมสถานที่จริง
