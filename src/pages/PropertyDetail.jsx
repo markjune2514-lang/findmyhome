@@ -10,24 +10,44 @@ import './PropertyDetail.css';
 
 export default function PropertyDetail() {
   const { id } = useParams();
-  const { properties } = useProperties();
-  const prop = properties.find(p => p.id === id) || properties[0];
+  const { properties, loading } = useProperties();
   const { addToCompare } = useCompare();
+
+  const prop = properties.find(p => p.id === id) || (properties.length > 0 ? properties[0] : null);
   
   const [activeTab, setActiveTab] = useState('รายละเอียด');
-  
-  const mainImages = prop.image ? prop.image.split(',') : [];
-  const allUnitImages = prop.unitTypes ? prop.unitTypes.flatMap(u => [...(u.planImages || []), ...(u.roomImages || [])]) : [];
-  
-  // Combine all images into a single gallery
-  const allImages = [...new Set([...mainImages, ...allUnitImages])].filter(Boolean);
-  
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [selectedUnitFilter, setSelectedUnitFilter] = useState('all');
+
+  const mainImages = prop?.image ? prop.image.split(',') : [];
+  const allUnitImages = prop?.unitTypes ? prop.unitTypes.flatMap(u => [...(u.planImages || []), ...(u.roomImages || [])]) : [];
+  const allImages = [...new Set([...mainImages, ...allUnitImages])].filter(Boolean);
   const selectedImage = allImages.length > 0 ? allImages[currentIndex] : '';
 
   React.useEffect(() => {
     setCurrentIndex(0);
-  }, [prop.id]);
+  }, [prop?.id]);
+
+  if (loading) {
+    return (
+      <div className="min-h-[70vh] flex flex-col items-center justify-center p-8 text-center bg-background">
+        <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin mb-4"></div>
+        <p className="text-gray-600 font-bold">กำลังโหลดข้อมูลโครงการ...</p>
+      </div>
+    );
+  }
+
+  if (!prop) {
+    return (
+      <div className="min-h-[70vh] flex flex-col items-center justify-center p-8 text-center bg-background">
+        <h2 className="text-2xl font-bold mb-2 text-gray-800">ไม่พบข้อมูลโครงการนี้</h2>
+        <p className="text-gray-500 mb-6 text-sm">โครงการที่คุณค้นหาอาจถูกลบ หรืออาจไม่มีข้อมูลอยู่ในขณะนี้</p>
+        <Link to="/search" className="px-6 py-2.5 bg-primary text-white font-bold rounded-xl shadow-md hover:bg-primary-dark transition-all">
+          🔍 ไปยังหน้าค้นหาโครงการ
+        </Link>
+      </div>
+    );
+  }
 
   const handlePrev = () => {
     setCurrentIndex(prev => (prev === 0 ? allImages.length - 1 : prev - 1));
