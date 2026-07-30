@@ -91,7 +91,7 @@ export default function ComparePage() {
                   <div className="prop-card-compare" style={{ height: '290px' }}>
                     <span className="badge absolute-badge-top">{index + 1}</span>
                     <button className="remove-btn" onClick={() => removeFromCompare(prop.id)}><X size={14} /></button>
-                    <img src={prop.image} alt={prop.name} />
+                    <img src={prop.image ? prop.image.split(',')[0] : ''} alt={prop.name} />
                     <div className="p-4">
                       <h4>{prop.name}</h4>
                       <p className="text-xs text-light mb-2">{prop.developer}</p>

@@ -37,22 +37,47 @@ export default function PropertyDetail() {
       </div>
 
       <div className="gallery-section mb-8">
-        <div className="main-image" style={{ backgroundImage: `url(${prop.image})`, height: '400px', backgroundSize: 'cover', backgroundPosition: 'center', borderRadius: '12px' }}></div>
         {(() => {
+          const mainImages = prop.image ? prop.image.split(',') : [];
+          const firstImage = mainImages[0] || '';
+          
           const allGalleryImages = prop.unitTypes ? prop.unitTypes.flatMap(u => u.roomImages || []) : [];
           // Deduplicate images just in case
-          const uniqueImages = [...new Set(allGalleryImages)];
+          const otherImages = [...mainImages.slice(1), ...allGalleryImages];
+          const uniqueImages = [...new Set(otherImages)];
           
-          if (uniqueImages.length > 0) {
-            return (
-              <div className="thumbnail-list flex gap-3 mt-3 overflow-x-auto pb-2 snap-x">
-                {uniqueImages.map((img, idx) => (
-                  <img key={idx} src={img} alt={`thumb-${idx}`} className="w-32 h-24 object-cover rounded-md cursor-pointer border border-transparent hover:border-primary shrink-0 snap-start bg-neutral-1" />
-                ))}
-              </div>
-            );
-          }
-          return null;
+          const [selectedImage, setSelectedImage] = React.useState(firstImage);
+          
+          // Re-sync if prop changes
+          React.useEffect(() => {
+            setSelectedImage(firstImage);
+          }, [firstImage]);
+
+          return (
+            <>
+              <div className="main-image transition-all duration-300" style={{ backgroundImage: `url(${selectedImage})`, height: '400px', backgroundSize: 'cover', backgroundPosition: 'center', borderRadius: '12px' }}></div>
+              
+              {(uniqueImages.length > 0 || mainImages.length > 1) && (
+                <div className="thumbnail-list flex gap-3 mt-3 overflow-x-auto pb-2 snap-x">
+                  <img 
+                    src={firstImage} 
+                    alt="cover" 
+                    onClick={() => setSelectedImage(firstImage)}
+                    className={`w-32 h-24 object-cover rounded-md cursor-pointer border-2 shrink-0 snap-start bg-neutral-1 transition-colors ${selectedImage === firstImage ? 'border-primary' : 'border-transparent hover:border-primary/50'}`}
+                  />
+                  {uniqueImages.map((img, idx) => (
+                    <img 
+                      key={idx} 
+                      src={img} 
+                      alt={`thumb-${idx}`} 
+                      onClick={() => setSelectedImage(img)}
+                      className={`w-32 h-24 object-cover rounded-md cursor-pointer border-2 shrink-0 snap-start bg-neutral-1 transition-colors ${selectedImage === img ? 'border-primary' : 'border-transparent hover:border-primary/50'}`} 
+                    />
+                  ))}
+                </div>
+              )}
+            </>
+          );
         })()}
       </div>
 

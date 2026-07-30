@@ -85,7 +85,7 @@ export default function AdminDashboard() {
                   <td className="p-5">
                     <div className="flex items-center gap-4">
                       <div className="relative">
-                        <img src={prop.image} alt={prop.name} className="w-12 h-12 rounded-xl object-cover shadow-sm group-hover:shadow-md transition-shadow" />
+                        <img src={prop.image ? prop.image.split(',')[0] : ''} alt={prop.name} className="w-12 h-12 rounded-xl object-cover shadow-sm group-hover:shadow-md transition-shadow" />
                       </div>
                       <div>
                         <p className="font-bold text-gray-800 text-base">{prop.name}</p>

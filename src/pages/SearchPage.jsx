@@ -569,7 +569,7 @@ export default function SearchPage() {
             <Marker key={prop.id} position={[prop.location.lat, prop.location.lng]}>
               <Popup className="property-popup">
                 <div className="popup-card">
-                  <div className="popup-img" style={{ backgroundImage: `url(${prop.image})` }}>
+                  <div className="popup-img" style={{ backgroundImage: `url(${prop.image ? prop.image.split(',')[0] : ''})` }}>
                     <button className="like-btn"><Heart size={16} color="white" /></button>
                   </div>
                   <div className="popup-content">
@@ -612,7 +612,7 @@ export default function SearchPage() {
               const isCompared = compareList.some(item => item.id === prop.id);
               return (
                 <Link to={`/property/${prop.id}`} key={prop.id} className="prop-card-small" style={{ position: 'relative' }}>
-                  <img src={prop.image} alt={prop.name} />
+                  <img src={prop.image ? prop.image.split(',')[0] : ''} alt={prop.name} />
                   <div className="prop-card-info" style={{ paddingRight: '30px' }}>
                     <h4>{prop.name}</h4>
                     <p className="developer">{prop.developer}</p>

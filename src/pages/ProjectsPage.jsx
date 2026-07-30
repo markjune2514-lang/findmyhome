@@ -63,7 +63,7 @@ export default function ProjectsPage() {
           {filteredProperties.map(prop => (
             <Link to={`/property/${prop.id}`} key={prop.id} className="project-card-large">
               <div className="project-img-wrapper">
-                <img src={prop.image} alt={prop.name} />
+                <img src={prop.image ? prop.image.split(',')[0] : ''} alt={prop.name} />
                 <div className="project-badges">
                   <span className="badge badge-dark">{prop.projectType}</span>
                   {prop.status === 'เปิด Presale' && <span className="badge badge-primary">Presale</span>}

@@ -576,12 +576,12 @@ export default function AddPropertyPage() {
 
           {/* รูปภาพ */}
           <section className="form-section">
-            <h3 className="section-title">รูปภาพโครงการ (หน้าปก)</h3>
+            <h3 className="section-title">รูปภาพโครงการ (แกลเลอรี่หลัก)</h3>
             <ImageUploader 
               label="อัปโหลดรูปภาพจากเครื่อง หรือวาง URL"
-              multiple={false}
-              images={formData.image ? [formData.image] : []}
-              onChange={(images) => setFormData(p => ({...p, image: images.length > 0 ? images[images.length - 1] : ''}))}
+              multiple={true}
+              images={formData.image ? formData.image.split(',') : []}
+              onChange={(images) => setFormData(p => ({...p, image: images.join(',')}))}
             />
           </section>
 
