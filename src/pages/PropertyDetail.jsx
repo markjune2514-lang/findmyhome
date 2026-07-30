@@ -78,15 +78,15 @@ export default function PropertyDetail() {
         <span className="text-sm sm:text-lg font-bold text-gray-800 whitespace-nowrap">{prop.developer}</span>
       </div>
 
-      {/* Unit Type Selection Pills (Positioned right under title as requested) */}
+      {/* Unit Type Selection Segmented Toggle Switch Pill */}
       {prop.unitTypes && prop.unitTypes.length > 0 && (
-        <div className="flex gap-2 overflow-x-auto pb-2 mb-3 snap-x scrollbar-none">
+        <div className="w-full bg-[#fbf7f4] border border-[#f4e4d7] p-1 rounded-2xl flex gap-1 mb-4 overflow-x-auto scrollbar-none shadow-inner">
           <button
             onClick={() => setSelectedUnitFilter('all')}
-            className={`px-5 py-1.5 text-xs sm:text-sm font-semibold rounded-full border-2 transition-all whitespace-nowrap shrink-0 ${
+            className={`flex-1 min-w-[110px] py-2.5 px-4 text-xs sm:text-sm font-bold rounded-xl transition-all duration-200 text-center whitespace-nowrap ${
               selectedUnitFilter === 'all'
-                ? 'bg-gray-900 text-white border-gray-900 shadow-sm'
-                : 'bg-white text-gray-800 border-gray-900 hover:bg-gray-50'
+                ? 'bg-primary text-white shadow-md shadow-primary/20'
+                : 'text-gray-600 hover:text-gray-900 bg-transparent'
             }`}
           >
             แสดงทั้งหมด ({prop.unitTypes.length})
@@ -95,10 +95,10 @@ export default function PropertyDetail() {
             <button
               key={i}
               onClick={() => setSelectedUnitFilter(i.toString())}
-              className={`px-5 py-1.5 text-xs sm:text-sm font-semibold rounded-full border-2 transition-all whitespace-nowrap shrink-0 ${
+              className={`flex-1 min-w-[110px] py-2.5 px-4 text-xs sm:text-sm font-bold rounded-xl transition-all duration-200 text-center whitespace-nowrap ${
                 selectedUnitFilter === i.toString()
-                  ? 'bg-gray-900 text-white border-gray-900 shadow-sm'
-                  : 'bg-white text-gray-800 border-gray-900 hover:bg-gray-50'
+                  ? 'bg-primary text-white shadow-md shadow-primary/20'
+                  : 'text-gray-600 hover:text-gray-900 bg-transparent'
               }`}
             >
               {u.name || `แบบที่ ${i + 1}`}
