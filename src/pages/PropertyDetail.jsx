@@ -45,7 +45,6 @@ export default function PropertyDetail() {
     : [];
 
   return (
-  return (
     <div className="container py-3 sm:py-8">
       {/* Breadcrumb */}
       <div className="breadcrumb mb-3 text-xs sm:text-sm text-light overflow-x-auto whitespace-nowrap">
