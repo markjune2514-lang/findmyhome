@@ -196,19 +196,24 @@ export default function PropertyDetail() {
         </div>
       </div>
 
-      {/* Content Tabs */}
+      {/* Content Tabs for Option 1 */}
       <div className="content-tabs mb-6 overflow-x-auto whitespace-nowrap border-b border-gray-200 flex gap-2 pb-1">
-        {['รายละเอียด', 'แบบบ้าน/ห้อง', 'สิ่งอำนวยความสะดวก', 'ทำเลที่ตั้ง'].map(tab => (
+        {[
+          { id: 'รายละเอียด', label: '🏢 ภาพรวมโครงการ' },
+          { id: 'แบบบ้าน/ห้อง', label: '🏡 แบบบ้าน / แบบห้อง' },
+          { id: 'สิ่งอำนวยความสะดวก', label: '🏊 สิ่งอำนวยความสะดวก' },
+          { id: 'ทำเลที่ตั้ง', label: '📍 ทำเลและสถานที่ใกล้เคียง' }
+        ].map(tab => (
           <button 
-            key={tab} 
-            className={`px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-colors shrink-0 ${
-              activeTab === tab 
-                ? 'bg-primary text-white shadow-sm' 
-                : 'text-gray-600 hover:bg-gray-100'
+            key={tab.id} 
+            className={`px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all shrink-0 ${
+              activeTab === tab.id 
+                ? 'bg-primary text-white shadow-md shadow-primary/20 scale-[1.02]' 
+                : 'text-gray-600 hover:bg-gray-100 bg-white border border-gray-200'
             }`} 
-            onClick={() => setActiveTab(tab)}
+            onClick={() => setActiveTab(tab.id)}
           >
-            {tab}
+            {tab.label}
           </button>
         ))}
       </div>
