@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { MapPin, Star, Heart, Share2, Info, LayoutDashboard } from 'lucide-react';
+import { MapPin, Star, Heart, Share2, Info, LayoutDashboard, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useCompare } from '../CompareContext';
 import { useProperties } from '../PropertiesContext';
 import './PropertyDetail.css';
@@ -15,17 +15,24 @@ export default function PropertyDetail() {
   
   const mainImages = prop.image ? prop.image.split(',') : [];
   const allUnitImages = prop.unitTypes ? prop.unitTypes.flatMap(u => [...(u.planImages || []), ...(u.roomImages || [])]) : [];
-  const uniqueMainImages = [...new Set(mainImages)];
-  const uniqueUnitImages = [...new Set(allUnitImages)];
   
-  const imagesToShow = activeTab === 'แบบบ้าน/ห้อง' ? uniqueUnitImages : uniqueMainImages;
-  const defaultImage = imagesToShow.length > 0 ? imagesToShow[0] : (uniqueMainImages[0] || '');
-
-  const [selectedImage, setSelectedImage] = useState(defaultImage);
+  // Combine all images into a single gallery
+  const allImages = [...new Set([...mainImages, ...allUnitImages])].filter(Boolean);
+  
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const selectedImage = allImages.length > 0 ? allImages[currentIndex] : '';
 
   React.useEffect(() => {
-    setSelectedImage(defaultImage);
-  }, [activeTab, prop.id]);
+    setCurrentIndex(0);
+  }, [prop.id]);
+
+  const handlePrev = () => {
+    setCurrentIndex(prev => (prev === 0 ? allImages.length - 1 : prev - 1));
+  };
+  
+  const handleNext = () => {
+    setCurrentIndex(prev => (prev === allImages.length - 1 ? 0 : prev + 1));
+  };
 
   const handleAction = (action) => alert(`กำลังดำเนินการ: ${action}`);
 
@@ -52,17 +59,30 @@ export default function PropertyDetail() {
       </div>
 
       <div className="gallery-section mb-8">
-        <div className="main-image transition-all duration-300" style={{ backgroundImage: `url(${selectedImage})`, height: '400px', backgroundSize: 'contain', backgroundRepeat: 'no-repeat', backgroundPosition: 'center', backgroundColor: '#f8f9fa', borderRadius: '12px', border: '1px solid #eee' }}></div>
+        <div className="main-image-container relative">
+          <div className="main-image transition-all duration-300" style={{ backgroundImage: `url(${selectedImage})`, height: '400px', backgroundSize: 'contain', backgroundRepeat: 'no-repeat', backgroundPosition: 'center', backgroundColor: '#f8f9fa', borderRadius: '12px', border: '1px solid #eee' }}></div>
+          
+          {allImages.length > 1 && (
+            <>
+              <button onClick={handlePrev} className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white p-2 rounded-full shadow-md text-neutral-800 transition-colors">
+                <ChevronLeft size={24} />
+              </button>
+              <button onClick={handleNext} className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white p-2 rounded-full shadow-md text-neutral-800 transition-colors">
+                <ChevronRight size={24} />
+              </button>
+            </>
+          )}
+        </div>
         
-        {imagesToShow.length > 1 && (
+        {allImages.length > 1 && (
           <div className="thumbnail-list flex gap-3 mt-3 overflow-x-auto pb-2 snap-x">
-            {imagesToShow.map((img, idx) => (
+            {allImages.map((img, idx) => (
               <img 
                 key={idx} 
                 src={img} 
                 alt={`thumb-${idx}`} 
-                onClick={() => setSelectedImage(img)}
-                className={`w-32 h-24 object-cover rounded-md cursor-pointer border-2 shrink-0 snap-start bg-neutral-1 transition-colors ${selectedImage === img ? 'border-primary' : 'border-transparent hover:border-primary/50'}`} 
+                onClick={() => setCurrentIndex(idx)}
+                className={`w-32 h-24 object-cover rounded-md cursor-pointer border-2 shrink-0 snap-start bg-neutral-1 transition-colors ${currentIndex === idx ? 'border-primary' : 'border-transparent hover:border-primary/50'}`} 
               />
             ))}
           </div>
@@ -128,7 +148,11 @@ export default function PropertyDetail() {
                                 {unit.planImages.map((img, i) => (
                                   <div 
                                     key={i} 
-                                    onClick={() => { setSelectedImage(img); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                                    onClick={() => { 
+                                      const idx = allImages.indexOf(img);
+                                      if (idx !== -1) setCurrentIndex(idx);
+                                      window.scrollTo({ top: 0, behavior: 'smooth' }); 
+                                    }}
                                     className="min-w-[120px] w-[120px] h-[90px] rounded-md bg-neutral-1 bg-cover bg-center border shrink-0 snap-start cursor-pointer hover:border-primary transition-colors" 
                                     style={{ backgroundImage: `url(${img})` }}
                                   ></div>
@@ -143,7 +167,11 @@ export default function PropertyDetail() {
                                 {unit.roomImages.map((img, i) => (
                                   <div 
                                     key={i} 
-                                    onClick={() => { setSelectedImage(img); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                                    onClick={() => { 
+                                      const idx = allImages.indexOf(img);
+                                      if (idx !== -1) setCurrentIndex(idx);
+                                      window.scrollTo({ top: 0, behavior: 'smooth' }); 
+                                    }}
                                     className="min-w-[120px] w-[120px] h-[90px] rounded-md bg-neutral-1 bg-cover bg-center border shrink-0 snap-start cursor-pointer hover:border-primary transition-colors" 
                                     style={{ backgroundImage: `url(${img})` }}
                                   ></div>
