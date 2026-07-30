@@ -37,12 +37,23 @@ export default function PropertyDetail() {
       </div>
 
       <div className="gallery-section mb-8">
-        <div className="main-image" style={{ backgroundImage: `url(${prop.image})` }}></div>
-        <div className="thumbnail-list">
-          <img src={prop.image} alt="thumb" />
-          <img src={prop.image} alt="thumb" />
-          <img src={prop.image} alt="thumb" />
-        </div>
+        <div className="main-image" style={{ backgroundImage: `url(${prop.image})`, height: '400px', backgroundSize: 'cover', backgroundPosition: 'center', borderRadius: '12px' }}></div>
+        {(() => {
+          const allGalleryImages = prop.unitTypes ? prop.unitTypes.flatMap(u => u.roomImages || []) : [];
+          // Deduplicate images just in case
+          const uniqueImages = [...new Set(allGalleryImages)];
+          
+          if (uniqueImages.length > 0) {
+            return (
+              <div className="thumbnail-list flex gap-3 mt-3 overflow-x-auto pb-2 snap-x">
+                {uniqueImages.map((img, idx) => (
+                  <img key={idx} src={img} alt={`thumb-${idx}`} className="w-32 h-24 object-cover rounded-md cursor-pointer border border-transparent hover:border-primary shrink-0 snap-start bg-neutral-1" />
+                ))}
+              </div>
+            );
+          }
+          return null;
+        })()}
       </div>
 
       <div className="flex gap-4 mb-8">
