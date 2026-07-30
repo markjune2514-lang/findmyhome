@@ -45,74 +45,137 @@ export default function PropertyDetail() {
     : [];
 
   return (
-    <div className="container py-4 sm:py-8">
-      <div className="breadcrumb mb-4 text-xs sm:text-sm text-light overflow-x-auto whitespace-nowrap">
+  return (
+    <div className="container py-3 sm:py-8">
+      {/* Breadcrumb */}
+      <div className="breadcrumb mb-3 text-xs sm:text-sm text-light overflow-x-auto whitespace-nowrap">
         <Link to="/search">หน้าหลัก</Link> &gt; <Link to="/search">ค้นหา</Link> &gt; <span className="text-main">{prop.name}</span>
       </div>
 
-      <div className="detail-header flex flex-col md:flex-row justify-between items-start gap-4 mb-6">
-        <div>
-          <h2 className="text-xl sm:text-2xl font-bold">{prop.name}</h2>
-          <p className="text-light text-sm">{prop.developer}</p>
-          <div className="flex flex-wrap items-center gap-2 sm:gap-4 mt-2">
-            <span className="badge text-xs sm:text-sm">{prop.projectType}</span>
-            <span className="rating-info text-xs sm:text-sm"><Star size={16} fill="gold" color="gold" /> {prop.rating} ({prop.reviews || 12} รีวิว)</span>
-            {prop.unitTypes && prop.unitTypes.length > 0 && (
-              <span className="px-3 py-1 bg-primary/10 text-primary font-semibold rounded-full text-xs border border-primary/20">
-                🏡 โครงการนี้มี {prop.unitTypes.length} แบบบ้าน/ห้อง
+      {/* Header Info Card */}
+      <div className="bg-white p-4 sm:p-6 rounded-2xl shadow-sm border border-gray-100 mb-4 sm:mb-6">
+        <div className="flex flex-col sm:flex-row justify-between items-start gap-3 sm:gap-4">
+          <div className="flex-1">
+            <h1 className="text-lg sm:text-2xl font-bold text-gray-900 leading-tight">{prop.name}</h1>
+            <p className="text-gray-500 text-xs sm:text-sm mt-1">{prop.developer}</p>
+            
+            <div className="flex flex-wrap items-center gap-1.5 sm:gap-3 mt-3">
+              <span className="badge text-xs">{prop.projectType}</span>
+              <span className="rating-info text-xs flex items-center gap-1 font-semibold text-gray-700 bg-amber-50 px-2.5 py-0.5 rounded-full border border-amber-200">
+                <Star size={14} fill="gold" color="gold" /> {prop.rating} ({prop.reviews || 12})
               </span>
-            )}
+              {prop.unitTypes && prop.unitTypes.length > 0 && (
+                <span className="px-2.5 py-0.5 bg-primary/10 text-primary font-semibold rounded-full text-xs border border-primary/20">
+                  🏡 {prop.unitTypes.length} แบบบ้าน/ห้อง
+                </span>
+              )}
+            </div>
           </div>
-        </div>
-        <div className="text-left md:text-right w-full md:w-auto bg-primary/5 p-3 md:p-0 rounded-lg md:bg-transparent">
-          <p className="text-light text-xs sm:text-sm">เริ่มต้น</p>
-          <h2 className="text-primary text-xl sm:text-2xl font-bold">{prop.price} {prop.priceTo ? `- ${prop.priceTo}` : ''} ล้าน</h2>
-          <p className="text-light text-xs sm:text-sm mt-1">{prop.bedrooms} Bed • {prop.size} {prop.size && !prop.size.includes('ตร') ? 'ตร.ม.' : ''}</p>
+
+          <div className="w-full sm:w-auto pt-3 sm:pt-0 border-t border-gray-100 sm:border-0 flex sm:flex-col justify-between items-center sm:items-end">
+            <div>
+              <span className="text-xs text-gray-400 block sm:text-right">ราคาเริ่มต้น</span>
+              <div className="text-xl sm:text-2xl font-black text-primary leading-none mt-0.5">
+                {prop.price} {prop.priceTo ? `- ${prop.priceTo}` : ''} <span className="text-sm font-semibold">ล้านบาท</span>
+              </div>
+            </div>
+            <p className="text-xs text-gray-500 mt-1 sm:text-right font-medium">
+              {prop.bedrooms} Bed • {prop.size} {prop.size && !prop.size.includes('ตร') ? 'ตร.ม.' : ''}
+            </p>
+          </div>
         </div>
       </div>
 
-      <div className="gallery-section mb-8">
-        <div className="flex items-center gap-2 sm:gap-4">
-          {allImages.length > 1 && (
-            <button onClick={handlePrev} className="bg-white hover:bg-neutral-50 border p-2 sm:p-3 rounded-full shadow-sm text-neutral-700 transition-colors shrink-0">
-              <ChevronLeft size={20} className="sm:w-6 sm:h-6" />
-            </button>
-          )}
+      {/* Main Image Gallery Carousel */}
+      <div className="gallery-section mb-6 sm:mb-8">
+        <div className="relative w-full bg-neutral-900 rounded-2xl overflow-hidden shadow-sm group">
+          <div 
+            className="main-image transition-all duration-300 w-full" 
+            style={{ 
+              backgroundImage: `url(${selectedImage})`, 
+              height: '280px',
+              backgroundSize: 'contain', 
+              backgroundRepeat: 'no-repeat', 
+              backgroundPosition: 'center', 
+              backgroundColor: '#18181b'
+            }}
+          ></div>
           
-          <div className="main-image transition-all duration-300 flex-1" style={{ backgroundImage: `url(${selectedImage})`, backgroundSize: 'contain', backgroundRepeat: 'no-repeat', backgroundPosition: 'center', backgroundColor: '#f8f9fa', borderRadius: '12px', border: '1px solid #eee' }}></div>
-          
           {allImages.length > 1 && (
-            <button onClick={handleNext} className="bg-white hover:bg-neutral-50 border p-2 sm:p-3 rounded-full shadow-sm text-neutral-700 transition-colors shrink-0">
-              <ChevronRight size={20} className="sm:w-6 sm:h-6" />
-            </button>
+            <>
+              <button 
+                onClick={handlePrev} 
+                className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 p-2 sm:p-2.5 rounded-full shadow-md backdrop-blur-sm transition-all active:scale-95"
+                aria-label="Previous image"
+              >
+                <ChevronLeft size={20} />
+              </button>
+              <button 
+                onClick={handleNext} 
+                className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 p-2 sm:p-2.5 rounded-full shadow-md backdrop-blur-sm transition-all active:scale-95"
+                aria-label="Next image"
+              >
+                <ChevronRight size={20} />
+              </button>
+              <div className="absolute bottom-3 right-3 bg-black/60 text-white text-xs px-2.5 py-1 rounded-full backdrop-blur-md">
+                {currentIndex + 1} / {allImages.length}
+              </div>
+            </>
           )}
         </div>
         
+        {/* Thumbnails list */}
         {allImages.length > 1 && (
-          <div className="thumbnail-list flex gap-2 sm:gap-3 mt-3 overflow-x-auto pb-2 snap-x">
+          <div className="thumbnail-list flex gap-2 mt-2.5 overflow-x-auto pb-2 snap-x scrollbar-none">
             {allImages.map((img, idx) => (
               <img 
                 key={idx} 
                 src={img} 
                 alt={`thumb-${idx}`} 
                 onClick={() => setCurrentIndex(idx)}
-                className={`w-24 h-16 sm:w-32 sm:h-24 object-cover rounded-md cursor-pointer border-2 shrink-0 snap-start bg-neutral-1 transition-colors ${currentIndex === idx ? 'border-primary' : 'border-transparent hover:border-primary/50'}`} 
+                className={`w-20 h-14 sm:w-28 sm:h-20 object-cover rounded-lg cursor-pointer border-2 shrink-0 snap-start transition-all ${currentIndex === idx ? 'border-primary shadow-sm scale-95' : 'border-transparent opacity-75 hover:opacity-100'}`} 
               />
             ))}
           </div>
         )}
       </div>
 
-      <div className="grid grid-cols-2 md:flex gap-2 sm:gap-4 mb-8">
-        <button className="btn btn-secondary text-xs sm:text-sm py-2" onClick={() => handleAction('บันทึกโครงการ')}><Heart size={16} /> บันทึก</button>
-        <button className="btn btn-secondary text-xs sm:text-sm py-2" onClick={() => handleAction('คัดลอกลิงก์เพื่อแชร์')}><Share2 size={16} /> แชร์</button>
-        <button className="btn btn-secondary text-xs sm:text-sm py-2" onClick={() => addToCompare(prop)}><LayoutDashboard size={16} /> เปรียบเทียบ</button>
-        <button className="btn btn-primary text-xs sm:text-sm py-2 col-span-2 md:flex-2" onClick={() => handleAction('ฟอร์มติดต่อโครงการ')}>ติดต่อโครงการ / นัดชม</button>
+      {/* Action Buttons */}
+      <div className="flex flex-col gap-2 mb-6 sm:mb-8">
+        <button 
+          className="btn btn-primary w-full py-3 text-sm sm:text-base font-bold shadow-md rounded-xl flex items-center justify-center gap-2"
+          onClick={() => handleAction('ฟอร์มติดต่อโครงการ')}
+        >
+          📞 ติดต่อโครงการ / นัดชมสถานที่จริง
+        </button>
+
+        <div className="grid grid-cols-3 gap-2">
+          <button className="btn btn-secondary text-xs py-2 rounded-xl" onClick={() => handleAction('บันทึกโครงการ')}>
+            <Heart size={15} /> บันทึก
+          </button>
+          <button className="btn btn-secondary text-xs py-2 rounded-xl" onClick={() => handleAction('คัดลอกลิงก์เพื่อแชร์')}>
+            <Share2 size={15} /> แชร์
+          </button>
+          <button className="btn btn-secondary text-xs py-2 rounded-xl" onClick={() => addToCompare(prop)}>
+            <LayoutDashboard size={15} /> เปรียบเทียบ
+          </button>
+        </div>
       </div>
 
-      <div className="content-tabs mb-6 overflow-x-auto whitespace-nowrap">
+      {/* Content Tabs */}
+      <div className="content-tabs mb-6 overflow-x-auto whitespace-nowrap border-b border-gray-200 flex gap-2 pb-1">
         {['รายละเอียด', 'แบบบ้าน/ห้อง', 'สิ่งอำนวยความสะดวก', 'ทำเลที่ตั้ง'].map(tab => (
-          <button key={tab} className={`tab ${activeTab === tab ? 'active' : ''}`} onClick={() => setActiveTab(tab)}>{tab}</button>
+          <button 
+            key={tab} 
+            className={`px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-colors shrink-0 ${
+              activeTab === tab 
+                ? 'bg-primary text-white shadow-sm' 
+                : 'text-gray-600 hover:bg-gray-100'
+            }`} 
+            onClick={() => setActiveTab(tab)}
+          >
+            {tab}
+          </button>
         ))}
       </div>
 
