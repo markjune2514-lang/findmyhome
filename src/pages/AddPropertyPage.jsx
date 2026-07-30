@@ -594,6 +594,105 @@ export default function AddPropertyPage() {
             </div>
           </section>
 
+          {/* สถานที่สำคัญใกล้เคียงแยก 4 หมวดหมู่ */}
+          <section className="form-section">
+            <h3 className="section-title">📍 สถานที่สำคัญใกล้เคียงและระยะทาง (แอดมินเลือกระบุ)</h3>
+            <p className="text-xs text-gray-500 mb-4">เลือกเพิ่มสถานที่สำคัญและระยะทาง (เช่น 450 ม. หรือ 1.2 กม.) เพื่อให้แสดงผลในหน้าโครงการ</p>
+            
+            <div className="space-y-4 bg-gray-50 p-4 rounded-xl border border-gray-200">
+              {[
+                { key: 'transit', title: '🚆 1. รถไฟฟ้า / การเดินทาง', placeholder: 'เช่น BTS ปากน้ำ, ทางด่วนศรีรัช' },
+                { key: 'malls', title: '🏬 2. ห้างสรรพสินค้า / ช้อปปิ้ง', placeholder: 'เช่น เซ็นทรัล นครปฐม, โลตัส' },
+                { key: 'hospitals', title: '🏥 3. โรงพยาบาล / สถานพยาบาล', placeholder: 'เช่น รพ.กรุงเทพคริสเตียน, รพ.เปาโล' },
+                { key: 'schools', title: '🎓 4. โรงเรียน / มหาวิทยาลัย', placeholder: 'เช่น ม.ศิลปากร, รร.สาธิต' }
+              ].map(cat => (
+                <div key={cat.key} className="bg-white p-3.5 rounded-lg border border-gray-200 shadow-sm">
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="text-xs font-bold text-gray-800">{cat.title}</span>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setFormData(prev => {
+                          const current = prev.categorizedLandmarks?.[cat.key] || [];
+                          return {
+                            ...prev,
+                            categorizedLandmarks: {
+                              ...(prev.categorizedLandmarks || {}),
+                              [cat.key]: [...current, { name: '', distance: '' }]
+                            }
+                          };
+                        });
+                      }}
+                      className="text-xs font-bold text-primary hover:underline flex items-center gap-1"
+                    >
+                      + เพิ่มสถานที่
+                    </button>
+                  </div>
+
+                  {(!formData.categorizedLandmarks?.[cat.key] || formData.categorizedLandmarks[cat.key].length === 0) ? (
+                    <div className="text-[11px] text-gray-400 italic">ยังไม่ได้เพิ่มรายการในหมวดนี้ (กด + เพิ่มสถานที่ ด้านบน)</div>
+                  ) : (
+                    <div className="space-y-2">
+                      {formData.categorizedLandmarks[cat.key].map((item, idx) => (
+                        <div key={idx} className="flex gap-2 items-center">
+                          <input
+                            type="text"
+                            placeholder={cat.placeholder}
+                            value={item.name}
+                            onChange={(e) => {
+                              const val = e.target.value;
+                              setFormData(prev => {
+                                const list = [...(prev.categorizedLandmarks?.[cat.key] || [])];
+                                list[idx] = { ...list[idx], name: val };
+                                return {
+                                  ...prev,
+                                  categorizedLandmarks: { ...(prev.categorizedLandmarks || {}), [cat.key]: list }
+                                };
+                              });
+                            }}
+                            className="flex-1 text-xs p-2 border rounded-md"
+                          />
+                          <input
+                            type="text"
+                            placeholder="เช่น 500 ม. หรือ 1.2 กม."
+                            value={item.distance}
+                            onChange={(e) => {
+                              const val = e.target.value;
+                              setFormData(prev => {
+                                const list = [...(prev.categorizedLandmarks?.[cat.key] || [])];
+                                list[idx] = { ...list[idx], distance: val };
+                                return {
+                                  ...prev,
+                                  categorizedLandmarks: { ...(prev.categorizedLandmarks || {}), [cat.key]: list }
+                                };
+                              });
+                            }}
+                            className="w-36 text-xs p-2 border rounded-md"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setFormData(prev => {
+                                const list = [...(prev.categorizedLandmarks?.[cat.key] || [])].filter((_, i) => i !== idx);
+                                return {
+                                  ...prev,
+                                  categorizedLandmarks: { ...(prev.categorizedLandmarks || {}), [cat.key]: list }
+                                };
+                              });
+                            }}
+                            className="text-red-500 hover:bg-red-50 p-1 rounded-md"
+                          >
+                            <X size={16} />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </section>
+
           {/* สิ่งอำนวยความสะดวกและจุดเด่น */}
           <section className="form-section">
             <h3 className="section-title">สิ่งอำนวยความสะดวกและจุดเด่น</h3>

@@ -467,23 +467,36 @@ export default function PropertyDetail() {
             {/* Categorized Landmark Distances */}
             <div className="space-y-3">
               {/* 1. รถไฟฟ้า / การเดินทาง */}
-              <div className="bg-blue-50/50 p-2.5 rounded-xl border border-blue-100">
-                <p className="text-xs font-bold text-blue-900 mb-1.5 flex items-center gap-1">
-                  🚆 1. รถไฟฟ้า / การเดินทาง
-                </p>
-                <div className="space-y-1">
-                  <div className="flex justify-between items-center text-xs">
-                    <span className="text-gray-700 font-medium">{prop.station || 'สถานีรถไฟฟ้าใกล้เคียง'}</span>
-                    <span className="font-bold text-blue-600 bg-white px-2 py-0.5 rounded border border-blue-200">{prop.distanceToStation || '500 ม.'}</span>
+              {((prop.categorizedLandmarks?.transit && prop.categorizedLandmarks.transit.length > 0) || prop.station) && (
+                <div className="bg-blue-50/50 p-2.5 rounded-xl border border-blue-100">
+                  <p className="text-xs font-bold text-blue-900 mb-1.5 flex items-center gap-1">
+                    🚆 1. รถไฟฟ้า / การเดินทาง
+                  </p>
+                  <div className="space-y-1">
+                    {prop.categorizedLandmarks?.transit && prop.categorizedLandmarks.transit.length > 0 ? (
+                      prop.categorizedLandmarks.transit.map((item, i) => (
+                        <div key={i} className="flex justify-between items-center text-xs">
+                          <span className="text-gray-700 font-medium">{item.name}</span>
+                          <span className="font-bold text-blue-600 bg-white px-2 py-0.5 rounded border border-blue-200">{item.distance}</span>
+                        </div>
+                      ))
+                    ) : (
+                      <>
+                        <div className="flex justify-between items-center text-xs">
+                          <span className="text-gray-700 font-medium">{prop.station || 'สถานีรถไฟฟ้าใกล้เคียง'}</span>
+                          <span className="font-bold text-blue-600 bg-white px-2 py-0.5 rounded border border-blue-200">{prop.distanceToStation || '500 ม.'}</span>
+                        </div>
+                        {prop.province === 'นครปฐม' && (
+                          <div className="flex justify-between items-center text-xs">
+                            <span className="text-gray-700 font-medium">ทางด่วนศรีรัช-วงแหวนรอบนอก</span>
+                            <span className="font-bold text-blue-600 bg-white px-2 py-0.5 rounded border border-blue-200">12.5 กม.</span>
+                          </div>
+                        )}
+                      </>
+                    )}
                   </div>
-                  {prop.province === 'นครปฐม' && (
-                    <div className="flex justify-between items-center text-xs">
-                      <span className="text-gray-700 font-medium">ทางด่วนศรีรัช-วงแหวนรอบนอก</span>
-                      <span className="font-bold text-blue-600 bg-white px-2 py-0.5 rounded border border-blue-200">12.5 กม.</span>
-                    </div>
-                  )}
                 </div>
-              </div>
+              )}
 
               {/* 2. ห้างสรรพสินค้า / ช้อปปิ้ง */}
               <div className="bg-amber-50/50 p-2.5 rounded-xl border border-amber-100">
@@ -491,7 +504,14 @@ export default function PropertyDetail() {
                   🏬 2. ห้างสรรพสินค้า / ช้อปปิ้ง
                 </p>
                 <div className="space-y-1">
-                  {prop.province === 'นครปฐม' || prop.name?.includes('นครปฐม') ? (
+                  {prop.categorizedLandmarks?.malls && prop.categorizedLandmarks.malls.length > 0 ? (
+                    prop.categorizedLandmarks.malls.map((item, i) => (
+                      <div key={i} className="flex justify-between items-center text-xs">
+                        <span className="text-gray-700 font-medium">{item.name}</span>
+                        <span className="font-bold text-amber-600 bg-white px-2 py-0.5 rounded border border-amber-200">{item.distance}</span>
+                      </div>
+                    ))
+                  ) : prop.province === 'นครปฐม' || prop.name?.includes('นครปฐม') ? (
                     <>
                       <div className="flex justify-between items-center text-xs">
                         <span className="text-gray-700 font-medium">เซ็นทรัล นครปฐม</span>
@@ -523,7 +543,14 @@ export default function PropertyDetail() {
                   🏥 3. โรงพยาบาล / สถานพยาบาล
                 </p>
                 <div className="space-y-1">
-                  {prop.province === 'นครปฐม' || prop.name?.includes('นครปฐม') ? (
+                  {prop.categorizedLandmarks?.hospitals && prop.categorizedLandmarks.hospitals.length > 0 ? (
+                    prop.categorizedLandmarks.hospitals.map((item, i) => (
+                      <div key={i} className="flex justify-between items-center text-xs">
+                        <span className="text-gray-700 font-medium">{item.name}</span>
+                        <span className="font-bold text-rose-600 bg-white px-2 py-0.5 rounded border border-rose-200">{item.distance}</span>
+                      </div>
+                    ))
+                  ) : prop.province === 'นครปฐม' || prop.name?.includes('นครปฐม') ? (
                     <>
                       <div className="flex justify-between items-center text-xs">
                         <span className="text-gray-700 font-medium">รพ.กรุงเทพคริสเตียน นครปฐม</span>
@@ -555,7 +582,14 @@ export default function PropertyDetail() {
                   🎓 4. โรงเรียน / มหาวิทยาลัย
                 </p>
                 <div className="space-y-1">
-                  {prop.province === 'นครปฐม' || prop.name?.includes('นครปฐม') ? (
+                  {prop.categorizedLandmarks?.schools && prop.categorizedLandmarks.schools.length > 0 ? (
+                    prop.categorizedLandmarks.schools.map((item, i) => (
+                      <div key={i} className="flex justify-between items-center text-xs">
+                        <span className="text-gray-700 font-medium">{item.name}</span>
+                        <span className="font-bold text-emerald-600 bg-white px-2 py-0.5 rounded border border-emerald-200">{item.distance}</span>
+                      </div>
+                    ))
+                  ) : prop.province === 'นครปฐม' || prop.name?.includes('นครปฐม') ? (
                     <>
                       <div className="flex justify-between items-center text-xs">
                         <span className="text-gray-700 font-medium">มหาวิทยาลัยศิลปากร (ทับแก้ว)</span>
