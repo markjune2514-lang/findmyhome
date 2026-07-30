@@ -205,7 +205,7 @@ export default function PropertyDetail() {
       {/* Main Details Area */}
       <div className="flex flex-col md:flex-row gap-6 md:gap-8">
         <div className="main-info flex-2">
-          {activeTab === 'overview' ? (
+          {activeTab === 'overview' && (
             <>
               {/* Project Specs */}
               <h3 className="mb-4 text-lg font-bold text-gray-900">🏢 รายละเอียดและสเปกโครงการ</h3>
@@ -231,65 +231,6 @@ export default function PropertyDetail() {
                   <p className="val text-sm font-bold text-gray-800">{prop.status}</p>
                 </div>
               </div>
-            </>
-          ) : (
-            selectedUnit && (
-              <div className="mb-8 bg-white p-5 rounded-2xl border border-gray-100 shadow-sm">
-                <div className="flex justify-between items-center mb-4">
-                  <h3 className="text-lg font-bold text-gray-900 m-0">🏡 รายละเอียดแบบ: {selectedUnit.name}</h3>
-                  <span className="text-lg font-black text-primary">{selectedUnit.price} ล้านบาท</span>
-                </div>
-
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-5">
-                  <div className="p-3 bg-neutral-50 rounded-xl">
-                    <span className="text-xs text-gray-400 block">พื้นที่ใช้สอย</span>
-                    <span className="text-sm font-bold text-gray-800">{selectedUnit.size || selectedUnit.usableArea || prop.size} ตร.ม.</span>
-                  </div>
-                  {selectedUnit.landSize && (
-                    <div className="p-3 bg-neutral-50 rounded-xl">
-                      <span className="text-xs text-gray-400 block">ขนาดที่ดิน</span>
-                      <span className="text-sm font-bold text-gray-800">{selectedUnit.landSize} ตร.วา</span>
-                    </div>
-                  )}
-                  <div className="p-3 bg-neutral-50 rounded-xl">
-                    <span className="text-xs text-gray-400 block">ห้องนอน / ห้องน้ำ</span>
-                    <span className="text-sm font-bold text-gray-800">{selectedUnit.bedrooms || selectedUnit.roomType || prop.bedrooms} Bed</span>
-                  </div>
-                </div>
-
-                {/* Floor Plan Images */}
-                {selectedUnit.planImages && selectedUnit.planImages.length > 0 && (
-                  <div className="mb-5">
-                    <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">📐 แปลนห้อง (Floor Plan)</h4>
-                    <div className="grid grid-cols-2 gap-3">
-                      {selectedUnit.planImages.map((img, i) => (
-                        <div key={i} className="relative rounded-xl overflow-hidden border border-gray-200 group cursor-pointer" onClick={() => { const idx = allImages.indexOf(img); if (idx !== -1) setCurrentIndex(idx); }}>
-                          <img src={img} alt={`plan-${i}`} className="w-full h-44 object-cover group-hover:scale-105 transition-all" />
-                          <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-all flex items-center justify-center text-white font-bold text-xs">🔍 ขยายภาพ</div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {/* Room Photos */}
-                {selectedUnit.roomImages && selectedUnit.roomImages.length > 0 && (
-                  <div>
-                    <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">🛋️ ภาพบรรยากาศห้องจริง</h4>
-                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                      {selectedUnit.roomImages.map((img, i) => (
-                        <div key={i} className="relative rounded-xl overflow-hidden border border-gray-200 group cursor-pointer" onClick={() => { const idx = allImages.indexOf(img); if (idx !== -1) setCurrentIndex(idx); }}>
-                          <img src={img} alt={`room-${i}`} className="w-full h-32 object-cover group-hover:scale-105 transition-all" />
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
-            )
-          )}
-
-
 
               {/* Facilities Section in Overview */}
               <div className="mb-8 bg-white p-5 rounded-2xl border border-gray-100 shadow-sm">
@@ -355,7 +296,62 @@ export default function PropertyDetail() {
                 </div>
               </div>
             </>
-          ) : null}
+          )}
+
+          {activeTab !== 'overview' && selectedUnit && (
+            <div className="mb-8 bg-white p-5 rounded-2xl border border-gray-100 shadow-sm">
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="text-lg font-bold text-gray-900 m-0">🏡 รายละเอียดแบบ: {selectedUnit.name}</h3>
+                <span className="text-lg font-black text-primary">{selectedUnit.price} ล้านบาท</span>
+              </div>
+
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-5">
+                <div className="p-3 bg-neutral-50 rounded-xl">
+                  <span className="text-xs text-gray-400 block">พื้นที่ใช้สอย</span>
+                  <span className="text-sm font-bold text-gray-800">{selectedUnit.size || selectedUnit.usableArea || prop.size} ตร.ม.</span>
+                </div>
+                {selectedUnit.landSize && (
+                  <div className="p-3 bg-neutral-50 rounded-xl">
+                    <span className="text-xs text-gray-400 block">ขนาดที่ดิน</span>
+                    <span className="text-sm font-bold text-gray-800">{selectedUnit.landSize} ตร.วา</span>
+                  </div>
+                )}
+                <div className="p-3 bg-neutral-50 rounded-xl">
+                  <span className="text-xs text-gray-400 block">ห้องนอน / ห้องน้ำ</span>
+                  <span className="text-sm font-bold text-gray-800">{selectedUnit.bedrooms || selectedUnit.roomType || prop.bedrooms} Bed</span>
+                </div>
+              </div>
+
+              {/* Floor Plan Images */}
+              {selectedUnit.planImages && selectedUnit.planImages.length > 0 && (
+                <div className="mb-5">
+                  <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">📐 แปลนห้อง (Floor Plan)</h4>
+                  <div className="grid grid-cols-2 gap-3">
+                    {selectedUnit.planImages.map((img, i) => (
+                      <div key={i} className="relative rounded-xl overflow-hidden border border-gray-200 group cursor-pointer" onClick={() => { const idx = allImages.indexOf(img); if (idx !== -1) setCurrentIndex(idx); }}>
+                        <img src={img} alt={`plan-${i}`} className="w-full h-44 object-cover group-hover:scale-105 transition-all" />
+                        <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-all flex items-center justify-center text-white font-bold text-xs">🔍 ขยายภาพ</div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Room Photos */}
+              {selectedUnit.roomImages && selectedUnit.roomImages.length > 0 && (
+                <div>
+                  <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">🛋️ ภาพบรรยากาศห้องจริง</h4>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                    {selectedUnit.roomImages.map((img, i) => (
+                      <div key={i} className="relative rounded-xl overflow-hidden border border-gray-200 group cursor-pointer" onClick={() => { const idx = allImages.indexOf(img); if (idx !== -1) setCurrentIndex(idx); }}>
+                        <img src={img} alt={`room-${i}`} className="w-full h-32 object-cover group-hover:scale-105 transition-all" />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
         </div>
         
         <div className="side-map flex-1">
