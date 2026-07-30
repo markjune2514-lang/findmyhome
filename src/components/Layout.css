@@ -160,4 +160,11 @@
   flex-grow: 1;
   overflow-y: auto;
   position: relative;
+  padding-top: 1.25rem;
+}
+
+@media (min-width: 768px) {
+  .main-content {
+    padding-top: 0;
+  }
 }
