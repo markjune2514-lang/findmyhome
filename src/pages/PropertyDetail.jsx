@@ -59,18 +59,19 @@ export default function PropertyDetail() {
       </div>
 
       <div className="gallery-section mb-8">
-        <div className="main-image-container relative">
-          <div className="main-image transition-all duration-300" style={{ backgroundImage: `url(${selectedImage})`, height: '400px', backgroundSize: 'contain', backgroundRepeat: 'no-repeat', backgroundPosition: 'center', backgroundColor: '#f8f9fa', borderRadius: '12px', border: '1px solid #eee' }}></div>
+        <div className="flex items-center gap-4">
+          {allImages.length > 1 && (
+            <button onClick={handlePrev} className="bg-white hover:bg-neutral-50 border p-3 rounded-full shadow-sm text-neutral-700 transition-colors shrink-0">
+              <ChevronLeft size={24} />
+            </button>
+          )}
+          
+          <div className="main-image transition-all duration-300 flex-1" style={{ backgroundImage: `url(${selectedImage})`, height: '400px', backgroundSize: 'contain', backgroundRepeat: 'no-repeat', backgroundPosition: 'center', backgroundColor: '#f8f9fa', borderRadius: '12px', border: '1px solid #eee' }}></div>
           
           {allImages.length > 1 && (
-            <>
-              <button onClick={handlePrev} className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white p-2 rounded-full shadow-md text-neutral-800 transition-colors">
-                <ChevronLeft size={24} />
-              </button>
-              <button onClick={handleNext} className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white p-2 rounded-full shadow-md text-neutral-800 transition-colors">
-                <ChevronRight size={24} />
-              </button>
-            </>
+            <button onClick={handleNext} className="bg-white hover:bg-neutral-50 border p-3 rounded-full shadow-sm text-neutral-700 transition-colors shrink-0">
+              <ChevronRight size={24} />
+            </button>
           )}
         </div>
         
