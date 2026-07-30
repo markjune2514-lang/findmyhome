@@ -82,9 +82,9 @@ export default function PropertyDetail() {
   return (
     <div className="container py-3 sm:py-8">
       {/* Title & Developer Row */}
-      <div className="flex justify-between items-end mb-3 gap-2">
-        <h1 className="text-xl sm:text-3xl font-extrabold text-gray-900 leading-tight m-0">{prop.name}</h1>
-        <span className="text-sm sm:text-base font-semibold text-gray-500 whitespace-nowrap shrink-0">{prop.developer}</span>
+      <div className="flex justify-between gap-2 mb-3" style={{alignItems: 'flex-end'}}>
+        <h1 style={{fontSize: 'clamp(1.1rem, 5vw, 1.875rem)', fontWeight: 900, color: '#111', lineHeight: 1.2, margin: 0}}>{prop.name}</h1>
+        <span style={{fontSize: '0.8rem', fontWeight: 600, color: '#6b7280', whiteSpace: 'nowrap', flexShrink: 0, lineHeight: 1, paddingBottom: '2px'}}>{prop.developer}</span>
       </div>
 
       {/* Main Tab Bar: 1. ภาพรวมโครงการ | 2. แบบที่ 1 | 3. แบบที่ 2 ... */}
@@ -132,34 +132,50 @@ export default function PropertyDetail() {
 
       {/* Main Image Gallery Carousel with Side Arrows Overlayed */}
       <div className="gallery-section mb-5">
-        <div className="relative w-full bg-neutral-900 rounded-3xl overflow-hidden shadow-md group">
-          <div 
-            className="main-image transition-all duration-300 w-full" 
-            style={{ 
-              backgroundImage: `url(${selectedImage})`, 
-              height: '320px',
-              backgroundSize: 'cover', 
-              backgroundPosition: 'center', 
-            }}
-          ></div>
+        <div style={{position: 'relative', width: '100%', borderRadius: '1.5rem', overflow: 'hidden', boxShadow: '0 4px 16px rgba(0,0,0,0.1)', background: '#111'}}>
+          <img
+            src={selectedImage}
+            alt="property"
+            style={{width: '100%', height: '320px', objectFit: 'cover', objectPosition: 'center', display: 'block', transition: 'opacity 0.3s'}}
+          />
 
           {allImages.length > 1 && (
             <>
               <button 
-                onClick={handlePrev} 
-                className="absolute left-3 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-900 p-2 sm:p-2.5 rounded-full shadow-lg backdrop-blur-md transition-all active:scale-95 z-10"
+                onClick={handlePrev}
                 aria-label="Previous image"
+                style={{
+                  position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)',
+                  background: 'rgba(0,0,0,0.25)', border: 'none', borderRadius: '50%',
+                  width: '36px', height: '36px', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  color: 'white', cursor: 'pointer', backdropFilter: 'blur(4px)', zIndex: 10,
+                  transition: 'background 0.2s'
+                }}
+                onMouseEnter={e => e.currentTarget.style.background = 'rgba(0,0,0,0.45)'}
+                onMouseLeave={e => e.currentTarget.style.background = 'rgba(0,0,0,0.25)'}
               >
-                <ChevronLeft size={22} />
+                <ChevronLeft size={20} />
               </button>
               <button 
-                onClick={handleNext} 
-                className="absolute right-3 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-900 p-2 sm:p-2.5 rounded-full shadow-lg backdrop-blur-md transition-all active:scale-95 z-10"
+                onClick={handleNext}
                 aria-label="Next image"
+                style={{
+                  position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)',
+                  background: 'rgba(0,0,0,0.25)', border: 'none', borderRadius: '50%',
+                  width: '36px', height: '36px', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  color: 'white', cursor: 'pointer', backdropFilter: 'blur(4px)', zIndex: 10,
+                  transition: 'background 0.2s'
+                }}
+                onMouseEnter={e => e.currentTarget.style.background = 'rgba(0,0,0,0.45)'}
+                onMouseLeave={e => e.currentTarget.style.background = 'rgba(0,0,0,0.25)'}
               >
-                <ChevronRight size={22} />
+                <ChevronRight size={20} />
               </button>
-              <div className="absolute bottom-3 right-3 bg-black/60 text-white text-xs px-2.5 py-1 rounded-full backdrop-blur-md font-semibold z-10">
+              <div style={{
+                position: 'absolute', bottom: '10px', right: '12px',
+                background: 'rgba(0,0,0,0.45)', color: 'white', fontSize: '11px',
+                padding: '2px 10px', borderRadius: '999px', backdropFilter: 'blur(4px)', fontWeight: 600, zIndex: 10
+              }}>
                 {currentIndex + 1} / {allImages.length}
               </div>
             </>
