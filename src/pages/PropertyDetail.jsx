@@ -36,6 +36,14 @@ export default function PropertyDetail() {
 
   const handleAction = (action) => alert(`กำลังดำเนินการ: ${action}`);
 
+  const [selectedUnitFilter, setSelectedUnitFilter] = useState('all');
+
+  const filteredUnitTypes = prop.unitTypes
+    ? (selectedUnitFilter === 'all'
+        ? prop.unitTypes
+        : prop.unitTypes.filter((_, idx) => idx.toString() === selectedUnitFilter))
+    : [];
+
   return (
     <div className="container py-8">
       <div className="breadcrumb mb-4 text-sm text-light">
@@ -49,6 +57,11 @@ export default function PropertyDetail() {
           <div className="flex items-center gap-4 mt-2">
             <span className="badge">{prop.projectType}</span>
             <span className="rating-info"><Star size={16} fill="gold" color="gold" /> {prop.rating} ({prop.reviews || 12} รีวิว)</span>
+            {prop.unitTypes && prop.unitTypes.length > 0 && (
+              <span className="px-3 py-1 bg-primary/10 text-primary font-semibold rounded-full text-xs border border-primary/20">
+                🏡 โครงการนี้มี {prop.unitTypes.length} แบบบ้าน/ห้อง
+              </span>
+            )}
           </div>
         </div>
         <div className="text-right">
@@ -125,6 +138,11 @@ export default function PropertyDetail() {
                   <p className="val">{prop.totalUnits} ยูนิต</p>
                 </div>
                 <div className="spec-item">
+                  <LayoutDashboard size={24} color="var(--primary)" />
+                  <p className="label">จำนวนแบบบ้าน/ห้อง</p>
+                  <p className="val">{prop.unitTypes?.length || 0} แบบ</p>
+                </div>
+                <div className="spec-item">
                   <Info size={24} color="var(--primary)" />
                   <p className="label">สถานะ</p>
                   <p className="val">{prop.status}</p>
@@ -135,64 +153,127 @@ export default function PropertyDetail() {
 
           {activeTab === 'แบบบ้าน/ห้อง' && (
             <div className="mb-8">
-              <h3 className="mb-4">รูปแบบบ้านและห้องในโครงการ</h3>
-              {prop.unitTypes && prop.unitTypes.length > 0 ? (
+              <div className="flex flex-wrap justify-between items-center mb-4 gap-2">
+                <h3 className="m-0">รูปแบบบ้านและห้องในโครงการ</h3>
+                {prop.unitTypes && prop.unitTypes.length > 0 && (
+                  <span className="px-3 py-1 bg-emerald-50 text-emerald-700 font-bold rounded-full text-xs border border-emerald-200">
+                    โครงการนี้มีทั้งหมด {prop.unitTypes.length} แบบบ้าน/ห้อง
+                  </span>
+                )}
+              </div>
+
+              {/* Unit Type Filter Pills */}
+              {prop.unitTypes && prop.unitTypes.length > 1 && (
+                <div className="flex gap-2 overflow-x-auto pb-3 mb-4 snap-x">
+                  <button
+                    onClick={() => setSelectedUnitFilter('all')}
+                    className={`px-4 py-1.5 text-xs font-semibold rounded-full border transition-colors whitespace-nowrap shrink-0 ${
+                      selectedUnitFilter === 'all'
+                        ? 'bg-primary text-white border-primary shadow-sm'
+                        : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
+                    }`}
+                  >
+                    แสดงทั้งหมด ({prop.unitTypes.length})
+                  </button>
+                  {prop.unitTypes.map((u, i) => (
+                    <button
+                      key={i}
+                      onClick={() => setSelectedUnitFilter(i.toString())}
+                      className={`px-4 py-1.5 text-xs font-semibold rounded-full border transition-colors whitespace-nowrap shrink-0 ${
+                        selectedUnitFilter === i.toString()
+                          ? 'bg-primary text-white border-primary shadow-sm'
+                          : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
+                      }`}
+                    >
+                      {u.name || `แบบที่ ${i + 1}`} ({u.price} ล้าน)
+                    </button>
+                  ))}
+                </div>
+              )}
+
+              {filteredUnitTypes && filteredUnitTypes.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {prop.unitTypes.map((unit, idx) => (
-                    <div key={idx} className="p-4 border rounded-lg bg-white shadow-sm flex flex-col">
-                      {((unit.planImages && unit.planImages.length > 0) || (unit.roomImages && unit.roomImages.length > 0)) && (
-                        <div className="mb-4">
-                          {unit.planImages && unit.planImages.length > 0 && (
-                            <div className="mb-2">
-                              <span className="text-xs font-semibold text-gray-500 mb-1 block">แปลนห้อง (Top View)</span>
-                              <div className="flex gap-2 overflow-x-auto pb-2 snap-x">
-                                {unit.planImages.map((img, i) => (
-                                  <div 
-                                    key={i} 
-                                    onClick={() => { 
-                                      const idx = allImages.indexOf(img);
-                                      if (idx !== -1) setCurrentIndex(idx);
-                                      window.scrollTo({ top: 0, behavior: 'smooth' }); 
-                                    }}
-                                    className="min-w-[120px] w-[120px] h-[90px] rounded-md bg-neutral-1 bg-cover bg-center border shrink-0 snap-start cursor-pointer hover:border-primary transition-colors" 
-                                    style={{ backgroundImage: `url(${img})` }}
-                                  ></div>
-                                ))}
+                  {filteredUnitTypes.map((unit, idx) => (
+                    <div key={idx} className="p-4 border rounded-lg bg-white shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
+                      <div>
+                        {((unit.planImages && unit.planImages.length > 0) || (unit.roomImages && unit.roomImages.length > 0)) && (
+                          <div className="mb-4">
+                            {unit.planImages && unit.planImages.length > 0 && (
+                              <div className="mb-2">
+                                <span className="text-xs font-semibold text-gray-500 mb-1 block">แปลนห้อง (Top View)</span>
+                                <div className="flex gap-2 overflow-x-auto pb-2 snap-x">
+                                  {unit.planImages.map((img, i) => (
+                                    <div 
+                                      key={i} 
+                                      onClick={() => { 
+                                        const idx = allImages.indexOf(img);
+                                        if (idx !== -1) setCurrentIndex(idx);
+                                        window.scrollTo({ top: 0, behavior: 'smooth' }); 
+                                      }}
+                                      className="min-w-[120px] w-[120px] h-[90px] rounded-md bg-neutral-1 bg-cover bg-center border shrink-0 snap-start cursor-pointer hover:border-primary transition-colors" 
+                                      style={{ backgroundImage: `url(${img})` }}
+                                    ></div>
+                                  ))}
+                                </div>
                               </div>
-                            </div>
-                          )}
-                          {unit.roomImages && unit.roomImages.length > 0 && (
-                            <div>
-                              <span className="text-xs font-semibold text-gray-500 mb-1 block">ภาพบรรยากาศห้อง</span>
-                              <div className="flex gap-2 overflow-x-auto pb-2 snap-x">
-                                {unit.roomImages.map((img, i) => (
-                                  <div 
-                                    key={i} 
-                                    onClick={() => { 
-                                      const idx = allImages.indexOf(img);
-                                      if (idx !== -1) setCurrentIndex(idx);
-                                      window.scrollTo({ top: 0, behavior: 'smooth' }); 
-                                    }}
-                                    className="min-w-[120px] w-[120px] h-[90px] rounded-md bg-neutral-1 bg-cover bg-center border shrink-0 snap-start cursor-pointer hover:border-primary transition-colors" 
-                                    style={{ backgroundImage: `url(${img})` }}
-                                  ></div>
-                                ))}
+                            )}
+                            {unit.roomImages && unit.roomImages.length > 0 && (
+                              <div>
+                                <span className="text-xs font-semibold text-gray-500 mb-1 block">ภาพบรรยากาศห้อง</span>
+                                <div className="flex gap-2 overflow-x-auto pb-2 snap-x">
+                                  {unit.roomImages.map((img, i) => (
+                                    <div 
+                                      key={i} 
+                                      onClick={() => { 
+                                        const idx = allImages.indexOf(img);
+                                        if (idx !== -1) setCurrentIndex(idx);
+                                        window.scrollTo({ top: 0, behavior: 'smooth' }); 
+                                      }}
+                                      className="min-w-[120px] w-[120px] h-[90px] rounded-md bg-neutral-1 bg-cover bg-center border shrink-0 snap-start cursor-pointer hover:border-primary transition-colors" 
+                                      style={{ backgroundImage: `url(${img})` }}
+                                    ></div>
+                                  ))}
+                                </div>
                               </div>
-                            </div>
-                          )}
+                            )}
+                          </div>
+                        )}
+                        <div className="flex justify-between items-start mb-2">
+                          <h4 className="text-lg font-bold text-primary">{unit.name || 'ไม่ระบุชื่อแบบ'}</h4>
+                          <span className="font-bold text-main">{unit.price} ล้านบาท</span>
                         </div>
-                      )}
-                      <div className="flex justify-between items-start mb-2">
-                        <h4 className="text-lg font-bold text-primary">{unit.name || 'ไม่ระบุชื่อแบบ'}</h4>
-                        <span className="font-bold text-main">{unit.price} ล้านบาท</span>
+                        <div className="text-sm text-light grid grid-cols-2 gap-2 mt-2">
+                          <div><strong>รูปแบบ:</strong> {unit.roomType || '-'}</div>
+                          {unit.landSize && <div><strong>ขนาดที่ดิน:</strong> {unit.landSize} ตร.วา</div>}
+                          <div><strong>พื้นที่ใช้สอย:</strong> {unit.size ? `${unit.size.replace('ตร.ม.', '').replace('ตร.วา', '').trim()} ตร.ม.` : '-'}</div>
+                          <div><strong>ห้องนอน:</strong> {unit.bedrooms || '-'}</div>
+                          <div><strong>ห้องน้ำ:</strong> {unit.bathrooms || '-'}</div>
+                          <div><strong>ที่จอดรถ:</strong> {unit.parking || '-'}</div>
+                        </div>
                       </div>
-                      <div className="text-sm text-light grid grid-cols-2 gap-2 mt-2">
-                        <div><strong>รูปแบบ:</strong> {unit.roomType || '-'}</div>
-                        {unit.landSize && <div><strong>ขนาดที่ดิน:</strong> {unit.landSize} ตร.วา</div>}
-                        <div><strong>พื้นที่ใช้สอย:</strong> {unit.size ? `${unit.size.replace('ตร.ม.', '').replace('ตร.วา', '').trim()} ตร.ม.` : '-'}</div>
-                        <div><strong>ห้องนอน:</strong> {unit.bedrooms || '-'}</div>
-                        <div><strong>ห้องน้ำ:</strong> {unit.bathrooms || '-'}</div>
-                        <div><strong>ที่จอดรถ:</strong> {unit.parking || '-'}</div>
+
+                      {/* Section for Unit Facilities */}
+                      <div className="mt-4 pt-3 border-t border-gray-100">
+                        {unit.useProjectFacilities === false && unit.facilities && unit.facilities.length > 0 ? (
+                          <div>
+                            <span className="text-xs font-bold text-emerald-700 block mb-2">
+                              ✨ สิ่งอำนวยความสะดวกเฉพาะแบบนี้:
+                            </span>
+                            <div className="flex flex-wrap gap-1.5">
+                              {unit.facilities.map((fac, i) => (
+                                <span key={i} className="px-2.5 py-1 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-full text-xs font-medium">
+                                  {fac}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+                        ) : (
+                          <div>
+                            <span className="text-xs font-medium text-gray-500 block">
+                              ✨ สิ่งอำนวยความสะดวก: <span className="text-gray-700 font-semibold">ใช้สิ่งอำนวยความสะดวกส่วนกลางหลักของโครงการ</span>
+                            </span>
+                          </div>
+                        )}
                       </div>
                     </div>
                   ))}

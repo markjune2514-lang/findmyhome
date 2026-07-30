@@ -44,7 +44,7 @@ export default function AddPropertyPage() {
     security: [],
     promotions: [],
     transport: [],
-    unitTypes: [{ name: '', price: '', landSize: '', size: '', bedrooms: '', bathrooms: '', parking: '', roomType: '', planImages: [], roomImages: [] }]
+    unitTypes: [{ name: '', price: '', landSize: '', size: '', bedrooms: '', bathrooms: '', parking: '', roomType: '', planImages: [], roomImages: [], useProjectFacilities: true, facilities: [] }]
   });
   
   const [customInputs, setCustomInputs] = useState({});
@@ -185,7 +185,7 @@ export default function AddPropertyPage() {
   const handleAddUnitType = () => {
     setFormData(prev => ({
       ...prev,
-      unitTypes: [...prev.unitTypes, { name: '', price: '', landSize: '', size: '', bedrooms: '', bathrooms: '', parking: '', roomType: '', planImages: [], roomImages: [] }]
+      unitTypes: [...prev.unitTypes, { name: '', price: '', landSize: '', size: '', bedrooms: '', bathrooms: '', parking: '', roomType: '', planImages: [], roomImages: [], useProjectFacilities: true, facilities: [] }]
     }));
   };
 
@@ -461,6 +461,57 @@ export default function AddPropertyPage() {
                         images={unit.roomImages}
                         onChange={(images) => handleUnitTypeChange(idx, 'roomImages', images)}
                       />
+                    </div>
+
+                    {/* สิ่งอำนวยความสะดวกประจำแบบบ้าน/ห้อง */}
+                    <div className="form-group mb-0 md:col-span-4 mt-3 bg-white p-3 rounded-lg border border-gray-200">
+                      <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
+                        <label className="flex items-center gap-2 text-xs font-bold text-gray-700 cursor-pointer select-none">
+                          <input 
+                            type="checkbox" 
+                            checked={unit.useProjectFacilities !== false} 
+                            onChange={(e) => handleUnitTypeChange(idx, 'useProjectFacilities', e.target.checked)}
+                            className="w-4 h-4 text-primary rounded border-gray-300 focus:ring-primary"
+                          />
+                          ใช้สิ่งอำนวยความสะดวกเดียวกับโครงการหลัก (Facility เหมือนกัน)
+                        </label>
+                        {unit.useProjectFacilities === false && (
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const allProjFac = [
+                                ...(formData.facilities || []),
+                                ...(formData.special || []),
+                                ...(formData.security || []),
+                                ...(formData.healthFacilities || []),
+                                ...(formData.services || [])
+                              ];
+                              handleUnitTypeChange(idx, 'facilities', Array.from(new Set(allProjFac)));
+                            }}
+                            className="text-xs text-primary hover:underline font-semibold bg-primary/10 px-2 py-1 rounded"
+                          >
+                            + คัดลอกสิ่งอำนวยความสะดวกจากโครงการหลักมาใส่
+                          </button>
+                        )}
+                      </div>
+
+                      {unit.useProjectFacilities === false && (
+                        <div className="mt-2 pt-2 border-t border-gray-100">
+                          <label className="text-xs font-semibold text-gray-600 block mb-1">
+                            สิ่งอำนวยความสะดวกเฉพาะแบบบ้าน/ห้องนี้ (คั่นด้วยเครื่องหมายจุลภาค , )
+                          </label>
+                          <input 
+                            type="text"
+                            value={Array.isArray(unit.facilities) ? unit.facilities.join(', ') : (unit.facilities || '')}
+                            onChange={(e) => handleUnitTypeChange(idx, 'facilities', e.target.value.split(',').map(s => s.trim()).filter(Boolean))}
+                            placeholder="เช่น สระว่ายน้ำส่วนตัว, EV Charger, อ่างอาบน้ำ, ลิฟต์ส่วนตัว, Smart Home"
+                            className="w-full text-sm p-2 border rounded focus:ring-1 focus:ring-primary outline-none"
+                          />
+                          <p className="text-[11px] text-gray-400 mt-1">
+                            * หากแยกสิ่งอำนวยความสะดวกเฉพาะแบบ ระบบจะแสดงข้อมูลชุดนี้เมื่อผู้ชมกดดูแบบบ้านนี้
+                          </p>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
