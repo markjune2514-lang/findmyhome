@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { MapPin, Star, Heart, Share2, Info, LayoutDashboard, ChevronLeft, ChevronRight } from 'lucide-react';
+import { MapPin, Star, Heart, Share2, Info, LayoutDashboard, ChevronLeft, ChevronRight, Navigation, ExternalLink, Building, Landmark, GraduationCap, Hospital, ShoppingBag } from 'lucide-react';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
 import { useCompare } from '../CompareContext';
 import { useProperties } from '../PropertiesContext';
 import './PropertyDetail.css';
@@ -420,17 +423,91 @@ export default function PropertyDetail() {
         </div>
         
         <div className="side-map flex-1">
-          <div className="map-card-small">
-            <h4 className="mb-2">ทำเลที่ตั้ง</h4>
-            <div className="mini-map-placeholder mb-4">
-              <MapPin size={32} color="var(--primary)" />
+          <div className="map-card-small overflow-hidden rounded-2xl border border-gray-100 shadow-sm bg-white p-4">
+            <div className="flex items-center justify-between mb-3">
+              <h4 className="m-0 text-base font-bold text-gray-800 flex items-center gap-1.5">
+                <MapPin size={18} className="text-primary" /> ทำเลที่ตั้งโครงการ
+              </h4>
+              <span className="text-xs text-gray-500 font-medium">{prop.province || 'กรุงเทพและปริมณฑล'}</span>
             </div>
-            <p className="text-sm font-semibold mb-2">ใกล้สถานที่สำคัญ</p>
-            <ul className="nearby-list text-sm text-light">
-              <li>{prop.station} <span>{prop.distanceToStation}</span></li>
-              <li>Central Bangna <span>2.4 กม.</span></li>
-              <li>Mega Bangna <span>3.7 กม.</span></li>
+            
+            {/* Interactive Leaflet Map */}
+            <div className="relative w-full h-[220px] rounded-xl overflow-hidden mb-3 border border-gray-200">
+              <MapContainer 
+                center={[prop.location?.lat || 13.7563, prop.location?.lng || 100.5018]} 
+                zoom={14} 
+                style={{ height: '100%', width: '100%' }}
+                scrollWheelZoom={false}
+              >
+                <TileLayer
+                  attribution='&copy; OpenStreetMap contributors'
+                  url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
+                />
+                <Marker position={[prop.location?.lat || 13.7563, prop.location?.lng || 100.5018]}>
+                  <Popup>
+                    <div className="text-xs font-bold p-1">
+                      📍 {prop.name}<br />
+                      <span className="font-normal text-gray-500">{prop.developer}</span>
+                    </div>
+                  </Popup>
+                </Marker>
+              </MapContainer>
+
+              {/* Direct Open in Google Maps Overlay Button */}
+              <a
+                href={`https://www.google.com/maps/search/?api=1&query=${prop.location?.lat || 13.7563},${prop.location?.lng || 100.5018}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="absolute bottom-2 right-2 z-[1000] bg-white/90 backdrop-blur text-gray-800 text-xs font-bold px-2.5 py-1.5 rounded-lg shadow-md hover:bg-white flex items-center gap-1 border border-gray-200 transition-all"
+              >
+                <Navigation size={12} className="text-primary" /> นำทาง / Google Maps
+              </a>
+            </div>
+
+            <p className="text-xs font-bold text-gray-700 mb-2 flex items-center gap-1">
+              📍 สถานที่สำคัญใกล้เคียง
+            </p>
+            
+            <ul className="nearby-list text-xs text-gray-600 space-y-1.5">
+              {prop.station && (
+                <li className="flex justify-between items-center bg-gray-50 p-2 rounded-lg">
+                  <span className="font-medium flex items-center gap-1">🚆 {prop.station}</span>
+                  <span className="font-bold text-primary">{prop.distanceToStation || 'ใกล้เคียง'}</span>
+                </li>
+              )}
+              {prop.nearbyLandmarks && prop.nearbyLandmarks.length > 0 ? (
+                prop.nearbyLandmarks.map((lm, idx) => (
+                  <li key={idx} className="flex justify-between items-center bg-gray-50 p-2 rounded-lg">
+                    <span className="font-medium">{lm.name || lm}</span>
+                    <span className="font-bold text-gray-500">{lm.distance || ''}</span>
+                  </li>
+                ))
+              ) : (
+                <>
+                  <li className="flex justify-between items-center bg-gray-50 p-2 rounded-lg">
+                    <span className="font-medium">🏬 ห้างสรรพสินค้า / ช้อปปิ้งมอลล์ใกล้เคียง</span>
+                    <span className="text-[11px] text-gray-400">ดูบน Google Maps</span>
+                  </li>
+                  <li className="flex justify-between items-center bg-gray-50 p-2 rounded-lg">
+                    <span className="font-medium">🏥 โรงพยาบาล / สถานพยาบาล</span>
+                    <span className="text-[11px] text-gray-400">ดูบน Google Maps</span>
+                  </li>
+                  <li className="flex justify-between items-center bg-gray-50 p-2 rounded-lg">
+                    <span className="font-medium">🎓 โรงเรียน / มหาวิทยาลัย</span>
+                    <span className="text-[11px] text-gray-400">ดูบน Google Maps</span>
+                  </li>
+                </>
+              )}
             </ul>
+
+            <a
+              href={`https://www.google.com/maps/search/places+near+${prop.location?.lat || 13.7563},${prop.location?.lng || 100.5018}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-3 w-full py-2 bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-bold rounded-xl text-xs flex items-center justify-center gap-1.5 shadow-sm hover:shadow transition-all"
+            >
+              <ExternalLink size={14} /> สำรวจสถานที่สำคัญรอบโครงการบน Google Maps
+            </a>
           </div>
         </div>
       </div>
