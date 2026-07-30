@@ -45,18 +45,18 @@ export default function PropertyDetail() {
     : [];
 
   return (
-    <div className="container py-8">
-      <div className="breadcrumb mb-4 text-sm text-light">
+    <div className="container py-4 sm:py-8">
+      <div className="breadcrumb mb-4 text-xs sm:text-sm text-light overflow-x-auto whitespace-nowrap">
         <Link to="/search">หน้าหลัก</Link> &gt; <Link to="/search">ค้นหา</Link> &gt; <span className="text-main">{prop.name}</span>
       </div>
 
-      <div className="detail-header flex justify-between items-start mb-6">
+      <div className="detail-header flex flex-col md:flex-row justify-between items-start gap-4 mb-6">
         <div>
-          <h2>{prop.name}</h2>
-          <p className="text-light">{prop.developer}</p>
-          <div className="flex items-center gap-4 mt-2">
-            <span className="badge">{prop.projectType}</span>
-            <span className="rating-info"><Star size={16} fill="gold" color="gold" /> {prop.rating} ({prop.reviews || 12} รีวิว)</span>
+          <h2 className="text-xl sm:text-2xl font-bold">{prop.name}</h2>
+          <p className="text-light text-sm">{prop.developer}</p>
+          <div className="flex flex-wrap items-center gap-2 sm:gap-4 mt-2">
+            <span className="badge text-xs sm:text-sm">{prop.projectType}</span>
+            <span className="rating-info text-xs sm:text-sm"><Star size={16} fill="gold" color="gold" /> {prop.rating} ({prop.reviews || 12} รีวิว)</span>
             {prop.unitTypes && prop.unitTypes.length > 0 && (
               <span className="px-3 py-1 bg-primary/10 text-primary font-semibold rounded-full text-xs border border-primary/20">
                 🏡 โครงการนี้มี {prop.unitTypes.length} แบบบ้าน/ห้อง
@@ -64,59 +64,59 @@ export default function PropertyDetail() {
             )}
           </div>
         </div>
-        <div className="text-right">
-          <p className="text-light text-sm">เริ่มต้น</p>
-          <h2 className="text-primary">{prop.price} {prop.priceTo ? `- ${prop.priceTo}` : ''} ล้าน</h2>
-          <p className="text-light text-sm mt-1">{prop.bedrooms} Bed • {prop.size} {prop.size && !prop.size.includes('ตร') ? 'ตร.ม.' : ''}</p>
+        <div className="text-left md:text-right w-full md:w-auto bg-primary/5 p-3 md:p-0 rounded-lg md:bg-transparent">
+          <p className="text-light text-xs sm:text-sm">เริ่มต้น</p>
+          <h2 className="text-primary text-xl sm:text-2xl font-bold">{prop.price} {prop.priceTo ? `- ${prop.priceTo}` : ''} ล้าน</h2>
+          <p className="text-light text-xs sm:text-sm mt-1">{prop.bedrooms} Bed • {prop.size} {prop.size && !prop.size.includes('ตร') ? 'ตร.ม.' : ''}</p>
         </div>
       </div>
 
       <div className="gallery-section mb-8">
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2 sm:gap-4">
           {allImages.length > 1 && (
-            <button onClick={handlePrev} className="bg-white hover:bg-neutral-50 border p-3 rounded-full shadow-sm text-neutral-700 transition-colors shrink-0">
-              <ChevronLeft size={24} />
+            <button onClick={handlePrev} className="bg-white hover:bg-neutral-50 border p-2 sm:p-3 rounded-full shadow-sm text-neutral-700 transition-colors shrink-0">
+              <ChevronLeft size={20} className="sm:w-6 sm:h-6" />
             </button>
           )}
           
-          <div className="main-image transition-all duration-300 flex-1" style={{ backgroundImage: `url(${selectedImage})`, height: '400px', backgroundSize: 'contain', backgroundRepeat: 'no-repeat', backgroundPosition: 'center', backgroundColor: '#f8f9fa', borderRadius: '12px', border: '1px solid #eee' }}></div>
+          <div className="main-image transition-all duration-300 flex-1" style={{ backgroundImage: `url(${selectedImage})`, backgroundSize: 'contain', backgroundRepeat: 'no-repeat', backgroundPosition: 'center', backgroundColor: '#f8f9fa', borderRadius: '12px', border: '1px solid #eee' }}></div>
           
           {allImages.length > 1 && (
-            <button onClick={handleNext} className="bg-white hover:bg-neutral-50 border p-3 rounded-full shadow-sm text-neutral-700 transition-colors shrink-0">
-              <ChevronRight size={24} />
+            <button onClick={handleNext} className="bg-white hover:bg-neutral-50 border p-2 sm:p-3 rounded-full shadow-sm text-neutral-700 transition-colors shrink-0">
+              <ChevronRight size={20} className="sm:w-6 sm:h-6" />
             </button>
           )}
         </div>
         
         {allImages.length > 1 && (
-          <div className="thumbnail-list flex gap-3 mt-3 overflow-x-auto pb-2 snap-x">
+          <div className="thumbnail-list flex gap-2 sm:gap-3 mt-3 overflow-x-auto pb-2 snap-x">
             {allImages.map((img, idx) => (
               <img 
                 key={idx} 
                 src={img} 
                 alt={`thumb-${idx}`} 
                 onClick={() => setCurrentIndex(idx)}
-                className={`w-32 h-24 object-cover rounded-md cursor-pointer border-2 shrink-0 snap-start bg-neutral-1 transition-colors ${currentIndex === idx ? 'border-primary' : 'border-transparent hover:border-primary/50'}`} 
+                className={`w-24 h-16 sm:w-32 sm:h-24 object-cover rounded-md cursor-pointer border-2 shrink-0 snap-start bg-neutral-1 transition-colors ${currentIndex === idx ? 'border-primary' : 'border-transparent hover:border-primary/50'}`} 
               />
             ))}
           </div>
         )}
       </div>
 
-      <div className="flex gap-4 mb-8">
-        <button className="btn btn-secondary flex-1" onClick={() => handleAction('บันทึกโครงการ')}><Heart size={18} /> บันทึก</button>
-        <button className="btn btn-secondary flex-1" onClick={() => handleAction('คัดลอกลิงก์เพื่อแชร์')}><Share2 size={18} /> แชร์</button>
-        <button className="btn btn-secondary flex-1" onClick={() => addToCompare(prop)}><LayoutDashboard size={18} /> เปรียบเทียบ</button>
-        <button className="btn btn-primary flex-2" onClick={() => handleAction('ฟอร์มติดต่อโครงการ')}>ติดต่อโครงการ / นัดชม</button>
+      <div className="grid grid-cols-2 md:flex gap-2 sm:gap-4 mb-8">
+        <button className="btn btn-secondary text-xs sm:text-sm py-2" onClick={() => handleAction('บันทึกโครงการ')}><Heart size={16} /> บันทึก</button>
+        <button className="btn btn-secondary text-xs sm:text-sm py-2" onClick={() => handleAction('คัดลอกลิงก์เพื่อแชร์')}><Share2 size={16} /> แชร์</button>
+        <button className="btn btn-secondary text-xs sm:text-sm py-2" onClick={() => addToCompare(prop)}><LayoutDashboard size={16} /> เปรียบเทียบ</button>
+        <button className="btn btn-primary text-xs sm:text-sm py-2 col-span-2 md:flex-2" onClick={() => handleAction('ฟอร์มติดต่อโครงการ')}>ติดต่อโครงการ / นัดชม</button>
       </div>
 
-      <div className="content-tabs mb-6">
+      <div className="content-tabs mb-6 overflow-x-auto whitespace-nowrap">
         {['รายละเอียด', 'แบบบ้าน/ห้อง', 'สิ่งอำนวยความสะดวก', 'ทำเลที่ตั้ง'].map(tab => (
           <button key={tab} className={`tab ${activeTab === tab ? 'active' : ''}`} onClick={() => setActiveTab(tab)}>{tab}</button>
         ))}
       </div>
 
-      <div className="flex gap-8">
+      <div className="flex flex-col md:flex-row gap-6 md:gap-8">
         <div className="main-info flex-2">
           {activeTab === 'รายละเอียด' && (
             <>
