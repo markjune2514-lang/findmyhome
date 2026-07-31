@@ -314,6 +314,15 @@ export default function PropertyDetail() {
                       </div>
                     </div>
                   )}
+
+                  {prop.promotion && (
+                    <div>
+                      <span className="text-xs font-bold text-rose-600 block mb-2">🎁 โปรโมชั่น / สิทธิพิเศษ:</span>
+                      <div className="p-3.5 bg-rose-50 text-rose-700 rounded-xl text-sm leading-relaxed border border-rose-100 shadow-sm whitespace-pre-wrap">
+                        {prop.promotion}
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             </>

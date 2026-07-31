@@ -37,6 +37,7 @@ export default function AddPropertyPage() {
     distanceToStation: '300 ม.',
     roomType: '',
     livingFormat: '',
+    promotion: '',
     special: [],
     facilities: [],
     healthFacilities: [],
@@ -759,6 +760,21 @@ export default function AddPropertyPage() {
                   {renderCheckboxes('การรักษาความปลอดภัย (Security)', 'security', seniorSecurities)}
                 </div>
               )}
+            </div>
+
+            <div className="bg-neutral-1 p-6 rounded-lg mb-4 mt-4">
+              <div className="form-group mb-0">
+                <label className="block text-sm font-bold text-dark mb-2">โปรโมชั่น (Promotion)</label>
+                <textarea 
+                  name="promotion" 
+                  value={formData.promotion || ''} 
+                  onChange={handleChange} 
+                  placeholder="เช่น ฟรีดาวน์ ฟรีโอน ของแถม 10 รายการ..." 
+                  className="form-control"
+                  rows="3"
+                ></textarea>
+                <p className="text-xs text-light mt-1">อธิบายโปรโมชั่นหรือสิทธิพิเศษของโครงการ (ถ้ามี)</p>
+              </div>
             </div>
           </section>
 
