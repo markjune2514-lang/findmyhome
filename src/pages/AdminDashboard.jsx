@@ -85,9 +85,30 @@ function UnitTypesModal({ prop, onClose, onSaved }) {
               {expanded === idx && (
                 <div style={{ padding: '1rem', background: '#fff', borderTop: '1px solid #fde8d5' }}>
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+                    <div style={{ gridColumn: '1 / -1', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', background: '#f8fafc', padding: '0.75rem', borderRadius: '0.75rem', border: '1px solid #e2e8f0' }}>
+                      <div>
+                        <label style={labelStyle}>การแสดงราคา</label>
+                        <select 
+                          style={inputStyle}
+                          value={(unit.price === '' || unit.price === null) ? 'contact' : 'specify'}
+                          onChange={e => {
+                            if (e.target.value === 'contact') handleChange(idx, 'price', '');
+                            else handleChange(idx, 'price', '0');
+                          }}
+                        >
+                          <option value="specify">ระบุราคาเป็นตัวเลข</option>
+                          <option value="contact">แสดงเป็น "สอบถามราคา"</option>
+                        </select>
+                      </div>
+                      {(unit.price !== '' && unit.price !== null) && (
+                        <div>
+                          <label style={labelStyle}>ราคา (ล้านบาท)</label>
+                          <input type="number" step="0.01" value={unit.price || ''} onChange={e => handleChange(idx, 'price', e.target.value)} placeholder="เช่น 3.5" style={inputStyle} onFocus={e => e.target.style.borderColor = 'var(--primary)'} onBlur={e => e.target.style.borderColor = '#e2e8f0'} />
+                        </div>
+                      )}
+                    </div>
                     {[
                       { label: 'ชื่อแบบ', field: 'name', placeholder: 'เช่น แบบ A, Type 1' },
-                      { label: 'ราคา (ล้านบาท)', field: 'price', placeholder: 'เช่น 3.5', type: 'number' },
                       { label: 'พื้นที่ใช้สอย (ตร.ม.)', field: 'size', placeholder: 'เช่น 150' },
                       { label: 'ขนาดที่ดิน (ตร.วา)', field: 'landSize', placeholder: 'เช่น 50' },
                       { label: 'ห้องนอน', field: 'bedrooms', placeholder: 'เช่น 3' },

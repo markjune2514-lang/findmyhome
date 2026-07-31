@@ -310,14 +310,35 @@ export default function AddPropertyPage() {
               </div>
 
               <div className="form-group">
-                <label>ราคาเริ่มต้น (ล้านบาท)</label>
-                <input type="number" step="0.01" name="price" value={formData.price} onChange={handleChange} placeholder="เช่น 3.5" />
-                <p className="text-xs text-light mt-1">*หากเพิ่ม 'แบบห้อง' ด้านล่าง ระบบจะใช้ราคาต่ำสุดจากแบบห้องอัตโนมัติ</p>
-              </div>
-              <div className="form-group">
-                <label>ราคาสูงสุด (ล้านบาท) <span className="text-light">(ไม่บังคับ)</span></label>
-                <input type="number" step="0.01" name="priceTo" value={formData.priceTo} onChange={handleChange} placeholder="เช่น 5.9" />
-                <p className="text-xs text-light mt-1">หากต้องการแสดงราคาเป็นช่วง (เช่น 3.5 - 5.9 ล้านบาท)</p>
+                <label>การแสดงราคาเริ่มต้น</label>
+                <select 
+                  className="form-control mb-2"
+                  value={(formData.price === '' || formData.price === null) ? 'contact' : 'specify'} 
+                  onChange={(e) => {
+                    if (e.target.value === 'contact') {
+                      setFormData(prev => ({ ...prev, price: '', priceTo: '' }));
+                    } else {
+                      setFormData(prev => ({ ...prev, price: '0' }));
+                    }
+                  }}
+                >
+                  <option value="specify">ระบุราคาเป็นตัวเลข</option>
+                  <option value="contact">แสดงเป็น "สอบถามราคา"</option>
+                </select>
+
+                {(formData.price !== '' && formData.price !== null) && (
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                    <div>
+                      <label style={{ fontSize: '0.8rem', color: '#64748b' }}>ราคาเริ่มต้น (ล้านบาท)</label>
+                      <input type="number" step="0.01" name="price" value={formData.price} onChange={handleChange} placeholder="เช่น 3.5" />
+                    </div>
+                    <div>
+                      <label style={{ fontSize: '0.8rem', color: '#64748b' }}>ราคาสูงสุด <span className="text-light">(ไม่บังคับ)</span></label>
+                      <input type="number" step="0.01" name="priceTo" value={formData.priceTo} onChange={handleChange} placeholder="เช่น 5.9" />
+                    </div>
+                  </div>
+                )}
+                <p className="text-xs text-light mt-2">*หากเพิ่ม 'แบบห้อง' ด้านล่าง ระบบจะใช้ราคาต่ำสุดจากแบบห้องอัตโนมัติ</p>
               </div>
 
               <div className="form-group">
@@ -378,18 +399,33 @@ export default function AddPropertyPage() {
                         className="text-sm"
                       />
                     </div>
-                    <div className="form-group mb-0">
-                      <label className="text-xs">ราคา (ล้านบาท)</label>
-                      <input 
-                        type="number" 
-                        step="0.01" 
-                        value={unit.price} 
-                        onChange={(e) => handleUnitTypeChange(idx, 'price', e.target.value)} 
-                        placeholder="เช่น 2.59" 
-                        required
-                        className="text-sm"
-                      />
+                    <div className="form-group mb-0 md:col-span-2">
+                      <label className="text-xs">การแสดงราคา</label>
+                      <select 
+                        className="form-control text-sm"
+                        value={(unit.price === '' || unit.price === null) ? 'contact' : 'specify'}
+                        onChange={(e) => {
+                          if (e.target.value === 'contact') handleUnitTypeChange(idx, 'price', '');
+                          else handleUnitTypeChange(idx, 'price', '0');
+                        }}
+                      >
+                        <option value="specify">ระบุราคาเป็นตัวเลข</option>
+                        <option value="contact">แสดงเป็น "สอบถามราคา"</option>
+                      </select>
                     </div>
+                    {(unit.price !== '' && unit.price !== null) && (
+                      <div className="form-group mb-0 md:col-span-2">
+                        <label className="text-xs">ราคา (ล้านบาท)</label>
+                        <input 
+                          type="number" 
+                          step="0.01" 
+                          value={unit.price} 
+                          onChange={(e) => handleUnitTypeChange(idx, 'price', e.target.value)} 
+                          placeholder="เช่น 2.59" 
+                          className="form-control text-sm"
+                        />
+                      </div>
+                    )}
                     <div className="form-group mb-0">
                       <label className="text-xs">ขนาดที่ดิน (ตร.วา)</label>
                       <input 
