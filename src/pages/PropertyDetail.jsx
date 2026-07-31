@@ -132,12 +132,12 @@ export default function PropertyDetail() {
 
       {/* Price & Specs Summary Row */}
       <div className="flex justify-between items-end mb-4">
-        <div>
-          <span className="text-xs text-gray-500 block">{selectedUnit ? `ราคาสำหรับ ${selectedUnit.name || 'แบบห้องนี้'}` : (displayPrice ? 'ราคาเริ่มต้น' : 'ราคา')}</span>
-          <div className="text-lg sm:text-2xl font-black text-primary leading-none mt-0.5">
+        <div className="flex items-baseline gap-2">
+          <span className="text-sm text-gray-500 font-medium">{selectedUnit ? `ราคาสำหรับ ${selectedUnit.name || 'แบบห้องนี้'}` : (displayPrice ? 'ราคาเริ่มต้น' : 'ราคา')}</span>
+          <div className="text-xl sm:text-2xl font-black text-primary leading-none">
             {displayPrice
-              ? <>{displayPrice} {displayPriceTo ? `- ${displayPriceTo}` : ''} <span className="text-sm font-bold">ล้านบาท</span></>
-              : 'ราคาติดต่อสอบถาม'
+              ? <>{displayPrice} {displayPriceTo ? `- ${displayPriceTo}` : ''} <span className="text-base font-bold">ล้านบาท</span></>
+              : 'ติดต่อสอบถาม'
             }
           </div>
         </div>
