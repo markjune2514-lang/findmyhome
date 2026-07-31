@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
-import { Home, Heart, Bell, User, Menu, X } from 'lucide-react';
+import { Home, Heart, Bell, User, Menu, X, Search, Building, Scale, Newspaper, Info } from 'lucide-react';
 import './Layout.css';
 
 export default function Layout() {
@@ -59,35 +59,35 @@ export default function Layout() {
               className={`mobile-menu-link ${location.pathname === '/search' ? 'active' : ''}`}
               onClick={() => setMobileMenuOpen(false)}
             >
-              🔍 ค้นหาโครงการ
+              <span className="flex items-center gap-2"><Search size={18}/> ค้นหาโครงการ</span>
             </Link>
             <Link 
               to="/projects" 
               className={`mobile-menu-link ${location.pathname === '/projects' ? 'active' : ''}`}
               onClick={() => setMobileMenuOpen(false)}
             >
-              🏢 รวมโครงการ
+              <span className="flex items-center gap-2"><Building size={18}/> รวมโครงการ</span>
             </Link>
             <Link 
               to="/compare" 
               className={`mobile-menu-link ${location.pathname === '/compare' ? 'active' : ''}`}
               onClick={() => setMobileMenuOpen(false)}
             >
-              ⚖️ เปรียบเทียบโครงการ
+              <span className="flex items-center gap-2"><Scale size={18}/> เปรียบเทียบโครงการ</span>
             </Link>
             <Link 
               to="/blog" 
               className={`mobile-menu-link ${location.pathname === '/blog' ? 'active' : ''}`}
               onClick={() => setMobileMenuOpen(false)}
             >
-              📰 บทความน่ารู้
+              <span className="flex items-center gap-2"><Newspaper size={18}/> บทความน่ารู้</span>
             </Link>
             <Link 
               to="/about" 
               className={`mobile-menu-link ${location.pathname === '/about' ? 'active' : ''}`}
               onClick={() => setMobileMenuOpen(false)}
             >
-              ℹ️ เกี่ยวกับเรา
+              <span className="flex items-center gap-2"><Info size={18}/> เกี่ยวกับเรา</span>
             </Link>
           </div>
         )}

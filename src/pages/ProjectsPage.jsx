@@ -10,10 +10,10 @@ export default function ProjectsPage() {
 
   const categories = [
     { id: 'all', name: 'ทั้งหมด' },
-    { id: 'new', name: '🌟 โครงการใหม่' },
-    { id: 'transit', name: '🚆 ติดรถไฟฟ้า' },
-    { id: 'family', name: '🏡 บ้านสำหรับครอบครัว' },
-    { id: 'luxury', name: '💎 ระดับลักซ์ชัวรี่' }
+    { id: 'new', name: 'โครงการใหม่' },
+    { id: 'transit', name: 'ติดรถไฟฟ้า' },
+    { id: 'family', name: 'บ้านสำหรับครอบครัว' },
+    { id: 'luxury', name: 'ระดับลักซ์ชัวรี่' }
   ];
 
   // Simple mock filtering logic for demonstration

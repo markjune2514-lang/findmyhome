@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
-import { Search, SlidersHorizontal, Heart, Map as MapIcon, Star, X, ChevronDown, Plus, Check } from 'lucide-react';
+import { Search, SlidersHorizontal, Heart, Map as MapIcon, Star, X, ChevronDown, Plus, Check, PenTool, MapPin } from 'lucide-react';
 import { provincesAndDistricts, transitData } from '../data/locations';
 import { Link } from 'react-router-dom';
 import { useProperties } from '../PropertiesContext';
@@ -561,7 +561,7 @@ export default function SearchPage() {
               }}
               className="w-full py-2.5 px-3 bg-gradient-to-r from-amber-500 to-primary text-white font-bold rounded-xl shadow-sm hover:shadow-md transition-all flex items-center justify-center gap-2 text-xs sm:text-sm"
             >
-              ✏️ วาดพื้นที่ค้นหาด้วยตนเองบนแผนที่
+              <PenTool size={16} /> วาดพื้นที่ค้นหาด้วยตนเองบนแผนที่
             </button>
             <p className="text-[11px] text-gray-400 text-center mt-1">
               * ใช้เครื่องมือวาดวงกลมหรือหลายเหลี่ยมขวาบนแผนที่ เพื่อกรองโครงการในพื้นที่ที่ต้องการ
@@ -571,7 +571,7 @@ export default function SearchPage() {
           {polygonFilter && (
             <div className="mt-4 p-3 bg-secondary rounded text-sm text-primary text-center font-bold flex flex-col gap-1">
               <div className="flex items-center justify-between">
-                <span>📍 ค้นหาเฉพาะในพื้นที่วาดนี้</span>
+                <span className="flex items-center gap-1.5"><MapPin size={16} className="text-primary" /> ค้นหาเฉพาะในพื้นที่วาดนี้</span>
                 <button 
                   onClick={() => handlePolygonDrawn(null, null)}
                   className="text-xs text-red-500 hover:underline font-normal"

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { MapPin, Star, Heart, Share2, Info, LayoutDashboard, ChevronLeft, ChevronRight, Navigation, ExternalLink, Building, Landmark, GraduationCap, Hospital, ShoppingBag } from 'lucide-react';
+import { MapPin, Star, Heart, Share2, Info, LayoutDashboard, ChevronLeft, ChevronRight, Navigation, ExternalLink, Building, Landmark, GraduationCap, Hospital, ShoppingBag, Search, Phone, Waves, Sparkles, ShieldCheck, Activity, BellRing, Gift, Home, Ruler, ZoomIn, Image as ImageIcon, Train } from 'lucide-react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -62,8 +62,8 @@ export default function PropertyDetail() {
       <div className="min-h-[70vh] flex flex-col items-center justify-center p-8 text-center bg-background">
         <h2 className="text-2xl font-bold mb-2 text-gray-800">ไม่พบข้อมูลโครงการนี้</h2>
         <p className="text-gray-500 mb-6 text-sm">โครงการที่คุณค้นหาอาจถูกลบ หรืออาจไม่มีข้อมูลอยู่ในขณะนี้</p>
-        <Link to="/search" className="px-6 py-2.5 bg-primary text-white font-bold rounded-xl shadow-md hover:bg-primary-dark transition-all">
-          🔍 ไปยังหน้าค้นหาโครงการ
+        <Link to="/search" className="px-6 py-2.5 bg-primary text-white font-bold rounded-xl shadow-md hover:bg-primary-dark transition-all flex items-center justify-center gap-2 max-w-fit mx-auto">
+          <Search size={18} /> ไปยังหน้าค้นหาโครงการ
         </Link>
       </div>
     );
@@ -208,10 +208,10 @@ export default function PropertyDetail() {
       {/* Primary Action Button */}
       <div className="flex flex-col gap-2.5 mb-6 sm:mb-8">
         <button 
-          className="btn btn-primary w-full py-3.5 text-sm sm:text-base font-bold shadow-md rounded-2xl flex items-center justify-center gap-2"
+          className="btn btn-primary w-full py-3.5 text-sm sm:text-base font-bold shadow-md rounded-2xl flex items-center justify-center gap-2 transition-transform active:scale-[0.98]"
           onClick={() => handleAction('ฟอร์มติดต่อโครงการ')}
         >
-          📞 ติดต่อโครงการ / นัดชมสถานที่จริง
+          <Phone size={18} /> ติดต่อโครงการ / นัดชมสถานที่จริง
         </button>
 
         <div className="grid grid-cols-3 gap-2">
@@ -233,7 +233,10 @@ export default function PropertyDetail() {
           {activeTab === 'overview' && (
             <>
               {/* Project Specs */}
-              <h3 className="mb-4 text-lg font-bold text-gray-900">🏢 รายละเอียดและสเปกโครงการ</h3>
+              <div className="flex items-center gap-2 mb-4 border-b border-gray-100 pb-2">
+                <Building className="text-primary" size={24} />
+                <h3 className="text-xl font-black text-gray-900 m-0 tracking-tight">รายละเอียดและสเปกโครงการ</h3>
+              </div>
               <div className="specs-grid mb-8 grid grid-cols-2 sm:grid-cols-4 gap-3">
                 <div className="spec-item p-3 bg-white rounded-xl border border-gray-100 shadow-sm flex flex-col items-center text-center">
                   <Info size={22} color="var(--primary)" />
@@ -259,14 +262,14 @@ export default function PropertyDetail() {
 
               {/* Facilities Section in Overview */}
               <div className="mb-8 bg-white p-5 rounded-2xl border border-gray-100 shadow-sm">
-                <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-                  🏊 สิ่งอำนวยความสะดวกในโครงการ (Facilities)
+                <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2 border-b border-gray-100 pb-2">
+                  <Waves className="text-blue-500" size={22} /> สิ่งอำนวยความสะดวกในโครงการ
                 </h3>
 
                 <div className="space-y-4">
                   {prop.special && prop.special.length > 0 && (
                     <div>
-                      <span className="text-xs font-bold text-pink-700 block mb-2">✨ จุดเด่น / รูปแบบการอยู่อาศัย:</span>
+                      <span className="text-xs font-bold text-pink-700 mb-2 flex items-center gap-1.5"><Sparkles size={14} /> จุดเด่น / รูปแบบการอยู่อาศัย:</span>
                       <div className="flex flex-wrap gap-2">
                         {prop.special.map((s, i) => (
                           <span key={i} className="px-3.5 py-1.5 bg-pink-50 text-pink-700 rounded-full text-xs font-semibold border border-pink-100">{s}</span>
@@ -277,7 +280,7 @@ export default function PropertyDetail() {
 
                   {prop.facilities && prop.facilities.length > 0 && (
                     <div>
-                      <span className="text-xs font-bold text-blue-700 block mb-2">🏊 สิ่งอำนวยความสะดวกส่วนกลาง:</span>
+                      <span className="text-xs font-bold text-blue-700 mb-2 flex items-center gap-1.5"><Waves size={14} /> สิ่งอำนวยความสะดวกส่วนกลาง:</span>
                       <div className="flex flex-wrap gap-2">
                         {prop.facilities.map((f, i) => (
                           <span key={i} className="px-3.5 py-1.5 bg-blue-50 text-blue-700 rounded-full text-xs font-semibold border border-blue-100">{f}</span>
@@ -288,7 +291,7 @@ export default function PropertyDetail() {
 
                   {prop.security && prop.security.length > 0 && (
                     <div>
-                      <span className="text-xs font-bold text-emerald-700 block mb-2">🛡️ ระบบรักษาความปลอดภัย:</span>
+                      <span className="text-xs font-bold text-emerald-700 mb-2 flex items-center gap-1.5"><ShieldCheck size={14} /> ระบบรักษาความปลอดภัย:</span>
                       <div className="flex flex-wrap gap-2">
                         {prop.security.map((s, i) => (
                           <span key={i} className="px-3.5 py-1.5 bg-emerald-50 text-emerald-700 rounded-full text-xs font-semibold border border-emerald-100">{s}</span>
@@ -299,7 +302,7 @@ export default function PropertyDetail() {
 
                   {prop.healthFacilities && prop.healthFacilities.length > 0 && (
                     <div>
-                      <span className="text-xs font-bold text-purple-700 block mb-2">🏥 บริการด้านสุขภาพ:</span>
+                      <span className="text-xs font-bold text-purple-700 mb-2 flex items-center gap-1.5"><Activity size={14} /> บริการด้านสุขภาพ:</span>
                       <div className="flex flex-wrap gap-2">
                         {prop.healthFacilities.map((h, i) => (
                           <span key={i} className="px-3.5 py-1.5 bg-purple-50 text-purple-700 rounded-full text-xs font-semibold border border-purple-100">{h}</span>
@@ -310,7 +313,7 @@ export default function PropertyDetail() {
 
                   {prop.services && prop.services.length > 0 && (
                     <div>
-                      <span className="text-xs font-bold text-amber-700 block mb-2">🛎️ บริการพิเศษ:</span>
+                      <span className="text-xs font-bold text-amber-700 mb-2 flex items-center gap-1.5"><BellRing size={14} /> บริการพิเศษ:</span>
                       <div className="flex flex-wrap gap-2">
                         {prop.services.map((s, i) => (
                           <span key={i} className="px-3.5 py-1.5 bg-amber-50 text-amber-700 rounded-full text-xs font-semibold border border-amber-100">{s}</span>
@@ -321,7 +324,7 @@ export default function PropertyDetail() {
 
                   {prop.promotion && (
                     <div>
-                      <span className="text-xs font-bold text-rose-600 block mb-2">🎁 โปรโมชั่น / สิทธิพิเศษ:</span>
+                      <span className="text-xs font-bold text-rose-600 mb-2 flex items-center gap-1.5"><Gift size={14} /> โปรโมชั่น / สิทธิพิเศษ:</span>
                       <div className="p-3.5 bg-rose-50 text-rose-700 rounded-xl text-sm leading-relaxed border border-rose-100 shadow-sm whitespace-pre-wrap">
                         {prop.promotion}
                       </div>
@@ -334,8 +337,11 @@ export default function PropertyDetail() {
 
           {activeTab !== 'overview' && selectedUnit && (
             <div className="mb-8 bg-white p-5 rounded-2xl border border-gray-100 shadow-sm">
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="text-lg font-bold text-gray-900 m-0">🏡 รายละเอียดแบบ: {selectedUnit.name}</h3>
+              <div className="flex justify-between items-center mb-4 border-b border-gray-100 pb-3">
+                <div className="flex items-center gap-2">
+                  <Home className="text-primary" size={24} />
+                  <h3 className="text-xl font-black text-gray-900 m-0 tracking-tight">รายละเอียดแบบ: {selectedUnit.name}</h3>
+                </div>
                 <span className="text-lg font-black text-primary">{selectedUnit.price} ล้านบาท</span>
               </div>
 
@@ -359,12 +365,12 @@ export default function PropertyDetail() {
               {/* Floor Plan Images */}
               {selectedUnit.planImages && selectedUnit.planImages.length > 0 && (
                 <div className="mb-5">
-                  <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">📐 แปลนห้อง (Floor Plan)</h4>
+                  <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 flex items-center gap-1.5"><Ruler size={14} /> แปลนห้อง (Floor Plan)</h4>
                   <div className="grid grid-cols-2 gap-3">
                     {selectedUnit.planImages.map((img, i) => (
                       <div key={i} className="relative rounded-xl overflow-hidden border border-gray-200 group cursor-pointer" onClick={() => { const idx = allImages.indexOf(img); if (idx !== -1) setCurrentIndex(idx); }}>
                         <img src={img} alt={`plan-${i}`} className="w-full h-44 object-cover group-hover:scale-105 transition-all" />
-                        <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-all flex items-center justify-center text-white font-bold text-xs">🔍 ขยายภาพ</div>
+                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-all flex items-center justify-center text-white font-bold text-xs gap-1"><ZoomIn size={14} /> ขยายภาพ</div>
                       </div>
                     ))}
                   </div>
@@ -374,7 +380,7 @@ export default function PropertyDetail() {
               {/* Room Photos */}
               {selectedUnit.roomImages && selectedUnit.roomImages.length > 0 && (
                 <div>
-                  <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">🛋️ ภาพบรรยากาศห้องจริง</h4>
+                  <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 flex items-center gap-1.5"><ImageIcon size={14} /> ภาพบรรยากาศห้องจริง</h4>
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                     {selectedUnit.roomImages.map((img, i) => (
                       <div key={i} className="relative rounded-xl overflow-hidden border border-gray-200 group cursor-pointer" onClick={() => { const idx = allImages.indexOf(img); if (idx !== -1) setCurrentIndex(idx); }}>
@@ -412,7 +418,7 @@ export default function PropertyDetail() {
                 <Marker position={[prop.location?.lat || 13.7563, prop.location?.lng || 100.5018]}>
                   <Popup>
                     <div className="text-xs font-bold p-1">
-                      📍 {prop.name}<br />
+                      <div className="flex items-center gap-1 mb-1"><MapPin size={12} className="text-primary" /> {prop.name}</div>
                       <span className="font-normal text-gray-500">{prop.developer}</span>
                     </div>
                   </Popup>
@@ -435,8 +441,8 @@ export default function PropertyDetail() {
               {/* 1. รถไฟฟ้า / การเดินทาง */}
               {((prop.categorizedLandmarks?.transit && prop.categorizedLandmarks.transit.length > 0) || prop.station) && (
                 <div className="bg-blue-50/50 p-2.5 rounded-xl border border-blue-100">
-                  <p className="text-xs font-bold text-blue-900 mb-1.5 flex items-center gap-1">
-                    🚆 รถไฟฟ้า / การเดินทาง
+                  <p className="text-xs font-bold text-blue-900 mb-1.5 flex items-center gap-1.5">
+                    <Train size={14} /> รถไฟฟ้า / การเดินทาง
                   </p>
                   <div className="space-y-1">
                     {prop.categorizedLandmarks?.transit && prop.categorizedLandmarks.transit.length > 0 ? (
@@ -467,8 +473,8 @@ export default function PropertyDetail() {
               {/* 2. ห้างสรรพสินค้า / ช้อปปิ้ง */}
               {prop.categorizedLandmarks?.malls && prop.categorizedLandmarks.malls.length > 0 && (
                 <div className="bg-amber-50/50 p-2.5 rounded-xl border border-amber-100">
-                  <p className="text-xs font-bold text-amber-900 mb-1.5 flex items-center gap-1">
-                    🏬 ห้างสรรพสินค้า / ช้อปปิ้ง
+                  <p className="text-xs font-bold text-amber-900 mb-1.5 flex items-center gap-1.5">
+                    <ShoppingBag size={14} /> ห้างสรรพสินค้า / ช้อปปิ้ง
                   </p>
                   <div className="space-y-1">
                     {prop.categorizedLandmarks.malls.map((item, i) => (
@@ -484,8 +490,8 @@ export default function PropertyDetail() {
               {/* 3. โรงพยาบาล */}
               {prop.categorizedLandmarks?.hospitals && prop.categorizedLandmarks.hospitals.length > 0 && (
                 <div className="bg-rose-50/50 p-2.5 rounded-xl border border-rose-100">
-                  <p className="text-xs font-bold text-rose-900 mb-1.5 flex items-center gap-1">
-                    🏥 โรงพยาบาล / สถานพยาบาล
+                  <p className="text-xs font-bold text-rose-900 mb-1.5 flex items-center gap-1.5">
+                    <Hospital size={14} /> โรงพยาบาล / สถานพยาบาล
                   </p>
                   <div className="space-y-1">
                     {prop.categorizedLandmarks.hospitals.map((item, i) => (
@@ -501,8 +507,8 @@ export default function PropertyDetail() {
               {/* 4. โรงเรียน / มหาวิทยาลัย */}
               {prop.categorizedLandmarks?.schools && prop.categorizedLandmarks.schools.length > 0 && (
                 <div className="bg-emerald-50/50 p-2.5 rounded-xl border border-emerald-100">
-                  <p className="text-xs font-bold text-emerald-900 mb-1.5 flex items-center gap-1">
-                    🎓 โรงเรียน / มหาวิทยาลัย
+                  <p className="text-xs font-bold text-emerald-900 mb-1.5 flex items-center gap-1.5">
+                    <GraduationCap size={14} /> โรงเรียน / มหาวิทยาลัย
                   </p>
                   <div className="space-y-1">
                     {prop.categorizedLandmarks.schools.map((item, i) => (
