@@ -38,7 +38,7 @@ export default function PropertyDetail() {
   const selectedImage = allImages.length > 0 ? allImages[currentIndex] : '';
 
   // Dynamic Price & Specs
-  const displayPriceLabel = selectedUnit ? `ราคาสำหรับ ${selectedUnit.name || 'แบบห้องนี้'}` : 'ราคาเริ่มต้น';
+  const displayPriceLabel = selectedUnit ? `ราคาสำหรับ ${selectedUnit.name ? 'TYPE: ' + selectedUnit.name : 'TYPE นี้'}` : 'ราคาเริ่มต้น';
   const displayPrice = selectedUnit ? selectedUnit.price : prop?.price;
   const displayPriceTo = selectedUnit ? '' : prop?.priceTo;
   const displaySize = selectedUnit?.size || prop?.size;
@@ -124,7 +124,7 @@ export default function PropertyDetail() {
               onClick={() => setActiveTab(i.toString())}
               className={`tab-btn ${activeTab === i.toString() ? 'active' : ''}`}
             >
-              {u.name ? `แบบห้อง: ${u.name}` : `แบบห้องที่ ${i + 1}`}
+              {u.name ? `TYPE: ${u.name}` : `TYPE ${i + 1}`}
             </button>
           ))}
         </div>
@@ -133,7 +133,7 @@ export default function PropertyDetail() {
       {/* Price & Specs Summary Row */}
       <div className="flex justify-between items-end mb-4">
         <div className="flex items-baseline gap-2">
-          <span className="text-sm text-gray-500 font-medium">{selectedUnit ? `ราคาสำหรับ ${selectedUnit.name || 'แบบห้องนี้'}` : (displayPrice ? 'ราคาเริ่มต้น' : 'ราคา')}</span>
+          <span className="text-sm text-gray-500 font-medium">{selectedUnit ? `ราคาสำหรับ ${selectedUnit.name ? 'TYPE: ' + selectedUnit.name : 'TYPE นี้'}` : (displayPrice ? 'ราคาเริ่มต้น' : 'ราคา')}</span>
           <div className="text-xl sm:text-2xl font-black text-primary leading-none">
             {displayPrice
               ? <>{displayPrice} {displayPriceTo ? `- ${displayPriceTo}` : ''} <span className="text-base font-bold">ล้านบาท</span></>
@@ -365,7 +365,7 @@ export default function PropertyDetail() {
               <div className="flex justify-between items-center mb-4 border-b border-gray-100 pb-3">
                 <div className="flex items-center gap-2">
                   <Home className="text-primary" size={24} />
-                  <h3 className="text-xl font-black text-gray-900 m-0 tracking-tight">รายละเอียดแบบ: {selectedUnit.name}</h3>
+                  <h3 className="text-xl font-black text-gray-900 m-0 tracking-tight">รายละเอียด TYPE: {selectedUnit.name}</h3>
                 </div>
                 {selectedUnit.price ? (
                   <span className="text-lg font-black text-primary">{selectedUnit.price} ล้านบาท</span>
