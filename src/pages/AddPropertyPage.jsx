@@ -77,12 +77,35 @@ export default function AddPropertyPage() {
   const handleLocationStringChange = (e) => {
     const val = e.target.value;
     setLocationInput(val);
-    const parts = val.split(',');
-    if (parts.length >= 2) {
-      const lat = parseFloat(parts[0].trim());
-      const lng = parseFloat(parts[1].trim());
-      if (!isNaN(lat) && !isNaN(lng)) {
-        setFormData(p => ({...p, location: { lat, lng }}));
+    
+    // 1. Check for standard decimal format (e.g., 13.565441, 99.812454 or 13.565441 99.812454)
+    const decimalMatch = val.match(/(-?\d+\.\d+)[,\s]+(-?\d+\.\d+)/);
+    if (decimalMatch) {
+      setFormData(p => ({...p, location: { lat: parseFloat(decimalMatch[1]), lng: parseFloat(decimalMatch[2]) }}));
+      return;
+    }
+
+    // 2. Check for DMS format (e.g., 13°33'55.6"N 99°48'44.8"E)
+    const dmsRegex = /(\d+)°(\d+)'([\d.]+)"([NS])\s*(\d+)°(\d+)'([\d.]+)"([EW])/i;
+    const dmsMatch = val.match(dmsRegex);
+    if (dmsMatch) {
+      let lat = parseInt(dmsMatch[1], 10) + (parseInt(dmsMatch[2], 10) / 60) + (parseFloat(dmsMatch[3]) / 3600);
+      if (dmsMatch[4].toUpperCase() === 'S') lat = -lat;
+      let lng = parseInt(dmsMatch[5], 10) + (parseInt(dmsMatch[6], 10) / 60) + (parseFloat(dmsMatch[7]) / 3600);
+      if (dmsMatch[8].toUpperCase() === 'W') lng = -lng;
+      setFormData(p => ({...p, location: { lat, lng }}));
+      return;
+    }
+    
+    // 3. Fallback for simple comma separated without decimals (e.g. 13, 100)
+    if (val.includes(',')) {
+      const parts = val.split(',');
+      if (parts.length >= 2) {
+        const lat = parseFloat(parts[0].replace(/[^\d.-]/g, ''));
+        const lng = parseFloat(parts[1].replace(/[^\d.-]/g, ''));
+        if (!isNaN(lat) && !isNaN(lng)) {
+          setFormData(p => ({...p, location: { lat, lng }}));
+        }
       }
     }
   };
@@ -667,7 +690,7 @@ export default function AddPropertyPage() {
 
             <div className="bg-neutral-1 p-4 rounded-lg">
               <h4 className="flex items-center gap-2 mb-2 text-sm font-semibold"><MapPin size={16} /> พิกัดแผนที่ (Latitude, Longitude)</h4>
-              <p className="text-xs text-light mb-4">คัดลอกพิกัดจาก Google Maps มาวางได้เลย (เช่น 13.80238, 100.05228)</p>
+              <p className="text-xs text-light mb-4">คัดลอกพิกัดจาก Google Maps มาวางได้เลย (รองรับทั้งแบบ 13.8023, 100.0522 และ 13°33'55"N 99°48'44"E)</p>
               <div className="form-group mb-0">
                 <input 
                   type="text" 
