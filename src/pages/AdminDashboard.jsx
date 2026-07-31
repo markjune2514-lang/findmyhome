@@ -1,10 +1,120 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useProperties } from '../PropertiesContext';
-import { Plus, Building2, Home as HomeIcon, LayoutList, ArrowRight, Edit, Trash2 } from 'lucide-react';
+import { supabase } from '../supabaseClient';
+import {
+  Plus, Building2, Home as HomeIcon, LayoutList, Edit, Trash2,
+  Layers, Search, X, Save, ChevronDown, ChevronUp, TrendingUp, Eye
+} from 'lucide-react';
 
+// ── Unit Types Manager Modal ────────────────────────────────────────────────
+function UnitTypesModal({ prop, onClose, onSaved }) {
+  const emptyType = { name: '', price: '', size: '', bedrooms: '', bathrooms: '', parking: '', roomType: '', landSize: '', planImages: [], roomImages: [], useProjectFacilities: true, facilities: [] };
+  const [units, setUnits] = useState(
+    prop.unitTypes?.length ? prop.unitTypes.map(u => ({ ...emptyType, ...u })) : [{ ...emptyType }]
+  );
+  const [saving, setSaving] = useState(false);
+  const [expanded, setExpanded] = useState(0);
+
+  const handleChange = (idx, field, value) =>
+    setUnits(prev => prev.map((u, i) => i === idx ? { ...u, [field]: value } : u));
+
+  const addUnit = () => { setUnits(prev => [...prev, { ...emptyType }]); setExpanded(units.length); };
+  const removeUnit = (idx) => { setUnits(prev => prev.filter((_, i) => i !== idx)); setExpanded(Math.max(0, expanded - 1)); };
+
+  const handleSave = async () => {
+    setSaving(true);
+    try {
+      const { error } = await supabase.from('properties').update({ unitTypes: units }).eq('id', prop.id);
+      if (error) throw error;
+      onSaved();
+      onClose();
+    } catch (e) { alert('เกิดข้อผิดพลาด: ' + e.message); }
+    setSaving(false);
+  };
+
+  const inputStyle = { width: '100%', padding: '0.5rem 0.75rem', border: '1.5px solid #e2e8f0', borderRadius: '0.625rem', fontSize: '0.875rem', outline: 'none', boxSizing: 'border-box', background: '#fafafa' };
+  const labelStyle = { fontSize: '0.68rem', fontWeight: 700, color: '#64748b', display: 'block', marginBottom: '0.25rem', textTransform: 'uppercase', letterSpacing: '0.05em' };
+
+  return (
+    <div style={{ position: 'fixed', inset: 0, zIndex: 9999, background: 'rgba(15,23,42,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem', backdropFilter: 'blur(4px)' }}>
+      <div style={{ background: '#fff', borderRadius: '1.5rem', width: '100%', maxWidth: '700px', maxHeight: '92vh', overflow: 'hidden', display: 'flex', flexDirection: 'column', boxShadow: '0 25px 80px rgba(0,0,0,0.25)' }}>
+        {/* Header */}
+        <div style={{ padding: '1.25rem 1.5rem', borderBottom: '1px solid #f1f5f9', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#fafafa', borderRadius: '1.5rem 1.5rem 0 0' }}>
+          <div>
+            <p style={{ fontSize: '0.68rem', color: '#94a3b8', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', margin: 0 }}>จัดการแบบห้อง / แบบบ้าน</p>
+            <h3 style={{ margin: '0.15rem 0 0', fontWeight: 800, color: '#0f172a', fontSize: '1.05rem' }}>{prop.name}</h3>
+          </div>
+          <button onClick={onClose} style={{ background: '#f1f5f9', border: 'none', borderRadius: '50%', width: 36, height: 36, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}><X size={18} /></button>
+        </div>
+
+        {/* Body */}
+        <div style={{ overflowY: 'auto', padding: '1.25rem 1.5rem', flex: 1, display: 'flex', flexDirection: 'column', gap: '0.625rem' }}>
+          {units.map((unit, idx) => (
+            <div key={idx} style={{ border: `1.5px solid ${expanded === idx ? '#f4c5a8' : '#e2e8f0'}`, borderRadius: '1rem', overflow: 'hidden', transition: 'border-color 0.2s' }}>
+              <div onClick={() => setExpanded(expanded === idx ? -1 : idx)} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.875rem 1rem', background: expanded === idx ? '#fef7f0' : '#f8fafc', cursor: 'pointer' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                  <span style={{ background: 'var(--primary)', color: '#fff', borderRadius: '50%', width: 28, height: 28, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.75rem', fontWeight: 800, flexShrink: 0 }}>{idx + 1}</span>
+                  <div>
+                    <p style={{ margin: 0, fontWeight: 700, color: '#0f172a', fontSize: '0.875rem' }}>{unit.name || `แบบที่ ${idx + 1}`}</p>
+                    <p style={{ margin: 0, fontSize: '0.7rem', color: '#94a3b8' }}>
+                      {unit.price ? `${unit.price} ล้านบาท` : 'ยังไม่ระบุราคา'}{unit.bedrooms ? ` • ${unit.bedrooms} Bed` : ''}{unit.size ? ` • ${unit.size} ตร.ม.` : ''}
+                    </p>
+                  </div>
+                </div>
+                <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                  {units.length > 1 && <button onClick={e => { e.stopPropagation(); removeUnit(idx); }} style={{ background: '#fee2e2', border: 'none', borderRadius: '0.5rem', padding: '0.2rem 0.6rem', color: '#dc2626', cursor: 'pointer', fontSize: '0.7rem', fontWeight: 700 }}>ลบ</button>}
+                  {expanded === idx ? <ChevronUp size={16} color="#94a3b8" /> : <ChevronDown size={16} color="#94a3b8" />}
+                </div>
+              </div>
+
+              {expanded === idx && (
+                <div style={{ padding: '1rem', background: '#fff', borderTop: '1px solid #fde8d5' }}>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+                    {[
+                      { label: 'ชื่อแบบ', field: 'name', placeholder: 'เช่น แบบ A, Type 1' },
+                      { label: 'ราคา (ล้านบาท)', field: 'price', placeholder: 'เช่น 3.5', type: 'number' },
+                      { label: 'พื้นที่ใช้สอย (ตร.ม.)', field: 'size', placeholder: 'เช่น 150' },
+                      { label: 'ขนาดที่ดิน (ตร.วา)', field: 'landSize', placeholder: 'เช่น 50' },
+                      { label: 'ห้องนอน', field: 'bedrooms', placeholder: 'เช่น 3' },
+                      { label: 'ห้องน้ำ', field: 'bathrooms', placeholder: 'เช่น 2' },
+                      { label: 'ที่จอดรถ', field: 'parking', placeholder: 'เช่น 2' },
+                      { label: 'รูปแบบห้อง', field: 'roomType', placeholder: 'เช่น 2 Bed' },
+                    ].map(({ label, field, placeholder, type }) => (
+                      <div key={field}>
+                        <label style={labelStyle}>{label}</label>
+                        <input type={type || 'text'} value={unit[field] || ''} onChange={e => handleChange(idx, field, e.target.value)} placeholder={placeholder} style={inputStyle} onFocus={e => e.target.style.borderColor = 'var(--primary)'} onBlur={e => e.target.style.borderColor = '#e2e8f0'} />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          ))}
+
+          <button onClick={addUnit} style={{ width: '100%', padding: '0.75rem', border: '2px dashed #cbd5e1', borderRadius: '1rem', background: 'transparent', color: '#64748b', fontWeight: 700, cursor: 'pointer', fontSize: '0.875rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
+            <Plus size={16} /> เพิ่มแบบใหม่
+          </button>
+        </div>
+
+        {/* Footer */}
+        <div style={{ padding: '1rem 1.5rem', borderTop: '1px solid #f1f5f9', display: 'flex', gap: '0.75rem', justifyContent: 'flex-end', background: '#fafafa', borderRadius: '0 0 1.5rem 1.5rem' }}>
+          <button onClick={onClose} style={{ padding: '0.625rem 1.25rem', border: '1.5px solid #e2e8f0', borderRadius: '0.75rem', background: '#fff', color: '#64748b', fontWeight: 600, cursor: 'pointer', fontSize: '0.875rem' }}>ยกเลิก</button>
+          <button onClick={handleSave} disabled={saving} style={{ padding: '0.625rem 1.5rem', border: 'none', borderRadius: '0.75rem', background: 'var(--primary)', color: '#fff', fontWeight: 700, cursor: saving ? 'not-allowed' : 'pointer', fontSize: '0.875rem', display: 'flex', alignItems: 'center', gap: '0.5rem', opacity: saving ? 0.7 : 1 }}>
+            <Save size={15} /> {saving ? 'กำลังบันทึก...' : 'บันทึก'}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── Main Dashboard ──────────────────────────────────────────────────────────
 export default function AdminDashboard() {
-  const { properties, deleteProperty } = useProperties();
+  const { properties, deleteProperty, fetchProperties } = useProperties();
+  const [search, setSearch] = useState('');
+  const [typeFilter, setTypeFilter] = useState('ทั้งหมด');
+  const [managingProp, setManagingProp] = useState(null);
 
   const handleDelete = async (id) => {
     if (window.confirm('คุณแน่ใจหรือไม่ว่าต้องการลบโครงการนี้? (ไม่สามารถกู้คืนได้)')) {
@@ -14,116 +124,163 @@ export default function AdminDashboard() {
 
   const condoCount = properties.filter(p => p.type === 'คอนโด').length;
   const houseCount = properties.filter(p => p.type === 'บ้าน' || p.type === 'ทาวน์โฮม').length;
+  const seniorCount = properties.filter(p => p.type === 'Senior Living').length;
+
+  const filtered = properties.filter(p => {
+    const matchSearch = !search || p.name?.toLowerCase().includes(search.toLowerCase()) || p.developer?.toLowerCase().includes(search.toLowerCase()) || p.province?.includes(search);
+    const matchType = typeFilter === 'ทั้งหมด' || p.type === typeFilter;
+    return matchSearch && matchType;
+  });
+
+  const statusStyle = (status) => {
+    if (status === 'พร้อมอยู่') return { background: '#dcfce7', color: '#16a34a' };
+    if (status === 'เปิด Presale') return { background: '#fef9c3', color: '#ca8a04' };
+    return { background: '#e0f2fe', color: '#0284c7' };
+  };
+
+  const typeStyle = (type) => {
+    if (type === 'คอนโด') return { background: '#f5f3ff', color: '#7c3aed' };
+    if (type === 'Senior Living') return { background: '#fffbeb', color: '#b45309' };
+    return { background: '#ecfdf5', color: '#059669' };
+  };
 
   return (
-    <div className="p-8 lg:p-12 max-w-7xl mx-auto">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-4">
-        <div>
-          <h2 className="text-3xl font-bold text-gray-800 mb-2 tracking-tight">ภาพรวมระบบ <span className="text-primary font-normal">Dashboard</span></h2>
-          <p className="text-gray-500 text-lg">จัดการข้อมูลโครงการอสังหาริมทรัพย์ทั้งหมดของคุณได้อย่างง่ายดาย</p>
-        </div>
-        <Link to="/admin/add" className="bg-primary hover:bg-primary-dark text-white shadow-lg shadow-primary/30 flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all hover:-translate-y-1">
-          <Plus size={20} /> เพิ่มโครงการใหม่
-        </Link>
-      </div>
+    <div style={{ minHeight: '100vh', background: '#f8fafc', padding: '1.5rem 1rem' }}>
+      <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
 
-      {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-        <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all hover:-translate-y-1 group relative overflow-hidden">
-          <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
-            <LayoutList size={80} />
+        {/* ── Header */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1.75rem', flexWrap: 'wrap', gap: '1rem' }}>
+          <div>
+            <h1 style={{ margin: 0, fontSize: 'clamp(1.25rem, 4vw, 1.75rem)', fontWeight: 900, color: '#0f172a' }}>
+              🏠 Admin <span style={{ color: 'var(--primary)' }}>Dashboard</span>
+            </h1>
+            <p style={{ margin: '0.25rem 0 0', color: '#64748b', fontSize: '0.875rem' }}>จัดการข้อมูลโครงการอสังหาริมทรัพย์ทั้งหมด</p>
           </div>
-          <div className="bg-blue-50 w-12 h-12 rounded-xl flex items-center justify-center text-blue-600 mb-4">
-            <LayoutList size={24} />
-          </div>
-          <h3 className="text-gray-500 font-medium mb-1">โครงการทั้งหมด</h3>
-          <p className="text-4xl font-bold text-gray-800">{properties.length}</p>
+          <Link to="/admin/add" style={{ background: 'var(--primary)', color: '#fff', padding: '0.75rem 1.5rem', borderRadius: '0.875rem', fontWeight: 700, textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '0.5rem', boxShadow: '0 4px 14px rgba(211,135,100,0.35)', fontSize: '0.875rem' }}>
+            <Plus size={18} /> เพิ่มโครงการใหม่
+          </Link>
         </div>
 
-        <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all hover:-translate-y-1 group relative overflow-hidden">
-          <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
-            <Building2 size={80} />
-          </div>
-          <div className="bg-purple-50 w-12 h-12 rounded-xl flex items-center justify-center text-purple-600 mb-4">
-            <Building2 size={24} />
-          </div>
-          <h3 className="text-gray-500 font-medium mb-1">คอนโดมิเนียม</h3>
-          <p className="text-4xl font-bold text-gray-800">{condoCount}</p>
-        </div>
-
-        <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all hover:-translate-y-1 group relative overflow-hidden">
-          <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
-            <HomeIcon size={80} />
-          </div>
-          <div className="bg-emerald-50 w-12 h-12 rounded-xl flex items-center justify-center text-emerald-600 mb-4">
-            <HomeIcon size={24} />
-          </div>
-          <h3 className="text-gray-500 font-medium mb-1">บ้านและทาวน์โฮม</h3>
-          <p className="text-4xl font-bold text-gray-800">{houseCount}</p>
-        </div>
-      </div>
-
-      {/* Property List */}
-      <div className="bg-white rounded-2xl border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] overflow-hidden">
-        <div className="p-6 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
-          <h3 className="text-lg font-bold text-gray-800">โครงการอัปเดตล่าสุด</h3>
-        </div>
-        <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse">
-            <thead>
-              <tr className="bg-white text-gray-400 text-xs uppercase tracking-wider">
-                <th className="p-5 font-semibold border-b border-gray-100">ชื่อโครงการ</th>
-                <th className="p-5 font-semibold border-b border-gray-100">ประเภท</th>
-                <th className="p-5 font-semibold border-b border-gray-100">ราคาเริ่มต้น</th>
-                <th className="p-5 font-semibold border-b border-gray-100">ทำเล</th>
-                <th className="p-5 font-semibold border-b border-gray-100 text-right">จัดการ</th>
-              </tr>
-            </thead>
-            <tbody className="text-sm">
-              {properties.slice(0, 10).map((prop, idx) => (
-                <tr key={prop.id || idx} className="hover:bg-gray-50/80 border-b border-gray-50 last:border-b-0 transition-colors group">
-                  <td className="p-5">
-                    <div className="flex items-center gap-4">
-                      <div className="relative">
-                        <img src={prop.image ? prop.image.split(',')[0] : ''} alt={prop.name} className="w-12 h-12 rounded-xl object-cover shadow-sm group-hover:shadow-md transition-shadow" />
-                      </div>
-                      <div>
-                        <p className="font-bold text-gray-800 text-base">{prop.name}</p>
-                        <p className="text-xs text-gray-500 mt-0.5">{prop.developer}</p>
-                      </div>
-                    </div>
-                  </td>
-                  <td className="p-5">
-                    <span className={`px-3 py-1.5 rounded-lg text-xs font-medium ${prop.type === 'คอนโด' ? 'bg-purple-50 text-purple-700' : 'bg-emerald-50 text-emerald-700'}`}>
-                      {prop.type}
-                    </span>
-                  </td>
-                  <td className="p-5 font-bold text-gray-700">{prop.price ? `${prop.price} ลบ.` : '-'}</td>
-                  <td className="p-5 text-gray-500">{prop.province}</td>
-                  <td className="p-5 text-right whitespace-nowrap">
-                    <Link to={`/admin/edit/${prop.id}`} className="inline-flex items-center gap-1 text-blue-600 hover:text-blue-700 font-medium text-sm transition-colors bg-blue-50 hover:bg-blue-100 px-3 py-1.5 rounded-lg mr-2">
-                      <Edit size={14} /> แก้ไข
-                    </Link>
-                    <button onClick={() => handleDelete(prop.id)} className="inline-flex items-center gap-1 text-red-600 hover:text-red-700 font-medium text-sm transition-colors bg-red-50 hover:bg-red-100 px-3 py-1.5 rounded-lg mr-2">
-                      <Trash2 size={14} /> ลบ
-                    </button>
-                    <Link to={`/property/${prop.id}`} target="_blank" className="inline-flex items-center gap-1 text-primary hover:text-primary-dark font-medium text-sm transition-colors bg-primary/5 hover:bg-primary/10 px-3 py-1.5 rounded-lg">
-                      หน้าเว็บ <ArrowRight size={14} />
-                    </Link>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          {properties.length === 0 && (
-            <div className="p-12 text-center text-gray-500 flex flex-col items-center">
-              <LayoutList size={48} className="text-gray-300 mb-4" />
-              <p className="text-lg">ยังไม่มีโครงการในระบบ</p>
-              <p className="text-sm text-gray-400 mt-1">เริ่มเพิ่มโครงการแรกของคุณเพื่อดูสถิติ</p>
+        {/* ── Stats */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(170px, 1fr))', gap: '1rem', marginBottom: '1.75rem' }}>
+          {[
+            { label: 'โครงการทั้งหมด', value: properties.length, icon: <LayoutList size={22} />, iconColor: '#6366f1', iconBg: '#eef2ff' },
+            { label: 'คอนโดมิเนียม', value: condoCount, icon: <Building2 size={22} />, iconColor: '#8b5cf6', iconBg: '#f5f3ff' },
+            { label: 'บ้านและทาวน์โฮม', value: houseCount, icon: <HomeIcon size={22} />, iconColor: '#10b981', iconBg: '#ecfdf5' },
+            { label: 'Senior Living', value: seniorCount, icon: <TrendingUp size={22} />, iconColor: '#f59e0b', iconBg: '#fffbeb' },
+          ].map((s, i) => (
+            <div key={i} style={{ background: '#fff', borderRadius: '1.25rem', padding: '1.25rem', border: '1px solid #f1f5f9', boxShadow: '0 1px 8px rgba(0,0,0,0.04)', display: 'flex', alignItems: 'center', gap: '1rem' }}>
+              <div style={{ width: 48, height: 48, borderRadius: '0.875rem', background: s.iconBg, display: 'flex', alignItems: 'center', justifyContent: 'center', color: s.iconColor, flexShrink: 0 }}>{s.icon}</div>
+              <div>
+                <p style={{ margin: 0, fontSize: '0.68rem', color: '#94a3b8', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.04em' }}>{s.label}</p>
+                <p style={{ margin: 0, fontSize: '1.75rem', fontWeight: 900, color: '#0f172a', lineHeight: 1.1 }}>{s.value}</p>
+              </div>
             </div>
-          )}
+          ))}
+        </div>
+
+        {/* ── Table Card */}
+        <div style={{ background: '#fff', borderRadius: '1.5rem', border: '1px solid #f1f5f9', boxShadow: '0 1px 12px rgba(0,0,0,0.06)', overflow: 'hidden' }}>
+          {/* Toolbar */}
+          <div style={{ padding: '1rem 1.5rem', borderBottom: '1px solid #f8fafc', display: 'flex', gap: '0.75rem', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', background: '#fafafa' }}>
+            <h3 style={{ margin: 0, fontWeight: 800, color: '#0f172a', fontSize: '1rem' }}>
+              รายการโครงการ <span style={{ fontSize: '0.78rem', fontWeight: 500, color: '#94a3b8' }}>({filtered.length} โครงการ)</span>
+            </h3>
+            <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', alignItems: 'center' }}>
+              <div style={{ position: 'relative' }}>
+                <Search size={13} style={{ position: 'absolute', left: 10, top: '50%', transform: 'translateY(-50%)', color: '#94a3b8', pointerEvents: 'none' }} />
+                <input placeholder="ค้นหาโครงการ..." value={search} onChange={e => setSearch(e.target.value)} style={{ paddingLeft: '2rem', paddingRight: '0.75rem', paddingTop: '0.45rem', paddingBottom: '0.45rem', border: '1.5px solid #e2e8f0', borderRadius: '0.625rem', fontSize: '0.8rem', outline: 'none', width: 200, background: '#fff' }} />
+              </div>
+              {['ทั้งหมด', 'คอนโด', 'บ้าน', 'ทาวน์โฮม', 'Senior Living'].map(t => (
+                <button key={t} onClick={() => setTypeFilter(t)} style={{ padding: '0.375rem 0.875rem', border: '1.5px solid', borderColor: typeFilter === t ? 'var(--primary)' : '#e2e8f0', borderRadius: '2rem', fontSize: '0.72rem', fontWeight: 700, background: typeFilter === t ? 'var(--primary)' : '#fff', color: typeFilter === t ? '#fff' : '#64748b', cursor: 'pointer', whiteSpace: 'nowrap', transition: 'all 0.15s' }}>
+                  {t}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Table */}
+          <div style={{ overflowX: 'auto' }}>
+            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.875rem' }}>
+              <thead>
+                <tr style={{ background: '#f8fafc' }}>
+                  {['โครงการ', 'ประเภท', 'ราคาเริ่มต้น', 'จังหวัด', 'สถานะ', 'Types', 'จัดการ'].map(h => (
+                    <th key={h} style={{ padding: '0.75rem 1rem', textAlign: 'left', fontSize: '0.68rem', fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.06em', whiteSpace: 'nowrap', borderBottom: '1px solid #f1f5f9' }}>{h}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {filtered.map((prop, idx) => (
+                  <tr key={prop.id || idx} style={{ borderBottom: '1px solid #f8fafc' }}
+                    onMouseEnter={e => e.currentTarget.style.background = '#fafafa'}
+                    onMouseLeave={e => e.currentTarget.style.background = '#fff'}
+                  >
+                    {/* Project */}
+                    <td style={{ padding: '0.75rem 1rem' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                        <img src={prop.image ? prop.image.split(',')[0] : ''} alt={prop.name} style={{ width: 44, height: 44, borderRadius: '0.75rem', objectFit: 'cover', flexShrink: 0, background: '#f1f5f9', border: '1px solid #f1f5f9' }} onError={e => e.target.style.display = 'none'} />
+                        <div>
+                          <p style={{ margin: 0, fontWeight: 700, color: '#0f172a', fontSize: '0.875rem', maxWidth: 180, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{prop.name}</p>
+                          <p style={{ margin: 0, fontSize: '0.7rem', color: '#94a3b8' }}>{prop.developer}</p>
+                        </div>
+                      </div>
+                    </td>
+                    {/* Type */}
+                    <td style={{ padding: '0.75rem 1rem' }}>
+                      <span style={{ padding: '0.2rem 0.7rem', borderRadius: '2rem', fontSize: '0.68rem', fontWeight: 700, ...typeStyle(prop.type) }}>{prop.type}</span>
+                    </td>
+                    {/* Price */}
+                    <td style={{ padding: '0.75rem 1rem', fontWeight: 700, color: prop.price ? '#0f172a' : '#94a3b8', fontSize: '0.8rem', whiteSpace: 'nowrap' }}>
+                      {prop.price ? `${prop.price} ลบ.` : 'ติดต่อสอบถาม'}
+                    </td>
+                    {/* Province */}
+                    <td style={{ padding: '0.75rem 1rem', color: '#64748b', fontSize: '0.8rem', whiteSpace: 'nowrap' }}>{prop.province}</td>
+                    {/* Status */}
+                    <td style={{ padding: '0.75rem 1rem' }}>
+                      <span style={{ padding: '0.2rem 0.7rem', borderRadius: '2rem', fontSize: '0.68rem', fontWeight: 700, ...statusStyle(prop.status), whiteSpace: 'nowrap' }}>{prop.status || '-'}</span>
+                    </td>
+                    {/* Unit Types Button */}
+                    <td style={{ padding: '0.75rem 1rem' }}>
+                      <button onClick={() => setManagingProp(prop)}
+                        style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem', padding: '0.35rem 0.75rem', border: '1.5px solid #e2e8f0', borderRadius: '0.5rem', background: '#fff', cursor: 'pointer', fontSize: '0.72rem', fontWeight: 700, color: '#475569', whiteSpace: 'nowrap' }}
+                        onMouseEnter={e => { e.currentTarget.style.borderColor = 'var(--primary)'; e.currentTarget.style.color = 'var(--primary)'; e.currentTarget.style.background = '#fef7f0'; }}
+                        onMouseLeave={e => { e.currentTarget.style.borderColor = '#e2e8f0'; e.currentTarget.style.color = '#475569'; e.currentTarget.style.background = '#fff'; }}
+                      >
+                        <Layers size={12} /> {prop.unitTypes?.length || 0} Type
+                      </button>
+                    </td>
+                    {/* Actions */}
+                    <td style={{ padding: '0.75rem 1rem' }}>
+                      <div style={{ display: 'flex', gap: '0.375rem', alignItems: 'center' }}>
+                        <Link to={`/admin/edit/${prop.id}`} title="แก้ไข" style={{ width: 32, height: 32, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '0.5rem', background: '#eff6ff', color: '#3b82f6', textDecoration: 'none', border: '1px solid #dbeafe', flexShrink: 0 }}><Edit size={14} /></Link>
+                        <Link to={`/property/${prop.id}`} target="_blank" title="ดูหน้าเว็บ" style={{ width: 32, height: 32, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '0.5rem', background: '#f0fdf4', color: '#22c55e', textDecoration: 'none', border: '1px solid #dcfce7', flexShrink: 0 }}><Eye size={14} /></Link>
+                        <button onClick={() => handleDelete(prop.id)} title="ลบ" style={{ width: 32, height: 32, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '0.5rem', background: '#fef2f2', color: '#ef4444', border: '1px solid #fee2e2', cursor: 'pointer', flexShrink: 0 }}><Trash2 size={14} /></button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+
+            {filtered.length === 0 && (
+              <div style={{ padding: '3rem', textAlign: 'center', color: '#94a3b8' }}>
+                <LayoutList size={48} style={{ margin: '0 auto 1rem', display: 'block', color: '#e2e8f0' }} />
+                <p style={{ fontWeight: 700, fontSize: '1rem', margin: '0 0 0.25rem' }}>ไม่พบโครงการ</p>
+                <p style={{ fontSize: '0.8rem', margin: 0 }}>ลองเปลี่ยน filter หรือเพิ่มโครงการใหม่</p>
+              </div>
+            )}
+          </div>
         </div>
       </div>
+
+      {/* Unit Types Modal */}
+      {managingProp && (
+        <UnitTypesModal
+          prop={managingProp}
+          onClose={() => setManagingProp(null)}
+          onSaved={() => { if (fetchProperties) fetchProperties(); }}
+        />
+      )}
     </div>
   );
 }

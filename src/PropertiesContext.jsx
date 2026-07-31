@@ -93,7 +93,7 @@ export const PropertiesProvider = ({ children }) => {
   };
 
   return (
-    <PropertiesContext.Provider value={{ properties, addProperty, updateProperty, deleteProperty, loading }}>
+    <PropertiesContext.Provider value={{ properties, addProperty, updateProperty, deleteProperty, fetchProperties, loading }}>
       {children}
     </PropertiesContext.Provider>
   );
