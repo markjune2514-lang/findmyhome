@@ -398,7 +398,7 @@ export default function PropertyDetail() {
             </div>
             
             {/* Interactive Leaflet Map */}
-            <div className="relative w-full h-[200px] rounded-xl overflow-hidden mb-4 border border-gray-200 shadow-inner">
+            <div className="map-container-wrapper">
               <MapContainer 
                 center={[prop.location?.lat || 13.7563, prop.location?.lng || 100.5018]} 
                 zoom={14} 
@@ -424,7 +424,7 @@ export default function PropertyDetail() {
                 href={`https://www.google.com/maps/search/?api=1&query=${prop.location?.lat || 13.7563},${prop.location?.lng || 100.5018}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="absolute bottom-2 right-2 z-[1000] bg-white/90 backdrop-blur text-gray-800 text-xs font-bold px-2.5 py-1.5 rounded-lg shadow-md hover:bg-white flex items-center gap-1 border border-gray-200 transition-all"
+                className="google-maps-overlay-btn"
               >
                 <Navigation size={12} className="text-primary" /> Google Maps
               </a>
