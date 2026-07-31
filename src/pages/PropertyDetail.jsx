@@ -261,71 +261,71 @@ export default function PropertyDetail() {
               </div>
 
               {/* Facilities Section in Overview */}
-              <div className="mb-8 bg-white p-5 rounded-2xl border border-gray-100 shadow-sm">
-                <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2 border-b border-gray-100 pb-2">
-                  <Waves className="text-blue-500" size={22} /> สิ่งอำนวยความสะดวกในโครงการ
+              <div className="facilities-card">
+                <h3 className="facilities-card-title">
+                  <Waves color="var(--primary)" size={22} /> สิ่งอำนวยความสะดวกในโครงการ
                 </h3>
 
                 <div className="space-y-4">
                   {prop.special && prop.special.length > 0 && (
-                    <div>
-                      <span className="text-xs font-bold text-pink-700 mb-2 flex items-center gap-1.5"><Sparkles size={14} /> จุดเด่น / รูปแบบการอยู่อาศัย:</span>
-                      <div className="flex flex-wrap gap-2">
+                    <div className="facility-group">
+                      <span className="facility-group-title text-pink"><Sparkles size={14} /> จุดเด่น / รูปแบบการอยู่อาศัย:</span>
+                      <div className="facility-tags-wrapper">
                         {prop.special.map((s, i) => (
-                          <span key={i} className="px-3.5 py-1.5 bg-pink-50 text-pink-700 rounded-full text-xs font-semibold border border-pink-100">{s}</span>
+                          <span key={i} className="facility-tag tag-pink">{s}</span>
                         ))}
                       </div>
                     </div>
                   )}
 
                   {prop.facilities && prop.facilities.length > 0 && (
-                    <div>
-                      <span className="text-xs font-bold text-blue-700 mb-2 flex items-center gap-1.5"><Waves size={14} /> สิ่งอำนวยความสะดวกส่วนกลาง:</span>
-                      <div className="flex flex-wrap gap-2">
+                    <div className="facility-group">
+                      <span className="facility-group-title text-blue"><Waves size={14} /> สิ่งอำนวยความสะดวกส่วนกลาง:</span>
+                      <div className="facility-tags-wrapper">
                         {prop.facilities.map((f, i) => (
-                          <span key={i} className="px-3.5 py-1.5 bg-blue-50 text-blue-700 rounded-full text-xs font-semibold border border-blue-100">{f}</span>
+                          <span key={i} className="facility-tag tag-blue">{f}</span>
                         ))}
                       </div>
                     </div>
                   )}
 
                   {prop.security && prop.security.length > 0 && (
-                    <div>
-                      <span className="text-xs font-bold text-emerald-700 mb-2 flex items-center gap-1.5"><ShieldCheck size={14} /> ระบบรักษาความปลอดภัย:</span>
-                      <div className="flex flex-wrap gap-2">
+                    <div className="facility-group">
+                      <span className="facility-group-title text-emerald"><ShieldCheck size={14} /> ระบบรักษาความปลอดภัย:</span>
+                      <div className="facility-tags-wrapper">
                         {prop.security.map((s, i) => (
-                          <span key={i} className="px-3.5 py-1.5 bg-emerald-50 text-emerald-700 rounded-full text-xs font-semibold border border-emerald-100">{s}</span>
+                          <span key={i} className="facility-tag tag-emerald">{s}</span>
                         ))}
                       </div>
                     </div>
                   )}
 
                   {prop.healthFacilities && prop.healthFacilities.length > 0 && (
-                    <div>
-                      <span className="text-xs font-bold text-purple-700 mb-2 flex items-center gap-1.5"><Activity size={14} /> บริการด้านสุขภาพ:</span>
-                      <div className="flex flex-wrap gap-2">
+                    <div className="facility-group">
+                      <span className="facility-group-title text-purple"><Activity size={14} /> บริการด้านสุขภาพ:</span>
+                      <div className="facility-tags-wrapper">
                         {prop.healthFacilities.map((h, i) => (
-                          <span key={i} className="px-3.5 py-1.5 bg-purple-50 text-purple-700 rounded-full text-xs font-semibold border border-purple-100">{h}</span>
+                          <span key={i} className="facility-tag tag-purple">{h}</span>
                         ))}
                       </div>
                     </div>
                   )}
 
                   {prop.services && prop.services.length > 0 && (
-                    <div>
-                      <span className="text-xs font-bold text-amber-700 mb-2 flex items-center gap-1.5"><BellRing size={14} /> บริการพิเศษ:</span>
-                      <div className="flex flex-wrap gap-2">
+                    <div className="facility-group">
+                      <span className="facility-group-title text-amber"><BellRing size={14} /> บริการพิเศษ:</span>
+                      <div className="facility-tags-wrapper">
                         {prop.services.map((s, i) => (
-                          <span key={i} className="px-3.5 py-1.5 bg-amber-50 text-amber-700 rounded-full text-xs font-semibold border border-amber-100">{s}</span>
+                          <span key={i} className="facility-tag tag-amber">{s}</span>
                         ))}
                       </div>
                     </div>
                   )}
 
                   {prop.promotion && (
-                    <div>
-                      <span className="text-xs font-bold text-rose-600 mb-2 flex items-center gap-1.5"><Gift size={14} /> โปรโมชั่น / สิทธิพิเศษ:</span>
-                      <div className="p-3.5 bg-rose-50 text-rose-700 rounded-xl text-sm leading-relaxed border border-rose-100 shadow-sm whitespace-pre-wrap">
+                    <div className="facility-group">
+                      <span className="facility-group-title text-rose"><Gift size={14} /> โปรโมชั่น / สิทธิพิเศษ:</span>
+                      <div className="promotion-box">
                         {prop.promotion}
                       </div>
                     </div>
