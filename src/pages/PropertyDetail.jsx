@@ -104,7 +104,7 @@ export default function PropertyDetail() {
             onClick={() => setActiveTab('overview')}
             className={`tab-btn ${activeTab === 'overview' ? 'active' : ''}`}
           >
-            🏢 ภาพรวมโครงการ
+            ภาพรวมโครงการ
           </button>
 
           {prop.unitTypes && prop.unitTypes.map((u, i) => (
@@ -113,7 +113,7 @@ export default function PropertyDetail() {
               onClick={() => setActiveTab(i.toString())}
               className={`tab-btn ${activeTab === i.toString() ? 'active' : ''}`}
             >
-              🏡 {u.name || `แบบที่ ${i + 1}`}
+              {u.name ? `แบบห้อง: ${u.name}` : `แบบห้องที่ ${i + 1}`}
             </button>
           ))}
         </div>
