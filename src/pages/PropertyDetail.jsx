@@ -253,7 +253,11 @@ export default function PropertyDetail() {
                   <div className="spec-item p-3 bg-white rounded-xl border border-gray-100 shadow-sm flex flex-col items-center text-center">
                     <Building size={22} color="var(--primary)" />
                     <p className="label text-xs text-gray-400 mt-1">ประเภท</p>
-                    <p className="val text-sm font-bold text-gray-800">{prop.projectType}</p>
+                    <p className="val text-sm font-bold text-gray-800">
+                      {(prop.type === 'บ้าน' || prop.type === 'ทาวน์โฮม') && ['High Rise', 'Low Rise', 'Mixed Use'].includes(prop.projectType) 
+                        ? prop.type 
+                        : prop.projectType}
+                    </p>
                   </div>
                 )}
                 {prop.roomType && (

@@ -108,7 +108,11 @@ export default function ComparePage() {
                   <div className="metrics-list text-center">
                     {activeTab === 'ข้อมูลทั่วไป' && (
                       <>
-                        <div className="metric-row">{prop.projectType}</div>
+                        <div className="metric-row">
+                          {(prop.type === 'บ้าน' || prop.type === 'ทาวน์โฮม') && ['High Rise', 'Low Rise', 'Mixed Use'].includes(prop.projectType) 
+                            ? prop.type 
+                            : prop.projectType}
+                        </div>
                         <div className="metric-row">{prop.floors} ชั้น</div>
                         <div className="metric-row">{prop.totalUnits} ยูนิต</div>
                         <div className="metric-row">{prop.status}</div>

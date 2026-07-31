@@ -65,7 +65,11 @@ export default function ProjectsPage() {
               <div className="project-img-wrapper">
                 <img src={prop.image ? prop.image.split(',')[0] : ''} alt={prop.name} />
                 <div className="project-badges">
-                  <span className="badge badge-dark">{prop.projectType}</span>
+                  <span className="badge badge-dark">
+                    {(prop.type === 'บ้าน' || prop.type === 'ทาวน์โฮม') && ['High Rise', 'Low Rise', 'Mixed Use'].includes(prop.projectType) 
+                        ? prop.type 
+                        : prop.projectType}
+                  </span>
                   {prop.status === 'เปิด Presale' && <span className="badge badge-primary">Presale</span>}
                 </div>
               </div>
