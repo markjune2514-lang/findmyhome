@@ -72,7 +72,7 @@ function UnitTypesModal({ prop, onClose, onSaved }) {
                   <div>
                     <p style={{ margin: 0, fontWeight: 700, color: '#0f172a', fontSize: '0.875rem' }}>{unit.name || `แบบที่ ${idx + 1}`}</p>
                     <p style={{ margin: 0, fontSize: '0.7rem', color: '#94a3b8' }}>
-                      {unit.price ? `${unit.price} ล้านบาท` : 'ยังไม่ระบุราคา'}{unit.bedrooms ? ` • ${unit.bedrooms} Bed` : ''}{unit.size ? ` • ${unit.size} ตร.ม.` : ''}
+                      {(unit.price !== null && unit.price !== '') ? `${unit.price} ล้านบาท` : 'สอบถามราคา'}{unit.bedrooms ? ` • ${unit.bedrooms} Bed` : ''}{unit.size ? ` • ${unit.size} ตร.ม.` : ''}
                     </p>
                   </div>
                 </div>

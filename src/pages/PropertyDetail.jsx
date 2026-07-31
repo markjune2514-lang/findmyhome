@@ -39,7 +39,7 @@ export default function PropertyDetail() {
 
   // Dynamic Price & Specs
   const displayPriceLabel = selectedUnit ? `ราคาสำหรับ ${selectedUnit.name || 'แบบห้องนี้'}` : 'ราคาเริ่มต้น';
-  const displayPrice = selectedUnit?.price ? `${selectedUnit.price}` : prop?.price;
+  const displayPrice = selectedUnit ? selectedUnit.price : prop?.price;
   const displayPriceTo = selectedUnit ? '' : prop?.priceTo;
   const displaySize = selectedUnit?.size || prop?.size;
   const displayBedrooms = selectedUnit?.bedrooms || selectedUnit?.roomType || prop?.bedrooms;
@@ -83,30 +83,26 @@ export default function PropertyDetail() {
     <div className="container py-4 sm:py-8">
       {/* Title & Developer Row */}
       {/* Header Section: Name & Developer */}
-      <div className="mb-6 flex flex-col md:flex-row md:justify-between md:items-end gap-3">
+      <div className="prop-header-container">
         <div>
-          <h1 className="text-2xl md:text-4xl font-extrabold text-gray-900 tracking-tight leading-tight">
+          <h1 className="prop-title">
             {prop.name}
           </h1>
         </div>
         {prop.developer && (
-          <div className="inline-flex items-center self-start md:self-end px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-lg shadow-sm">
-            <span className="text-xs font-bold text-gray-500 uppercase tracking-wider mr-2">Developer</span>
-            <span className="text-sm font-bold text-gray-800">{prop.developer}</span>
+          <div className="prop-developer-badge">
+            <span className="developer-label">Developer</span>
+            <span className="developer-name">{prop.developer}</span>
           </div>
         )}
       </div>
 
       {/* Modern Premium Tab Bar */}
-      <div className="relative mb-8">
-        <div className="flex overflow-x-auto scrollbar-hide bg-gray-100/80 p-1.5 rounded-2xl md:rounded-full shadow-inner border border-gray-200/50 gap-1 md:inline-flex w-full md:w-auto">
+      <div className="tab-scroll-container">
+        <div className="tab-track">
           <button
             onClick={() => setActiveTab('overview')}
-            className={`flex-1 md:flex-none whitespace-nowrap px-6 py-2.5 text-sm font-bold transition-all duration-300 ease-out rounded-xl md:rounded-full ${
-              activeTab === 'overview'
-                ? 'bg-white text-rose-600 shadow-md ring-1 ring-gray-900/5 transform scale-[1.02]'
-                : 'text-gray-500 hover:text-gray-800 hover:bg-gray-200/50'
-            }`}
+            className={`tab-btn ${activeTab === 'overview' ? 'active' : ''}`}
           >
             🏢 ภาพรวมโครงการ
           </button>
@@ -115,11 +111,7 @@ export default function PropertyDetail() {
             <button
               key={i}
               onClick={() => setActiveTab(i.toString())}
-              className={`flex-1 md:flex-none whitespace-nowrap px-6 py-2.5 text-sm font-bold transition-all duration-300 ease-out rounded-xl md:rounded-full ${
-                activeTab === i.toString()
-                  ? 'bg-white text-rose-600 shadow-md ring-1 ring-gray-900/5 transform scale-[1.02]'
-                  : 'text-gray-500 hover:text-gray-800 hover:bg-gray-200/50'
-              }`}
+              className={`tab-btn ${activeTab === i.toString() ? 'active' : ''}`}
             >
               🏡 {u.name || `แบบที่ ${i + 1}`}
             </button>
