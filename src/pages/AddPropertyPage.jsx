@@ -308,8 +308,8 @@ export default function AddPropertyPage() {
               </div>
 
               <div className="form-group">
-                <label>ราคาเริ่มต้น (ล้านบาท) <span className="text-red-500">*</span></label>
-                <input type="number" step="0.01" name="price" value={formData.price} onChange={handleChange} required placeholder="เช่น 3.5" />
+                <label>ราคาเริ่มต้น (ล้านบาท)</label>
+                <input type="number" step="0.01" name="price" value={formData.price} onChange={handleChange} placeholder="เช่น 3.5" />
                 <p className="text-xs text-light mt-1">*หากเพิ่ม 'แบบห้อง' ด้านล่าง ระบบจะใช้ราคาต่ำสุดจากแบบห้องอัตโนมัติ</p>
               </div>
               <div className="form-group">

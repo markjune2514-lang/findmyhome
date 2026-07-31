@@ -98,7 +98,7 @@ export default function AdminDashboard() {
                       {prop.type}
                     </span>
                   </td>
-                  <td className="p-5 font-bold text-gray-700">{prop.price} ลบ.</td>
+                  <td className="p-5 font-bold text-gray-700">{prop.price ? `${prop.price} ลบ.` : '-'}</td>
                   <td className="p-5 text-gray-500">{prop.province}</td>
                   <td className="p-5 text-right whitespace-nowrap">
                     <Link to={`/admin/edit/${prop.id}`} className="inline-flex items-center gap-1 text-blue-600 hover:text-blue-700 font-medium text-sm transition-colors bg-blue-50 hover:bg-blue-100 px-3 py-1.5 rounded-lg mr-2">

@@ -614,8 +614,8 @@ export default function SearchPage() {
                     </div>
                     <div className="price-specs flex justify-between mt-2">
                       <div>
-                        <span className="label">ราคาเริ่มต้น</span>
-                        <div className="price">{prop.price} {prop.priceTo ? `- ${prop.priceTo} ` : ''}ล้านบาท</div>
+                        <span className="label">{prop.price ? 'ราคาเริ่มต้น' : 'ราคา'}</span>
+                        <div className="price">{prop.price ? <>{prop.price} {prop.priceTo ? `- ${prop.priceTo} ` : ''}ล้านบาท</> : 'ราคาติดต่อสอบถาม'}</div>
                       </div>
                     </div>
                     <Link to={`/property/${prop.id}`} className="btn btn-primary w-full mt-3">
@@ -645,7 +645,7 @@ export default function SearchPage() {
                   <div className="prop-card-info" style={{ paddingRight: '30px' }}>
                     <h4>{prop.name}</h4>
                     <p className="developer">{prop.developer}</p>
-                    <p className="price">เริ่มต้น {prop.price} ลบ.</p>
+                    <p className="price">{prop.price ? `เริ่มต้น ${prop.price} ลบ.` : 'ราคาติดต่อสอบถาม'}</p>
                   </div>
                   <button 
                     className="compare-mini-btn"

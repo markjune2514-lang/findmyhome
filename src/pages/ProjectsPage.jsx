@@ -84,8 +84,8 @@ export default function ProjectsPage() {
 
                 <div className="flex justify-between items-end border-t pt-4">
                   <div>
-                    <p className="text-xs text-light">ราคาเริ่มต้น</p>
-                    <h3 className="text-primary">{prop.price} ลบ.</h3>
+                    <p className="text-xs text-light">{prop.price ? 'ราคาเริ่มต้น' : 'ราคา'}</p>
+                    <h3 className="text-primary">{prop.price ? `${prop.price} ลบ.` : 'ราคาติดต่อสอบถาม'}</h3>
                   </div>
                   <div className="btn-text text-primary flex items-center text-sm font-semibold">
                     ดูรายละเอียด <ChevronRight size={16} />
