@@ -465,121 +465,55 @@ export default function PropertyDetail() {
               )}
 
               {/* 2. ห้างสรรพสินค้า / ช้อปปิ้ง */}
-              <div className="bg-amber-50/50 p-2.5 rounded-xl border border-amber-100">
-                <p className="text-xs font-bold text-amber-900 mb-1.5 flex items-center gap-1">
-                  🏬 2. ห้างสรรพสินค้า / ช้อปปิ้ง
-                </p>
-                <div className="space-y-1">
-                  {prop.categorizedLandmarks?.malls && prop.categorizedLandmarks.malls.length > 0 ? (
-                    prop.categorizedLandmarks.malls.map((item, i) => (
+              {prop.categorizedLandmarks?.malls && prop.categorizedLandmarks.malls.length > 0 && (
+                <div className="bg-amber-50/50 p-2.5 rounded-xl border border-amber-100">
+                  <p className="text-xs font-bold text-amber-900 mb-1.5 flex items-center gap-1">
+                    🏬 2. ห้างสรรพสินค้า / ช้อปปิ้ง
+                  </p>
+                  <div className="space-y-1">
+                    {prop.categorizedLandmarks.malls.map((item, i) => (
                       <div key={i} className="flex justify-between items-center text-xs">
                         <span className="text-gray-700 font-medium">{item.name}</span>
                         <span className="font-bold text-amber-600 bg-white px-2 py-0.5 rounded border border-amber-200">{item.distance}</span>
                       </div>
-                    ))
-                  ) : prop.province === 'นครปฐม' || prop.name?.includes('นครปฐม') ? (
-                    <>
-                      <div className="flex justify-between items-center text-xs">
-                        <span className="text-gray-700 font-medium">เซ็นทรัล นครปฐม</span>
-                        <span className="font-bold text-amber-600 bg-white px-2 py-0.5 rounded border border-amber-200">1.2 กม.</span>
-                      </div>
-                      <div className="flex justify-between items-center text-xs">
-                        <span className="text-gray-700 font-medium">โลตัส นครปฐม</span>
-                        <span className="font-bold text-amber-600 bg-white px-2 py-0.5 rounded border border-amber-200">2.1 กม.</span>
-                      </div>
-                    </>
-                  ) : (
-                    <>
-                      <div className="flex justify-between items-center text-xs">
-                        <span className="text-gray-700 font-medium">เซ็นทรัล บางนา</span>
-                        <span className="font-bold text-amber-600 bg-white px-2 py-0.5 rounded border border-amber-200">2.4 กม.</span>
-                      </div>
-                      <div className="flex justify-between items-center text-xs">
-                        <span className="text-gray-700 font-medium">เมกา บางนา (Mega Bangna)</span>
-                        <span className="font-bold text-amber-600 bg-white px-2 py-0.5 rounded border border-amber-200">3.7 กม.</span>
-                      </div>
-                    </>
-                  )}
+                    ))}
+                  </div>
                 </div>
-              </div>
+              )}
 
               {/* 3. โรงพยาบาล */}
-              <div className="bg-rose-50/50 p-2.5 rounded-xl border border-rose-100">
-                <p className="text-xs font-bold text-rose-900 mb-1.5 flex items-center gap-1">
-                  🏥 3. โรงพยาบาล / สถานพยาบาล
-                </p>
-                <div className="space-y-1">
-                  {prop.categorizedLandmarks?.hospitals && prop.categorizedLandmarks.hospitals.length > 0 ? (
-                    prop.categorizedLandmarks.hospitals.map((item, i) => (
+              {prop.categorizedLandmarks?.hospitals && prop.categorizedLandmarks.hospitals.length > 0 && (
+                <div className="bg-rose-50/50 p-2.5 rounded-xl border border-rose-100">
+                  <p className="text-xs font-bold text-rose-900 mb-1.5 flex items-center gap-1">
+                    🏥 3. โรงพยาบาล / สถานพยาบาล
+                  </p>
+                  <div className="space-y-1">
+                    {prop.categorizedLandmarks.hospitals.map((item, i) => (
                       <div key={i} className="flex justify-between items-center text-xs">
                         <span className="text-gray-700 font-medium">{item.name}</span>
                         <span className="font-bold text-rose-600 bg-white px-2 py-0.5 rounded border border-rose-200">{item.distance}</span>
                       </div>
-                    ))
-                  ) : prop.province === 'นครปฐม' || prop.name?.includes('นครปฐม') ? (
-                    <>
-                      <div className="flex justify-between items-center text-xs">
-                        <span className="text-gray-700 font-medium">รพ.กรุงเทพคริสเตียน นครปฐม</span>
-                        <span className="font-bold text-rose-600 bg-white px-2 py-0.5 rounded border border-rose-200">1.8 กม.</span>
-                      </div>
-                      <div className="flex justify-between items-center text-xs">
-                        <span className="text-gray-700 font-medium">รพ.นครปฐม</span>
-                        <span className="font-bold text-rose-600 bg-white px-2 py-0.5 rounded border border-rose-200">3.2 กม.</span>
-                      </div>
-                    </>
-                  ) : (
-                    <>
-                      <div className="flex justify-between items-center text-xs">
-                        <span className="text-gray-700 font-medium">รพ.ไทยนครินทร์</span>
-                        <span className="font-bold text-rose-600 bg-white px-2 py-0.5 rounded border border-rose-200">1.5 กม.</span>
-                      </div>
-                      <div className="flex justify-between items-center text-xs">
-                        <span className="text-gray-700 font-medium">รพ.ศิครินทร์</span>
-                        <span className="font-bold text-rose-600 bg-white px-2 py-0.5 rounded border border-rose-200">2.8 กม.</span>
-                      </div>
-                    </>
-                  )}
+                    ))}
+                  </div>
                 </div>
-              </div>
+              )}
 
               {/* 4. โรงเรียน / มหาวิทยาลัย */}
-              <div className="bg-emerald-50/50 p-2.5 rounded-xl border border-emerald-100">
-                <p className="text-xs font-bold text-emerald-900 mb-1.5 flex items-center gap-1">
-                  🎓 4. โรงเรียน / มหาวิทยาลัย
-                </p>
-                <div className="space-y-1">
-                  {prop.categorizedLandmarks?.schools && prop.categorizedLandmarks.schools.length > 0 ? (
-                    prop.categorizedLandmarks.schools.map((item, i) => (
+              {prop.categorizedLandmarks?.schools && prop.categorizedLandmarks.schools.length > 0 && (
+                <div className="bg-emerald-50/50 p-2.5 rounded-xl border border-emerald-100">
+                  <p className="text-xs font-bold text-emerald-900 mb-1.5 flex items-center gap-1">
+                    🎓 4. โรงเรียน / มหาวิทยาลัย
+                  </p>
+                  <div className="space-y-1">
+                    {prop.categorizedLandmarks.schools.map((item, i) => (
                       <div key={i} className="flex justify-between items-center text-xs">
                         <span className="text-gray-700 font-medium">{item.name}</span>
                         <span className="font-bold text-emerald-600 bg-white px-2 py-0.5 rounded border border-emerald-200">{item.distance}</span>
                       </div>
-                    ))
-                  ) : prop.province === 'นครปฐม' || prop.name?.includes('นครปฐม') ? (
-                    <>
-                      <div className="flex justify-between items-center text-xs">
-                        <span className="text-gray-700 font-medium">มหาวิทยาลัยศิลปากร (ทับแก้ว)</span>
-                        <span className="font-bold text-emerald-600 bg-white px-2 py-0.5 rounded border border-emerald-200">2.5 กม.</span>
-                      </div>
-                      <div className="flex justify-between items-center text-xs">
-                        <span className="text-gray-700 font-medium">รร.สาธิต ม.ศิลปากร</span>
-                        <span className="font-bold text-emerald-600 bg-white px-2 py-0.5 rounded border border-emerald-200">2.8 กม.</span>
-                      </div>
-                    </>
-                  ) : (
-                    <>
-                      <div className="flex justify-between items-center text-xs">
-                        <span className="text-gray-700 font-medium">รร.นานาชาติเบิร์กลีย์</span>
-                        <span className="font-bold text-emerald-600 bg-white px-2 py-0.5 rounded border border-emerald-200">1.9 กม.</span>
-                      </div>
-                      <div className="flex justify-between items-center text-xs">
-                        <span className="text-gray-700 font-medium">รร.เซนต์โยเซฟ บางนา</span>
-                        <span className="font-bold text-emerald-600 bg-white px-2 py-0.5 rounded border border-emerald-200">3.1 กม.</span>
-                      </div>
-                    </>
-                  )}
+                    ))}
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
 
             <a
