@@ -229,7 +229,8 @@ export default function AddPropertyPage() {
     // Prepare the final object shape expected by the app
     const newProperty = {
       ...formData,
-      price: formData.price !== '' ? parseFloat(formData.price) : (calculatedPrice || null),
+      // If there are valid units, use calculatedPrice (min unit price). Otherwise use formData.price.
+      price: calculatedPrice ? calculatedPrice : (formData.price !== '' ? parseFloat(formData.price) : null),
       priceTo: formData.priceTo !== '' ? parseFloat(formData.priceTo) : null,
       priceSqm: formData.priceSqm !== '' ? parseInt(formData.priceSqm) : null,
       bedrooms: calculatedBedrooms || formData.bedrooms,

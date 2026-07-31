@@ -25,7 +25,21 @@ function UnitTypesModal({ prop, onClose, onSaved }) {
   const handleSave = async () => {
     setSaving(true);
     try {
-      const { error } = await supabase.from('properties').update({ unitTypes: units }).eq('id', prop.id);
+      // Auto-calculate the minimum price from the units
+      const validUnits = units.filter(u => u.price && !isNaN(parseFloat(u.price)));
+      let minPrice = prop.price;
+      if (validUnits.length > 0) {
+        const minPriceUnit = validUnits.reduce((min, p) => parseFloat(p.price) < parseFloat(min.price) ? p : min, validUnits[0]);
+        minPrice = parseFloat(minPriceUnit.price);
+      }
+
+      const { error } = await supabase.from('properties')
+        .update({ 
+          unitTypes: units,
+          price: minPrice 
+        })
+        .eq('id', prop.id);
+        
       if (error) throw error;
       onSaved();
       onClose();
