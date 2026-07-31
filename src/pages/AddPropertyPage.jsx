@@ -229,9 +229,9 @@ export default function AddPropertyPage() {
     // Prepare the final object shape expected by the app
     const newProperty = {
       ...formData,
-      price: parseFloat(formData.price) || calculatedPrice || 0,
-      priceTo: parseFloat(formData.priceTo) || 0,
-      priceSqm: parseInt(formData.priceSqm) || 0,
+      price: formData.price !== '' ? parseFloat(formData.price) : (calculatedPrice || null),
+      priceTo: formData.priceTo !== '' ? parseFloat(formData.priceTo) : null,
+      priceSqm: formData.priceSqm !== '' ? parseInt(formData.priceSqm) : null,
       bedrooms: calculatedBedrooms || formData.bedrooms,
       size: calculatedSize || formData.size,
       roomType: calculatedRoomType || formData.roomType,
