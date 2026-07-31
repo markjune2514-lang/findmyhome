@@ -35,7 +35,7 @@ export const PropertiesProvider = ({ children }) => {
   // Strip computed/frontend-only fields that don't exist in the DB schema
   const cleanPayload = (payload) => {
     const nonDbFields = [
-      'location', 'categorizedLandmarks', 'nearbyPlaces', 'distanceInfo',
+      'location', 'nearbyPlaces', 'distanceInfo',
       'computedPrice', 'displayPrice', 'formattedAddress'
     ];
     const cleaned = { ...payload };

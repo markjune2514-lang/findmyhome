@@ -6,6 +6,19 @@ import { Save, Image as ImageIcon, MapPin, X } from 'lucide-react';
 import ImageUploader from '../components/ImageUploader';
 import './AddPropertyPage.css';
 
+// Haversine formula for distance calculation
+function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
+  const R = 6371;
+  const dLat = (lat2 - lat1) * (Math.PI / 180);
+  const dLon = (lon2 - lon1) * (Math.PI / 180);
+  const a = 
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(lat1 * (Math.PI / 180)) * Math.cos(lat2 * (Math.PI / 180)) * 
+    Math.sin(dLon / 2) * Math.sin(dLon / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return R * c;
+}
+
 export default function AddPropertyPage() {
   const navigate = useNavigate();
   const { id } = useParams();
@@ -151,6 +164,41 @@ export default function AddPropertyPage() {
     );
   };
   
+  const handleAutoCalculateDistance = async (catKey, idx, placeName) => {
+    if (!placeName) {
+      alert("กรุณาพิมพ์ชื่อสถานที่ก่อนคำนวณระยะทาง");
+      return;
+    }
+    if (!formData.location || !formData.location.lat) {
+      alert("กรุณาปักหมุดทำเลที่ตั้งโครงการด้านบนก่อน เพื่อใช้เป็นจุดอ้างอิง");
+      return;
+    }
+    try {
+      const res = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(placeName)}&format=json&limit=1`);
+      const data = await res.json();
+      if (data && data.length > 0) {
+        const placeLat = parseFloat(data[0].lat);
+        const placeLon = parseFloat(data[0].lon);
+        const distKm = getDistanceFromLatLonInKm(formData.location.lat, formData.location.lng, placeLat, placeLon);
+        const distStr = distKm < 1 ? `${Math.round(distKm * 1000)} ม.` : `${distKm.toFixed(1)} กม.`;
+        
+        setFormData(prev => {
+          const list = [...(prev.categorizedLandmarks?.[catKey] || [])];
+          list[idx] = { ...list[idx], distance: distStr };
+          return {
+            ...prev,
+            categorizedLandmarks: { ...(prev.categorizedLandmarks || {}), [catKey]: list }
+          };
+        });
+      } else {
+        alert("ไม่พบข้อมูลสถานที่ในระบบแผนที่ กรุณากรอกระยะทางด้วยตนเอง");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("เกิดข้อผิดพลาดในการดึงข้อมูลระยะทาง");
+    }
+  };
+
   const renderSelect = (label, field, options) => (
     <div className="form-group">
       <label>{label}</label>
@@ -708,6 +756,14 @@ export default function AddPropertyPage() {
                             }}
                             className="w-36 text-xs p-2 border rounded-md"
                           />
+                          <button
+                            type="button"
+                            onClick={() => handleAutoCalculateDistance(cat.key, idx, item.name)}
+                            className="text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 px-2 py-1.5 rounded border border-gray-300 whitespace-nowrap"
+                            title="คำนวณระยะทางอัตโนมัติ"
+                          >
+                            คำนวณ
+                          </button>
                           <button
                             type="button"
                             onClick={() => {
