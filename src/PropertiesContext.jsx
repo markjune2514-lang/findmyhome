@@ -32,15 +32,25 @@ export const PropertiesProvider = ({ children }) => {
     fetchProperties();
   }, []);
 
+  // Strip computed/frontend-only fields that don't exist in the DB schema
+  const cleanPayload = (payload) => {
+    const nonDbFields = [
+      'location', 'categorizedLandmarks', 'nearbyPlaces', 'distanceInfo',
+      'computedPrice', 'displayPrice', 'formattedAddress'
+    ];
+    const cleaned = { ...payload };
+    nonDbFields.forEach(f => delete cleaned[f]);
+    return cleaned;
+  };
+
   const addProperty = async (newProperty) => {
     const id = `p${Date.now()}`;
-    const dbPayload = { 
+    const dbPayload = cleanPayload({ 
       ...newProperty, 
       id,
-      location_lat: newProperty.location.lat,
-      location_lng: newProperty.location.lng
-    };
-    delete dbPayload.location;
+      location_lat: newProperty.location?.lat,
+      location_lng: newProperty.location?.lng
+    });
     
     const { error } = await supabase
       .from('properties')
@@ -56,12 +66,11 @@ export const PropertiesProvider = ({ children }) => {
   };
 
   const updateProperty = async (id, updatedProperty) => {
-    const dbPayload = { 
+    const dbPayload = cleanPayload({ 
       ...updatedProperty,
       location_lat: updatedProperty.location?.lat || 13.75,
       location_lng: updatedProperty.location?.lng || 100.5
-    };
-    delete dbPayload.location;
+    });
     
     const { error } = await supabase
       .from('properties')
@@ -76,6 +85,7 @@ export const PropertiesProvider = ({ children }) => {
     await fetchProperties();
     return { success: true };
   };
+
 
   const deleteProperty = async (id) => {
     const { error } = await supabase
