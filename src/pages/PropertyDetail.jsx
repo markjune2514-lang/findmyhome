@@ -102,7 +102,6 @@ export default function PropertyDetail() {
         </div>
         {prop.developer && (
           <div className="prop-developer-badge">
-            <span className="developer-label">Developer</span>
             <span className="developer-name">{prop.developer}</span>
           </div>
         )}
