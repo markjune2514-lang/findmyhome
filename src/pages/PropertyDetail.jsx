@@ -367,7 +367,9 @@ export default function PropertyDetail() {
                   <Home className="text-primary" size={24} />
                   <h3 className="text-xl font-black text-gray-900 m-0 tracking-tight">รายละเอียดแบบ: {selectedUnit.name}</h3>
                 </div>
-                <span className="text-lg font-black text-primary">{selectedUnit.price} ล้านบาท</span>
+                {selectedUnit.price ? (
+                  <span className="text-lg font-black text-primary">{selectedUnit.price} ล้านบาท</span>
+                ) : null}
               </div>
 
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-5">
