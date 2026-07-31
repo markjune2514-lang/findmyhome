@@ -714,10 +714,10 @@ export default function AddPropertyPage() {
             
             <div className="space-y-4 bg-gray-50 p-4 rounded-xl border border-gray-200">
               {[
-                { key: 'transit', title: '🚆 1. รถไฟฟ้า / การเดินทาง', placeholder: 'เช่น BTS ปากน้ำ, ทางด่วนศรีรัช' },
-                { key: 'malls', title: '🏬 2. ห้างสรรพสินค้า / ช้อปปิ้ง', placeholder: 'เช่น เซ็นทรัล นครปฐม, โลตัส' },
-                { key: 'hospitals', title: '🏥 3. โรงพยาบาล / สถานพยาบาล', placeholder: 'เช่น รพ.กรุงเทพคริสเตียน, รพ.เปาโล' },
-                { key: 'schools', title: '🎓 4. โรงเรียน / มหาวิทยาลัย', placeholder: 'เช่น ม.ศิลปากร, รร.สาธิต' }
+                { key: 'transit', title: '🚆 รถไฟฟ้า / การเดินทาง', placeholder: 'เช่น BTS ปากน้ำ, ทางด่วนศรีรัช' },
+                { key: 'malls', title: '🏬 ห้างสรรพสินค้า / ช้อปปิ้ง', placeholder: 'เช่น เซ็นทรัล นครปฐม, โลตัส' },
+                { key: 'hospitals', title: '🏥 โรงพยาบาล / สถานพยาบาล', placeholder: 'เช่น รพ.กรุงเทพคริสเตียน, รพ.เปาโล' },
+                { key: 'schools', title: '🎓 โรงเรียน / มหาวิทยาลัย', placeholder: 'เช่น ม.ศิลปากร, รร.สาธิต' }
               ].map(cat => (
                 <div key={cat.key} className="bg-white p-3.5 rounded-lg border border-gray-200 shadow-sm">
                   <div className="flex justify-between items-center mb-2">

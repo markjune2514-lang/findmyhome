@@ -436,7 +436,7 @@ export default function PropertyDetail() {
               {((prop.categorizedLandmarks?.transit && prop.categorizedLandmarks.transit.length > 0) || prop.station) && (
                 <div className="bg-blue-50/50 p-2.5 rounded-xl border border-blue-100">
                   <p className="text-xs font-bold text-blue-900 mb-1.5 flex items-center gap-1">
-                    🚆 1. รถไฟฟ้า / การเดินทาง
+                    🚆 รถไฟฟ้า / การเดินทาง
                   </p>
                   <div className="space-y-1">
                     {prop.categorizedLandmarks?.transit && prop.categorizedLandmarks.transit.length > 0 ? (
@@ -468,7 +468,7 @@ export default function PropertyDetail() {
               {prop.categorizedLandmarks?.malls && prop.categorizedLandmarks.malls.length > 0 && (
                 <div className="bg-amber-50/50 p-2.5 rounded-xl border border-amber-100">
                   <p className="text-xs font-bold text-amber-900 mb-1.5 flex items-center gap-1">
-                    🏬 2. ห้างสรรพสินค้า / ช้อปปิ้ง
+                    🏬 ห้างสรรพสินค้า / ช้อปปิ้ง
                   </p>
                   <div className="space-y-1">
                     {prop.categorizedLandmarks.malls.map((item, i) => (
@@ -485,7 +485,7 @@ export default function PropertyDetail() {
               {prop.categorizedLandmarks?.hospitals && prop.categorizedLandmarks.hospitals.length > 0 && (
                 <div className="bg-rose-50/50 p-2.5 rounded-xl border border-rose-100">
                   <p className="text-xs font-bold text-rose-900 mb-1.5 flex items-center gap-1">
-                    🏥 3. โรงพยาบาล / สถานพยาบาล
+                    🏥 โรงพยาบาล / สถานพยาบาล
                   </p>
                   <div className="space-y-1">
                     {prop.categorizedLandmarks.hospitals.map((item, i) => (
@@ -502,7 +502,7 @@ export default function PropertyDetail() {
               {prop.categorizedLandmarks?.schools && prop.categorizedLandmarks.schools.length > 0 && (
                 <div className="bg-emerald-50/50 p-2.5 rounded-xl border border-emerald-100">
                   <p className="text-xs font-bold text-emerald-900 mb-1.5 flex items-center gap-1">
-                    🎓 4. โรงเรียน / มหาวิทยาลัย
+                    🎓 โรงเรียน / มหาวิทยาลัย
                   </p>
                   <div className="space-y-1">
                     {prop.categorizedLandmarks.schools.map((item, i) => (
