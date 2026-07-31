@@ -234,7 +234,16 @@ export default function AddPropertyPage() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData(prev => {
+      let updates = { [name]: value };
+      if (name === 'type') {
+        if (value === 'คอนโด') updates.projectType = condoProjectTypes[0];
+        else if (value === 'บ้าน' || value === 'ทาวน์โฮม') updates.projectType = houseProjectTypes[0];
+        else if (value === 'ผู้สูงอายุ') updates.projectType = seniorLivingFormats[0];
+        else updates.projectType = '';
+      }
+      return { ...prev, ...updates };
+    });
   };
 
   const handleLocationChange = (e) => {
@@ -383,6 +392,17 @@ export default function AddPropertyPage() {
                   <option value="ที่ดิน">ที่ดินเปล่า (Land)</option>
                 </select>
               </div>
+
+              {formData.type !== 'ที่ดิน' && (
+                <div className="form-group">
+                  <label>รูปแบบโครงการย่อย</label>
+                  <select name="projectType" value={formData.projectType} onChange={handleChange}>
+                    {formData.type === 'คอนโด' && condoProjectTypes.map(opt => <option key={opt} value={opt}>{opt}</option>)}
+                    {(formData.type === 'บ้าน' || formData.type === 'ทาวน์โฮม') && houseProjectTypes.map(opt => <option key={opt} value={opt}>{opt}</option>)}
+                    {formData.type === 'ผู้สูงอายุ' && seniorLivingFormats.map(opt => <option key={opt} value={opt}>{opt}</option>)}
+                  </select>
+                </div>
+              )}
 
               <div className="form-group">
                 <label>การแสดงราคาเริ่มต้น</label>
