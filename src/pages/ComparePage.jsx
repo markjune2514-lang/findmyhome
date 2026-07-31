@@ -96,7 +96,12 @@ export default function ComparePage() {
                       <h4>{prop.name}</h4>
                       <p className="text-xs text-light mb-2">{prop.developer}</p>
                       <div className="text-sm"><span className="text-primary font-semibold">เริ่มต้น {prop.price} ลบ.</span></div>
-                      <div className="text-xs text-light mt-1">{prop.bedrooms} Bed | {prop.size} ตร.ม.</div>
+                      <div className="text-xs text-light mt-1">
+                        {[
+                          prop.bedrooms && `${typeof prop.bedrooms === 'string' ? prop.bedrooms.replace(/beds?|bedrooms?|ห้องนอน/gi, '').trim() : prop.bedrooms} ห้องนอน`,
+                          prop.bathrooms && `${typeof prop.bathrooms === 'string' ? prop.bathrooms.replace(/baths?|bathrooms?|ห้องน้ำ/gi, '').trim() : prop.bathrooms} ห้องน้ำ`,
+                        ].filter(Boolean).join(' ') || prop.roomType || 'ไม่ระบุ'} | {prop.size} {prop.size && !String(prop.size).includes('ตร') ? 'ตร.ม.' : ''}
+                      </div>
                     </div>
                   </div>
 

@@ -42,7 +42,18 @@ export default function PropertyDetail() {
   const displayPrice = selectedUnit ? selectedUnit.price : prop?.price;
   const displayPriceTo = selectedUnit ? '' : prop?.priceTo;
   const displaySize = selectedUnit?.size || prop?.size;
-  const displayBedrooms = selectedUnit?.bedrooms || selectedUnit?.roomType || prop?.bedrooms;
+  const displayBedrooms = selectedUnit?.bedrooms || prop?.bedrooms;
+  const displayBathrooms = selectedUnit?.bathrooms || prop?.bathrooms;
+  const displayParking = selectedUnit?.parking || prop?.parking;
+
+  const formattedRoomInfo = (() => {
+    const parts = [];
+    const clean = (s) => typeof s === 'string' ? s.replace(/beds?|bedrooms?|ห้องนอน/gi, '').trim() : s;
+    if (displayBedrooms) parts.push(`${clean(displayBedrooms)} ห้องนอน`);
+    if (displayBathrooms) parts.push(`${clean(displayBathrooms)} ห้องน้ำ`);
+    if (displayParking) parts.push(`${clean(displayParking)} ที่จอดรถ`);
+    return parts.length > 0 ? parts.join(' ') : (selectedUnit?.roomType || prop?.roomType || '');
+  })();
 
   React.useEffect(() => {
     setCurrentIndex(0);
@@ -132,7 +143,7 @@ export default function PropertyDetail() {
         </div>
         {selectedUnit && (
           <div className="text-xs sm:text-sm font-semibold text-gray-600 text-right">
-            {displayBedrooms && `${displayBedrooms} Bed • `}{displaySize} {displaySize && !displaySize.includes('ตร') ? 'ตร.ม.' : ''}
+            {formattedRoomInfo && `${formattedRoomInfo} • `}{displaySize} {displaySize && !displaySize.includes('ตร') ? 'ตร.ม.' : ''}
           </div>
         )}
       </div>
@@ -357,8 +368,8 @@ export default function PropertyDetail() {
                   </div>
                 )}
                 <div className="p-3 bg-neutral-50 rounded-xl">
-                  <span className="text-xs text-gray-400 block">ห้องนอน / ห้องน้ำ</span>
-                  <span className="text-sm font-bold text-gray-800">{selectedUnit.bedrooms || selectedUnit.roomType || prop.bedrooms} Bed</span>
+                  <span className="text-xs text-gray-400 block">ห้องนอน / ห้องน้ำ / ที่จอดรถ</span>
+                  <span className="text-sm font-bold text-gray-800">{formattedRoomInfo || 'ไม่ระบุ'}</span>
                 </div>
               </div>
 
