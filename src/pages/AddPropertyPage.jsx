@@ -248,12 +248,13 @@ export default function AddPropertyPage() {
     try {
       let resultId = null;
       if (isEditMode) {
-        const success = await updateProperty(id, newProperty);
-        if (success) {
+        const result = await updateProperty(id, newProperty);
+        if (result?.success || result === true) {
           alert('บันทึกการแก้ไขโครงการเรียบร้อยแล้ว!');
           navigate('/admin');
         } else {
-          alert('เกิดข้อผิดพลาดในการแก้ไขข้อมูล กรุณาลองใหม่อีกครั้ง');
+          const msg = result?.message || 'ไม่ทราบสาเหตุ';
+          alert('เกิดข้อผิดพลาด: ' + msg);
         }
       } else {
         resultId = await addProperty(newProperty);

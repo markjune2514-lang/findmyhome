@@ -70,11 +70,11 @@ export const PropertiesProvider = ({ children }) => {
       
     if (error) {
       console.error("Error updating property:", error);
-      return false;
+      return { success: false, message: error.message || JSON.stringify(error) };
     }
     
     await fetchProperties();
-    return true;
+    return { success: true };
   };
 
   const deleteProperty = async (id) => {
