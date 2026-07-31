@@ -318,6 +318,9 @@ export default function AddPropertyPage() {
       reviews: 0
     };
 
+    // DEBUG: Alert the user to see what is being saved
+    alert("DEBUG PAYLOAD: " + JSON.stringify(newProperty.categorizedLandmarks));
+
     try {
       let resultId = null;
       if (isEditMode) {
