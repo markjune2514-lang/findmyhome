@@ -82,37 +82,49 @@ export default function PropertyDetail() {
   return (
     <div className="container py-4 sm:py-8">
       {/* Title & Developer Row */}
-      <div className="flex justify-between gap-2 mb-6" style={{alignItems: 'flex-end'}}>
-        <h1 style={{fontSize: 'clamp(1.1rem, 5vw, 1.875rem)', fontWeight: 900, color: '#111', lineHeight: 1.2, margin: 0}}>{prop.name}</h1>
-        <span style={{fontSize: '0.8rem', fontWeight: 600, color: '#6b7280', whiteSpace: 'nowrap', flexShrink: 0, lineHeight: 1, paddingBottom: '2px'}}>{prop.developer}</span>
+      {/* Header Section: Name & Developer */}
+      <div className="mb-6 flex flex-col md:flex-row md:justify-between md:items-end gap-3">
+        <div>
+          <h1 className="text-2xl md:text-4xl font-extrabold text-gray-900 tracking-tight leading-tight">
+            {prop.name}
+          </h1>
+        </div>
+        {prop.developer && (
+          <div className="inline-flex items-center self-start md:self-end px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-lg shadow-sm">
+            <span className="text-xs font-bold text-gray-500 uppercase tracking-wider mr-2">Developer</span>
+            <span className="text-sm font-bold text-gray-800">{prop.developer}</span>
+          </div>
+        )}
       </div>
 
-      {/* Main Tab Bar: 1. ภาพรวมโครงการ | 2. แบบที่ 1 | 3. แบบที่ 2 ... */}
-      <div className="w-full bg-[#fbf7f4] border border-[#f4e4d7] p-1 rounded-2xl flex gap-1 mb-4 overflow-x-auto scrollbar-none shadow-inner">
-        <button
-          onClick={() => setActiveTab('overview')}
-          className={`flex-1 min-w-[140px] py-2.5 px-4 text-xs sm:text-sm font-bold rounded-xl transition-all duration-200 text-center whitespace-nowrap ${
-            activeTab === 'overview'
-              ? 'bg-primary text-white shadow-md shadow-primary/20'
-              : 'text-gray-600 hover:text-gray-900 bg-transparent'
-          }`}
-        >
-          🏢 ภาพรวมโครงการ
-        </button>
-
-        {prop.unitTypes && prop.unitTypes.map((u, i) => (
+      {/* Modern Premium Tab Bar */}
+      <div className="relative mb-8">
+        <div className="flex overflow-x-auto scrollbar-hide bg-gray-100/80 p-1.5 rounded-2xl md:rounded-full shadow-inner border border-gray-200/50 gap-1 md:inline-flex w-full md:w-auto">
           <button
-            key={i}
-            onClick={() => setActiveTab(i.toString())}
-            className={`flex-1 min-w-[120px] py-2.5 px-4 text-xs sm:text-sm font-bold rounded-xl transition-all duration-200 text-center whitespace-nowrap ${
-              activeTab === i.toString()
-                ? 'bg-primary text-white shadow-md shadow-primary/20'
-                : 'text-gray-600 hover:text-gray-900 bg-transparent'
+            onClick={() => setActiveTab('overview')}
+            className={`flex-1 md:flex-none whitespace-nowrap px-6 py-2.5 text-sm font-bold transition-all duration-300 ease-out rounded-xl md:rounded-full ${
+              activeTab === 'overview'
+                ? 'bg-white text-rose-600 shadow-md ring-1 ring-gray-900/5 transform scale-[1.02]'
+                : 'text-gray-500 hover:text-gray-800 hover:bg-gray-200/50'
             }`}
           >
-            🏡 {u.name || `แบบที่ ${i + 1}`}
+            🏢 ภาพรวมโครงการ
           </button>
-        ))}
+
+          {prop.unitTypes && prop.unitTypes.map((u, i) => (
+            <button
+              key={i}
+              onClick={() => setActiveTab(i.toString())}
+              className={`flex-1 md:flex-none whitespace-nowrap px-6 py-2.5 text-sm font-bold transition-all duration-300 ease-out rounded-xl md:rounded-full ${
+                activeTab === i.toString()
+                  ? 'bg-white text-rose-600 shadow-md ring-1 ring-gray-900/5 transform scale-[1.02]'
+                  : 'text-gray-500 hover:text-gray-800 hover:bg-gray-200/50'
+              }`}
+            >
+              🏡 {u.name || `แบบที่ ${i + 1}`}
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* Price & Specs Summary Row */}
