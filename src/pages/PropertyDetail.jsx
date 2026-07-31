@@ -248,7 +248,21 @@ export default function PropertyDetail() {
                 <Building className="text-primary" size={24} />
                 <h3 className="text-xl font-black text-gray-900 m-0 tracking-tight">รายละเอียดและสเปกโครงการ</h3>
               </div>
-              <div className="specs-grid mb-8 grid grid-cols-2 sm:grid-cols-4 gap-3">
+              <div className="specs-grid mb-8 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
+                {prop.projectType && (
+                  <div className="spec-item p-3 bg-white rounded-xl border border-gray-100 shadow-sm flex flex-col items-center text-center">
+                    <Building size={22} color="var(--primary)" />
+                    <p className="label text-xs text-gray-400 mt-1">ประเภท</p>
+                    <p className="val text-sm font-bold text-gray-800">{prop.projectType}</p>
+                  </div>
+                )}
+                {prop.roomType && (
+                  <div className="spec-item p-3 bg-white rounded-xl border border-gray-100 shadow-sm flex flex-col items-center text-center">
+                    <Home size={22} color="var(--primary)" />
+                    <p className="label text-xs text-gray-400 mt-1">รูปแบบ</p>
+                    <p className="val text-sm font-bold text-gray-800">{prop.roomType}</p>
+                  </div>
+                )}
                 <div className="spec-item p-3 bg-white rounded-xl border border-gray-100 shadow-sm flex flex-col items-center text-center">
                   <Info size={22} color="var(--primary)" />
                   <p className="label text-xs text-gray-400 mt-1">ผู้พัฒนา</p>
@@ -356,7 +370,13 @@ export default function PropertyDetail() {
                 <span className="text-lg font-black text-primary">{selectedUnit.price} ล้านบาท</span>
               </div>
 
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-5">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-5">
+                {selectedUnit.roomType && (
+                  <div className="p-3 bg-neutral-50 rounded-xl">
+                    <span className="text-xs text-gray-400 block">รูปแบบ</span>
+                    <span className="text-sm font-bold text-gray-800">{selectedUnit.roomType}</span>
+                  </div>
+                )}
                 <div className="p-3 bg-neutral-50 rounded-xl">
                   <span className="text-xs text-gray-400 block">พื้นที่ใช้สอย</span>
                   <span className="text-sm font-bold text-gray-800">{selectedUnit.size || selectedUnit.usableArea || prop.size} ตร.ม.</span>
