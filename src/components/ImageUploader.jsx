@@ -1,57 +1,77 @@
 import React, { useState } from 'react';
 import { supabase } from '../supabaseClient';
 import { Upload, Link as LinkIcon, X, Loader2 } from 'lucide-react';
+import ImageCropper from './ImageCropper';
 
 export default function ImageUploader({ images = [], onChange, label = 'รูปภาพ', multiple = true }) {
   const [uploading, setUploading] = useState(false);
   const [urlInput, setUrlInput] = useState('');
   const [mode, setMode] = useState('file'); // 'file' or 'url'
 
-  const handleFileUpload = async (e) => {
+  const [pendingFiles, setPendingFiles] = useState([]);
+  const [currentCropIndex, setCurrentCropIndex] = useState(0);
+  const [isCropping, setIsCropping] = useState(false);
+
+  const handleFileUpload = (e) => {
     const files = Array.from(e.target.files || []);
     if (files.length === 0) return;
 
+    setPendingFiles(files);
+    setCurrentCropIndex(0);
+    setIsCropping(true);
+
+    if (e.target) e.target.value = '';
+  };
+
+  const handleCropDone = async (croppedBlob) => {
     try {
       setUploading(true);
-      const newUrls = [];
-      
-      for (const file of files) {
-        const fileExt = file.name.split('.').pop();
-        const fileName = `${Math.random().toString(36).substring(2, 15)}_${Date.now()}.${fileExt}`;
-        const filePath = `${fileName}`;
+      const originalFile = pendingFiles[currentCropIndex];
+      const fileExt = originalFile.name.split('.').pop() || 'jpg';
+      const fileName = `${Math.random().toString(36).substring(2, 15)}_${Date.now()}.${fileExt}`;
+      const filePath = `${fileName}`;
 
-        const { error: uploadError } = await supabase.storage
-          .from('property-images')
-          .upload(filePath, file);
+      const { error: uploadError } = await supabase.storage
+        .from('property-images')
+        .upload(filePath, croppedBlob);
 
-        if (uploadError) {
-          throw uploadError;
-        }
+      if (uploadError) {
+        throw uploadError;
+      }
 
-        const { data } = supabase.storage
-          .from('property-images')
-          .getPublicUrl(filePath);
+      const { data } = supabase.storage
+        .from('property-images')
+        .getPublicUrl(filePath);
 
-        if (data?.publicUrl) {
-          newUrls.push(data.publicUrl);
+      if (data?.publicUrl) {
+        if (multiple) {
+          onChange([...images, data.publicUrl]);
+        } else {
+          onChange([data.publicUrl]);
         }
       }
 
-      if (newUrls.length > 0) {
-        if (multiple) {
-          onChange([...images, ...newUrls]);
-        } else {
-          onChange([newUrls[newUrls.length - 1]]);
-        }
+      if (currentCropIndex < pendingFiles.length - 1) {
+        setCurrentCropIndex(prev => prev + 1);
+      } else {
+        setIsCropping(false);
+        setPendingFiles([]);
+        setCurrentCropIndex(0);
       }
     } catch (error) {
       console.error('Error uploading image:', error);
       alert('เกิดข้อผิดพลาดในการอัปโหลดรูปภาพ: ' + error.message);
+      setIsCropping(false);
+      setPendingFiles([]);
     } finally {
       setUploading(false);
-      // Reset input value so same file can be selected again
-      if (e.target) e.target.value = '';
     }
+  };
+
+  const handleCropCancel = () => {
+    setIsCropping(false);
+    setPendingFiles([]);
+    setCurrentCropIndex(0);
   };
 
   const handleAddUrl = () => {
@@ -150,6 +170,14 @@ export default function ImageUploader({ images = [], onChange, label = 'รู�
             </div>
           ))}
         </div>
+      )}
+
+      {isCropping && pendingFiles.length > 0 && (
+        <ImageCropper
+          imageSrc={URL.createObjectURL(pendingFiles[currentCropIndex])}
+          onCropDone={handleCropDone}
+          onCropCancel={handleCropCancel}
+        />
       )}
     </div>
   );
