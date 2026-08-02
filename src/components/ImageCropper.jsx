@@ -1,4 +1,5 @@
 import React, { useState, useCallback } from 'react';
+import { createPortal } from 'react-dom';
 import Cropper from 'react-easy-crop';
 import getCroppedImg from '../utils/cropImage';
 import { Check, X, Maximize, RefreshCcw } from 'lucide-react';
@@ -40,8 +41,8 @@ export default function ImageCropper({ imageSrc, onCropDone, onCropCancel, onSki
     }
   };
 
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4">
+  return createPortal(
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/80 p-4">
       <div className="bg-white rounded-xl shadow-2xl w-full max-w-3xl flex flex-col h-[90vh] sm:h-auto sm:max-h-[90vh] overflow-hidden">
         
         {/* Header */}
@@ -157,6 +158,7 @@ export default function ImageCropper({ imageSrc, onCropDone, onCropCancel, onSki
         </div>
         
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
