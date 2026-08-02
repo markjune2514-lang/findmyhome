@@ -177,6 +177,7 @@ export default function ImageUploader({ images = [], onChange, label = 'รู�
           imageSrc={URL.createObjectURL(pendingFiles[currentCropIndex])}
           onCropDone={handleCropDone}
           onCropCancel={handleCropCancel}
+          onSkipCrop={() => handleCropDone(pendingFiles[currentCropIndex])}
         />
       )}
     </div>

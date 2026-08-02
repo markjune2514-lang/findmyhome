@@ -3,7 +3,7 @@ import Cropper from 'react-easy-crop';
 import getCroppedImg from '../utils/cropImage';
 import { Check, X, Maximize, RefreshCcw } from 'lucide-react';
 
-export default function ImageCropper({ imageSrc, onCropDone, onCropCancel }) {
+export default function ImageCropper({ imageSrc, onCropDone, onCropCancel, onSkipCrop }) {
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
   const [rotation, setRotation] = useState(0);
@@ -29,6 +29,14 @@ export default function ImageCropper({ imageSrc, onCropDone, onCropCancel }) {
       console.error(e);
       setIsProcessing(false);
       alert('เกิดข้อผิดพลาดในการตัดรูปภาพ');
+    }
+  };
+  const handleSkipCrop = async () => {
+    setIsProcessing(true);
+    try {
+      await onSkipCrop();
+    } finally {
+      setIsProcessing(false);
     }
   };
 
@@ -119,23 +127,32 @@ export default function ImageCropper({ imageSrc, onCropDone, onCropCancel }) {
             />
           </div>
 
-          {/* Action Buttons */}
-          <div className="flex justify-end gap-3 pt-2">
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-3 pt-2">
             <button 
               type="button"
-              onClick={onCropCancel}
-              className="px-6 py-2 rounded-lg font-semibold text-gray-600 bg-gray-200 hover:bg-gray-300 transition-colors"
-            >
-              ยกเลิก
-            </button>
-            <button 
-              type="button"
-              onClick={showCroppedImage}
+              onClick={handleSkipCrop}
               disabled={isProcessing}
-              className="px-6 py-2 rounded-lg font-semibold text-white bg-primary hover:bg-primary-dark transition-colors flex items-center gap-2"
+              className="w-full sm:w-auto px-6 py-2 rounded-lg font-semibold text-primary bg-primary/10 hover:bg-primary/20 transition-colors disabled:opacity-50"
             >
-              {isProcessing ? 'กำลังประมวลผล...' : <><Check size={18} /> ยืนยันการตัดภาพ</>}
+              ใช้รูปต้นฉบับ (ไม่ตัด)
             </button>
+            <div className="flex gap-3 w-full sm:w-auto">
+              <button 
+                type="button"
+                onClick={onCropCancel}
+                className="flex-1 sm:flex-none px-6 py-2 rounded-lg font-semibold text-gray-600 bg-gray-200 hover:bg-gray-300 transition-colors"
+              >
+                ยกเลิก
+              </button>
+              <button 
+                type="button"
+                onClick={showCroppedImage}
+                disabled={isProcessing}
+                className="flex-1 sm:flex-none px-6 py-2 rounded-lg font-semibold text-white bg-primary hover:bg-primary-dark transition-colors flex justify-center items-center gap-2"
+              >
+                {isProcessing ? 'รอสักครู่...' : <><Check size={18} /> ยืนยัน</>}
+              </button>
+            </div>
           </div>
         </div>
         
