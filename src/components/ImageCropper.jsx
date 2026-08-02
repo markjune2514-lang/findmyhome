@@ -53,7 +53,7 @@ export default function ImageCropper({ imageSrc, onCropDone, onCropCancel, onSki
         </div>
 
         {/* Cropper Area */}
-        <div className="relative flex-1 bg-gray-100 min-h-[400px]">
+        <div className="relative flex-1 bg-gray-100 min-h-[250px] sm:min-h-[400px]">
           <Cropper
             image={imageSrc}
             crop={crop}
@@ -68,7 +68,7 @@ export default function ImageCropper({ imageSrc, onCropDone, onCropCancel, onSki
         </div>
 
         {/* Controls */}
-        <div className="p-4 bg-gray-50 flex flex-col gap-4">
+        <div className="p-4 bg-gray-50 flex flex-col gap-4 overflow-y-auto shrink-0">
           <div className="flex flex-wrap items-center justify-between gap-4">
             
             {/* Aspect Ratios */}
