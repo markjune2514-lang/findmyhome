@@ -158,8 +158,8 @@ export default function ImageUploader({ images = [], onChange, label = 'รู�
       {images.length > 0 && (
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mt-4">
           {images.map((img, idx) => (
-            <div key={idx} className="relative group aspect-[4/3] rounded-md overflow-hidden bg-gray-100 border">
-              <img src={img} alt={`${label} ${idx + 1}`} className="w-full h-full object-cover" onError={(e) => e.target.src = 'https://via.placeholder.com/150?text=Error'} />
+            <div key={idx} className="relative group rounded-md overflow-hidden bg-gray-100 border flex items-center justify-center min-h-[120px]">
+              <img src={img} alt={`${label} ${idx + 1}`} className="w-full h-full object-contain max-h-[200px]" onError={(e) => e.target.src = 'https://via.placeholder.com/150?text=Error'} />
               <button 
                 type="button"
                 onClick={() => handleRemove(idx)}

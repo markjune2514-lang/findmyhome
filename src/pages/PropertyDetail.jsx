@@ -153,7 +153,7 @@ export default function PropertyDetail({ previewData }) {
           <img
             src={selectedImage}
             alt="property"
-            style={{width: '100%', height: '320px', objectFit: 'cover', objectPosition: 'center', display: 'block', transition: 'opacity 0.3s'}}
+            style={{width: '100%', height: '400px', objectFit: 'contain', objectPosition: 'center', display: 'block', transition: 'opacity 0.3s'}}
           />
 
           {allImages.length > 1 && (
@@ -432,8 +432,8 @@ export default function PropertyDetail({ previewData }) {
                   <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 flex items-center gap-1.5"><Ruler size={14} /> แปลนห้อง (Floor Plan)</h4>
                   <div className="grid grid-cols-2 gap-3">
                     {selectedUnit.planImages.map((img, i) => (
-                      <div key={i} className="relative rounded-xl overflow-hidden border border-gray-200 group cursor-pointer" onClick={() => { const idx = allImages.indexOf(img); if (idx !== -1) setCurrentIndex(idx); }}>
-                        <img src={img} alt={`plan-${i}`} className="w-full h-44 object-cover group-hover:scale-105 transition-all" />
+                      <div key={i} className="relative rounded-xl overflow-hidden border border-gray-200 group cursor-pointer bg-gray-50 flex items-center justify-center" onClick={() => { const idx = allImages.indexOf(img); if (idx !== -1) setCurrentIndex(idx); }}>
+                        <img src={img} alt={`plan-${i}`} className="w-full h-44 object-contain group-hover:scale-105 transition-all" />
                         <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-all flex items-center justify-center text-white font-bold text-xs gap-1"><ZoomIn size={14} /> ขยายภาพ</div>
                       </div>
                     ))}
@@ -447,8 +447,8 @@ export default function PropertyDetail({ previewData }) {
                   <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 flex items-center gap-1.5"><ImageIcon size={14} /> ภาพบรรยากาศห้องจริง</h4>
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                     {selectedUnit.roomImages.map((img, i) => (
-                      <div key={i} className="relative rounded-xl overflow-hidden border border-gray-200 group cursor-pointer" onClick={() => { const idx = allImages.indexOf(img); if (idx !== -1) setCurrentIndex(idx); }}>
-                        <img src={img} alt={`room-${i}`} className="w-full h-32 object-cover group-hover:scale-105 transition-all" />
+                      <div key={i} className="relative rounded-xl overflow-hidden border border-gray-200 group cursor-pointer bg-gray-50 flex items-center justify-center" onClick={() => { const idx = allImages.indexOf(img); if (idx !== -1) setCurrentIndex(idx); }}>
+                        <img src={img} alt={`room-${i}`} className="w-full h-32 object-contain group-hover:scale-105 transition-all" />
                       </div>
                     ))}
                   </div>
