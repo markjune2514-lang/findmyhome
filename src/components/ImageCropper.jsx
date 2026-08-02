@@ -68,10 +68,11 @@ export default function ImageCropper({ imageSrc, onCropDone, onCropCancel }) {
               <label className="text-xs font-semibold text-gray-500">สัดส่วนภาพ</label>
               <div className="flex gap-2">
                 {[
-                  { label: 'อิสระ (Free)', value: null },
                   { label: '16:9 (หน้าปก)', value: 16 / 9 },
                   { label: '4:3', value: 4 / 3 },
                   { label: '1:1 (จัตุรัส)', value: 1 },
+                  { label: '3:2', value: 3 / 2 },
+                  { label: '9:16 (แนวตั้ง)', value: 9 / 16 },
                 ].map((ratio) => (
                   <button
                     key={ratio.label}
