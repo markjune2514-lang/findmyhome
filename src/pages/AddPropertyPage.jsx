@@ -380,7 +380,7 @@ export default function AddPropertyPage() {
           {/* ข้อมูลพื้นฐาน */}
           <section className="form-section">
             <h3 className="section-title">ข้อมูลพื้นฐาน</h3>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="form-group">
                 <label>ชื่อโครงการ <span className="text-red-500">*</span></label>
                 <input type="text" name="name" value={formData.name} onChange={handleChange} required placeholder="เช่น ไอดิโอ โมบิ สุขุมวิท" />
@@ -455,7 +455,7 @@ export default function AddPropertyPage() {
           {/* รายละเอียดอาคาร */}
           <section className="form-section">
             <h3 className="section-title">รายละเอียดอาคาร</h3>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="form-group">
                 <label>จำนวนชั้นทั้งหมด</label>
                 <input type="number" name="floors" value={formData.floors} onChange={handleChange} placeholder="เช่น 32" />
@@ -525,7 +525,7 @@ export default function AddPropertyPage() {
                     </button>
                   )}
                   
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
                     <div className="form-group mb-0 md:col-span-2">
                       <label className="text-xs">ชื่อแบบ (เช่น Type A, 1 Bedroom)</label>
                       <input 
@@ -701,7 +701,7 @@ export default function AddPropertyPage() {
           {/* ทำเลที่ตั้ง */}
           <section className="form-section">
             <h3 className="section-title">ทำเลที่ตั้ง</h3>
-            <div className="grid grid-cols-2 gap-4 mb-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
               <div className="form-group">
                 <label>จังหวัด</label>
                 <select name="province" value={formData.province} onChange={(e) => { handleChange(e); setFormData(p => ({...p, district: ''})) }}>
@@ -936,31 +936,31 @@ export default function AddPropertyPage() {
 
 
 
-          <div className="form-actions flex justify-end gap-4 mt-8 pt-8 border-t">
-            <button type="button" className="btn btn-secondary px-8" onClick={() => navigate(-1)}>ยกเลิก</button>
-            <button type="button" className="btn px-8 flex items-center gap-2 bg-blue-50 text-blue-600 hover:bg-blue-100 border border-blue-200" onClick={() => setShowPreview(true)}>
+          <div className="form-actions flex flex-col sm:flex-row justify-end gap-3 mt-8 pt-8 border-t">
+            <button type="button" className="btn btn-secondary w-full sm:w-auto px-8 py-2.5" onClick={() => navigate(-1)}>ยกเลิก</button>
+            <button type="button" className="btn w-full sm:w-auto px-8 py-2.5 flex justify-center items-center gap-2 bg-blue-50 text-blue-600 hover:bg-blue-100 border border-blue-200" onClick={() => setShowPreview(true)}>
               <Eye size={18} /> ดูตัวอย่าง (Preview)
             </button>
-            <button type="submit" className="btn btn-primary px-8 flex items-center gap-2"><Save size={18} /> บันทึกโครงการ</button>
+            <button type="submit" className="btn btn-primary w-full sm:w-auto px-8 py-2.5 flex justify-center items-center gap-2"><Save size={18} /> บันทึกโครงการ</button>
           </div>
         </form>
       </div>
 
       {showPreview && (
         <div className="fixed inset-0 z-[100] bg-white overflow-y-auto">
-          <div className="sticky top-0 z-[110] bg-white border-b shadow-sm p-4 flex justify-between items-center">
-            <h2 className="text-xl font-bold text-primary flex items-center gap-2">
+          <div className="sticky top-0 z-[110] bg-white border-b shadow-sm p-3 sm:p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-0">
+            <h2 className="text-lg sm:text-xl font-bold text-primary flex items-center gap-2">
               <Eye /> โหมดแสดงตัวอย่าง (Preview Mode)
             </h2>
-            <div className="flex gap-3">
-              <button onClick={() => setShowPreview(false)} className="btn px-6 py-2 shadow-sm flex items-center gap-2 bg-white text-gray-700 border border-gray-300 hover:bg-gray-50">
-                <ArrowLeft size={18} /> กลับไปแก้ไข
+            <div className="flex gap-2 sm:gap-3 w-full sm:w-auto">
+              <button onClick={() => setShowPreview(false)} className="flex-1 sm:flex-none btn px-3 sm:px-6 py-2 shadow-sm flex justify-center items-center gap-2 bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 text-sm sm:text-base">
+                <ArrowLeft size={16} /> <span className="hidden sm:inline">กลับไปแก้ไข</span><span className="sm:hidden">แก้ไข</span>
               </button>
               <button onClick={(e) => {
                 setShowPreview(false);
                 setTimeout(() => handleSubmit({ preventDefault: () => {} }), 100);
-              }} className="btn btn-primary px-6 py-2 shadow-sm flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white border-none">
-                <Save size={18} /> บันทึกโครงการ
+              }} className="flex-1 sm:flex-none btn btn-primary px-3 sm:px-6 py-2 shadow-sm flex justify-center items-center gap-2 bg-green-600 hover:bg-green-700 text-white border-none text-sm sm:text-base">
+                <Save size={16} /> บันทึกโครงการ
               </button>
             </div>
           </div>
