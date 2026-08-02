@@ -596,8 +596,17 @@ export default function SearchPage() {
           />
           <MapDrawControl onPolygonDrawn={handlePolygonDrawn} />
           <MapUpdater properties={filteredProperties} />
-          {filteredProperties.map(prop => (
-            <Marker key={prop.id} position={[prop.location.lat, prop.location.lng]}>
+          {filteredProperties.map(prop => {
+            const imageUrl = prop.image ? prop.image.split(',')[0] : 'https://placehold.co/100x100?text=No+Image';
+            const customIcon = L.divIcon({
+              className: 'custom-brand-marker-wrapper',
+              html: `<div class="custom-brand-marker" style="background-image: url('${imageUrl}')"></div>`,
+              iconSize: [44, 44],
+              iconAnchor: [22, 54],
+              popupAnchor: [0, -54]
+            });
+            return (
+            <Marker key={prop.id} position={[prop.location.lat, prop.location.lng]} icon={customIcon}>
               <Popup className="property-popup">
                 <div className="popup-card">
                   <div className="popup-img" style={{ backgroundImage: `url(${prop.image ? prop.image.split(',')[0] : ''})` }}>
@@ -627,7 +636,8 @@ export default function SearchPage() {
                 </div>
               </Popup>
             </Marker>
-          ))}
+            );
+          })}
         </MapContainer>
       </main>
 
