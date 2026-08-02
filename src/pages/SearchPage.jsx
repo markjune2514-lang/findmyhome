@@ -230,7 +230,9 @@ export default function SearchPage() {
     if (filters.livingFormat && filters.livingFormat.length > 0 && !filters.livingFormat.includes(prop.livingFormat)) return false;
 
     // Price logic
-    if (prop.price < filters.priceRange[0] || prop.price > filters.priceRange[1]) return false;
+    if (filters.priceRangeStr !== 'ไม่จำกัด') {
+      if (!prop.price || prop.price < filters.priceRange[0] || prop.price > filters.priceRange[1]) return false;
+    }
 
     return true;
   });
