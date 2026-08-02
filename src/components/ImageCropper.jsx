@@ -39,7 +39,7 @@ export default function ImageCropper({ imageSrc, onCropDone, onCropCancel }) {
         {/* Header */}
         <div className="flex justify-between items-center p-4 border-b">
           <h3 className="font-bold text-lg">ปรับแต่งรูปภาพ (Crop Image)</h3>
-          <button onClick={onCropCancel} className="text-gray-500 hover:text-gray-700">
+          <button type="button" onClick={onCropCancel} className="text-gray-500 hover:text-gray-700">
             <X size={24} />
           </button>
         </div>
@@ -75,6 +75,7 @@ export default function ImageCropper({ imageSrc, onCropDone, onCropCancel }) {
                 ].map((ratio) => (
                   <button
                     key={ratio.label}
+                    type="button"
                     onClick={() => setAspectRatio(ratio.value)}
                     className={`px-3 py-1 text-xs rounded-md border ${
                       aspectRatio === ratio.value
@@ -92,6 +93,7 @@ export default function ImageCropper({ imageSrc, onCropDone, onCropCancel }) {
             <div className="flex flex-col gap-1">
               <label className="text-xs font-semibold text-gray-500">หมุนภาพ</label>
               <button 
+                type="button"
                 onClick={() => setRotation((prev) => (prev + 90) % 360)}
                 className="flex items-center gap-1 px-3 py-1 text-xs rounded-md border bg-white text-gray-700 border-gray-300 hover:bg-gray-100"
               >
@@ -119,12 +121,14 @@ export default function ImageCropper({ imageSrc, onCropDone, onCropCancel }) {
           {/* Action Buttons */}
           <div className="flex justify-end gap-3 pt-2">
             <button 
+              type="button"
               onClick={onCropCancel}
               className="px-6 py-2 rounded-lg font-semibold text-gray-600 bg-gray-200 hover:bg-gray-300 transition-colors"
             >
               ยกเลิก
             </button>
             <button 
+              type="button"
               onClick={showCroppedImage}
               disabled={isProcessing}
               className="px-6 py-2 rounded-lg font-semibold text-white bg-primary hover:bg-primary-dark transition-colors flex items-center gap-2"
