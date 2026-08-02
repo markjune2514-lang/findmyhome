@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useProperties } from '../PropertiesContext';
 import { provincesAndDistricts, transitData } from '../data/locations';
-import { Save, Image as ImageIcon, MapPin, X } from 'lucide-react';
+import { Save, Image as ImageIcon, MapPin, X, Eye, ArrowLeft } from 'lucide-react';
 import ImageUploader from '../components/ImageUploader';
+import PropertyDetail from './PropertyDetail';
 import './AddPropertyPage.css';
 
 // Haversine formula for distance calculation
@@ -68,6 +69,7 @@ export default function AddPropertyPage() {
   
   const [customInputs, setCustomInputs] = useState({});
   const [locationInput, setLocationInput] = useState(`${formData.location.lat}, ${formData.location.lng}`);
+  const [showPreview, setShowPreview] = useState(false);
 
   useEffect(() => {
     if (isEditMode && properties.length > 0) {
@@ -936,10 +938,29 @@ export default function AddPropertyPage() {
 
           <div className="form-actions flex justify-end gap-4 mt-8 pt-8 border-t">
             <button type="button" className="btn btn-secondary px-8" onClick={() => navigate(-1)}>ยกเลิก</button>
+            <button type="button" className="btn px-8 flex items-center gap-2 bg-blue-50 text-blue-600 hover:bg-blue-100 border border-blue-200" onClick={() => setShowPreview(true)}>
+              <Eye size={18} /> ดูตัวอย่าง (Preview)
+            </button>
             <button type="submit" className="btn btn-primary px-8 flex items-center gap-2"><Save size={18} /> บันทึกโครงการ</button>
           </div>
         </form>
       </div>
+
+      {showPreview && (
+        <div className="fixed inset-0 z-[100] bg-white overflow-y-auto">
+          <div className="sticky top-0 z-[110] bg-white border-b shadow-sm p-4 flex justify-between items-center">
+            <h2 className="text-xl font-bold text-primary flex items-center gap-2">
+              <Eye /> โหมดแสดงตัวอย่าง (Preview Mode)
+            </h2>
+            <button onClick={() => setShowPreview(false)} className="btn btn-primary px-6 py-2 shadow-md flex items-center gap-2">
+              <ArrowLeft size={18} /> กลับไปแก้ไข
+            </button>
+          </div>
+          <div className="bg-gray-50 min-h-screen">
+             <PropertyDetail previewData={formData} />
+          </div>
+        </div>
+      )}
     </div>
   );
 }
