@@ -952,9 +952,17 @@ export default function AddPropertyPage() {
             <h2 className="text-xl font-bold text-primary flex items-center gap-2">
               <Eye /> โหมดแสดงตัวอย่าง (Preview Mode)
             </h2>
-            <button onClick={() => setShowPreview(false)} className="btn btn-primary px-6 py-2 shadow-md flex items-center gap-2">
-              <ArrowLeft size={18} /> กลับไปแก้ไข
-            </button>
+            <div className="flex gap-3">
+              <button onClick={() => setShowPreview(false)} className="btn px-6 py-2 shadow-sm flex items-center gap-2 bg-white text-gray-700 border border-gray-300 hover:bg-gray-50">
+                <ArrowLeft size={18} /> กลับไปแก้ไข
+              </button>
+              <button onClick={(e) => {
+                setShowPreview(false);
+                setTimeout(() => handleSubmit({ preventDefault: () => {} }), 100);
+              }} className="btn btn-primary px-6 py-2 shadow-sm flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white border-none">
+                <Save size={18} /> บันทึกโครงการ
+              </button>
+            </div>
           </div>
           <div className="bg-gray-50 min-h-screen">
              <PropertyDetail previewData={formData} />
