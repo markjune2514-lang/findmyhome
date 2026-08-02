@@ -314,7 +314,7 @@ export default function SearchPage() {
                   <div className="filter-section-block">
                     <h4>สิ่งอำนวยความสะดวก</h4>
                     <div className="pill-grid">
-                      {['สระว่ายน้ำ', 'Fitness', 'Co-working Space', 'Cafe', 'Garden', 'Kids Room', 'Game Room', 'Yoga Room', 'Sky Lounge', 'EV Charger', 'Smart Locker', 'Shuttle Bus', 'Co kitchen', 'Sauna / Steam', 'Meeting Room', 'Auto Parking'].map(opt => (
+                      {['สระว่ายน้ำ', 'Fitness', 'Co-working Space', 'Cafe', 'Garden', 'Kids Room', 'Game Room', 'Yoga Room', 'Sky Lounge', 'EV Charger', 'Smart Locker', 'Shuttle Bus', 'Co kitchen', 'Sauna / Steam', 'Meeting Room', 'Auto Parking', 'Lobby', 'Mailbox', 'Laundry Room', 'Living Area', 'Vending Machine', 'Jacuzzi', 'Jogging Track', 'Co-living Space'].map(opt => (
                         <button key={opt} className={`pill-btn ${filters.facilities.includes(opt) ? 'active' : ''}`} onClick={() => toggleFilter('facilities', opt)}>{opt}</button>
                       ))}
                     </div>

@@ -130,7 +130,7 @@ export default function AddPropertyPage() {
   const condoRoomTypes = ['1 Bed', '1 Bed Plus', '2 Bed', 'Loft'];
   const condoProjectTypes = ['Low Rise', 'High Rise', 'Mixed Use'];
   const condoSpecials = ['Pet Friendly'];
-  const condoFacilities = ['Clubhouse', 'สระว่ายน้ำ', 'Fitness', 'Co-working Space', 'Cafe', 'Garden', 'Kids Room', 'Game Room', 'Yoga Room', 'Sky Lounge', 'EV Charger', 'Smart Locker', 'Shuttle Bus', 'Co kitchen', 'Sauna / Steam', 'Meeting Room', 'Auto Parking', 'Playground (สนามเด็กเล่น)'];
+  const condoFacilities = ['Clubhouse', 'สระว่ายน้ำ', 'Fitness', 'Co-working Space', 'Cafe', 'Garden', 'Kids Room', 'Game Room', 'Yoga Room', 'Sky Lounge', 'EV Charger', 'Smart Locker', 'Shuttle Bus', 'Co kitchen', 'Sauna / Steam', 'Meeting Room', 'Auto Parking', 'Playground (สนามเด็กเล่น)', 'Lobby', 'Mailbox', 'Laundry Room', 'Living Area', 'Vending Machine', 'Jacuzzi', 'Jogging Track', 'Co-living Space'];
   const condoSecurities = ['CCTV', 'Security 24 Hour.', 'Key Card Access', 'ระบบอ่านป้ายทะเบียนรถ (LPR)', 'Digital Door Lock', 'Emergency Button', 'Visitor Management'];
 
   const houseLandSizes = ['ไม่ต่ำกว่า 16 ตารางวา', 'ไม่ต่ำกว่า 35 ตารางวา', 'ไม่ต่ำกว่า 50 ตารางวา', '60-80 ตารางวา', '80-100 ตารางวา', '100-200 ตารางวา', 'มากกว่า 200 ตารางวา'];
