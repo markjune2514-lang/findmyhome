@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { MapPin, Star, Heart, Share2, Info, LayoutDashboard, ChevronLeft, ChevronRight, Navigation, ExternalLink, Building, Landmark, GraduationCap, Hospital, ShoppingBag, Search, Phone, Waves, Sparkles, ShieldCheck, Activity, BellRing, Gift, Home, Ruler, ZoomIn, Image as ImageIcon, Train } from 'lucide-react';
+import { MapPin, Star, Heart, Share2, Info, LayoutDashboard, ChevronLeft, ChevronRight, Navigation, ExternalLink, Building, Landmark, GraduationCap, Hospital, ShoppingBag, Search, Phone, Waves, Sparkles, ShieldCheck, Activity, BellRing, Gift, Home, Ruler, ZoomIn, Image as ImageIcon, Train, Car, Map, Sofa } from 'lucide-react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -281,6 +281,34 @@ export default function PropertyDetail() {
                   <p className="label text-xs text-gray-400 mt-1">จำนวนยูนิต</p>
                   <p className="val text-sm font-bold text-gray-800">{prop.totalUnits} ยูนิต</p>
                 </div>
+                {prop.buildings && (
+                  <div className="spec-item p-3 bg-white rounded-xl border border-gray-100 shadow-sm flex flex-col items-center text-center">
+                    <Building size={22} color="var(--primary)" />
+                    <p className="label text-xs text-gray-400 mt-1">จำนวนอาคาร</p>
+                    <p className="val text-sm font-bold text-gray-800">{prop.buildings} อาคาร</p>
+                  </div>
+                )}
+                {prop.totalLandArea && (
+                  <div className="spec-item p-3 bg-white rounded-xl border border-gray-100 shadow-sm flex flex-col items-center text-center">
+                    <Map size={22} color="var(--primary)" />
+                    <p className="label text-xs text-gray-400 mt-1">ขนาดที่ดิน</p>
+                    <p className="val text-sm font-bold text-gray-800">{prop.totalLandArea}</p>
+                  </div>
+                )}
+                {prop.projectParking && (
+                  <div className="spec-item p-3 bg-white rounded-xl border border-gray-100 shadow-sm flex flex-col items-center text-center md:col-span-2">
+                    <Car size={22} color="var(--primary)" />
+                    <p className="label text-xs text-gray-400 mt-1">ที่จอดรถ</p>
+                    <p className="val text-sm font-bold text-gray-800">{prop.projectParking}</p>
+                  </div>
+                )}
+                {prop.fullyFurnished && (
+                  <div className="spec-item p-3 bg-white rounded-xl border border-gray-100 shadow-sm flex flex-col items-center text-center">
+                    <Sofa size={22} color="var(--primary)" />
+                    <p className="label text-xs text-gray-400 mt-1">ตกแต่ง</p>
+                    <p className="val text-sm font-bold text-gray-800 text-primary">Fully Furnished</p>
+                  </div>
+                )}
                 <div className="spec-item p-3 bg-white rounded-xl border border-gray-100 shadow-sm flex flex-col items-center text-center">
                   <Info size={22} color="var(--primary)" />
                   <p className="label text-xs text-gray-400 mt-1">สถานะโครงการ</p>

@@ -58,6 +58,11 @@ export default function AddPropertyPage() {
     security: [],
     promotions: [],
     transport: [],
+    buildings: '',
+    totalLandArea: '',
+    projectParking: '',
+    facilityType: '',
+    fullyFurnished: false,
     unitTypes: [{ name: '', price: '', landSize: '', size: '', bedrooms: '', bathrooms: '', parking: '', roomType: '', planImages: [], roomImages: [], useProjectFacilities: true, facilities: [] }]
   });
   
@@ -457,6 +462,42 @@ export default function AddPropertyPage() {
                 <label>จำนวนยูนิตทั้งหมด</label>
                 <input type="number" name="totalUnits" value={formData.totalUnits} onChange={handleChange} placeholder="เช่น 450" />
               </div>
+              {formData.type === 'คอนโด' && (
+                <>
+                  <div className="form-group">
+                    <label>จำนวนอาคาร</label>
+                    <input type="number" name="buildings" value={formData.buildings || ''} onChange={handleChange} placeholder="เช่น 1" />
+                  </div>
+                  <div className="form-group">
+                    <label>ขนาดที่ดินรวม</label>
+                    <input type="text" name="totalLandArea" value={formData.totalLandArea || ''} onChange={handleChange} placeholder="เช่น 5-0-10 ไร่" />
+                  </div>
+                  <div className="form-group">
+                    <label>ที่จอดรถโครงการ</label>
+                    <input type="text" name="projectParking" value={formData.projectParking || ''} onChange={handleChange} placeholder="เช่น 228 คัน (39%) หรือ 1ห้อง/1ที่" />
+                  </div>
+                  <div className="form-group">
+                    <label>รูปแบบส่วนกลาง</label>
+                    <select name="facilityType" value={formData.facilityType || ''} onChange={handleChange}>
+                      <option value="">เลือกรูปแบบส่วนกลาง</option>
+                      <option value="ส่วนกลางแยกตึก">ส่วนกลางแยกตึก</option>
+                      <option value="ส่วนกลางเหมือนกันทุกตึก">ส่วนกลางเหมือนกันทุกตึก</option>
+                    </select>
+                  </div>
+                  <div className="form-group col-span-2 mt-2">
+                    <label className="flex items-center gap-2 cursor-pointer select-none">
+                      <input 
+                        type="checkbox" 
+                        name="fullyFurnished" 
+                        checked={formData.fullyFurnished || false} 
+                        onChange={(e) => setFormData(prev => ({ ...prev, fullyFurnished: e.target.checked }))} 
+                        className="w-5 h-5 text-primary rounded border-gray-300 focus:ring-primary"
+                      />
+                      <span className="font-bold text-gray-700">Fully Furnished (ตกแต่งครบพร้อมอยู่)</span>
+                    </label>
+                  </div>
+                </>
+              )}
             </div>
           </section>
 
