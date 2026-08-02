@@ -17,6 +17,7 @@ export default function PropertyDetail({ previewData }) {
   
   const [activeTab, setActiveTab] = useState('overview'); // 'overview' or unit index '0', '1', '2'
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
 
   // Determine current unit selected (null if 'overview')
   const selectedUnit = (activeTab !== 'overview' && prop?.unitTypes && prop.unitTypes[parseInt(activeTab)])
@@ -153,8 +154,14 @@ export default function PropertyDetail({ previewData }) {
           <img
             src={selectedImage}
             alt="property"
-            style={{width: '100%', height: '400px', objectFit: 'contain', objectPosition: 'center', display: 'block', transition: 'opacity 0.3s'}}
+            onClick={() => setIsLightboxOpen(true)}
+            style={{width: '100%', height: '400px', objectFit: 'contain', objectPosition: 'center', display: 'block', transition: 'opacity 0.3s', cursor: 'pointer'}}
           />
+
+          {/* Enlarge Hint */}
+          <div className="absolute top-4 right-4 bg-black/50 text-white px-3 py-1.5 rounded-full text-xs font-bold flex items-center gap-1.5 pointer-events-none backdrop-blur-sm">
+            <ZoomIn size={14} /> กดเพื่อดูรูปเต็ม
+          </div>
 
           {allImages.length > 1 && (
             <>
@@ -597,6 +604,25 @@ export default function PropertyDetail({ previewData }) {
           </div>
         </div>
       </div>
+
+      {/* Lightbox Modal for Full Image Viewing */}
+      {isLightboxOpen && (
+        <div className="fixed inset-0 z-[200] bg-black/95 flex flex-col p-4 overflow-y-auto">
+          <div className="flex justify-end mb-4 sticky top-0 z-[210]">
+            <button onClick={() => setIsLightboxOpen(false)} className="text-white bg-white/10 p-2 rounded-full hover:bg-white/20 transition-colors">
+              <X size={24} />
+            </button>
+          </div>
+          <div className="flex-1 flex items-start justify-center pb-10">
+            <img 
+              src={selectedImage} 
+              alt="Full size property" 
+              className="max-w-full h-auto rounded-lg shadow-2xl"
+              style={{ objectFit: 'contain' }}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 }
