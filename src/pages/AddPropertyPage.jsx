@@ -60,6 +60,7 @@ export default function AddPropertyPage() {
     security: [],
     promotions: [],
     transport: [],
+    building_details: [],
     buildings: '',
     totalLandArea: '',
     projectParking: '',
@@ -249,6 +250,22 @@ export default function AddPropertyPage() {
         else if (value === 'บ้าน' || value === 'ทาวน์โฮม') updates.projectType = houseProjectTypes[0];
         else if (value === 'ผู้สูงอายุ') updates.projectType = seniorLivingFormats[0];
         else updates.projectType = '';
+      }
+      if (name === 'buildings') {
+        const numBuildings = parseInt(value, 10);
+        if (!isNaN(numBuildings) && numBuildings > 0) {
+          const currentDetails = prev.building_details || [];
+          if (currentDetails.length < numBuildings) {
+            updates.building_details = [
+              ...currentDetails,
+              ...Array.from({ length: numBuildings - currentDetails.length }).map(() => ({ name: '', facilities: [] }))
+            ];
+          } else if (currentDetails.length > numBuildings) {
+            updates.building_details = currentDetails.slice(0, numBuildings);
+          }
+        } else {
+          updates.building_details = [];
+        }
       }
       return { ...prev, ...updates };
     });
@@ -503,6 +520,65 @@ export default function AddPropertyPage() {
               )}
             </div>
           </section>
+
+          {/* ข้อมูลรายอาคาร (ถ้ามี) */}
+          {formData.type === 'คอนโด' && formData.building_details && formData.building_details.length > 0 && (
+            <section className="form-section">
+              <h3 className="section-title">ข้อมูลรายอาคาร ({formData.building_details.length} อาคาร)</h3>
+              <div className="space-y-4">
+                {formData.building_details.map((bldg, idx) => (
+                  <div key={idx} className="p-4 border border-gray-200 rounded-lg bg-white shadow-sm">
+                    <div className="form-group mb-3">
+                      <label className="font-bold text-gray-800">ชื่ออาคาร {idx + 1}</label>
+                      <input 
+                        type="text" 
+                        value={bldg.name} 
+                        onChange={(e) => {
+                          const newName = e.target.value;
+                          setFormData(prev => {
+                            const newDetails = [...prev.building_details];
+                            newDetails[idx] = { ...newDetails[idx], name: newName };
+                            return { ...prev, building_details: newDetails };
+                          });
+                        }}
+                        placeholder={`เช่น Tower ${String.fromCharCode(65 + idx)} หรือ อาคาร ${idx + 1}`} 
+                        className="form-control"
+                      />
+                    </div>
+                    <div className="form-group mb-0">
+                      <label className="font-bold text-gray-800 mb-2 block">ส่วนกลางเฉพาะอาคารนี้</label>
+                      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
+                        {condoFacilities.map(fac => (
+                          <label key={fac} className="flex items-center gap-2 text-sm cursor-pointer hover:bg-gray-50 p-1.5 rounded transition-colors">
+                            <input 
+                              type="checkbox"
+                              checked={bldg.facilities?.includes(fac)}
+                              onChange={(e) => {
+                                const checked = e.target.checked;
+                                setFormData(prev => {
+                                  const newDetails = [...prev.building_details];
+                                  const currentFacs = newDetails[idx].facilities || [];
+                                  newDetails[idx] = {
+                                    ...newDetails[idx],
+                                    facilities: checked 
+                                      ? [...currentFacs, fac] 
+                                      : currentFacs.filter(f => f !== fac)
+                                  };
+                                  return { ...prev, building_details: newDetails };
+                                });
+                              }}
+                              className="w-4 h-4 text-primary rounded border-gray-300 focus:ring-primary"
+                            />
+                            {fac}
+                          </label>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
 
           {/* รูปแบบบ้าน / แบบห้อง (Unit Types) */}
           <section className="form-section">

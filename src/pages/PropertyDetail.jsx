@@ -393,6 +393,28 @@ export default function PropertyDetail({ previewData }) {
                       </div>
                     </div>
                   )}
+
+                  {prop.building_details && prop.building_details.length > 0 && (
+                    <div className="facility-group">
+                      <span className="facility-group-title text-indigo"><Building size={14} /> ข้อมูลรายอาคาร:</span>
+                      <div className="flex flex-col gap-3 mt-2">
+                        {prop.building_details.map((bldg, idx) => (
+                          <div key={idx} className="bg-gray-50 p-3 rounded-xl border border-gray-100 flex flex-col gap-2">
+                            <span className="font-bold text-gray-800 text-sm">{bldg.name || `อาคาร ${idx + 1}`}</span>
+                            {bldg.facilities && bldg.facilities.length > 0 ? (
+                              <div className="flex flex-wrap gap-1.5">
+                                {bldg.facilities.map((f, i) => (
+                                  <span key={i} className="text-[10px] bg-white border border-gray-200 text-gray-600 px-2 py-0.5 rounded-full">{f}</span>
+                                ))}
+                              </div>
+                            ) : (
+                              <span className="text-[10px] text-gray-400 italic">ไม่มีข้อมูลส่วนกลางเฉพาะอาคาร</span>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             </>
