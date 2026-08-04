@@ -532,7 +532,7 @@ export default function AddPropertyPage() {
                       <label className="font-bold text-gray-800">ชื่ออาคาร {idx + 1}</label>
                       <input 
                         type="text" 
-                        value={bldg.name} 
+                        value={bldg.name || ''} 
                         onChange={(e) => {
                           const newName = e.target.value;
                           setFormData(prev => {
@@ -545,35 +545,37 @@ export default function AddPropertyPage() {
                         className="form-control"
                       />
                     </div>
-                    <div className="form-group mb-0">
-                      <label className="font-bold text-gray-800 mb-2 block">ส่วนกลางเฉพาะอาคารนี้</label>
-                      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
-                        {condoFacilities.map(fac => (
-                          <label key={fac} className="flex items-center gap-2 text-sm cursor-pointer hover:bg-gray-50 p-1.5 rounded transition-colors">
-                            <input 
-                              type="checkbox"
-                              checked={bldg.facilities?.includes(fac)}
-                              onChange={(e) => {
-                                const checked = e.target.checked;
-                                setFormData(prev => {
-                                  const newDetails = [...prev.building_details];
-                                  const currentFacs = newDetails[idx].facilities || [];
-                                  newDetails[idx] = {
-                                    ...newDetails[idx],
-                                    facilities: checked 
-                                      ? [...currentFacs, fac] 
-                                      : currentFacs.filter(f => f !== fac)
-                                  };
-                                  return { ...prev, building_details: newDetails };
-                                });
-                              }}
-                              className="w-4 h-4 text-primary rounded border-gray-300 focus:ring-primary"
-                            />
-                            {fac}
-                          </label>
-                        ))}
+                    {formData.facilityType === 'ส่วนกลางแยกตึก' && (
+                      <div className="form-group mb-0">
+                        <label className="font-bold text-gray-800 mb-2 block">ส่วนกลางเฉพาะอาคารนี้</label>
+                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
+                          {condoFacilities.map(fac => (
+                            <label key={fac} className="flex items-center gap-2 text-sm cursor-pointer hover:bg-gray-50 p-1.5 rounded transition-colors">
+                              <input 
+                                type="checkbox"
+                                checked={bldg.facilities?.includes(fac) || false}
+                                onChange={(e) => {
+                                  const checked = e.target.checked;
+                                  setFormData(prev => {
+                                    const newDetails = [...prev.building_details];
+                                    const currentFacs = newDetails[idx].facilities || [];
+                                    newDetails[idx] = {
+                                      ...newDetails[idx],
+                                      facilities: checked 
+                                        ? [...currentFacs, fac] 
+                                        : currentFacs.filter(f => f !== fac)
+                                    };
+                                    return { ...prev, building_details: newDetails };
+                                  });
+                                }}
+                                className="w-4 h-4 text-primary rounded border-gray-300 focus:ring-primary"
+                              />
+                              {fac}
+                            </label>
+                          ))}
+                        </div>
                       </div>
-                    </div>
+                    )}
                   </div>
                 ))}
               </div>

@@ -408,7 +408,9 @@ export default function PropertyDetail({ previewData }) {
                                 ))}
                               </div>
                             ) : (
-                              <span className="text-[10px] text-gray-400 italic">ไม่มีข้อมูลส่วนกลางเฉพาะอาคาร</span>
+                              <span className="text-[10px] text-gray-400 italic">
+                                {prop.facilityType === 'ส่วนกลางเหมือนกันทุกตึก' ? 'ใช้ส่วนกลางร่วมกันทุกอาคาร' : 'ไม่มีข้อมูลส่วนกลางเฉพาะอาคาร'}
+                              </span>
                             )}
                           </div>
                         ))}
