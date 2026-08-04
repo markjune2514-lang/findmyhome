@@ -597,7 +597,8 @@ export default function SearchPage() {
           <MapDrawControl onPolygonDrawn={handlePolygonDrawn} />
           <MapUpdater properties={filteredProperties} />
           {filteredProperties.map(prop => {
-            const imageUrl = prop.image ? prop.image.split(',')[0] : 'https://placehold.co/100x100?text=No+Image';
+            const fallbackImage = prop.image ? prop.image.split(',')[0] : 'https://placehold.co/100x100?text=No+Image';
+            const imageUrl = prop.logo || fallbackImage;
             const customIcon = L.divIcon({
               className: 'custom-brand-marker-wrapper',
               html: `<div class="custom-brand-marker" style="background-image: url('${imageUrl}')"></div>`,

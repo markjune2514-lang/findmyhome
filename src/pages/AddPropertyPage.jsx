@@ -41,6 +41,7 @@ export default function AddPropertyPage() {
     totalUnits: '',
     status: 'กำลังก่อสร้าง',
     image: '',
+    logo: '',
     rating: '5.0',
     location: { lat: 13.7563, lng: 100.5018 },
     province: 'กรุงเทพมหานคร',
@@ -921,6 +922,17 @@ export default function AddPropertyPage() {
                 <p className="text-xs text-light mt-1">อธิบายโปรโมชั่นหรือสิทธิพิเศษของโครงการ (ถ้ามี)</p>
               </div>
             </div>
+          </section>
+
+          {/* รูปภาพโลโก้สำหรับแผนที่ */}
+          <section className="form-section">
+            <h3 className="section-title">โลโก้โครงการ (สำหรับแสดงบนหมุดแผนที่)</h3>
+            <ImageUploader 
+              label="อัปโหลดรูปโลโก้โครงการ"
+              multiple={false}
+              images={formData.logo ? [formData.logo] : []}
+              onChange={(images) => setFormData(p => ({...p, logo: images[0] || ''}))}
+            />
           </section>
 
           {/* รูปภาพ */}
