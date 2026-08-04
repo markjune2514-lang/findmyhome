@@ -32,14 +32,20 @@ export const PropertiesProvider = ({ children }) => {
     fetchProperties();
   }, []);
 
-  // Strip computed/frontend-only fields that don't exist in the DB schema
+  // Strip frontend-only fields and any fields not explicitly in the DB schema
   const cleanPayload = (payload) => {
-    const nonDbFields = [
-      'location', 'nearbyPlaces', 'distanceInfo',
-      'computedPrice', 'displayPrice', 'formattedAddress'
+    const validDbFields = [
+      'id', 'name', 'developer', 'price', 'price_str', 'price_sqm', 'bedrooms', 'size',
+      'type', 'project_type', 'status', 'location_lat', 'location_lng', 'station',
+      'distance_to_station', 'rating', 'reviews', 'image', 'logo', 'images', 'facilities',
+      'building_details', 'promotions', 'floors', 'total_units'
     ];
-    const cleaned = { ...payload };
-    nonDbFields.forEach(f => delete cleaned[f]);
+    const cleaned = {};
+    for (const key of Object.keys(payload)) {
+      if (validDbFields.includes(key)) {
+        cleaned[key] = payload[key];
+      }
+    }
     return cleaned;
   };
 
