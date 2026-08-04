@@ -549,7 +549,7 @@ export default function AddPropertyPage() {
                       <div className="form-group mb-0">
                         <label className="font-bold text-gray-800 mb-2 block">ส่วนกลางเฉพาะอาคารนี้</label>
                         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
-                          {condoFacilities.map(fac => (
+                          {Array.from(new Set([...condoFacilities, ...(bldg.facilities || [])])).map(fac => (
                             <label key={fac} className="flex items-center gap-2 text-sm cursor-pointer hover:bg-gray-50 p-1.5 rounded transition-colors">
                               <input 
                                 type="checkbox"
@@ -573,6 +573,52 @@ export default function AddPropertyPage() {
                               {fac}
                             </label>
                           ))}
+                        </div>
+                        <div className="mt-3 flex items-center gap-2">
+                          <input
+                            type="text"
+                            placeholder="เพิ่มส่วนกลางอื่นๆ"
+                            value={customInputs[`building_fac_${idx}`] || ''}
+                            onChange={(e) => setCustomInputs(prev => ({ ...prev, [`building_fac_${idx}`]: e.target.value }))}
+                            onKeyDown={(e) => {
+                              if (e.key === 'Enter') {
+                                e.preventDefault();
+                                const val = customInputs[`building_fac_${idx}`]?.trim();
+                                if (val) {
+                                  setFormData(prev => {
+                                    const newDetails = [...prev.building_details];
+                                    const currentFacs = newDetails[idx].facilities || [];
+                                    if (!currentFacs.includes(val)) {
+                                      newDetails[idx] = { ...newDetails[idx], facilities: [...currentFacs, val] };
+                                    }
+                                    return { ...prev, building_details: newDetails };
+                                  });
+                                  setCustomInputs(prev => ({ ...prev, [`building_fac_${idx}`]: '' }));
+                                }
+                              }
+                            }}
+                            className="form-control text-xs py-1.5 px-2 w-48"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => {
+                                const val = customInputs[`building_fac_${idx}`]?.trim();
+                                if (val) {
+                                  setFormData(prev => {
+                                    const newDetails = [...prev.building_details];
+                                    const currentFacs = newDetails[idx].facilities || [];
+                                    if (!currentFacs.includes(val)) {
+                                      newDetails[idx] = { ...newDetails[idx], facilities: [...currentFacs, val] };
+                                    }
+                                    return { ...prev, building_details: newDetails };
+                                  });
+                                  setCustomInputs(prev => ({ ...prev, [`building_fac_${idx}`]: '' }));
+                                }
+                            }}
+                            className="bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs px-3 py-1.5 rounded border border-gray-300"
+                          >
+                            เพิ่ม
+                          </button>
                         </div>
                       </div>
                     )}
