@@ -21,7 +21,15 @@ export const PropertiesProvider = ({ children }) => {
     } else {
       const formattedData = data.map(item => ({
         ...item,
-        location: { lat: item.location_lat, lng: item.location_lng }
+        location: { lat: item.location_lat, lng: item.location_lng },
+        projectType: item.project_type,
+        priceSqm: item.price_sqm,
+        priceTo: item.price_to,
+        totalUnits: item.total_units,
+        unitTypes: item.unit_types,
+        projectParking: item.project_parking,
+        totalLandArea: item.total_land_area,
+        facilityType: item.facility_type
       }));
       setProperties(formattedData);
     }
@@ -35,11 +43,11 @@ export const PropertiesProvider = ({ children }) => {
   // Strip frontend-only fields and any fields not explicitly in the DB schema
   const cleanPayload = (payload) => {
     const validDbFields = [
-      'id', 'name', 'developer', 'price', 'price_str', 'price_sqm', 'bedrooms', 'size',
+      'id', 'name', 'developer', 'price', 'price_str', 'price_sqm', 'price_to', 'bedrooms', 'size',
       'type', 'project_type', 'status', 'location_lat', 'location_lng', 'station',
       'distance_to_station', 'rating', 'reviews', 'image', 'logo', 'images', 'facilities',
       'building_details', 'promotions', 'floors', 'total_units',
-      'unit_types', 'project_parking', 'total_land_area'
+      'unit_types', 'project_parking', 'total_land_area', 'facility_type'
     ];
     const cleaned = {};
     for (const key of Object.keys(payload)) {
@@ -57,9 +65,14 @@ export const PropertiesProvider = ({ children }) => {
       id,
       location_lat: newProperty.location?.lat,
       location_lng: newProperty.location?.lng,
+      project_type: newProperty.projectType,
+      price_sqm: newProperty.priceSqm,
+      price_to: newProperty.priceTo,
+      total_units: newProperty.totalUnits,
       unit_types: newProperty.unitTypes,
       project_parking: newProperty.projectParking,
-      total_land_area: newProperty.totalLandArea
+      total_land_area: newProperty.totalLandArea,
+      facility_type: newProperty.facilityType
     });
     
     const { error } = await supabase
@@ -80,9 +93,14 @@ export const PropertiesProvider = ({ children }) => {
       ...updatedProperty,
       location_lat: updatedProperty.location?.lat || 13.75,
       location_lng: updatedProperty.location?.lng || 100.5,
+      project_type: updatedProperty.projectType,
+      price_sqm: updatedProperty.priceSqm,
+      price_to: updatedProperty.priceTo,
+      total_units: updatedProperty.totalUnits,
       unit_types: updatedProperty.unitTypes,
       project_parking: updatedProperty.projectParking,
-      total_land_area: updatedProperty.totalLandArea
+      total_land_area: updatedProperty.totalLandArea,
+      facility_type: updatedProperty.facilityType
     });
     
     const { error } = await supabase
