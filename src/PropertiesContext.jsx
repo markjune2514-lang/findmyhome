@@ -48,6 +48,40 @@ export const PropertiesProvider = ({ children }) => {
     fetchProperties();
   }, []);
 
+  // Function to upload image to Supabase Storage
+  const uploadImage = async (file, pathFolder = 'general') => {
+    try {
+      if (!file) return null;
+      
+      // Create a unique file name
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${Math.random().toString(36).substring(2, 15)}_${Date.now()}.${fileExt}`;
+      const filePath = `${pathFolder}/${fileName}`;
+      
+      const { data, error } = await supabase.storage
+        .from('property-images')
+        .upload(filePath, file, {
+          cacheControl: '3600',
+          upsert: false
+        });
+        
+      if (error) {
+        console.error("Error uploading image:", error);
+        return null;
+      }
+      
+      // Get public URL
+      const { data: publicUrlData } = supabase.storage
+        .from('property-images')
+        .getPublicUrl(filePath);
+        
+      return publicUrlData.publicUrl;
+    } catch (err) {
+      console.error("Unexpected error in uploadImage:", err);
+      return null;
+    }
+  };
+
   // Strip frontend-only fields and any fields not explicitly in the DB schema
   const cleanPayload = (payload) => {
     const validDbFields = [
@@ -161,7 +195,7 @@ export const PropertiesProvider = ({ children }) => {
   };
 
   return (
-    <PropertiesContext.Provider value={{ properties, addProperty, updateProperty, deleteProperty, fetchProperties, loading }}>
+    <PropertiesContext.Provider value={{ properties, addProperty, updateProperty, deleteProperty, fetchProperties, loading, uploadImage }}>
       {children}
     </PropertiesContext.Provider>
   );

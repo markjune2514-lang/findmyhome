@@ -313,6 +313,20 @@ export default function AddPropertyPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
+    // 1. Validation for Required Fields
+    if (!formData.name || !formData.name.trim()) {
+      alert('กรุณากรอก "ชื่อโครงการ" ให้ครบถ้วนก่อนบันทึก');
+      return;
+    }
+
+    // Helper to safely parse numbers with commas (e.g. "1,500,000" -> 1500000)
+    const parseNumberClean = (val) => {
+      if (val === null || val === undefined || val === '') return null;
+      const cleanStr = String(val).replace(/,/g, '');
+      const num = parseFloat(cleanStr);
+      return isNaN(num) ? null : num;
+    };
+
     // Auto-calculate min price and starting values from unitTypes
     let calculatedPrice = 0;
     let calculatedSize = '';
@@ -321,11 +335,11 @@ export default function AddPropertyPage() {
     
     if (formData.unitTypes && formData.unitTypes.length > 0) {
       // Filter out empty prices
-      const validUnits = formData.unitTypes.filter(u => u.price && !isNaN(parseFloat(u.price)));
+      const validUnits = formData.unitTypes.filter(u => u.price && parseNumberClean(u.price) !== null);
       if (validUnits.length > 0) {
         // Find the unit with the minimum price
-        const minPriceUnit = validUnits.reduce((min, p) => parseFloat(p.price) < parseFloat(min.price) ? p : min, validUnits[0]);
-        calculatedPrice = parseFloat(minPriceUnit.price);
+        const minPriceUnit = validUnits.reduce((min, p) => parseNumberClean(p.price) < parseNumberClean(min.price) ? p : min, validUnits[0]);
+        calculatedPrice = parseNumberClean(minPriceUnit.price);
         calculatedSize = minPriceUnit.size || '';
         calculatedBedrooms = minPriceUnit.bedrooms || '';
         calculatedRoomType = minPriceUnit.roomType || '';
@@ -336,24 +350,21 @@ export default function AddPropertyPage() {
     const newProperty = {
       ...formData,
       // If there are valid units, use calculatedPrice (min unit price). Otherwise use formData.price.
-      price: calculatedPrice ? calculatedPrice : (formData.price !== '' ? parseFloat(formData.price) : null),
-      priceTo: formData.priceTo !== '' ? parseFloat(formData.priceTo) : null,
-      priceSqm: formData.priceSqm !== '' ? parseInt(formData.priceSqm) : null,
+      price: calculatedPrice ? calculatedPrice : parseNumberClean(formData.price),
+      priceTo: parseNumberClean(formData.priceTo),
+      priceSqm: parseNumberClean(formData.priceSqm),
       bedrooms: calculatedBedrooms || formData.bedrooms,
       size: calculatedSize || formData.size,
       roomType: calculatedRoomType || formData.roomType,
-      floors: parseInt(formData.floors) || 0,
-      totalUnits: parseInt(formData.totalUnits) || 0,
+      floors: parseNumberClean(formData.floors) || 0,
+      totalUnits: parseNumberClean(formData.totalUnits) || 0,
       location: {
-        lat: parseFloat(formData.location.lat),
-        lng: parseFloat(formData.location.lng)
+        lat: parseFloat(formData.location.lat) || 13.75,
+        lng: parseFloat(formData.location.lng) || 100.5
       },
       image: formData.image || 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=800&q=80',
       reviews: 0
     };
-
-    // DEBUG: Alert the user to see what is being saved
-    alert("DEBUG PAYLOAD: " + JSON.stringify(newProperty.categorizedLandmarks));
 
     try {
       let resultId = null;

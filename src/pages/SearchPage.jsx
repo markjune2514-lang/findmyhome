@@ -94,7 +94,7 @@ function MapUpdater({ properties }) {
     map.invalidateSize();
     if (properties && properties.length > 0) {
       const validPoints = properties
-        .filter(p => p.location && p.location.lat && p.location.lng)
+        .filter(p => p.location && p.location?.lat && p.location?.lng)
         .map(p => [p.location.lat, p.location.lng]);
         
       if (validPoints.length > 0) {
@@ -185,12 +185,12 @@ export default function SearchPage() {
       const { layer, layerType } = polygonFilter;
       if (layerType === 'circle') {
         const center = layer.getLatLng();
-        const distance = center.distanceTo(L.latLng(prop.location.lat, prop.location.lng));
+        const distance = center.distanceTo(L.latLng(prop.location?.lat, prop.location?.lng));
         if (distance > layer.getRadius()) return false;
       } else {
         const latlngs = layer.getLatLngs()[0];
         const polygonVertices = latlngs.map(ll => [ll.lat, ll.lng]);
-        const point = [prop.location.lat, prop.location.lng];
+        const point = [prop.location?.lat, prop.location?.lng];
         if (!isPointInPolygon(point, polygonVertices)) return false;
       }
     }
@@ -606,6 +606,7 @@ export default function SearchPage() {
               iconAnchor: [22, 54],
               popupAnchor: [0, -54]
             });
+            if (!prop.location?.lat || !prop.location?.lng) return null;
             return (
             <Marker key={prop.id} position={[prop.location.lat, prop.location.lng]} icon={customIcon}>
               <Popup className="property-popup">
