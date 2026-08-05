@@ -38,7 +38,8 @@ export const PropertiesProvider = ({ children }) => {
       'id', 'name', 'developer', 'price', 'price_str', 'price_sqm', 'bedrooms', 'size',
       'type', 'project_type', 'status', 'location_lat', 'location_lng', 'station',
       'distance_to_station', 'rating', 'reviews', 'image', 'logo', 'images', 'facilities',
-      'building_details', 'promotions', 'floors', 'total_units'
+      'building_details', 'promotions', 'floors', 'total_units',
+      'unit_types', 'project_parking', 'total_land_area'
     ];
     const cleaned = {};
     for (const key of Object.keys(payload)) {
@@ -55,7 +56,10 @@ export const PropertiesProvider = ({ children }) => {
       ...newProperty, 
       id,
       location_lat: newProperty.location?.lat,
-      location_lng: newProperty.location?.lng
+      location_lng: newProperty.location?.lng,
+      unit_types: newProperty.unitTypes,
+      project_parking: newProperty.projectParking,
+      total_land_area: newProperty.totalLandArea
     });
     
     const { error } = await supabase
@@ -75,7 +79,10 @@ export const PropertiesProvider = ({ children }) => {
     const dbPayload = cleanPayload({ 
       ...updatedProperty,
       location_lat: updatedProperty.location?.lat || 13.75,
-      location_lng: updatedProperty.location?.lng || 100.5
+      location_lng: updatedProperty.location?.lng || 100.5,
+      unit_types: updatedProperty.unitTypes,
+      project_parking: updatedProperty.projectParking,
+      total_land_area: updatedProperty.totalLandArea
     });
     
     const { error } = await supabase
