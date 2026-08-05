@@ -152,7 +152,7 @@ export default function ComparePage() {
           <div className="flex items-start gap-4 mb-6">
             <div className="bg-primary text-white p-3 rounded-full"><CheckCircle2 size={24} /></div>
             <div>
-              <h3>AI Recommendation</h3>
+              <h3>Recommendation (สรุปคำแนะนำ)</h3>
               <p className="text-light text-sm">จากการวิเคราะห์ข้อมูลโครงการที่คุณเลือกเปรียบเทียบ นี่คือคำแนะนำของเรา</p>
             </div>
           </div>
