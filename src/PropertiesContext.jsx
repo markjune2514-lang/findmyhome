@@ -29,7 +29,15 @@ export const PropertiesProvider = ({ children }) => {
         unitTypes: item.unit_types,
         projectParking: item.project_parking,
         totalLandArea: item.total_land_area,
-        facilityType: item.facility_type
+        facilityType: item.facility_type,
+        distanceToStation: item.distance_to_station,
+        categorizedLandmarks: item.categorized_landmarks,
+        transitSystem: item.transit_system,
+        transitLine: item.transit_line,
+        roomType: item.room_type,
+        livingFormat: item.living_format,
+        healthFacilities: item.health_facilities,
+        fullyFurnished: item.fully_furnished
       }));
       setProperties(formattedData);
     }
@@ -47,7 +55,10 @@ export const PropertiesProvider = ({ children }) => {
       'type', 'project_type', 'status', 'location_lat', 'location_lng', 'station',
       'distance_to_station', 'rating', 'reviews', 'image', 'logo', 'images', 'facilities',
       'building_details', 'promotions', 'floors', 'total_units',
-      'unit_types', 'project_parking', 'total_land_area', 'facility_type'
+      'unit_types', 'project_parking', 'total_land_area', 'facility_type',
+      'categorized_landmarks', 'province', 'district', 'transit_system', 'transit_line',
+      'room_type', 'living_format', 'promotion', 'special', 'health_facilities',
+      'services', 'security', 'transport', 'buildings', 'fully_furnished'
     ];
     const cleaned = {};
     for (const key of Object.keys(payload)) {
@@ -72,7 +83,15 @@ export const PropertiesProvider = ({ children }) => {
       unit_types: newProperty.unitTypes,
       project_parking: newProperty.projectParking,
       total_land_area: newProperty.totalLandArea,
-      facility_type: newProperty.facilityType
+      facility_type: newProperty.facilityType,
+      distance_to_station: newProperty.distanceToStation,
+      categorized_landmarks: newProperty.categorizedLandmarks,
+      transit_system: newProperty.transitSystem,
+      transit_line: newProperty.transitLine,
+      room_type: newProperty.roomType,
+      living_format: newProperty.livingFormat,
+      health_facilities: newProperty.healthFacilities,
+      fully_furnished: newProperty.fullyFurnished
     });
     
     const { error } = await supabase
@@ -100,7 +119,15 @@ export const PropertiesProvider = ({ children }) => {
       unit_types: updatedProperty.unitTypes,
       project_parking: updatedProperty.projectParking,
       total_land_area: updatedProperty.totalLandArea,
-      facility_type: updatedProperty.facilityType
+      facility_type: updatedProperty.facilityType,
+      distance_to_station: updatedProperty.distanceToStation,
+      categorized_landmarks: updatedProperty.categorizedLandmarks,
+      transit_system: updatedProperty.transitSystem,
+      transit_line: updatedProperty.transitLine,
+      room_type: updatedProperty.roomType,
+      living_format: updatedProperty.livingFormat,
+      health_facilities: updatedProperty.healthFacilities,
+      fully_furnished: updatedProperty.fullyFurnished
     });
     
     const { error } = await supabase
