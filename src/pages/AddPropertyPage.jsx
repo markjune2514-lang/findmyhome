@@ -77,8 +77,23 @@ export default function AddPropertyPage() {
     if (isEditMode && properties.length > 0) {
       const propToEdit = properties.find(p => p.id === id);
       if (propToEdit) {
-        setFormData(propToEdit);
-        setLocationInput(`${propToEdit.location.lat}, ${propToEdit.location.lng}`);
+        // Provide safe defaults for arrays and objects that might be null in older properties
+        const safeProp = {
+          ...propToEdit,
+          location: propToEdit.location || { lat: 13.7563, lng: 100.5018 },
+          categorizedLandmarks: propToEdit.categorizedLandmarks || { transport: [], shopping: [], hospitals: [], schools: [] },
+          special: propToEdit.special || [],
+          facilities: propToEdit.facilities || [],
+          healthFacilities: propToEdit.healthFacilities || [],
+          services: propToEdit.services || [],
+          security: propToEdit.security || [],
+          promotions: propToEdit.promotions || [],
+          transport: propToEdit.transport || [],
+          building_details: propToEdit.building_details || [],
+          unitTypes: propToEdit.unitTypes && propToEdit.unitTypes.length > 0 ? propToEdit.unitTypes : [{ name: '', price: '', landSize: '', size: '', bedrooms: '', bathrooms: '', parking: '', roomType: '', planImages: [], roomImages: [], useProjectFacilities: true, facilities: [] }]
+        };
+        setFormData(safeProp);
+        setLocationInput(`${safeProp.location.lat}, ${safeProp.location.lng}`);
       }
     }
   }, [id, isEditMode, properties]);
