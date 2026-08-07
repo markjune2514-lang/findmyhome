@@ -53,6 +53,8 @@ export default function PropertyDetail({ previewData }) {
     if (displayBedrooms) parts.push(`${clean(displayBedrooms)} ห้องนอน`);
     if (displayBathrooms) parts.push(`${clean(displayBathrooms)} ห้องน้ำ`);
     if (displayParking) parts.push(`${clean(displayParking)} ที่จอดรถ`);
+    const displayMultipurpose = selectedUnit?.multipurpose || prop?.multipurpose;
+    if (displayMultipurpose) parts.push(`${clean(displayMultipurpose)} ห้องอเนกประสงค์`);
     return parts.length > 0 ? parts.join(' ') : (selectedUnit?.roomType || prop?.roomType || '');
   })();
 
@@ -452,7 +454,7 @@ export default function PropertyDetail({ previewData }) {
                   </div>
                 )}
                 <div className="p-3 bg-neutral-50 rounded-xl">
-                  <span className="text-xs text-gray-400 block">ห้องนอน / ห้องน้ำ / ที่จอดรถ</span>
+                  <span className="text-xs text-gray-400 block">ห้องนอน / ห้องน้ำ / อเนกประสงค์ / ที่จอดรถ</span>
                   <span className="text-sm font-bold text-gray-800">{formattedRoomInfo || 'ไม่ระบุ'}</span>
                 </div>
               </div>

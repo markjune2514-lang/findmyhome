@@ -775,6 +775,16 @@ export default function AddPropertyPage() {
                         className="text-sm"
                       />
                     </div>
+                    <div className="form-group mb-0">
+                      <label className="text-xs">ห้องอเนกประสงค์</label>
+                      <input 
+                        type="text" 
+                        value={unit.multipurpose || ''} 
+                        onChange={(e) => handleUnitTypeChange(idx, 'multipurpose', e.target.value)} 
+                        placeholder="เช่น 1" 
+                        className="text-sm"
+                      />
+                    </div>
                     <div className="form-group mb-0 md:col-span-4 mt-2">
                       <ImageUploader 
                         label="แปลนห้อง (Top View)"
