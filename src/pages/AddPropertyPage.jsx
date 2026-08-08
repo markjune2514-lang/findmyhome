@@ -532,15 +532,15 @@ export default function AddPropertyPage() {
                 <label>จำนวนยูนิตทั้งหมด</label>
                 <input type="number" name="totalUnits" value={formData.totalUnits} onChange={handleChange} placeholder="เช่น 450" />
               </div>
+              <div className="form-group">
+                <label>พื้นที่โครงการ (ขนาดที่ดินรวม)</label>
+                <input type="text" name="totalLandArea" value={formData.totalLandArea || ''} onChange={handleChange} placeholder="เช่น 5-0-10 ไร่" />
+              </div>
               {formData.type === 'คอนโด' && (
                 <>
                   <div className="form-group">
                     <label>จำนวนอาคาร</label>
                     <input type="number" name="buildings" value={formData.buildings || ''} onChange={handleChange} placeholder="เช่น 1" />
-                  </div>
-                  <div className="form-group">
-                    <label>พื้นที่โครงการ (ขนาดที่ดินรวม)</label>
-                    <input type="text" name="totalLandArea" value={formData.totalLandArea || ''} onChange={handleChange} placeholder="เช่น 5-0-10 ไร่" />
                   </div>
                   <div className="form-group">
                     <label>ที่จอดรถโครงการ</label>
