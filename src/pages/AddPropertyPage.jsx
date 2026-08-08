@@ -447,11 +447,35 @@ export default function AddPropertyPage() {
               {formData.type !== 'ที่ดิน' && (
                 <div className="form-group">
                   <label>รูปแบบโครงการย่อย</label>
-                  <select name="projectType" value={formData.projectType} onChange={handleChange}>
-                    {formData.type === 'คอนโด' && condoProjectTypes.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-                    {(formData.type === 'บ้าน' || formData.type === 'ทาวน์โฮม') && houseProjectTypes.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-                    {formData.type === 'ผู้สูงอายุ' && seniorLivingFormats.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-                  </select>
+                  {(formData.type === 'บ้าน' || formData.type === 'ทาวน์โฮม') ? (
+                    <div className="flex flex-wrap gap-4 mt-2">
+                      {houseProjectTypes.map(opt => (
+                        <label key={opt} className="flex items-center gap-2 cursor-pointer">
+                          <input 
+                            type="checkbox" 
+                            checked={(formData.projectType || '').includes(opt)}
+                            onChange={(e) => {
+                              const currentTypes = (formData.projectType || '').split(',').map(s => s.trim()).filter(Boolean);
+                              let newTypes;
+                              if (e.target.checked) {
+                                newTypes = [...currentTypes, opt];
+                              } else {
+                                newTypes = currentTypes.filter(t => t !== opt);
+                              }
+                              setFormData(prev => ({ ...prev, projectType: newTypes.join(', ') }));
+                            }}
+                            className="w-4 h-4 text-primary rounded border-gray-300 focus:ring-primary"
+                          />
+                          <span className="text-sm">{opt}</span>
+                        </label>
+                      ))}
+                    </div>
+                  ) : (
+                    <select name="projectType" value={formData.projectType} onChange={handleChange}>
+                      {formData.type === 'คอนโด' && condoProjectTypes.map(opt => <option key={opt} value={opt}>{opt}</option>)}
+                      {formData.type === 'ผู้สูงอายุ' && seniorLivingFormats.map(opt => <option key={opt} value={opt}>{opt}</option>)}
+                    </select>
+                  )}
                 </div>
               )}
 
@@ -515,7 +539,7 @@ export default function AddPropertyPage() {
                     <input type="number" name="buildings" value={formData.buildings || ''} onChange={handleChange} placeholder="เช่น 1" />
                   </div>
                   <div className="form-group">
-                    <label>ขนาดที่ดินรวม</label>
+                    <label>พื้นที่โครงการ (ขนาดที่ดินรวม)</label>
                     <input type="text" name="totalLandArea" value={formData.totalLandArea || ''} onChange={handleChange} placeholder="เช่น 5-0-10 ไร่" />
                   </div>
                   <div className="form-group">
