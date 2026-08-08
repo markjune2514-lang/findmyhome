@@ -111,6 +111,8 @@ function UnitTypesModal({ prop, onClose, onSaved }) {
                       { label: 'ชื่อแบบ', field: 'name', placeholder: 'เช่น แบบ A, Type 1' },
                       { label: 'พื้นที่ใช้สอย (ตร.ม.)', field: 'size', placeholder: 'เช่น 150' },
                       { label: 'ขนาดที่ดิน (ตร.วา)', field: 'landSize', placeholder: 'เช่น 50' },
+                      { label: 'ความกว้าง (ม.)', field: 'width', placeholder: 'เช่น 5.5' },
+                      { label: 'ความลึก (ม.)', field: 'depth', placeholder: 'เช่น 10' },
                       { label: 'ห้องนอน', field: 'bedrooms', placeholder: 'เช่น 3' },
                       { label: 'ห้องน้ำ', field: 'bathrooms', placeholder: 'เช่น 2' },
                       { label: 'ที่จอดรถ', field: 'parking', placeholder: 'เช่น 2' },

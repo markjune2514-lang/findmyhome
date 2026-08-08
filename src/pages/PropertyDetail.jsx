@@ -453,6 +453,18 @@ export default function PropertyDetail({ previewData }) {
                     <span className="text-sm font-bold text-gray-800">{selectedUnit.landSize} ตร.วา</span>
                   </div>
                 )}
+                {selectedUnit.width && (
+                  <div className="p-3 bg-neutral-50 rounded-xl">
+                    <span className="text-xs text-gray-400 block">ความกว้าง</span>
+                    <span className="text-sm font-bold text-gray-800">{selectedUnit.width} ม.</span>
+                  </div>
+                )}
+                {selectedUnit.depth && (
+                  <div className="p-3 bg-neutral-50 rounded-xl">
+                    <span className="text-xs text-gray-400 block">ความลึก</span>
+                    <span className="text-sm font-bold text-gray-800">{selectedUnit.depth} ม.</span>
+                  </div>
+                )}
                 <div className="p-3 bg-neutral-50 rounded-xl">
                   <span className="text-xs text-gray-400 block">ห้องนอน / ห้องน้ำ / อเนกประสงค์ / ที่จอดรถ</span>
                   <span className="text-sm font-bold text-gray-800">{formattedRoomInfo || 'ไม่ระบุ'}</span>

@@ -749,6 +749,30 @@ export default function AddPropertyPage() {
                         className="text-sm"
                       />
                     </div>
+                    {(formData.type === 'บ้าน' || formData.type === 'ทาวน์โฮม') && (
+                      <>
+                        <div className="form-group mb-0">
+                          <label className="text-xs">ความกว้าง (ม.)</label>
+                          <input 
+                            type="text" 
+                            value={unit.width || ''} 
+                            onChange={(e) => handleUnitTypeChange(idx, 'width', e.target.value)} 
+                            placeholder="เช่น 5.5" 
+                            className="text-sm"
+                          />
+                        </div>
+                        <div className="form-group mb-0">
+                          <label className="text-xs">ความลึก (ม.)</label>
+                          <input 
+                            type="text" 
+                            value={unit.depth || ''} 
+                            onChange={(e) => handleUnitTypeChange(idx, 'depth', e.target.value)} 
+                            placeholder="เช่น 10" 
+                            className="text-sm"
+                          />
+                        </div>
+                      </>
+                    )}
                     <div className="form-group mb-0">
                       <label className="text-xs">พื้นที่ใช้สอย (ตร.ม.)</label>
                       <input 
