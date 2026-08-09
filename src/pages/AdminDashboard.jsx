@@ -117,6 +117,7 @@ function UnitTypesModal({ prop, onClose, onSaved }) {
                       { label: 'ห้องน้ำ', field: 'bathrooms', placeholder: 'เช่น 2' },
                       { label: 'ที่จอดรถ', field: 'parking', placeholder: 'เช่น 2' },
                       { label: 'ห้องอเนกประสงค์', field: 'multipurpose', placeholder: 'เช่น 1' },
+                      { label: 'จุดเด่นพิเศษ', field: 'special', placeholder: 'เช่น ระเบียงกว้าง' },
                       { label: 'รูปแบบห้อง', field: 'roomType', placeholder: 'เช่น 2 Bed' },
                     ].map(({ label, field, placeholder, type }) => (
                       <div key={field}>

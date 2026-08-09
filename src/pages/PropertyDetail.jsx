@@ -469,6 +469,12 @@ export default function PropertyDetail({ previewData }) {
                   <span className="text-xs text-gray-400 block">ห้องนอน / ห้องน้ำ / อเนกประสงค์ / ที่จอดรถ</span>
                   <span className="text-sm font-bold text-gray-800">{formattedRoomInfo || 'ไม่ระบุ'}</span>
                 </div>
+                {selectedUnit.special && (
+                  <div className="p-3 bg-neutral-50 rounded-xl col-span-2">
+                    <span className="text-xs text-gray-400 block">จุดเด่นพิเศษ</span>
+                    <span className="text-sm font-bold text-gray-800">{selectedUnit.special}</span>
+                  </div>
+                )}
               </div>
 
               {/* Floor Plan Images */}

@@ -833,6 +833,16 @@ export default function AddPropertyPage() {
                         className="text-sm"
                       />
                     </div>
+                    <div className="form-group mb-0">
+                      <label className="text-xs">จุดเด่นพิเศษ</label>
+                      <input 
+                        type="text" 
+                        value={unit.special || ''} 
+                        onChange={(e) => handleUnitTypeChange(idx, 'special', e.target.value)} 
+                        placeholder="เช่น ระเบียงกว้าง, วิวสระ" 
+                        className="text-sm"
+                      />
+                    </div>
                     <div className="form-group mb-0 md:col-span-4 mt-2">
                       <ImageUploader 
                         label="แปลนห้อง (Top View)"
