@@ -295,6 +295,15 @@
     position: fixed;
     z-index: 999;
   }
+
+  .leaflet-popup-content {
+    width: 260px !important;
+    max-width: 80vw !important;
+  }
+
+  .leaflet-popup-content .popup-img {
+    height: 130px;
+  }
 }
 
 @keyframes slideIn {
