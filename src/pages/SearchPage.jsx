@@ -211,12 +211,12 @@ export default function SearchPage() {
     }
 
     // Property Type Filter
-    if (activePropertyType === 'condo' && !['High Rise', 'Low Rise', 'Mixed Use'].includes(prop.projectType)) return false;
-    if (activePropertyType === 'house' && !['บ้านเดี่ยว', 'บ้านแฝด', 'ทาวน์โฮม'].includes(prop.projectType)) return false;
-    if (activePropertyType === 'senior' && !['Wellness Residence', 'Senior Living Community', 'Active Aging Residence', 'Independent Living', 'Assisted Living', 'Nursing Care'].includes(prop.projectType)) return false;
+    if (activePropertyType === 'condo' && prop.type !== 'คอนโด') return false;
+    if (activePropertyType === 'house' && prop.type !== 'บ้าน' && prop.type !== 'ทาวน์โฮม') return false;
+    if (activePropertyType === 'senior' && prop.type !== 'ผู้สูงอายุ') return false;
 
     // Advanced Project Type
-    if (filters.projectType && filters.projectType.length > 0 && !filters.projectType.includes(prop.projectType)) return false;
+    if (filters.projectType && filters.projectType.length > 0 && !filters.projectType.some(pt => prop.projectType?.includes(pt))) return false;
 
     // Advanced Filters (Array matching)
     if (filters.size && filters.size.length > 0 && !filters.size.includes(prop.size)) return false;
