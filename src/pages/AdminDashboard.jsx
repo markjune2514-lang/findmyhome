@@ -4,7 +4,7 @@ import { useProperties } from '../PropertiesContext';
 import { supabase } from '../supabaseClient';
 import {
   Plus, Building2, Home as HomeIcon, LayoutList, Edit, Trash2,
-  Layers, Search, X, Save, ChevronDown, ChevronUp, TrendingUp, Eye
+  Layers, Search, X, Save, ChevronDown, ChevronUp, TrendingUp, Eye, Copy
 } from 'lucide-react';
 
 // ── Unit Types Manager Modal ────────────────────────────────────────────────
@@ -291,6 +291,7 @@ export default function AdminDashboard() {
                     {/* Actions */}
                     <td style={{ padding: '0.75rem 1rem' }}>
                       <div style={{ display: 'flex', gap: '0.375rem', alignItems: 'center' }}>
+                        <Link to={`/admin/add`} state={{ duplicateFrom: prop }} title="คัดลอก (Copy)" style={{ width: 32, height: 32, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '0.5rem', background: '#f8fafc', color: '#64748b', textDecoration: 'none', border: '1px solid #e2e8f0', flexShrink: 0 }}><Copy size={14} /></Link>
                         <Link to={`/admin/edit/${prop.id}`} title="แก้ไข" style={{ width: 32, height: 32, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '0.5rem', background: '#eff6ff', color: '#3b82f6', textDecoration: 'none', border: '1px solid #dbeafe', flexShrink: 0 }}><Edit size={14} /></Link>
                         <Link to={`/property/${prop.id}`} target="_blank" title="ดูหน้าเว็บ" style={{ width: 32, height: 32, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '0.5rem', background: '#f0fdf4', color: '#22c55e', textDecoration: 'none', border: '1px solid #dcfce7', flexShrink: 0 }}><Eye size={14} /></Link>
                         <button onClick={() => handleDelete(prop.id)} title="ลบ" style={{ width: 32, height: 32, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '0.5rem', background: '#fef2f2', color: '#ef4444', border: '1px solid #fee2e2', cursor: 'pointer', flexShrink: 0 }}><Trash2 size={14} /></button>

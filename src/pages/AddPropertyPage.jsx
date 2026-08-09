@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { useProperties } from '../PropertiesContext';
 import { provincesAndDistricts, transitData } from '../data/locations';
 import { Save, Image as ImageIcon, MapPin, X, Eye, ArrowLeft } from 'lucide-react';
@@ -22,6 +22,7 @@ function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
 
 export default function AddPropertyPage() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { id } = useParams();
   const isEditMode = Boolean(id);
   const { addProperty, updateProperty, properties } = useProperties();
@@ -95,8 +96,28 @@ export default function AddPropertyPage() {
         setFormData(safeProp);
         setLocationInput(`${safeProp.location.lat}, ${safeProp.location.lng}`);
       }
+    } else if (!isEditMode && location.state && location.state.duplicateFrom) {
+      const propToCopy = location.state.duplicateFrom;
+      const safeProp = {
+        ...propToCopy,
+        name: propToCopy.name + " (Copy)",
+        id: undefined,
+        location: propToCopy.location || { lat: 13.7563, lng: 100.5018 },
+        categorizedLandmarks: propToCopy.categorizedLandmarks || { transport: [], shopping: [], hospitals: [], schools: [] },
+        special: propToCopy.special || [],
+        facilities: propToCopy.facilities || [],
+        healthFacilities: propToCopy.healthFacilities || [],
+        services: propToCopy.services || [],
+        security: propToCopy.security || [],
+        promotions: propToCopy.promotions || [],
+        transport: propToCopy.transport || [],
+        building_details: propToCopy.building_details || [],
+        unitTypes: propToCopy.unitTypes && propToCopy.unitTypes.length > 0 ? propToCopy.unitTypes : [{ name: '', price: '', landSize: '', size: '', bedrooms: '', bathrooms: '', parking: '', roomType: '', planImages: [], roomImages: [], useProjectFacilities: true, facilities: [] }]
+      };
+      setFormData(safeProp);
+      setLocationInput(`${safeProp.location.lat}, ${safeProp.location.lng}`);
     }
-  }, [id, isEditMode, properties]);
+  }, [id, isEditMode, properties, location.state]);
   
   const handleLocationStringChange = (e) => {
     const val = e.target.value;
