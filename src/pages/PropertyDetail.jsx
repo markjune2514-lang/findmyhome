@@ -6,6 +6,7 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { useCompare } from '../CompareContext';
 import { useProperties } from '../PropertiesContext';
+import SEO from '../components/SEO';
 import './PropertyDetail.css';
 
 export default function PropertyDetail({ previewData }) {
@@ -95,6 +96,11 @@ export default function PropertyDetail({ previewData }) {
 
   return (
     <div className="container py-4 sm:py-8">
+      <SEO 
+        title={prop.name} 
+        description={`${prop.name} โดย ${prop.developer} - ${prop.type} เริ่มต้น ${prop.price} ล้านบาท ${prop.province}`} 
+        image={allImages.length > 0 ? allImages[0] : null}
+      />
       {/* Title & Developer Row */}
       {/* Header Section: Name & Developer */}
       <div className="prop-header-container">

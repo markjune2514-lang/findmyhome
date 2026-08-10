@@ -5,6 +5,7 @@ import { provincesAndDistricts, transitData } from '../data/locations';
 import { Link } from 'react-router-dom';
 import { useProperties } from '../PropertiesContext';
 import { useCompare } from '../CompareContext';
+import SEO from '../components/SEO';
 import './SearchPage.css';
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
@@ -256,6 +257,10 @@ export default function SearchPage() {
 
   return (
     <div className="search-page relative">
+      <SEO 
+        title="ค้นหาโครงการบ้านและคอนโด" 
+        description="ค้นหาโครงการอสังหาริมทรัพย์ บ้านเดี่ยว ทาวน์โฮม และคอนโดมิเนียมที่คุณสนใจ พร้อมดูตำแหน่งบนแผนที่" 
+      />
       {/* Advanced Filters Drawer/Modal */}
       {showAdvanced && (
         <div className="advanced-modal-overlay">

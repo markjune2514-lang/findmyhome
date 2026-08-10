@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useProperties } from '../PropertiesContext';
 import { Link } from 'react-router-dom';
 import { Star, Map as MapIcon, ChevronRight } from 'lucide-react';
+import SEO from '../components/SEO';
 import './ProjectsPage.css';
 
 export default function ProjectsPage() {
@@ -36,6 +37,10 @@ export default function ProjectsPage() {
 
   return (
     <div className="projects-page">
+      <SEO 
+        title="รวมโครงการอสังหาริมทรัพย์ที่น่าสนใจ" 
+        description="เลือกดูโครงการบ้านเดี่ยว ทาวน์โฮม คอนโดมิเนียมที่คุณสนใจ เรียงตามโครงการใหม่ โครงการติดรถไฟฟ้า และอื่นๆ" 
+      />
       {/* Hero Section */}
       <section className="projects-hero">
         <div className="hero-content text-center">
