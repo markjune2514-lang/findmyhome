@@ -542,6 +542,18 @@ export default function AddPropertyPage() {
                 <p className="text-xs text-light mt-2">*หากเพิ่ม 'แบบห้อง' ด้านล่าง ระบบจะใช้ราคาต่ำสุดจากแบบห้องอัตโนมัติ</p>
               </div>
 
+              <div className="form-group md:col-span-2">
+                <label>จุดเด่นของโครงการ (Project Highlights)</label>
+                <textarea 
+                  name="projectHighlights" 
+                  value={formData.projectHighlights || ''} 
+                  onChange={handleChange} 
+                  placeholder="อธิบายจุดเด่นของโครงการ ทำเล สิ่งอำนวยความสะดวก หรือความพิเศษอื่นๆ"
+                  rows={4}
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all"
+                />
+              </div>
+
               <div className="form-group">
                 <label>สถานะการก่อสร้าง</label>
                 <select name="status" value={formData.status} onChange={handleChange}>

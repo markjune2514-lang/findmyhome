@@ -257,6 +257,19 @@ export default function PropertyDetail({ previewData }) {
         <div className="main-info flex-2">
           {activeTab === 'overview' && (
             <>
+              {/* Project Highlights */}
+              {prop.projectHighlights && (
+                <div className="mb-8 bg-white p-5 rounded-xl border border-gray-100 shadow-sm">
+                  <div className="flex items-center gap-2 mb-3 border-b border-gray-100 pb-2">
+                    <Sparkles className="text-primary" size={20} />
+                    <h3 className="text-lg font-black text-gray-900 m-0 tracking-tight">จุดเด่นของโครงการ</h3>
+                  </div>
+                  <p className="text-gray-700 leading-relaxed whitespace-pre-line text-sm sm:text-base">
+                    {prop.projectHighlights}
+                  </p>
+                </div>
+              )}
+
               {/* Project Specs */}
               <div className="flex items-center gap-2 mb-4 border-b border-gray-100 pb-2">
                 <Building className="text-primary" size={24} />
