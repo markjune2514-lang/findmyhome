@@ -50,7 +50,7 @@ export default function AddPropertyPage() {
     transitSystem: '',
     transitLine: '',
     station: '',
-    distanceToStation: '300 ม.',
+    distanceToStation: '',
     roomType: '',
     livingFormat: '',
     promotion: '',
