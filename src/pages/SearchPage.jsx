@@ -208,6 +208,14 @@ export default function SearchPage() {
       return false;
     }
 
+    // Location Filter
+    if (selectedProvince && prop.province !== selectedProvince) {
+      return false;
+    }
+    if (selectedDistrict && selectedDistrict !== 'ทุกเขต/อำเภอ' && prop.district !== selectedDistrict) {
+      return false;
+    }
+
     // Transit
     if (transitStation) {
       if (prop.station !== transitStation) return false;
