@@ -1035,7 +1035,7 @@ export default function AddPropertyPage() {
           {/* สถานที่สำคัญใกล้เคียงแยก 4 หมวดหมู่ */}
           <section className="form-section">
             <h3 className="section-title">📍 สถานที่สำคัญใกล้เคียงและระยะทาง (แอดมินเลือกระบุ)</h3>
-            <p className="text-xs text-gray-500 mb-4">เลือกเพิ่มสถานที่สำคัญและระยะทาง (เช่น 450 ม. หรือ 1.2 กม.) เพื่อให้แสดงผลในหน้าโครงการ</p>
+            <p className="text-xs text-gray-500 mb-4">พิมพ์ตัวเลขระบบจะแปลงเป็น กม. ให้อัตโนมัติ (เช่น พิมพ์ 800 จะเปลี่ยนเป็น 0.8 กม.)</p>
             
             <div className="space-y-4 bg-gray-50 p-4 rounded-xl border border-gray-200">
               {[
@@ -1092,7 +1092,7 @@ export default function AddPropertyPage() {
                           />
                           <input
                             type="text"
-                            placeholder="เช่น 500 ม. หรือ 1.2 กม."
+                            placeholder="เช่น 800 (ม.) หรือ 1.2 (กม.)"
                             value={item.distance}
                             onChange={(e) => {
                               const val = e.target.value;
@@ -1104,6 +1104,23 @@ export default function AddPropertyPage() {
                                   categorizedLandmarks: { ...(prev.categorizedLandmarks || {}), [cat.key]: list }
                                 };
                               });
+                            }}
+                            onBlur={(e) => {
+                              let val = e.target.value.trim();
+                              if (!val || val.match(/[ก-ฮa-zA-Z]/)) return; // ข้ามถ้าว่างหรือมีตัวอักษรแล้ว
+                              let num = parseFloat(val);
+                              if (!isNaN(num)) {
+                                if (num >= 10) num = num / 1000; // ถ้าค่าเกิน 10 ตีความเป็นเมตร ให้แปลงเป็นกิโลเมตร
+                                const newVal = num + ' กม.';
+                                setFormData(prev => {
+                                  const list = [...(prev.categorizedLandmarks?.[cat.key] || [])];
+                                  list[idx] = { ...list[idx], distance: newVal };
+                                  return {
+                                    ...prev,
+                                    categorizedLandmarks: { ...(prev.categorizedLandmarks || {}), [cat.key]: list }
+                                  };
+                                });
+                              }
                             }}
                             className="w-36 text-xs p-2 border rounded-md"
                           />
