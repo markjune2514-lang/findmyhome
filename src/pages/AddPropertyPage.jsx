@@ -92,6 +92,7 @@ export default function AddPropertyPage() {
           promotions: propToEdit.promotions || [],
           transport: propToEdit.transport || [],
           building_details: propToEdit.building_details || [],
+          distanceToStation: propToEdit.distanceToStation === '300 ม.' ? '' : (propToEdit.distanceToStation || ''),
           listingType: propToEdit.listingType || 'ซื้อ',
           unitTypes: propToEdit.unitTypes && propToEdit.unitTypes.length > 0 ? propToEdit.unitTypes : [{ name: '', price: '', landSize: '', size: '', bedrooms: '', bathrooms: '', parking: '', roomType: '', planImages: [], roomImages: [], useProjectFacilities: true, facilities: [] }]
         };
@@ -114,6 +115,7 @@ export default function AddPropertyPage() {
         promotions: propToCopy.promotions || [],
         transport: propToCopy.transport || [],
         building_details: propToCopy.building_details || [],
+        distanceToStation: propToCopy.distanceToStation === '300 ม.' ? '' : (propToCopy.distanceToStation || ''),
         listingType: propToCopy.listingType || 'ซื้อ',
         unitTypes: propToCopy.unitTypes && propToCopy.unitTypes.length > 0 ? propToCopy.unitTypes : [{ name: '', price: '', landSize: '', size: '', bedrooms: '', bathrooms: '', parking: '', roomType: '', planImages: [], roomImages: [], useProjectFacilities: true, facilities: [] }]
       };
