@@ -254,7 +254,9 @@ export default function SearchPage() {
   });
 
   const handleSearchClick = () => {
-    alert(`กำลังค้นหา ${filteredProperties.length} โครงการ ตามเงื่อนไขของคุณ...`);
+    // ข้อมูลถูก filter แบบ Real-time อยู่แล้ว
+    // ปุ่มนี้แค่ช่วยเลื่อนหน้าจอขึ้นไปบนสุด (สำหรับมือถือ) เพื่อดูแผนที่
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleResetFilters = () => {
