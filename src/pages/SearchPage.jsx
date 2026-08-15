@@ -201,6 +201,13 @@ export default function SearchPage() {
       return false;
     }
 
+    // Buy/Rent Filter
+    const propListingType = prop.listingType || 'ซื้อ';
+    const targetListingType = activeTab === 'buy' ? 'ซื้อ' : 'เช่า';
+    if (propListingType !== targetListingType) {
+      return false;
+    }
+
     // Transit
     if (transitStation) {
       if (prop.station !== transitStation) return false;
@@ -633,7 +640,14 @@ export default function SearchPage() {
                     <div className="price-specs flex justify-between mt-2">
                       <div>
                         <span className="label">{prop.price ? 'ราคาเริ่มต้น' : 'ราคา'}</span>
-                        <div className="price">{prop.price ? <>{prop.price} {prop.priceTo ? `- ${prop.priceTo} ` : ''}ล้านบาท</> : 'ราคาติดต่อสอบถาม'}</div>
+                        <div className="price">
+                          {prop.price ? (
+                            <>
+                              {prop.price} {prop.priceTo ? `- ${prop.priceTo} ` : ''}
+                              {prop.listingType === 'เช่า' ? 'บาท/เดือน' : 'ล้านบาท'}
+                            </>
+                          ) : 'ราคาติดต่อสอบถาม'}
+                        </div>
                       </div>
                     </div>
                     <Link to={`/property/${prop.id}`} className="btn btn-primary w-full mt-3">
@@ -664,7 +678,11 @@ export default function SearchPage() {
                   <div className="prop-card-info" style={{ paddingRight: '30px' }}>
                     <h4>{prop.name}</h4>
                     <p className="developer">{prop.developer}</p>
-                    <p className="price">{prop.price ? `เริ่มต้น ${prop.price} ลบ.` : 'ราคาติดต่อสอบถาม'}</p>
+                    <p className="price">
+                      {prop.price 
+                        ? `เริ่มต้น ${prop.price} ${prop.listingType === 'เช่า' ? 'บาท/เดือน' : 'ลบ.'}` 
+                        : 'ราคาติดต่อสอบถาม'}
+                    </p>
                   </div>
                   <button 
                     className="compare-mini-btn"

@@ -37,7 +37,8 @@ export const PropertiesProvider = ({ children }) => {
         roomType: item.room_type,
         livingFormat: item.living_format,
         healthFacilities: item.health_facilities,
-        fullyFurnished: item.fully_furnished
+        fullyFurnished: item.fully_furnished,
+        listingType: item.listing_type || 'ซื้อ'
       }));
       setProperties(formattedData);
     }
@@ -92,7 +93,7 @@ export const PropertiesProvider = ({ children }) => {
       'unit_types', 'project_parking', 'total_land_area', 'facility_type',
       'categorized_landmarks', 'province', 'district', 'transit_system', 'transit_line',
       'room_type', 'living_format', 'promotion', 'special', 'health_facilities',
-      'services', 'security', 'transport', 'buildings', 'fully_furnished'
+      'services', 'security', 'transport', 'buildings', 'fully_furnished', 'listing_type'
     ];
     const cleaned = {};
     for (const key of Object.keys(payload)) {
@@ -125,7 +126,8 @@ export const PropertiesProvider = ({ children }) => {
       room_type: newProperty.roomType,
       living_format: newProperty.livingFormat,
       health_facilities: newProperty.healthFacilities,
-      fully_furnished: newProperty.fullyFurnished
+      fully_furnished: newProperty.fullyFurnished,
+      listing_type: newProperty.listingType || 'ซื้อ'
     });
     
     const { error } = await supabase
@@ -161,7 +163,8 @@ export const PropertiesProvider = ({ children }) => {
       room_type: updatedProperty.roomType,
       living_format: updatedProperty.livingFormat,
       health_facilities: updatedProperty.healthFacilities,
-      fully_furnished: updatedProperty.fullyFurnished
+      fully_furnished: updatedProperty.fullyFurnished,
+      listing_type: updatedProperty.listingType || 'ซื้อ'
     });
     
     const { error } = await supabase

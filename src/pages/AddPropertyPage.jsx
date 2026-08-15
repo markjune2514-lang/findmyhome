@@ -67,6 +67,7 @@ export default function AddPropertyPage() {
     projectParking: '',
     facilityType: '',
     fullyFurnished: false,
+    listingType: 'ซื้อ',
     unitTypes: [{ name: '', price: '', landSize: '', size: '', bedrooms: '', bathrooms: '', parking: '', roomType: '', planImages: [], roomImages: [], useProjectFacilities: true, facilities: [] }]
   });
   
@@ -91,6 +92,7 @@ export default function AddPropertyPage() {
           promotions: propToEdit.promotions || [],
           transport: propToEdit.transport || [],
           building_details: propToEdit.building_details || [],
+          listingType: propToEdit.listingType || 'ซื้อ',
           unitTypes: propToEdit.unitTypes && propToEdit.unitTypes.length > 0 ? propToEdit.unitTypes : [{ name: '', price: '', landSize: '', size: '', bedrooms: '', bathrooms: '', parking: '', roomType: '', planImages: [], roomImages: [], useProjectFacilities: true, facilities: [] }]
         };
         setFormData(safeProp);
@@ -112,6 +114,7 @@ export default function AddPropertyPage() {
         promotions: propToCopy.promotions || [],
         transport: propToCopy.transport || [],
         building_details: propToCopy.building_details || [],
+        listingType: propToCopy.listingType || 'ซื้อ',
         unitTypes: propToCopy.unitTypes && propToCopy.unitTypes.length > 0 ? propToCopy.unitTypes : [{ name: '', price: '', landSize: '', size: '', bedrooms: '', bathrooms: '', parking: '', roomType: '', planImages: [], roomImages: [], useProjectFacilities: true, facilities: [] }]
       };
       setFormData(safeProp);
@@ -446,6 +449,13 @@ export default function AddPropertyPage() {
           <section className="form-section">
             <h3 className="section-title">ข้อมูลพื้นฐาน</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="form-group">
+                <label>ประเภทประกาศ <span className="text-red-500">*</span></label>
+                <select name="listingType" value={formData.listingType} onChange={handleChange}>
+                  <option value="ซื้อ">ขาย (ซื้อ)</option>
+                  <option value="เช่า">เช่า</option>
+                </select>
+              </div>
               <div className="form-group">
                 <label>ชื่อโครงการ <span className="text-red-500">*</span></label>
                 <input type="text" name="name" value={formData.name} onChange={handleChange} required placeholder="เช่น ไอดิโอ โมบิ สุขุมวิท" />

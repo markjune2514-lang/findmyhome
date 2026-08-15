@@ -98,7 +98,7 @@ export default function PropertyDetail({ previewData }) {
     <div className="container py-4 sm:py-8">
       <SEO 
         title={prop.name} 
-        description={`${prop.name} โดย ${prop.developer} - ${prop.type} เริ่มต้น ${prop.price} ล้านบาท ${prop.province}`} 
+        description={`${prop.name} โดย ${prop.developer} - ${prop.type} เริ่มต้น ${prop.price} ${prop.listingType === 'เช่า' ? 'บาท/เดือน' : 'ล้านบาท'} ${prop.province}`} 
         image={allImages.length > 0 ? allImages[0] : null}
       />
       {/* Title & Developer Row */}
@@ -142,12 +142,12 @@ export default function PropertyDetail({ previewData }) {
       <div className="flex justify-between items-end mb-4">
         <div className="flex items-baseline gap-2">
           <span className="text-sm text-gray-500 font-medium">{selectedUnit ? `ราคาสำหรับ ${selectedUnit.name ? 'TYPE: ' + selectedUnit.name : 'TYPE นี้'}` : (displayPrice ? 'ราคาเริ่มต้น' : 'ราคา')}</span>
-          <div className="text-xl sm:text-2xl font-black text-primary leading-none">
-            {displayPrice
-              ? <>{displayPrice} {displayPriceTo ? `- ${displayPriceTo}` : ''} <span className="text-base font-bold">ล้านบาท</span></>
-              : 'ติดต่อสอบถาม'
-            }
-          </div>
+          <h2 className={`font-black tracking-tight ${!displayPrice ? 'text-primary' : 'text-gray-900'} leading-none m-0`} style={{ fontSize: '1.8rem' }}>
+              {displayPrice 
+                ? <>{displayPrice} {displayPriceTo ? `- ${displayPriceTo}` : ''} <span className="text-base font-bold">{prop.listingType === 'เช่า' ? 'บาท/เดือน' : 'ล้านบาท'}</span></>
+                : 'ราคาติดต่อสอบถาม'
+              }
+          </h2>
         </div>
         {selectedUnit && (
           <div className="text-xs sm:text-sm font-semibold text-gray-600 text-right">
@@ -438,7 +438,9 @@ export default function PropertyDetail({ previewData }) {
                   <h3 className="text-xl font-black text-gray-900 m-0 tracking-tight">รายละเอียด TYPE: {selectedUnit.name}</h3>
                 </div>
                 {selectedUnit.price ? (
-                  <span className="text-lg font-black text-primary">{selectedUnit.price} ล้านบาท</span>
+                  <span className="text-lg font-black text-primary">
+                    {selectedUnit.price} {prop.listingType === 'เช่า' ? 'บาท/เดือน' : 'ล้านบาท'}
+                  </span>
                 ) : null}
               </div>
 
