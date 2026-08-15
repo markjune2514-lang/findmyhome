@@ -1212,6 +1212,7 @@ export default function AddPropertyPage() {
             <ImageUploader 
               label="อัปโหลดรูปโลโก้โครงการ"
               multiple={false}
+              isLogo={true}
               images={formData.logo ? [formData.logo] : []}
               onChange={(images) => setFormData(p => ({...p, logo: images[0] || ''}))}
             />

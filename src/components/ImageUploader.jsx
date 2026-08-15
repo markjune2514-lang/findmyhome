@@ -3,7 +3,7 @@ import { supabase } from '../supabaseClient';
 import { Upload, Link as LinkIcon, X, Loader2 } from 'lucide-react';
 import ImageCropper from './ImageCropper';
 
-export default function ImageUploader({ images = [], onChange, label = 'รูปภาพ', multiple = true }) {
+export default function ImageUploader({ images = [], onChange, label = 'รูปภาพ', multiple = true, isLogo = false }) {
   const [uploading, setUploading] = useState(false);
   const [urlInput, setUrlInput] = useState('');
   const [mode, setMode] = useState('file'); // 'file' or 'url'
@@ -158,12 +158,20 @@ export default function ImageUploader({ images = [], onChange, label = 'รู�
       {images.length > 0 && (
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mt-4">
           {images.map((img, idx) => (
-            <div key={idx} className="relative group rounded-md overflow-hidden bg-gray-100 border flex items-center justify-center min-h-[120px]">
-              <img src={img} alt={`${label} ${idx + 1}`} className="w-full h-full object-contain max-h-[200px]" onError={(e) => e.target.src = 'https://via.placeholder.com/150?text=Error'} />
+            <div 
+              key={idx} 
+              className={`relative group overflow-hidden bg-white border flex items-center justify-center ${isLogo ? 'rounded-full w-32 h-32 mx-auto shadow-sm p-2' : 'rounded-md min-h-[120px] bg-gray-100'}`}
+            >
+              <img 
+                src={img} 
+                alt={`${label} ${idx + 1}`} 
+                className={`w-full h-full object-contain ${!isLogo && 'max-h-[200px]'}`} 
+                onError={(e) => e.target.src = 'https://via.placeholder.com/150?text=Error'} 
+              />
               <button 
                 type="button"
                 onClick={() => handleRemove(idx)}
-                className="absolute top-1 right-1 bg-white/90 text-red-500 hover:bg-red-50 p-1.5 rounded-md opacity-0 group-hover:opacity-100 transition-opacity shadow-sm"
+                className={`absolute bg-white/90 text-red-500 hover:bg-red-50 p-1.5 rounded-md opacity-0 group-hover:opacity-100 transition-opacity shadow-sm ${isLogo ? 'top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-full' : 'top-1 right-1'}`}
               >
                 <X size={14} />
               </button>
