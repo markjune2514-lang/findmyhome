@@ -623,7 +623,7 @@ export default function SearchPage() {
             const imageUrl = prop.logo || fallbackImage;
             const customIcon = L.divIcon({
               className: 'custom-brand-marker-wrapper',
-              html: `<div class="custom-brand-marker" style="background-image: url('${imageUrl}')"></div>`,
+              html: `<div class="custom-brand-marker" style="background-image: url('${imageUrl}'); background-size: contain; background-repeat: no-repeat; background-position: center; background-color: white;"></div>`,
               iconSize: [44, 44],
               iconAnchor: [22, 54],
               popupAnchor: [0, -54]
