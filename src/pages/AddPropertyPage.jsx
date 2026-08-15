@@ -33,6 +33,7 @@ export default function AddPropertyPage() {
     type: 'คอนโด',
     projectType: 'High Rise',
     price: '',
+    priceMode: 'specify',
     priceTo: '',
     priceSqm: '',
     bedrooms: '1',
@@ -516,12 +517,13 @@ export default function AddPropertyPage() {
                 <label>การแสดงราคาเริ่มต้น</label>
                 <select 
                   className="form-control mb-2"
-                  value={(formData.price === '' || formData.price === null) ? 'contact' : 'specify'} 
+                  value={formData.priceMode || ((formData.price === '' || formData.price === null) ? 'contact' : 'specify')} 
                   onChange={(e) => {
-                    if (e.target.value === 'contact') {
-                      setFormData(prev => ({ ...prev, price: '', priceTo: '' }));
+                    const mode = e.target.value;
+                    if (mode === 'contact') {
+                      setFormData(prev => ({ ...prev, priceMode: mode, price: '', priceTo: '' }));
                     } else {
-                      setFormData(prev => ({ ...prev, price: '0' }));
+                      setFormData(prev => ({ ...prev, priceMode: mode, price: '' }));
                     }
                   }}
                 >
@@ -529,7 +531,7 @@ export default function AddPropertyPage() {
                   <option value="contact">แสดงเป็น "สอบถามราคา"</option>
                 </select>
 
-                {(formData.price !== '' && formData.price !== null) && (
+                {((formData.priceMode ? formData.priceMode === 'specify' : (formData.price !== '' && formData.price !== null))) && (
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                     <div>
                       <label style={{ fontSize: '0.8rem', color: '#64748b' }}>ราคาเริ่มต้น (ล้านบาท)</label>
