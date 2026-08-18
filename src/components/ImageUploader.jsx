@@ -160,7 +160,27 @@ export default function ImageUploader({ images = [], onChange, label = 'รู�
           {images.map((img, idx) => (
             <div 
               key={idx} 
-              className={`relative group overflow-hidden bg-white border flex items-center justify-center ${isLogo ? 'rounded-full w-32 h-32 mx-auto shadow-sm p-2' : 'rounded-md min-h-[120px] bg-gray-100'}`}
+              draggable={!isLogo}
+              onDragStart={(e) => {
+                if (isLogo) return;
+                e.dataTransfer.setData('text/plain', idx);
+              }}
+              onDragOver={(e) => {
+                if (isLogo) return;
+                e.preventDefault();
+              }}
+              onDrop={(e) => {
+                if (isLogo) return;
+                e.preventDefault();
+                const fromIdx = parseInt(e.dataTransfer.getData('text/plain'), 10);
+                if (fromIdx !== idx && !isNaN(fromIdx)) {
+                  const newImages = [...images];
+                  const [movedItem] = newImages.splice(fromIdx, 1);
+                  newImages.splice(idx, 0, movedItem);
+                  onChange(newImages);
+                }
+              }}
+              className={`relative group overflow-hidden bg-white border flex items-center justify-center ${isLogo ? 'rounded-full w-32 h-32 mx-auto shadow-sm p-2' : 'rounded-md min-h-[120px] bg-gray-100 cursor-move'}`}
             >
               <img 
                 src={img} 
