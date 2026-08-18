@@ -174,6 +174,7 @@ export default function AdminDashboard() {
   const statusStyle = (status) => {
     if (status === 'พร้อมอยู่') return { background: '#dcfce7', color: '#16a34a' };
     if (status === 'เปิด Presale') return { background: '#fef9c3', color: '#ca8a04' };
+    if (status === 'ฉบับร่าง') return { background: '#f1f5f9', color: '#64748b' };
     return { background: '#e0f2fe', color: '#0284c7' };
   };
 

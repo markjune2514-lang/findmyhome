@@ -19,17 +19,18 @@ export default function ProjectsPage() {
 
   // Simple mock filtering logic for demonstration
   const getFilteredProperties = () => {
+    let baseProperties = properties.filter(p => p.status !== 'ฉบับร่าง');
     switch(activeCategory) {
       case 'new':
-        return properties.filter(p => p.status === 'กำลังก่อสร้าง' || p.status === 'เปิด Presale');
+        return baseProperties.filter(p => p.status === 'กำลังก่อสร้าง' || p.status === 'เปิด Presale');
       case 'transit':
-        return properties.filter(p => p.distanceToStation.includes('ม.') && parseInt(p.distanceToStation) < 500);
+        return baseProperties.filter(p => p.distanceToStation && p.distanceToStation.includes('ม.') && parseInt(p.distanceToStation) < 500);
       case 'family':
-        return properties.filter(p => p.projectType.includes('บ้าน'));
+        return baseProperties.filter(p => p.projectType && p.projectType.includes('บ้าน'));
       case 'luxury':
-        return properties.filter(p => p.price >= 10);
+        return baseProperties.filter(p => p.price >= 10);
       default:
-        return properties;
+        return baseProperties;
     }
   };
 

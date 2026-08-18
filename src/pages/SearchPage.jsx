@@ -182,6 +182,9 @@ export default function SearchPage() {
   };
 
   const filteredProperties = properties.filter(prop => {
+    // ซ่อนโครงการที่เป็น "ฉบับร่าง"
+    if (prop.status === 'ฉบับร่าง') return false;
+
     if (polygonFilter) {
       const { layer, layerType } = polygonFilter;
       if (layerType === 'circle') {

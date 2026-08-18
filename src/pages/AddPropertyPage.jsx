@@ -190,7 +190,7 @@ export default function AddPropertyPage() {
   const seniorHealthFacilities = ['บริการฉุกเฉินตลอด 24 ชั่วโมง', 'มีแพทย์ประจำ', 'กายภาพบำบัด', 'ศูนย์ฟื้นฟู', 'คลินิกในโครงการ', 'รถพยาบาลฉุกเฉิน', 'ตรวจสุขภาพประจำปี', 'มีโรงพยาบาลในเครือ'];
   const seniorSecurities = ['CCTV', 'Security 24 Hour.', 'Emergency Button', 'Emergency alert system'];
 
-  const statuses = ['พร้อมอยู่', 'กำลังก่อสร้าง', 'เปิด Presale'];
+  const statuses = ['พร้อมอยู่', 'กำลังก่อสร้าง', 'เปิด Presale', 'ฉบับร่าง'];
 
 
   
