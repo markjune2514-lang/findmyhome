@@ -283,6 +283,7 @@ export default function AdminDashboard() {
             )) : (
               <div style={{ color: '#94a3b8', fontSize: '0.875rem', fontStyle: 'italic' }}>ยังไม่มีข้อมูลการค้นหา (หรือยังไม่ได้สร้างตารางในฐานข้อมูล)</div>
             )}
+          </div>
         </div>
 
         {/* ── Table Card */}
