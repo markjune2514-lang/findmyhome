@@ -47,17 +47,9 @@ export default function PropertyDetail({ previewData }) {
   const displayBedrooms = selectedUnit?.bedrooms || prop?.bedrooms;
   const displayBathrooms = selectedUnit?.bathrooms || prop?.bathrooms;
   const displayParking = selectedUnit?.parking || prop?.parking;
-
-  const formattedRoomInfo = (() => {
-    const parts = [];
-    const clean = (s) => typeof s === 'string' ? s.replace(/beds?|bedrooms?|ห้องนอน/gi, '').trim() : s;
-    if (displayBedrooms) parts.push(`${clean(displayBedrooms)} ห้องนอน`);
-    if (displayBathrooms) parts.push(`${clean(displayBathrooms)} ห้องน้ำ`);
-    if (displayParking) parts.push(`${clean(displayParking)} ที่จอดรถ`);
-    const displayMultipurpose = selectedUnit?.multipurpose || prop?.multipurpose;
-    if (displayMultipurpose) parts.push(`${clean(displayMultipurpose)} ห้องอเนกประสงค์`);
-    return parts.length > 0 ? parts.join(' ') : (selectedUnit?.roomType || prop?.roomType || '');
-  })();
+  const displayMultipurpose = selectedUnit?.multipurpose || prop?.multipurpose;
+  
+  const cleanSpec = (s) => typeof s === 'string' ? s.replace(/beds?|bedrooms?|ห้องนอน|ห้องน้ำ|ที่จอดรถ|ห้องอเนกประสงค์/gi, '').trim() : s;
 
   React.useEffect(() => {
     setCurrentIndex(0);
@@ -139,8 +131,8 @@ export default function PropertyDetail({ previewData }) {
       </div>
 
       {/* Price & Specs Summary Row */}
-      <div className="flex justify-between items-end mb-4">
-        <div className="flex items-baseline gap-2">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-3 mb-4">
+        <div className="flex flex-col gap-1">
           <span className="text-sm text-gray-500 font-medium">{selectedUnit ? `ราคาสำหรับ ${selectedUnit.name ? 'TYPE: ' + selectedUnit.name : 'TYPE นี้'}` : (displayPrice ? 'ราคาเริ่มต้น' : 'ราคา')}</span>
           <h2 className={`font-black tracking-tight ${!displayPrice ? 'text-primary' : 'text-gray-900'} leading-none m-0`} style={{ fontSize: '1.8rem' }}>
               {displayPrice 
@@ -149,11 +141,34 @@ export default function PropertyDetail({ previewData }) {
               }
           </h2>
         </div>
-        {selectedUnit && (
-          <div className="text-xs sm:text-sm font-semibold text-gray-600 text-right">
-            {formattedRoomInfo && `${formattedRoomInfo} • `}{displaySize} {displaySize && !displaySize.includes('ตร') ? 'ตร.ม.' : ''}
-          </div>
-        )}
+        
+        <div className="flex flex-wrap items-center gap-2 mt-2 md:mt-0">
+          {displayBedrooms && (
+            <div className="flex items-center gap-1.5 bg-blue-50 text-blue-700 px-2.5 py-1.5 rounded-lg text-sm font-bold border border-blue-100">
+              <span>🛏️</span> {cleanSpec(displayBedrooms)} <span className="hidden sm:inline">ห้องนอน</span>
+            </div>
+          )}
+          {displayBathrooms && (
+            <div className="flex items-center gap-1.5 bg-cyan-50 text-cyan-700 px-2.5 py-1.5 rounded-lg text-sm font-bold border border-cyan-100">
+              <span>🚿</span> {cleanSpec(displayBathrooms)} <span className="hidden sm:inline">ห้องน้ำ</span>
+            </div>
+          )}
+          {displayParking && (
+            <div className="flex items-center gap-1.5 bg-slate-50 text-slate-700 px-2.5 py-1.5 rounded-lg text-sm font-bold border border-slate-200">
+              <Car size={16} className="text-slate-500" /> {cleanSpec(displayParking)} <span className="hidden sm:inline">ที่จอดรถ</span>
+            </div>
+          )}
+          {displayMultipurpose && (
+            <div className="flex items-center gap-1.5 bg-amber-50 text-amber-700 px-2.5 py-1.5 rounded-lg text-sm font-bold border border-amber-100">
+              <Star size={16} className="text-amber-500" /> {cleanSpec(displayMultipurpose)} <span className="hidden sm:inline">อเนกประสงค์</span>
+            </div>
+          )}
+          {displaySize && (
+            <div className="flex items-center gap-1.5 bg-emerald-50 text-emerald-700 px-2.5 py-1.5 rounded-lg text-sm font-bold border border-emerald-100">
+              <Ruler size={16} className="text-emerald-500" /> {displaySize} {displaySize && !displaySize.includes('ตร') ? 'ตร.ม.' : ''}
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Main Image Gallery Carousel with Side Arrows Overlayed */}
