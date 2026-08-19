@@ -4,7 +4,7 @@ import { useProperties } from '../PropertiesContext';
 import { supabase } from '../supabaseClient';
 import {
   Plus, Building2, Home as HomeIcon, LayoutList, Edit, Trash2,
-  Layers, Search, X, Save, ChevronDown, ChevronUp, TrendingUp, Eye, Copy
+  Layers, Search, X, Save, ChevronDown, ChevronUp, TrendingUp, Eye, Copy, Send
 } from 'lucide-react';
 
 // ── Unit Types Manager Modal ────────────────────────────────────────────────
@@ -150,7 +150,7 @@ function UnitTypesModal({ prop, onClose, onSaved }) {
 
 // ── Main Dashboard ──────────────────────────────────────────────────────────
 export default function AdminDashboard() {
-  const { properties, deleteProperty, fetchProperties } = useProperties();
+  const { properties, deleteProperty, fetchProperties, updateProperty } = useProperties();
   const [search, setSearch] = useState('');
   const [typeFilter, setTypeFilter] = useState('ทั้งหมด');
   const [managingProp, setManagingProp] = useState(null);
@@ -158,6 +158,18 @@ export default function AdminDashboard() {
   const handleDelete = async (id) => {
     if (window.confirm('คุณแน่ใจหรือไม่ว่าต้องการลบโครงการนี้? (ไม่สามารถกู้คืนได้)')) {
       await deleteProperty(id);
+    }
+  };
+
+  const handlePublish = async (prop) => {
+    if (window.confirm(`คุณต้องการเผยแพร่โครงการ "${prop.name}" ใช่หรือไม่?\n(สถานะจะเปลี่ยนเป็น "เปิด Presale" และแสดงให้ผู้ใช้งานเห็น)`)) {
+      const result = await updateProperty(prop.id, { ...prop, status: 'เปิด Presale' });
+      if (result === true || result?.success) {
+        alert('เผยแพร่โครงการเรียบร้อยแล้ว!');
+        if (fetchProperties) fetchProperties();
+      } else {
+        alert('เกิดข้อผิดพลาดในการเผยแพร่โครงการ');
+      }
     }
   };
 
@@ -205,9 +217,9 @@ export default function AdminDashboard() {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(170px, 1fr))', gap: '1rem', marginBottom: '1.75rem' }}>
           {[
             { label: 'โครงการทั้งหมด', value: properties.length, icon: <LayoutList size={22} />, iconColor: '#6366f1', iconBg: '#eef2ff' },
-            { label: 'คอนโดมิเนียม', value: condoCount, icon: <Building2 size={22} />, iconColor: '#8b5cf6', iconBg: '#f5f3ff' },
+            { label: 'ผู้เข้าชมทั้งหมด (คน)', value: '12,450', icon: <Eye size={22} />, iconColor: '#ec4899', iconBg: '#fce7f3' },
             { label: 'บ้านและทาวน์โฮม', value: houseCount, icon: <HomeIcon size={22} />, iconColor: '#10b981', iconBg: '#ecfdf5' },
-            { label: 'Senior Living', value: seniorCount, icon: <TrendingUp size={22} />, iconColor: '#f59e0b', iconBg: '#fffbeb' },
+            { label: 'คอนโดมิเนียม', value: condoCount, icon: <Building2 size={22} />, iconColor: '#8b5cf6', iconBg: '#f5f3ff' },
           ].map((s, i) => (
             <div key={i} style={{ background: '#fff', borderRadius: '1.25rem', padding: '1.25rem', border: '1px solid #f1f5f9', boxShadow: '0 1px 8px rgba(0,0,0,0.04)', display: 'flex', alignItems: 'center', gap: '1rem' }}>
               <div style={{ width: 48, height: 48, borderRadius: '0.875rem', background: s.iconBg, display: 'flex', alignItems: 'center', justifyContent: 'center', color: s.iconColor, flexShrink: 0 }}>{s.icon}</div>
@@ -217,6 +229,30 @@ export default function AdminDashboard() {
               </div>
             </div>
           ))}
+        </div>
+
+        {/* ── Analytics Chart (Mock) */}
+        <div style={{ background: '#fff', borderRadius: '1.5rem', border: '1px solid #f1f5f9', padding: '1.5rem', marginBottom: '1.75rem', boxShadow: '0 1px 12px rgba(0,0,0,0.06)' }}>
+          <h3 style={{ margin: '0 0 1rem', fontSize: '1.1rem', fontWeight: 800, color: '#0f172a', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <Search size={18} color="var(--primary)" /> คำค้นหายอดฮิต (Top Searches)
+          </h3>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+            {[
+              { term: 'กรุงเทพมหานคร', count: 4200, width: '100%' },
+              { term: 'ทาวน์โฮม', count: 3150, width: '75%' },
+              { term: 'บ้านแฝด', count: 2800, width: '66%' },
+              { term: 'ใกล้รถไฟฟ้า', count: 1950, width: '46%' },
+              { term: 'นนทบุรี', count: 1200, width: '28%' }
+            ].map((item, idx) => (
+              <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                <div style={{ width: '100px', fontSize: '0.875rem', color: '#475569', fontWeight: 600 }}>{item.term}</div>
+                <div style={{ flex: 1, background: '#f1f5f9', height: '24px', borderRadius: '12px', overflow: 'hidden' }}>
+                  <div style={{ width: item.width, background: 'var(--primary)', height: '100%', borderRadius: '12px', transition: 'width 1s ease-in-out' }}></div>
+                </div>
+                <div style={{ width: '50px', textAlign: 'right', fontSize: '0.8rem', color: '#94a3b8', fontWeight: 700 }}>{item.count}</div>
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* ── Table Card */}
@@ -292,6 +328,9 @@ export default function AdminDashboard() {
                     {/* Actions */}
                     <td style={{ padding: '0.75rem 1rem' }}>
                       <div style={{ display: 'flex', gap: '0.375rem', alignItems: 'center' }}>
+                        {prop.status === 'ฉบับร่าง' && (
+                          <button onClick={() => handlePublish(prop)} title="เผยแพร่ (Publish)" style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', padding: '0.35rem 0.75rem', borderRadius: '0.5rem', background: '#4f46e5', color: '#fff', textDecoration: 'none', border: 'none', cursor: 'pointer', fontSize: '0.72rem', fontWeight: 700, whiteSpace: 'nowrap' }}><Send size={12} /> เผยแพร่</button>
+                        )}
                         <Link to={`/admin/add`} state={{ duplicateFrom: prop }} title="คัดลอก (Copy)" style={{ width: 32, height: 32, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '0.5rem', background: '#f8fafc', color: '#64748b', textDecoration: 'none', border: '1px solid #e2e8f0', flexShrink: 0 }}><Copy size={14} /></Link>
                         <Link to={`/admin/edit/${prop.id}`} title="แก้ไข" style={{ width: 32, height: 32, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '0.5rem', background: '#eff6ff', color: '#3b82f6', textDecoration: 'none', border: '1px solid #dbeafe', flexShrink: 0 }}><Edit size={14} /></Link>
                         <Link to={`/property/${prop.id}`} target="_blank" title="ดูหน้าเว็บ" style={{ width: 32, height: 32, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '0.5rem', background: '#f0fdf4', color: '#22c55e', textDecoration: 'none', border: '1px solid #dcfce7', flexShrink: 0 }}><Eye size={14} /></Link>

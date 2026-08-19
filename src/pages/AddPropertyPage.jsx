@@ -1236,7 +1236,20 @@ export default function AddPropertyPage() {
             <button type="button" className="btn w-full sm:w-auto px-8 py-2.5 flex justify-center items-center gap-2 bg-blue-50 text-blue-600 hover:bg-blue-100 border border-blue-200" onClick={() => setShowPreview(true)}>
               <Eye size={18} /> ดูตัวอย่าง (Preview)
             </button>
-            <button type="submit" className="btn btn-primary w-full sm:w-auto px-8 py-2.5 flex justify-center items-center gap-2"><Save size={18} /> บันทึกโครงการ</button>
+            <button type="submit" className="btn btn-primary w-full sm:w-auto px-8 py-2.5 flex justify-center items-center gap-2"><Save size={18} /> บันทึก</button>
+            {formData.status === 'ฉบับร่าง' && (
+              <button 
+                type="button" 
+                onClick={(e) => {
+                  setFormData(prev => ({...prev, status: 'เปิด Presale'}));
+                  setTimeout(() => handleSubmit(e), 100);
+                }}
+                className="btn w-full sm:w-auto px-8 py-2.5 flex justify-center items-center gap-2"
+                style={{ background: '#4f46e5', color: '#fff' }}
+              >
+                <Send size={18} /> เผยแพร่ (Publish)
+              </button>
+            )}
           </div>
         </form>
       </div>

@@ -11,9 +11,11 @@
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.110.7",
+    "devalue": "^5.9.0",
     "leaflet": "^1.9.4",
     "leaflet-draw": "^1.0.4",
     "lucide-react": "^1.25.0",
+    "puppeteer": "^25.8.0",
     "rc-slider": "^11.1.9",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
@@ -31,5 +33,18 @@
     "postcss": "^8.5.25",
     "tailwindcss": "^3.4.19",
     "vite": "^8.1.1"
-  }
+  },
+  "description": "This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.",
+  "main": "postcss.config.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/markjune2514-lang/findmyhome.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/markjune2514-lang/findmyhome/issues"
+  },
+  "homepage": "https://github.com/markjune2514-lang/findmyhome#readme"
 }
