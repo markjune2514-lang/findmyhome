@@ -155,6 +155,38 @@ export default function AdminDashboard() {
   const [typeFilter, setTypeFilter] = useState('ทั้งหมด');
   const [managingProp, setManagingProp] = useState(null);
 
+  // Analytics State
+  const [totalViews, setTotalViews] = useState(0);
+  const [topSearches, setTopSearches] = useState([]);
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        // Fetch total page views
+        const { data: viewsData, error: viewsError } = await supabase
+          .from('page_views')
+          .select('views');
+        if (!viewsError && viewsData) {
+          const sum = viewsData.reduce((acc, curr) => acc + curr.views, 0);
+          setTotalViews(sum);
+        }
+
+        // Fetch top searches
+        const { data: searchData, error: searchError } = await supabase
+          .from('search_stats')
+          .select('*')
+          .order('count', { ascending: false })
+          .limit(5);
+        if (!searchError && searchData) {
+          setTopSearches(searchData);
+        }
+      } catch (err) {
+        console.error('Error fetching stats:', err);
+      }
+    };
+    fetchStats();
+  }, []);
+
   const handleDelete = async (id) => {
     if (window.confirm('คุณแน่ใจหรือไม่ว่าต้องการลบโครงการนี้? (ไม่สามารถกู้คืนได้)')) {
       await deleteProperty(id);
@@ -196,6 +228,9 @@ export default function AdminDashboard() {
     return { background: '#ecfdf5', color: '#059669' };
   };
 
+  // คำนวณความกว้างหลอดสำหรับ Top Searches
+  const maxSearchCount = topSearches.length > 0 ? topSearches[0].count : 1;
+
   return (
     <div style={{ minHeight: '100vh', background: '#f8fafc', padding: '1.5rem 1rem' }}>
       <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
@@ -217,7 +252,7 @@ export default function AdminDashboard() {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(170px, 1fr))', gap: '1rem', marginBottom: '1.75rem' }}>
           {[
             { label: 'โครงการทั้งหมด', value: properties.length, icon: <LayoutList size={22} />, iconColor: '#6366f1', iconBg: '#eef2ff' },
-            { label: 'ผู้เข้าชมทั้งหมด (คน)', value: '12,450', icon: <Eye size={22} />, iconColor: '#ec4899', iconBg: '#fce7f3' },
+            { label: 'ผู้เข้าชมทั้งหมด (คน)', value: totalViews.toLocaleString(), icon: <Eye size={22} />, iconColor: '#ec4899', iconBg: '#fce7f3' },
             { label: 'บ้านและทาวน์โฮม', value: houseCount, icon: <HomeIcon size={22} />, iconColor: '#10b981', iconBg: '#ecfdf5' },
             { label: 'คอนโดมิเนียม', value: condoCount, icon: <Building2 size={22} />, iconColor: '#8b5cf6', iconBg: '#f5f3ff' },
           ].map((s, i) => (
@@ -231,13 +266,12 @@ export default function AdminDashboard() {
           ))}
         </div>
 
-        {/* ── Analytics Chart (Mock) */}
+        {/* ── Analytics Chart (Real Data) */}
         <div style={{ background: '#fff', borderRadius: '1.5rem', border: '1px solid #f1f5f9', padding: '1.5rem', marginBottom: '1.75rem', boxShadow: '0 1px 12px rgba(0,0,0,0.06)' }}>
           <h3 style={{ margin: '0 0 1rem', fontSize: '1.1rem', fontWeight: 800, color: '#0f172a', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
             <Search size={18} color="var(--primary)" /> คำค้นหายอดฮิต (Top Searches)
           </h3>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-            {[
               { term: 'กรุงเทพมหานคร', count: 4200, width: '100%' },
               { term: 'ทาวน์โฮม', count: 3150, width: '75%' },
               { term: 'บ้านแฝด', count: 2800, width: '66%' },

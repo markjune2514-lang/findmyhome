@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import { Search, SlidersHorizontal, Heart, Map as MapIcon, Star, X, ChevronDown, Plus, Check, PenTool, MapPin } from 'lucide-react';
 import { provincesAndDistricts, transitData } from '../data/locations';
 import { Link } from 'react-router-dom';
 import { useProperties } from '../PropertiesContext';
 import { useCompare } from '../CompareContext';
+import { supabase } from '../supabaseClient';
 import SEO from '../components/SEO';
 import './SearchPage.css';
 import Slider from 'rc-slider';
@@ -127,6 +128,21 @@ export default function SearchPage() {
 
   // Search State
   const [searchQuery, setSearchQuery] = useState('');
+
+  // Track searches to Supabase with debounce
+  useEffect(() => {
+    if (!searchQuery || searchQuery.trim().length < 2) return;
+    const timer = setTimeout(async () => {
+      try {
+        const { error } = await supabase.rpc('increment_search_stat', { search_term: searchQuery.trim() });
+        if (error) console.error('Error logging search:', error);
+      } catch (err) {
+        console.error('Exception logging search:', err);
+      }
+    }, 1500); // 1.5 second debounce
+
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
 
   // Property Type State
   const [activePropertyType, setActivePropertyType] = useState('condo');

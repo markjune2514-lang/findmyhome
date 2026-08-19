@@ -14,6 +14,7 @@ import { CompareProvider } from './CompareContext';
 import { PropertiesProvider } from './PropertiesContext';
 import { AuthProvider } from './AuthContext';
 import ProtectedRoute from './ProtectedRoute';
+import AnalyticsTracker from './components/AnalyticsTracker';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
       <PropertiesProvider>
         <CompareProvider>
           <Router>
+            <AnalyticsTracker />
             <Routes>
               <Route path="/" element={<Layout />}>
                 <Route index element={<Navigate to="/search" replace />} />
