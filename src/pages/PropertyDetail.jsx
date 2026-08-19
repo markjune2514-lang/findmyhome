@@ -165,7 +165,7 @@ export default function PropertyDetail({ previewData }) {
           )}
           {displaySize && (
             <div className="flex items-center gap-1.5 bg-emerald-50 text-emerald-700 px-2.5 py-1.5 rounded-lg text-sm font-bold border border-emerald-100">
-              <Ruler size={16} className="text-emerald-500" /> {displaySize} {displaySize && !displaySize.includes('ตร') ? 'ตร.ม.' : ''}
+              <Ruler size={16} className="text-emerald-500" /> {displaySize} {displaySize && !String(displaySize).includes('ตร') ? 'ตร.ม.' : ''}
             </div>
           )}
         </div>
