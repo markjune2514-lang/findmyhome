@@ -503,7 +503,14 @@ export default function PropertyDetail({ previewData }) {
                 )}
                 <div className="p-3 bg-neutral-50 rounded-xl">
                   <span className="text-xs text-gray-400 block">ห้องนอน / ห้องน้ำ / อเนกประสงค์ / ที่จอดรถ</span>
-                  <span className="text-sm font-bold text-gray-800">{formattedRoomInfo || 'ไม่ระบุ'}</span>
+                  <span className="text-sm font-bold text-gray-800">
+                    {[
+                      displayBedrooms ? `${cleanSpec(displayBedrooms)} ห้องนอน` : null,
+                      displayBathrooms ? `${cleanSpec(displayBathrooms)} ห้องน้ำ` : null,
+                      displayMultipurpose ? `${cleanSpec(displayMultipurpose)} อเนกประสงค์` : null,
+                      displayParking ? `${cleanSpec(displayParking)} ที่จอดรถ` : null
+                    ].filter(Boolean).join(' / ') || 'ไม่ระบุ'}
+                  </span>
                 </div>
                 {selectedUnit.special && (
                   <div className="p-3 bg-neutral-50 rounded-xl col-span-2">
