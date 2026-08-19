@@ -272,21 +272,17 @@ export default function AdminDashboard() {
             <Search size={18} color="var(--primary)" /> คำค้นหายอดฮิต (Top Searches)
           </h3>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-              { term: 'กรุงเทพมหานคร', count: 4200, width: '100%' },
-              { term: 'ทาวน์โฮม', count: 3150, width: '75%' },
-              { term: 'บ้านแฝด', count: 2800, width: '66%' },
-              { term: 'ใกล้รถไฟฟ้า', count: 1950, width: '46%' },
-              { term: 'นนทบุรี', count: 1200, width: '28%' }
-            ].map((item, idx) => (
+            {topSearches.length > 0 ? topSearches.map((item, idx) => (
               <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                <div style={{ width: '100px', fontSize: '0.875rem', color: '#475569', fontWeight: 600 }}>{item.term}</div>
+                <div style={{ width: '120px', fontSize: '0.875rem', color: '#475569', fontWeight: 600, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{item.term}</div>
                 <div style={{ flex: 1, background: '#f1f5f9', height: '24px', borderRadius: '12px', overflow: 'hidden' }}>
-                  <div style={{ width: item.width, background: 'var(--primary)', height: '100%', borderRadius: '12px', transition: 'width 1s ease-in-out' }}></div>
+                  <div style={{ width: ${(item.count / maxSearchCount) * 100}%, background: 'var(--primary)', height: '100%', borderRadius: '12px', transition: 'width 1s ease-in-out' }}></div>
                 </div>
-                <div style={{ width: '50px', textAlign: 'right', fontSize: '0.8rem', color: '#94a3b8', fontWeight: 700 }}>{item.count}</div>
+                <div style={{ width: '40px', fontSize: '0.875rem', color: '#94a3b8', fontWeight: 600, textAlign: 'right' }}>{item.count}</div>
               </div>
-            ))}
-          </div>
+            )) : (
+              <div style={{ color: '#94a3b8', fontSize: '0.875rem', fontStyle: 'italic' }}>ยังไม่มีข้อมูลการค้นหา (หรือยังไม่ได้สร้างตารางในฐานข้อมูล)</div>
+            )}
         </div>
 
         {/* ── Table Card */}
