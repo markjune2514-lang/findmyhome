@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { useProperties } from '../PropertiesContext';
 import { provincesAndDistricts, transitData } from '../data/locations';
-import { Save, Image as ImageIcon, MapPin, X, Eye, ArrowLeft } from 'lucide-react';
+import { Save, Image as ImageIcon, MapPin, X, Eye, ArrowLeft, Send } from 'lucide-react';
 import ImageUploader from '../components/ImageUploader';
 import PropertyDetail from './PropertyDetail';
 import './AddPropertyPage.css';
