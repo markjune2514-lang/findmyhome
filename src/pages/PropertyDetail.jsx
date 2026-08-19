@@ -118,7 +118,7 @@ export default function PropertyDetail({ previewData }) {
             ภาพรวมโครงการ
           </button>
 
-          {prop.unitTypes && prop.unitTypes.map((u, i) => (
+          {Array.isArray(prop.unitTypes) && prop.unitTypes.map((u, i) => (
             <button
               key={i}
               onClick={() => setActiveTab(i.toString())}
@@ -366,7 +366,7 @@ export default function PropertyDetail({ previewData }) {
                 </h3>
 
                 <div className="space-y-4">
-                  {prop.special && prop.special.length > 0 && (
+                  {Array.isArray(prop.special) && prop.special.length > 0 && (
                     <div className="facility-group">
                       <span className="facility-group-title text-pink"><Sparkles size={14} /> จุดเด่น / รูปแบบการอยู่อาศัย:</span>
                       <div className="facility-tags-wrapper">
@@ -377,7 +377,7 @@ export default function PropertyDetail({ previewData }) {
                     </div>
                   )}
 
-                  {prop.facilities && prop.facilities.length > 0 && (
+                  {Array.isArray(prop.facilities) && prop.facilities.length > 0 && (
                     <div className="facility-group">
                       <span className="facility-group-title text-blue"><Waves size={14} /> สิ่งอำนวยความสะดวกส่วนกลาง:</span>
                       <div className="facility-tags-wrapper">
@@ -388,7 +388,7 @@ export default function PropertyDetail({ previewData }) {
                     </div>
                   )}
 
-                  {prop.security && prop.security.length > 0 && (
+                  {Array.isArray(prop.security) && prop.security.length > 0 && (
                     <div className="facility-group">
                       <span className="facility-group-title text-emerald"><ShieldCheck size={14} /> ระบบรักษาความปลอดภัย:</span>
                       <div className="facility-tags-wrapper">
@@ -399,7 +399,7 @@ export default function PropertyDetail({ previewData }) {
                     </div>
                   )}
 
-                  {prop.healthFacilities && prop.healthFacilities.length > 0 && (
+                  {Array.isArray(prop.healthFacilities) && prop.healthFacilities.length > 0 && (
                     <div className="facility-group">
                       <span className="facility-group-title text-purple"><Activity size={14} /> บริการด้านสุขภาพ:</span>
                       <div className="facility-tags-wrapper">
@@ -410,7 +410,7 @@ export default function PropertyDetail({ previewData }) {
                     </div>
                   )}
 
-                  {prop.services && prop.services.length > 0 && (
+                  {Array.isArray(prop.services) && prop.services.length > 0 && (
                     <div className="facility-group">
                       <span className="facility-group-title text-amber"><BellRing size={14} /> บริการพิเศษ:</span>
                       <div className="facility-tags-wrapper">
@@ -430,14 +430,14 @@ export default function PropertyDetail({ previewData }) {
                     </div>
                   )}
 
-                  {prop.building_details && prop.building_details.length > 0 && (
+                  {Array.isArray(prop.building_details) && prop.building_details.length > 0 && (
                     <div className="facility-group">
                       <span className="facility-group-title text-indigo"><Building size={14} /> ข้อมูลรายอาคาร:</span>
                       <div className="flex flex-col gap-3 mt-2">
                         {prop.building_details.map((bldg, idx) => (
                           <div key={idx} className="bg-gray-50 p-3 rounded-xl border border-gray-100 flex flex-col gap-2">
                             <span className="font-bold text-gray-800 text-sm">{bldg.name || `อาคาร ${idx + 1}`}</span>
-                            {bldg.facilities && bldg.facilities.length > 0 ? (
+                            {Array.isArray(bldg.facilities) && bldg.facilities.length > 0 ? (
                               <div className="flex flex-wrap gap-1.5">
                                 {bldg.facilities.map((f, i) => (
                                   <span key={i} className="text-[10px] bg-white border border-gray-200 text-gray-600 px-2 py-0.5 rounded-full">{f}</span>
@@ -521,7 +521,7 @@ export default function PropertyDetail({ previewData }) {
               </div>
 
               {/* Floor Plan Images */}
-              {selectedUnit.planImages && selectedUnit.planImages.length > 0 && (
+              {Array.isArray(selectedUnit.planImages) && selectedUnit.planImages.length > 0 && (
                 <div className="mb-5">
                   <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 flex items-center gap-1.5"><Ruler size={14} /> แปลนห้อง (Floor Plan)</h4>
                   <div className="grid grid-cols-2 gap-3">
@@ -536,7 +536,7 @@ export default function PropertyDetail({ previewData }) {
               )}
 
               {/* Room Photos */}
-              {selectedUnit.roomImages && selectedUnit.roomImages.length > 0 && (
+              {Array.isArray(selectedUnit.roomImages) && selectedUnit.roomImages.length > 0 && (
                 <div>
                   <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 flex items-center gap-1.5"><ImageIcon size={14} /> ภาพบรรยากาศห้องจริง</h4>
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
@@ -597,13 +597,13 @@ export default function PropertyDetail({ previewData }) {
             {/* Categorized Landmark Distances */}
             <div className="space-y-3">
               {/* 1. รถไฟฟ้า / การเดินทาง */}
-              {((prop.categorizedLandmarks?.transit && prop.categorizedLandmarks.transit.length > 0) || prop.station) && (
+              {((Array.isArray(prop.categorizedLandmarks?.transit) && prop.categorizedLandmarks.transit.length > 0) || prop.station) && (
                 <div className="bg-blue-50/50 p-2.5 rounded-xl border border-blue-100">
                   <p className="text-xs font-bold text-blue-900 mb-1.5 flex items-center gap-1.5">
                     <Train size={14} /> รถไฟฟ้า / การเดินทาง
                   </p>
                   <div className="space-y-1">
-                    {prop.categorizedLandmarks?.transit && prop.categorizedLandmarks.transit.length > 0 ? (
+                    {Array.isArray(prop.categorizedLandmarks?.transit) && prop.categorizedLandmarks.transit.length > 0 ? (
                       prop.categorizedLandmarks.transit.map((item, i) => (
                         <div key={i} className="flex justify-between items-center text-xs">
                           <span className="text-gray-700 font-medium">{item.name}</span>
@@ -629,7 +629,7 @@ export default function PropertyDetail({ previewData }) {
               )}
 
               {/* 2. ห้างสรรพสินค้า / ช้อปปิ้ง */}
-              {prop.categorizedLandmarks?.malls && prop.categorizedLandmarks.malls.length > 0 && (
+              {Array.isArray(prop.categorizedLandmarks?.malls) && prop.categorizedLandmarks.malls.length > 0 && (
                 <div className="bg-amber-50/50 p-2.5 rounded-xl border border-amber-100">
                   <p className="text-xs font-bold text-amber-900 mb-1.5 flex items-center gap-1.5">
                     <ShoppingBag size={14} /> ห้างสรรพสินค้า / ช้อปปิ้ง
@@ -646,7 +646,7 @@ export default function PropertyDetail({ previewData }) {
               )}
 
               {/* 3. โรงพยาบาล */}
-              {prop.categorizedLandmarks?.hospitals && prop.categorizedLandmarks.hospitals.length > 0 && (
+              {Array.isArray(prop.categorizedLandmarks?.hospitals) && prop.categorizedLandmarks.hospitals.length > 0 && (
                 <div className="bg-rose-50/50 p-2.5 rounded-xl border border-rose-100">
                   <p className="text-xs font-bold text-rose-900 mb-1.5 flex items-center gap-1.5">
                     <Hospital size={14} /> โรงพยาบาล / สถานพยาบาล
@@ -663,7 +663,7 @@ export default function PropertyDetail({ previewData }) {
               )}
 
               {/* 4. โรงเรียน / มหาวิทยาลัย */}
-              {prop.categorizedLandmarks?.schools && prop.categorizedLandmarks.schools.length > 0 && (
+              {Array.isArray(prop.categorizedLandmarks?.schools) && prop.categorizedLandmarks.schools.length > 0 && (
                 <div className="bg-emerald-50/50 p-2.5 rounded-xl border border-emerald-100">
                   <p className="text-xs font-bold text-emerald-900 mb-1.5 flex items-center gap-1.5">
                     <GraduationCap size={14} /> โรงเรียน / มหาวิทยาลัย
