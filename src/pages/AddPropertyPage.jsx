@@ -398,7 +398,7 @@ export default function AddPropertyPage() {
       bedrooms: calculatedBedrooms || formData.bedrooms,
       size: calculatedSize || formData.size,
       roomType: calculatedRoomType || formData.roomType,
-      floors: parseNumberClean(formData.floors) || 0,
+      floors: formData.floors,
       totalUnits: parseNumberClean(formData.totalUnits) || 0,
       location: {
         lat: parseFloat(formData.location.lat) || 13.75,
@@ -573,7 +573,7 @@ export default function AddPropertyPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="form-group">
                 <label>จำนวนชั้นทั้งหมด</label>
-                <input type="number" name="floors" value={formData.floors} onChange={handleChange} placeholder="เช่น 32" />
+                <input type="text" name="floors" value={formData.floors} onChange={handleChange} placeholder="เช่น 32 หรือ 2-3 ชั้น" />
               </div>
               <div className="form-group">
                 <label>จำนวนยูนิตทั้งหมด</label>

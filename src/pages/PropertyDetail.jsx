@@ -302,7 +302,7 @@ export default function PropertyDetail({ previewData }) {
                 <div className="spec-item p-3 bg-white rounded-xl border border-gray-100 shadow-sm flex flex-col items-center text-center">
                   <LayoutDashboard size={22} color="var(--primary)" />
                   <p className="label text-xs text-gray-400 mt-1">จำนวนชั้น</p>
-                  <p className="val text-sm font-bold text-gray-800">{prop.floors} ชั้น</p>
+                  <p className="val text-sm font-bold text-gray-800">{prop.floors}{String(prop.floors).includes('ชั้น') ? '' : ' ชั้น'}</p>
                 </div>
                 <div className="spec-item p-3 bg-white rounded-xl border border-gray-100 shadow-sm flex flex-col items-center text-center">
                   <LayoutDashboard size={22} color="var(--primary)" />

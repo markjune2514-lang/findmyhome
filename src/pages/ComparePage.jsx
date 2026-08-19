@@ -113,7 +113,7 @@ export default function ComparePage() {
                             ? prop.type 
                             : prop.projectType}
                         </div>
-                        <div className="metric-row">{prop.floors} ชั้น</div>
+                        <div className="metric-row">{prop.floors}{String(prop.floors).includes('ชั้น') ? '' : ' ชั้น'}</div>
                         <div className="metric-row">{prop.totalUnits} ยูนิต</div>
                         <div className="metric-row">{prop.status}</div>
                         <div className="metric-row font-semibold">{prop.price} ลบ.</div>
