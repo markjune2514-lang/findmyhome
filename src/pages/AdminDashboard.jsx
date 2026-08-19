@@ -276,7 +276,7 @@ export default function AdminDashboard() {
               <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                 <div style={{ width: '120px', fontSize: '0.875rem', color: '#475569', fontWeight: 600, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{item.term}</div>
                 <div style={{ flex: 1, background: '#f1f5f9', height: '24px', borderRadius: '12px', overflow: 'hidden' }}>
-                  <div style={{ width: ${(item.count / maxSearchCount) * 100}%, background: 'var(--primary)', height: '100%', borderRadius: '12px', transition: 'width 1s ease-in-out' }}></div>
+                  <div style={{ width: `${(item.count / maxSearchCount) * 100}%`, background: 'var(--primary)', height: '100%', borderRadius: '12px', transition: 'width 1s ease-in-out' }}></div>
                 </div>
                 <div style={{ width: '40px', fontSize: '0.875rem', color: '#94a3b8', fontWeight: 600, textAlign: 'right' }}>{item.count}</div>
               </div>
