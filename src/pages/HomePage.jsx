@@ -34,15 +34,17 @@ export default function HomePage() {
           backgroundImage: 'url("https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80")'
         }}
       >
-        {/* Gradient Overlay: Dark at top and bottom for contrast */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-transparent to-black/60"></div>
+        {/* Gradient Overlays: Dedicated strong gradients for top (text) and bottom (search bar) */}
+        <div className="absolute inset-0 bg-black/10"></div>
+        <div className="absolute top-0 w-full h-[50%] bg-gradient-to-b from-black/90 via-black/60 to-transparent"></div>
+        <div className="absolute bottom-0 w-full h-[40%] bg-gradient-to-t from-black/90 via-black/50 to-transparent"></div>
         
         {/* Top Text Section */}
         <div className="relative z-10 w-full max-w-6xl mx-auto px-4 md:px-8 flex flex-col items-center text-center">
-          <h1 className="text-[1.75rem] sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-3 md:mb-4 drop-shadow-[0_6px_8px_rgba(0,0,0,0.9)] tracking-wide whitespace-nowrap">
+          <h1 className="text-[1.75rem] sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-3 md:mb-4 drop-shadow-[0_4px_10px_rgba(0,0,0,0.9)] tracking-wide whitespace-nowrap">
             ค้นหาบ้านที่ใช่ สไตล์คุณ
           </h1>
-          <p className="text-base sm:text-lg md:text-xl text-gray-200 drop-shadow-[0_4px_6px_rgba(0,0,0,0.9)] font-medium tracking-wide leading-relaxed max-w-2xl text-balance">
+          <p className="text-base sm:text-lg md:text-xl text-gray-100 drop-shadow-[0_4px_10px_rgba(0,0,0,1)] font-medium tracking-wide leading-relaxed max-w-2xl text-balance">
             แพลตฟอร์มที่รวบรวมโครงการบ้านและคอนโด และสังคมบ้านที่ดีที่สุด
           </p>
         </div>
