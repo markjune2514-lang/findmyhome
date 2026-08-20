@@ -642,19 +642,25 @@ export default function SearchPage() {
               <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
+                detectRetina={true}
+                maxZoom={20}
               />
             </LayersControl.BaseLayer>
             <LayersControl.BaseLayer name="ภูมิประเทศ (Terrain)">
               <TileLayer
                 attribution='&copy; Google Maps'
-                url="https://mt1.google.com/vt/lyrs=p&x={x}&y={y}&z={z}"
+                url="https://mt{s}.google.com/vt/lyrs=p&x={x}&y={y}&z={z}&scale=2"
+                subdomains="0123"
+                tileSize={256}
                 maxZoom={20}
               />
             </LayersControl.BaseLayer>
             <LayersControl.BaseLayer name="ดาวเทียม (Satellite)">
               <TileLayer
                 attribution='&copy; Google Maps'
-                url="https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}"
+                url="https://mt{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}&scale=2"
+                subdomains="0123"
+                tileSize={256}
                 maxZoom={20}
               />
             </LayersControl.BaseLayer>
