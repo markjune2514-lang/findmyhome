@@ -38,11 +38,11 @@ export default function HomePage() {
         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent"></div>
         
         <div className="relative z-10 w-full max-w-6xl px-4 md:px-8 flex flex-col items-start text-left">
-          <h1 className="text-4xl md:text-6xl font-bold text-white mb-4 drop-shadow-[0_6px_8px_rgba(0,0,0,0.9)] leading-snug tracking-wide">
-            ค้นหาบ้านที่ใช่ ในสไตล์คุณ
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 drop-shadow-[0_6px_8px_rgba(0,0,0,0.9)] leading-tight tracking-wide max-w-3xl text-balance">
+            ค้นหาบ้านที่ใช่ สไตล์คุณ
           </h1>
-          <p className="text-lg md:text-2xl text-gray-200 mb-8 drop-shadow-[0_4px_6px_rgba(0,0,0,0.9)] font-medium tracking-wide leading-relaxed max-w-2xl">
-            แพลตฟอร์มที่รวบรวมโครงการบ้าน คอนโด และทาวน์โฮม มากที่สุด
+          <p className="text-base sm:text-lg md:text-xl text-gray-200 mb-8 drop-shadow-[0_4px_6px_rgba(0,0,0,0.9)] font-medium tracking-wide leading-relaxed max-w-2xl text-balance">
+            แพลตฟอร์มที่รวบรวมโครงการบ้านและคอนโด และสังคมบ้านที่ดีที่สุด
           </p>
           
           <form 
