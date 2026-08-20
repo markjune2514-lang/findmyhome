@@ -29,19 +29,19 @@ export default function HomePage() {
       
       {/* Hero Section */}
       <div 
-        className="relative h-[70vh] min-h-[550px] flex items-end pb-16 md:pb-24 justify-center bg-cover bg-center"
+        className="relative h-[85vh] min-h-[600px] flex items-end pb-12 md:pb-16 justify-center bg-cover bg-center"
         style={{ 
           backgroundImage: 'url("https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80")'
         }}
       >
-        {/* Gradient Overlay: Dark at bottom for text, clear at top for the house */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/10"></div>
+        {/* Gradient Overlay: Darker at bottom for maximum text contrast */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent"></div>
         
         <div className="relative z-10 w-full max-w-6xl px-4 md:px-8 flex flex-col items-start text-left">
-          <h1 className="text-4xl md:text-6xl font-bold text-white mb-4 drop-shadow-[0_4px_4px_rgba(0,0,0,0.8)] leading-snug tracking-wide">
+          <h1 className="text-4xl md:text-6xl font-bold text-white mb-4 drop-shadow-[0_6px_8px_rgba(0,0,0,0.9)] leading-snug tracking-wide">
             ค้นหาบ้านที่ใช่ ในสไตล์คุณ
           </h1>
-          <p className="text-lg md:text-2xl text-gray-200 mb-8 drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)] font-medium tracking-wide leading-relaxed max-w-2xl">
+          <p className="text-lg md:text-2xl text-gray-200 mb-8 drop-shadow-[0_4px_6px_rgba(0,0,0,0.9)] font-medium tracking-wide leading-relaxed max-w-2xl">
             แพลตฟอร์มที่รวบรวมโครงการบ้าน คอนโด และทาวน์โฮม มากที่สุด
           </p>
           
