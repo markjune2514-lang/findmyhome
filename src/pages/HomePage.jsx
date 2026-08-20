@@ -29,22 +29,26 @@ export default function HomePage() {
       
       {/* Hero Section */}
       <div 
-        className="relative h-[75vh] md:h-[85vh] min-h-[500px] md:min-h-[600px] flex items-end pb-12 md:pb-16 justify-center bg-cover bg-center"
+        className="relative h-[75vh] md:h-[85vh] min-h-[500px] md:min-h-[600px] flex flex-col justify-between pt-28 md:pt-36 pb-12 md:pb-16 bg-cover bg-center"
         style={{ 
           backgroundImage: 'url("https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80")'
         }}
       >
-        {/* Gradient Overlay: Darker at bottom for maximum text contrast */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent"></div>
+        {/* Gradient Overlay: Dark at top (for text) and bottom (for search bar) */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-transparent to-black/80"></div>
         
-        <div className="relative z-10 w-full max-w-6xl px-4 md:px-8 flex flex-col items-center text-center md:items-start md:text-left">
-          <h1 className="text-4xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-3 md:mb-4 drop-shadow-[0_6px_8px_rgba(0,0,0,0.9)] leading-tight tracking-wide max-w-3xl">
+        {/* Top Text Section */}
+        <div className="relative z-10 w-full max-w-6xl mx-auto px-4 md:px-8 flex flex-col items-center text-center">
+          <h1 className="text-[1.75rem] sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-3 md:mb-4 drop-shadow-[0_6px_8px_rgba(0,0,0,0.9)] tracking-wide whitespace-nowrap">
             ค้นหาบ้านที่ใช่ สไตล์คุณ
           </h1>
-          <p className="text-lg md:text-xl text-gray-200 mb-8 drop-shadow-[0_4px_6px_rgba(0,0,0,0.9)] font-medium tracking-wide leading-relaxed max-w-2xl">
+          <p className="text-base sm:text-lg md:text-xl text-gray-200 drop-shadow-[0_4px_6px_rgba(0,0,0,0.9)] font-medium tracking-wide leading-relaxed max-w-2xl text-balance">
             แพลตฟอร์มที่รวบรวมโครงการบ้านและคอนโด และสังคมบ้านที่ดีที่สุด
           </p>
-          
+        </div>
+        
+        {/* Bottom Search Section */}
+        <div className="relative z-10 w-full max-w-6xl mx-auto px-4 md:px-8 flex flex-col items-center">
           <form 
             onSubmit={handleSearch}
             className="w-full max-w-4xl bg-white/20 backdrop-blur-md border border-white/30 p-2 md:p-3 rounded-[2rem] md:rounded-full shadow-[0_8px_32px_0_rgba(0,0,0,0.3)] flex flex-col md:flex-row items-center gap-2 md:gap-3"
