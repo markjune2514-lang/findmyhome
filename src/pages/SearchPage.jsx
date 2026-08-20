@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { MapContainer, TileLayer, Marker, Popup, useMap, LayersControl } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, useMap, LayersControl, ZoomControl } from 'react-leaflet';
 import { Search, SlidersHorizontal, Heart, Map as MapIcon, Star, X, ChevronDown, Plus, Check, PenTool, MapPin } from 'lucide-react';
 import { provincesAndDistricts, transitData } from '../data/locations';
 import { Link } from 'react-router-dom';
@@ -635,8 +635,9 @@ export default function SearchPage() {
 
       {/* Main Map Area */}
       <main className="map-area">
-        <MapContainer center={[13.6700, 100.6200]} zoom={12} style={{ height: '100%', width: '100%' }}>
-          <LayersControl position="topleft">
+        <MapContainer center={[13.6700, 100.6200]} zoom={12} zoomControl={false} style={{ height: '100%', width: '100%' }}>
+          <ZoomControl position="bottomright" />
+          <LayersControl position="topright">
             <LayersControl.BaseLayer checked name="แผนที่มาตรฐาน (Standard)">
               <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
