@@ -46,14 +46,14 @@ export default function HomePage() {
           
           <form 
             onSubmit={handleSearch}
-            className="w-full max-w-3xl bg-white p-3 md:p-3 rounded-3xl md:rounded-full shadow-2xl flex flex-col md:flex-row items-center gap-3"
+            className="w-full max-w-3xl bg-white/20 backdrop-blur-md border border-white/30 p-3 md:p-3 rounded-3xl md:rounded-full shadow-[0_8px_32px_0_rgba(0,0,0,0.3)] flex flex-col md:flex-row items-center gap-3"
           >
-            <div className="flex-1 w-full flex items-center px-4 bg-gray-50 rounded-2xl md:rounded-full h-14">
-              <Search className="text-gray-400 mr-3" size={24} />
+            <div className="flex-1 w-full flex items-center px-4 bg-white/70 backdrop-blur-sm rounded-2xl md:rounded-full h-14 border border-white/50">
+              <Search className="text-gray-500 mr-3" size={24} />
               <input 
                 type="text" 
                 placeholder="พิมพ์ชื่อโครงการ, ทำเล, หรือ BTS/MRT..." 
-                className="w-full bg-transparent border-none outline-none text-gray-700 text-base md:text-lg placeholder:text-gray-400"
+                className="w-full bg-transparent border-none outline-none text-gray-800 text-base md:text-lg placeholder:text-gray-500"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
