@@ -34,14 +34,16 @@ function isPointInPolygon(point, vs) {
   return inside;
 }
 
-function MapDrawControl({ onPolygonDrawn }) {
+function MapDrawControl({ onPolygonDrawn, polygonFilter }) {
   const map = useMap();
+  const drawnItemsRef = React.useRef(null);
 
   React.useEffect(() => {
     if (map.__drawControlAdded) return;
     map.__drawControlAdded = true;
 
     const drawnItems = new L.FeatureGroup();
+    drawnItemsRef.current = drawnItems;
     map.addLayer(drawnItems);
 
     const drawControl = new L.Control.Draw({
@@ -85,6 +87,12 @@ function MapDrawControl({ onPolygonDrawn }) {
       map.__drawControlAdded = false;
     };
   }, [map]);
+
+  React.useEffect(() => {
+    if (!polygonFilter && drawnItemsRef.current) {
+      drawnItemsRef.current.clearLayers();
+    }
+  }, [polygonFilter]);
 
   return null;
 }
@@ -635,7 +643,7 @@ export default function SearchPage() {
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
           />
-          <MapDrawControl onPolygonDrawn={handlePolygonDrawn} />
+          <MapDrawControl onPolygonDrawn={handlePolygonDrawn} polygonFilter={polygonFilter} />
           <MapUpdater properties={filteredProperties} />
           {filteredProperties.map(prop => {
             const fallbackImage = prop.image ? prop.image.split(',')[0] : 'https://placehold.co/100x100?text=No+Image';
