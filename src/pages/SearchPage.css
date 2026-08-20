@@ -409,13 +409,23 @@
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  gap: 8px;
-  margin-top: 12px !important;
-  margin-right: 12px !important;
+  gap: 6px;
+  top: 10px !important;
+  right: 10px !important;
 }
 .leaflet-bottom.leaflet-right {
-  margin-right: 12px !important;
-  margin-bottom: 12px !important;
+  right: 10px !important;
+  bottom: 10px !important;
+}
+
+/* Kill ALL default margins on every leaflet control so they align */
+.leaflet-top.leaflet-right .leaflet-control {
+  margin: 0 !important;
+  float: none !important;
+  clear: none !important;
+}
+.leaflet-bottom.leaflet-right .leaflet-control {
+  margin: 0 !important;
 }
 
 /* Shared button style */
@@ -424,16 +434,15 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
   border-radius: 10px !important;
   overflow: hidden;
-  margin: 0 !important;
 }
 .leaflet-bar a {
   background-color: #ffffff !important;
   border-bottom: 1px solid #f0f0f0 !important;
   color: #555 !important;
-  width: 38px !important;
-  height: 38px !important;
-  line-height: 38px !important;
-  font-size: 18px !important;
+  width: 36px !important;
+  height: 36px !important;
+  line-height: 36px !important;
+  font-size: 17px !important;
   transition: all 0.2s ease;
   display: flex !important;
   align-items: center;
@@ -452,15 +461,14 @@
   border: none !important;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
   border-radius: 10px !important;
-  margin: 0 !important;
   font-family: inherit;
   font-size: 13px;
 }
 .leaflet-control-layers-toggle {
-  width: 38px !important;
-  height: 38px !important;
+  width: 36px !important;
+  height: 36px !important;
   border-radius: 10px !important;
-  background-size: 20px 20px !important;
+  background-size: 18px 18px !important;
 }
 .leaflet-control-layers-expanded {
   padding: 8px 12px !important;
@@ -486,32 +494,35 @@
   display: none;
 }
 
-/* Draw toolbar */
+/* Draw toolbar - same width as other buttons */
 .leaflet-draw-toolbar a {
-  font-size: 14px;
+  width: 36px !important;
+  height: 36px !important;
+  line-height: 36px !important;
 }
 
 /* Zoom control */
 .leaflet-control-zoom {
-  margin: 0 !important;
+  border-radius: 10px !important;
 }
 
-/* ===== MOBILE: smaller controls, tighter spacing ===== */
+/* ===== MOBILE ===== */
 @media (max-width: 768px) {
   .leaflet-top.leaflet-right {
-    gap: 6px;
-    margin-top: 8px !important;
-    margin-right: 8px !important;
+    gap: 5px;
+    top: 8px !important;
+    right: 8px !important;
   }
   .leaflet-bottom.leaflet-right {
-    margin-right: 8px !important;
-    margin-bottom: 8px !important;
+    right: 8px !important;
+    bottom: 8px !important;
   }
-  .leaflet-bar a {
+  .leaflet-bar a,
+  .leaflet-draw-toolbar a {
     width: 32px !important;
     height: 32px !important;
     line-height: 32px !important;
-    font-size: 15px !important;
+    font-size: 14px !important;
   }
   .leaflet-control-layers-toggle {
     width: 32px !important;
@@ -521,17 +532,10 @@
   .leaflet-control-layers-expanded {
     padding: 6px 8px !important;
     font-size: 12px;
-    max-width: 200px;
   }
   .leaflet-control-layers label {
     padding: 4px 2px;
     gap: 6px;
     font-size: 12px;
-  }
-  .leaflet-draw-toolbar a {
-    width: 32px !important;
-    height: 32px !important;
-    line-height: 32px !important;
-    font-size: 12px !important;
   }
 }
