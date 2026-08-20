@@ -29,7 +29,7 @@ export default function HomePage() {
       
       {/* Hero Section */}
       <div 
-        className="relative h-[85vh] min-h-[600px] flex items-end pb-12 md:pb-16 justify-center bg-cover bg-center"
+        className="relative h-[75vh] md:h-[85vh] min-h-[500px] md:min-h-[600px] flex items-end pb-12 md:pb-16 justify-center bg-cover bg-center"
         style={{ 
           backgroundImage: 'url("https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80")'
         }}
@@ -37,23 +37,23 @@ export default function HomePage() {
         {/* Gradient Overlay: Darker at bottom for maximum text contrast */}
         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent"></div>
         
-        <div className="relative z-10 w-full max-w-6xl px-4 md:px-8 flex flex-col items-start text-left">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 drop-shadow-[0_6px_8px_rgba(0,0,0,0.9)] leading-tight tracking-wide max-w-3xl text-balance">
+        <div className="relative z-10 w-full max-w-6xl px-4 md:px-8 flex flex-col items-center text-center md:items-start md:text-left">
+          <h1 className="text-4xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-3 md:mb-4 drop-shadow-[0_6px_8px_rgba(0,0,0,0.9)] leading-tight tracking-wide max-w-3xl">
             ค้นหาบ้านที่ใช่ สไตล์คุณ
           </h1>
-          <p className="text-base sm:text-lg md:text-xl text-gray-200 mb-8 drop-shadow-[0_4px_6px_rgba(0,0,0,0.9)] font-medium tracking-wide leading-relaxed max-w-2xl text-balance">
+          <p className="text-lg md:text-xl text-gray-200 mb-8 drop-shadow-[0_4px_6px_rgba(0,0,0,0.9)] font-medium tracking-wide leading-relaxed max-w-2xl">
             แพลตฟอร์มที่รวบรวมโครงการบ้านและคอนโด และสังคมบ้านที่ดีที่สุด
           </p>
           
           <form 
             onSubmit={handleSearch}
-            className="w-full max-w-4xl bg-white/20 backdrop-blur-md border border-white/30 p-3 md:p-3 rounded-3xl md:rounded-full shadow-[0_8px_32px_0_rgba(0,0,0,0.3)] flex flex-col md:flex-row items-center gap-3"
+            className="w-full max-w-4xl bg-white/20 backdrop-blur-md border border-white/30 p-2 md:p-3 rounded-[2rem] md:rounded-full shadow-[0_8px_32px_0_rgba(0,0,0,0.3)] flex flex-col md:flex-row items-center gap-2 md:gap-3"
           >
-            <div className="flex-1 w-full flex items-center px-4 bg-white/70 backdrop-blur-sm rounded-2xl md:rounded-full h-14 border border-white/50">
-              <Search className="text-gray-500 mr-3" size={24} />
+            <div className="flex-1 w-full flex items-center px-4 bg-white/70 backdrop-blur-sm rounded-[1.5rem] md:rounded-full h-14 border border-white/50">
+              <Search className="text-gray-500 mr-2 md:mr-3 shrink-0" size={24} />
               <input 
                 type="text" 
-                placeholder="พิมพ์ชื่อโครงการ, ทำเล, หรือ BTS/MRT..." 
+                placeholder="พิมพ์ชื่อโครงการ, ทำเล, หรือ BTS..." 
                 className="w-full bg-transparent border-none outline-none text-gray-800 text-base md:text-lg placeholder:text-gray-500"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
@@ -61,7 +61,7 @@ export default function HomePage() {
             </div>
             <button 
               type="submit"
-              className="w-full md:w-auto bg-[var(--primary)] hover:bg-[var(--accent)] text-white font-medium text-lg px-8 py-3 md:py-4 rounded-2xl md:rounded-full transition-colors flex items-center justify-center gap-2 shadow-lg hover:shadow-xl"
+              className="w-full md:w-auto bg-[var(--primary)] hover:bg-[var(--accent)] text-white font-medium text-lg px-8 py-3.5 md:py-4 rounded-[1.5rem] md:rounded-full transition-colors flex items-center justify-center gap-2 shadow-lg hover:shadow-xl shrink-0"
             >
               ค้นหาเลย
             </button>
