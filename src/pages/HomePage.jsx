@@ -29,24 +29,25 @@ export default function HomePage() {
       
       {/* Hero Section */}
       <div 
-        className="relative h-[60vh] min-h-[500px] flex items-center justify-center bg-cover bg-center"
+        className="relative h-[70vh] min-h-[550px] flex items-end pb-16 md:pb-24 justify-center bg-cover bg-center"
         style={{ 
           backgroundImage: 'url("https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80")'
         }}
       >
-        <div className="absolute inset-0 bg-black/60"></div>
+        {/* Gradient Overlay: Dark at bottom for text, clear at top for the house */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/10"></div>
         
-        <div className="relative z-10 w-full max-w-4xl px-4 flex flex-col items-center text-center">
-          <h1 className="text-4xl md:text-6xl font-bold text-white mb-8 drop-shadow-[0_4px_4px_rgba(0,0,0,0.8)] leading-snug tracking-wide">
+        <div className="relative z-10 w-full max-w-6xl px-4 md:px-8 flex flex-col items-start text-left">
+          <h1 className="text-4xl md:text-6xl font-bold text-white mb-4 drop-shadow-[0_4px_4px_rgba(0,0,0,0.8)] leading-snug tracking-wide">
             ค้นหาบ้านที่ใช่ ในสไตล์คุณ
           </h1>
-          <p className="text-lg md:text-2xl text-gray-100 mb-12 drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)] font-medium tracking-wide leading-relaxed">
+          <p className="text-lg md:text-2xl text-gray-200 mb-8 drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)] font-medium tracking-wide leading-relaxed max-w-2xl">
             แพลตฟอร์มที่รวบรวมโครงการบ้าน คอนโด และทาวน์โฮม มากที่สุด
           </p>
           
           <form 
             onSubmit={handleSearch}
-            className="w-full max-w-3xl bg-white/20 backdrop-blur-md border border-white/30 p-3 md:p-3 rounded-3xl md:rounded-full shadow-[0_8px_32px_0_rgba(0,0,0,0.3)] flex flex-col md:flex-row items-center gap-3"
+            className="w-full max-w-4xl bg-white/20 backdrop-blur-md border border-white/30 p-3 md:p-3 rounded-3xl md:rounded-full shadow-[0_8px_32px_0_rgba(0,0,0,0.3)] flex flex-col md:flex-row items-center gap-3"
           >
             <div className="flex-1 w-full flex items-center px-4 bg-white/70 backdrop-blur-sm rounded-2xl md:rounded-full h-14 border border-white/50">
               <Search className="text-gray-500 mr-3" size={24} />
