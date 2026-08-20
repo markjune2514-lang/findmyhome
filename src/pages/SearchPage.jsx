@@ -61,10 +61,7 @@ function MapDrawControl({ onPolygonDrawn, polygonFilter }) {
         circlemarker: false,
         marker: false,
       },
-      edit: {
-        featureGroup: drawnItems,
-        remove: true
-      }
+      edit: false
     });
 
     map.addControl(drawControl);
