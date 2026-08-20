@@ -34,13 +34,13 @@ export default function HomePage() {
           backgroundImage: 'url("https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80")'
         }}
       >
-        <div className="absolute inset-0 bg-black/40"></div>
+        <div className="absolute inset-0 bg-black/60"></div>
         
         <div className="relative z-10 w-full max-w-4xl px-4 flex flex-col items-center text-center">
-          <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 drop-shadow-lg">
+          <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 drop-shadow-[0_4px_4px_rgba(0,0,0,0.8)] leading-tight">
             ค้นหาบ้านที่ใช่ ในสไตล์คุณ
           </h1>
-          <p className="text-lg md:text-xl text-white/90 mb-10 drop-shadow-md">
+          <p className="text-lg md:text-2xl text-gray-100 mb-10 drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)] font-medium">
             แพลตฟอร์มที่รวบรวมโครงการบ้าน คอนโด และทาวน์โฮม มากที่สุด
           </p>
           
