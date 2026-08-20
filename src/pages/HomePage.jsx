@@ -46,21 +46,21 @@ export default function HomePage() {
           
           <form 
             onSubmit={handleSearch}
-            className="w-full max-w-3xl bg-white p-2 md:p-3 rounded-full shadow-2xl flex flex-col md:flex-row items-center gap-2"
+            className="w-full max-w-3xl bg-white p-3 md:p-3 rounded-3xl md:rounded-full shadow-2xl flex flex-col md:flex-row items-center gap-3"
           >
-            <div className="flex-1 w-full flex items-center px-4 bg-gray-50 rounded-full h-12 md:h-14">
+            <div className="flex-1 w-full flex items-center px-4 bg-gray-50 rounded-2xl md:rounded-full h-14">
               <Search className="text-gray-400 mr-3" size={24} />
               <input 
                 type="text" 
                 placeholder="พิมพ์ชื่อโครงการ, ทำเล, หรือ BTS/MRT..." 
-                className="w-full bg-transparent border-none outline-none text-gray-700 text-lg placeholder:text-gray-400"
+                className="w-full bg-transparent border-none outline-none text-gray-700 text-base md:text-lg placeholder:text-gray-400"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
             </div>
             <button 
               type="submit"
-              className="w-full md:w-auto bg-primary hover:bg-[#c90d56] text-white font-medium text-lg px-8 py-3 rounded-full transition-colors flex items-center justify-center gap-2"
+              className="w-full md:w-auto bg-orange-500 hover:bg-orange-600 text-white font-medium text-lg px-8 py-3 md:py-4 rounded-2xl md:rounded-full transition-colors flex items-center justify-center gap-2 shadow-lg hover:shadow-xl"
             >
               ค้นหาเลย
             </button>
