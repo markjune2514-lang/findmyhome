@@ -495,3 +495,43 @@
 .leaflet-control-zoom {
   margin: 0 !important;
 }
+
+/* ===== MOBILE: smaller controls, tighter spacing ===== */
+@media (max-width: 768px) {
+  .leaflet-top.leaflet-right {
+    gap: 6px;
+    margin-top: 8px !important;
+    margin-right: 8px !important;
+  }
+  .leaflet-bottom.leaflet-right {
+    margin-right: 8px !important;
+    margin-bottom: 8px !important;
+  }
+  .leaflet-bar a {
+    width: 32px !important;
+    height: 32px !important;
+    line-height: 32px !important;
+    font-size: 15px !important;
+  }
+  .leaflet-control-layers-toggle {
+    width: 32px !important;
+    height: 32px !important;
+    background-size: 16px 16px !important;
+  }
+  .leaflet-control-layers-expanded {
+    padding: 6px 8px !important;
+    font-size: 12px;
+    max-width: 200px;
+  }
+  .leaflet-control-layers label {
+    padding: 4px 2px;
+    gap: 6px;
+    font-size: 12px;
+  }
+  .leaflet-draw-toolbar a {
+    width: 32px !important;
+    height: 32px !important;
+    line-height: 32px !important;
+    font-size: 12px !important;
+  }
+}
