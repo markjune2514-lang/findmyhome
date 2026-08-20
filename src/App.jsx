@@ -16,9 +16,12 @@ import { AuthProvider } from './AuthContext';
 import ProtectedRoute from './ProtectedRoute';
 import AnalyticsTracker from './components/AnalyticsTracker';
 
+import { HelmetProvider } from 'react-helmet-async';
+
 function App() {
   return (
-    <AuthProvider>
+    <HelmetProvider>
+      <AuthProvider>
       <PropertiesProvider>
         <CompareProvider>
           <Router>
@@ -50,7 +53,8 @@ function App() {
           </Router>
         </CompareProvider>
       </PropertiesProvider>
-    </AuthProvider>
+      </AuthProvider>
+    </HelmetProvider>
   );
 }
 

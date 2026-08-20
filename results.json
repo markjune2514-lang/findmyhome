@@ -1,0 +1,440 @@
+{
+  "THE CITY ปิ่นเกล้า - สิรินธร": [
+    {
+      "id": "p1787232460774",
+      "name": "THE CITY ปิ่นเกล้า - สิรินธร",
+      "developer": "AP Thai",
+      "price": 50,
+      "price_str": null,
+      "price_sqm": null,
+      "bedrooms": null,
+      "size": null,
+      "type": "บ้าน",
+      "project_type": "บ้านเดี่ยว",
+      "status": "ฉบับร่าง",
+      "location_lat": 13.79160379,
+      "location_lng": 100.4777018,
+      "station": null,
+      "distance_to_station": null,
+      "rating": null,
+      "reviews": null,
+      "image": "https://www.apthai.com/images/production/BDGgY1CQfFAIoDz3asExdyC16IOHfW-metaMS5qcGc=-.jpg,https://assets.apthai365.com/fd1J1/app-assets/l.CMTAd7gR.png,https://assets.apthai365.com/fd1J1/app-assets/r.DrYYFJpe.png,https://www.apthai.com/images/production/1pYBv7aCaYllNTfBbctWgWdQLSg0Ta-metabG9iYnkuanBn-.jpg,https://www.apthai.com/images/production/q0aY9dvfuE8zMMUj6p9zVNFoQR3H6t-metaMSBCZWxsYXRyaXguanBn-.jpg,https://www.apthai.com/images/production/tn8lKFBGta7MjV46XVcAqwUvpdGDpS-metaYmVsbGF0cml4IGZsIDEuanBn-.jpg,https://www.apthai.com/images/production/zEILDttuUMY0OoCJ5xJWcKGQpAbwvy-metaYmVsbGF0cml4IGZsIDIuanBn-.jpg,https://assets.apthai365.com/fd1J1/app-assets/bg-l-1.O9j6Ubif.png,https://assets.apthai365.com/fd1J1/app-assets/bg-l-4.Ds9v70XG.png,https://assets.apthai365.com/fd1J1/app-assets/bg-r-3.DnJ6TCz3.png",
+      "images": null,
+      "facilities": [
+        "สระว่ายน้ำ",
+        "ฟิตเนส",
+        "คลับเฮ้าส์"
+      ],
+      "promotions": null,
+      "floors": null,
+      "total_units": 137,
+      "created_at": "2026-08-20T13:27:41.251518+00:00",
+      "priceTo": 0,
+      "distanceToStation": "",
+      "livingFormat": "",
+      "special": [],
+      "healthFacilities": [],
+      "services": [],
+      "security": [],
+      "transport": [],
+      "district": "",
+      "province": "กรุงเทพมหานคร",
+      "transitSystem": "",
+      "transitLine": "",
+      "projectType": "",
+      "priceSqm": 0,
+      "landSize": "",
+      "totalUnits": "",
+      "roomType": "",
+      "unitTypes": [],
+      "promotion": null,
+      "categorizedLandmarks": null,
+      "logo": null,
+      "building_details": [],
+      "unit_types": [
+        {
+          "name": "BELLATRIX",
+          "size": "256 ตร.ม.",
+          "price": null,
+          "parking": "3",
+          "bedrooms": "4",
+          "bathrooms": "5",
+          "facilities": [
+            "สระว่ายน้ำ",
+            "ฟิตเนส",
+            "คลับเฮ้าส์"
+          ],
+          "planImages": [],
+          "roomImages": []
+        },
+        {
+          "name": "KAIRA",
+          "size": "285 ตร.ม.",
+          "price": null,
+          "parking": "3",
+          "bedrooms": "4",
+          "bathrooms": "5",
+          "facilities": [
+            "สระว่ายน้ำ",
+            "ฟิตเนส",
+            "คลับเฮ้าส์"
+          ],
+          "planImages": [],
+          "roomImages": []
+        },
+        {
+          "name": "DIONNE",
+          "size": "313 ตร.ม.",
+          "price": null,
+          "parking": "3",
+          "bedrooms": "4",
+          "bathrooms": "5",
+          "facilities": [
+            "สระว่ายน้ำ",
+            "ฟิตเนส",
+            "คลับเฮ้าส์"
+          ],
+          "planImages": [],
+          "roomImages": []
+        },
+        {
+          "name": "EMERALD",
+          "size": "351 ตร.ม.",
+          "price": null,
+          "parking": "3",
+          "bedrooms": "4",
+          "bathrooms": "5",
+          "facilities": [
+            "สระว่ายน้ำ",
+            "ฟิตเนส",
+            "คลับเฮ้าส์"
+          ],
+          "planImages": [],
+          "roomImages": []
+        },
+        {
+          "name": "GODIVA",
+          "size": "416 ตร.ม.",
+          "price": null,
+          "parking": "4",
+          "bedrooms": "5",
+          "bathrooms": "6",
+          "facilities": [
+            "สระว่ายน้ำ",
+            "ฟิตเนส",
+            "คลับเฮ้าส์"
+          ],
+          "planImages": [],
+          "roomImages": []
+        },
+        {
+          "name": "AP",
+          "size": "416 ตร.ม.",
+          "price": null,
+          "parking": "3",
+          "bedrooms": "4",
+          "bathrooms": "5",
+          "facilities": [
+            "สระว่ายน้ำ",
+            "ฟิตเนส",
+            "คลับเฮ้าส์"
+          ],
+          "planImages": [],
+          "roomImages": []
+        }
+      ],
+      "project_parking": null,
+      "total_land_area": "",
+      "price_to": null,
+      "facility_type": null,
+      "categorized_landmarks": {
+        "malls": [
+          {
+            "name": "ทางพิเศษศรีรัช",
+            "distance": "5.6 กิโลเมตร"
+          },
+          {
+            "name": "สถานีรถไฟบางบําหรุ",
+            "distance": "2 กิโลเมตร"
+          },
+          {
+            "name": "เซ็นทรัล ปิ่นเกล้า",
+            "distance": "7.2 กิโลเมตร"
+          },
+          {
+            "name": "เดอะ เซ้นส์ ปิ่นเกล้า",
+            "distance": "7.4 กิโลเมตร"
+          }
+        ],
+        "schools": [
+          {
+            "name": "รร.เซนต์คาเบรียล",
+            "distance": "8.7 กิโลเมตร"
+          },
+          {
+            "name": "รร.บดินทรเดชา (สิงห์ สิงหเสนี) นนทบุรี",
+            "distance": "2.9 กิโลเมตร"
+          }
+        ],
+        "transit": [],
+        "hospitals": [
+          {
+            "name": "รพ.ศิริราช",
+            "distance": "9 กิโลเมตร"
+          },
+          {
+            "name": "รพ.เจ้าพระยา",
+            "distance": "3.9 กิโลเมตร"
+          }
+        ]
+      },
+      "transit_system": null,
+      "transit_line": null,
+      "room_type": null,
+      "living_format": null,
+      "health_facilities": null,
+      "buildings": null,
+      "fully_furnished": null,
+      "project_highlights": "บ้านเดี่ยว 2 ชั้น THE CITY ปิ่นเกล้า - สิรินธร โครงการบ้านพร้อมอยู่ระดับลักซ์ชัวรีติดทางด่วนศรีรัช เชื่อมต่อบางซื่อ-จตุจักรใน 15 นาที* ใกล้เซ็นทรัล รพ.ศิริราช",
+      "listing_type": "ซื้อ",
+      "land_size": null
+    }
+  ],
+  "THE CITY รามอินทรา - วงแหวน 2": [
+    {
+      "id": "p1787232456950",
+      "name": "THE CITY รามอินทรา - วงแหวน 2",
+      "developer": "AP Thai",
+      "price": 50,
+      "price_str": null,
+      "price_sqm": null,
+      "bedrooms": null,
+      "size": null,
+      "type": "บ้าน",
+      "project_type": "บ้านเดี่ยว",
+      "status": "ฉบับร่าง",
+      "location_lat": 13.89684178,
+      "location_lng": 100.6842669,
+      "station": null,
+      "distance_to_station": null,
+      "rating": null,
+      "reviews": null,
+      "image": "https://www.apthai.com/images/production/fbBH15SaqqJEZ9Lh9Su18dE6lxUonO-metaWVpFQjJNNTN1bS0xNzgxNzcwNTE2NzIzLWRlc2t0b3BJbWFnZS5qcGc=-.jpg,https://assets.apthai365.com/fd1J1/app-assets/l.CMTAd7gR.png,https://assets.apthai365.com/fd1J1/app-assets/r.DrYYFJpe.png,https://www.apthai.com/images/production/CxfYWt2fAC54n6DQAwTnhJL5BAeU9P-metaRUxUSEFNLmpwZw==-.jpg,https://www.apthai.com/images/production/qE7YJ3rpnH38TdrijJX77ljl5PpQ99-metaRUxUSEFNIEYxLmpwZw==-.jpg,https://www.apthai.com/images/production/faOAt6pUNyLD1VlZT1M7WShNeOviNY-metaRUxUSEFNIEYyLmpwZw==-.jpg,https://www.apthai.com/images/production/ipmjUkoK58qGpk9tR6nHYjTQHzxvin-metaV0FMRU5UT04uanBn-.jpg,data:image/svg+xml,%3csvg%20width=&#39;20&#39;%20height=&#39;21&#39;%20viewBox=&#39;0%200%2020%2021&#39;%20fill=&#39;none&#39;%20xmlns=&#39;http://www.w3.org/2000/svg&#39;%3e%3cg%20clip-path=&#39;url(%23clip0_10436_127043)&#39;%3e%3cpath%20d=&#39;M15.4913%200.78125H4.50875C2.01864%200.78125%200%202.79989%200%205.29V16.2725C0%2018.7626%202.01864%2020.7812%204.50875%2020.7812H15.4913C17.9814%2020.7812%2020%2018.7626%2020%2016.2725V5.29C20%202.79989%2017.9814%200.78125%2015.4913%200.78125Z&#39;%20fill=&#39;%2308B44E&#39;/%3e%3cpath%20d=&#39;M16.6644%209.84094C16.6644%206.85719%2013.6731%204.42969%209.99625%204.42969C6.31938%204.42969%203.32812%206.85719%203.32812%209.84094C3.32812%2012.5159%205.70312%2014.7566%208.90438%2015.1797C9.12188%2015.2266%209.4175%2015.3228%209.49187%2015.5084C9.55937%2015.6772%209.53625%2015.9416%209.51375%2016.1116C9.51375%2016.1116%209.43562%2016.5822%209.41875%2016.6822C9.38937%2016.8509%209.28438%2017.3416%209.99625%2017.0422C10.7081%2016.7428%2013.8362%2014.7809%2015.235%2013.1703C16.2013%2012.1109%2016.6644%2011.0334%2016.6644%209.84094Z&#39;%20fill=&#39;white&#39;/%3e%3cpath%20d=&#39;M14.4453%2011.5656H12.5703C12.5372%2011.5656%2012.5054%2011.5525%2012.4819%2011.529C12.4585%2011.5056%2012.4453%2011.4738%2012.4453%2011.4406V8.53125C12.4453%208.4981%2012.4585%208.4663%2012.4819%208.44286C12.5054%208.41942%2012.5372%208.40625%2012.5703%208.40625H14.4453C14.4785%208.40625%2014.5103%208.41942%2014.5337%208.44286C14.5571%208.4663%2014.5703%208.4981%2014.5703%208.53125V9.00437C14.5703%209.03753%2014.5571%209.06932%2014.5337%209.09276C14.5103%209.1162%2014.4785%209.12937%2014.4453%209.12937H13.1722V9.62H14.4453C14.4785%209.62%2014.5103%209.63317%2014.5337%209.65661C14.5571%209.68005%2014.5703%209.71185%2014.5703%209.745V10.2225C14.5703%2010.2557%2014.5571%2010.2874%2014.5337%2010.3109C14.5103%2010.3343%2014.4785%2010.3475%2014.4453%2010.3475H13.1722V10.8387H14.4453C14.4785%2010.8387%2014.5103%2010.8519%2014.5337%2010.8754C14.5571%2010.8988%2014.5703%2010.9306%2014.5703%2010.9637V11.4362C14.5709%2011.453%2014.5681%2011.4698%2014.5621%2011.4854C14.5561%2011.5011%2014.547%2011.5154%2014.5353%2011.5275C14.5236%2011.5396%2014.5096%2011.5492%2014.4942%2011.5557C14.4787%2011.5623%2014.4621%2011.5656%2014.4453%2011.5656Z&#39;%20fill=&#39;%2308B44E&#39;/%3e%3cpath%20d=&#39;M7.52156%2011.5584C7.55471%2011.5584%207.58651%2011.5453%207.60995%2011.5218C7.63339%2011.4984%207.64656%2011.4666%207.64656%2011.4334V10.9609C7.64656%2010.9278%207.63339%2010.896%207.60995%2010.8725C7.58651%2010.8491%207.55471%2010.8359%207.52156%2010.8359H6.24844V8.52344C6.24844%208.49029%206.23527%208.45849%206.21183%208.43505C6.18838%208.41161%206.15659%208.39844%206.12344%208.39844H5.64844C5.61529%208.39844%205.58349%208.41161%205.56005%208.43505C5.53661%208.45849%205.52344%208.49029%205.52344%208.52344V11.4316C5.52344%2011.4647%205.53661%2011.4965%205.56005%2011.52C5.58349%2011.5434%205.61529%2011.5566%205.64844%2011.5566H7.52344L7.52156%2011.5584Z&#39;%20fill=&#39;%2308B44E&#39;/%3e%3cpath%20d=&#39;M8.64688%208.39844H8.17438C8.10396%208.39844%208.04688%208.45552%208.04688%208.52594V11.4359C8.04688%2011.5064%208.10396%2011.5634%208.17438%2011.5634H8.64688C8.71729%2011.5634%208.77437%2011.5064%208.77437%2011.4359V8.52594C8.77437%208.45552%208.71729%208.39844%208.64688%208.39844Z&#39;%20fill=&#39;%2308B44E&#39;/%3e%3cpath%20d=&#39;M11.8637%208.39844H11.3912C11.3581%208.39844%2011.3263%208.41161%2011.3029%208.43505C11.2794%208.45849%2011.2662%208.49029%2011.2662%208.52344V10.2522L9.935%208.45406C9.93196%208.4493%209.9284%208.4449%209.92437%208.44094L9.91687%208.43344L9.91%208.42781H9.90625L9.89937%208.42281H9.89563L9.88875%208.41906H9.88437H9.8775H9.87313H9.86562H9.86062H9.85312H9.84812H9.84125H9.35937C9.32622%208.41906%209.29443%208.43223%209.27099%208.45567C9.24754%208.47912%209.23438%208.51091%209.23438%208.54406V11.4541C9.23438%2011.4872%209.24754%2011.519%209.27099%2011.5425C9.29443%2011.5659%209.32622%2011.5791%209.35937%2011.5791H9.8325C9.86565%2011.5791%209.89745%2011.5659%209.92089%2011.5425C9.94433%2011.519%209.9575%2011.4872%209.9575%2011.4541V9.70844L11.2906%2011.5084C11.2994%2011.5212%2011.3104%2011.5322%2011.3231%2011.5409L11.3306%2011.5459H11.3344L11.3406%2011.5491H11.3469H11.3512H11.36C11.371%2011.5518%2011.3824%2011.5533%2011.3937%2011.5534H11.8637C11.8969%2011.5534%2011.9287%2011.5403%2011.9521%2011.5168C11.9756%2011.4934%2011.9887%2011.4616%2011.9887%2011.4284V8.52594C11.9891%208.50931%2011.9861%208.49279%2011.98%208.47733C11.9738%208.46188%2011.9647%208.4478%2011.953%208.43593C11.9414%208.42406%2011.9275%208.41462%2011.9122%208.40819C11.8968%208.40175%2011.8804%208.39843%2011.8637%208.39844Z&#39;%20fill=&#39;%2308B44E&#39;/%3e%3c/g%3e%3cdefs%3e%3cclipPath%20id=&#39;clip0_10436_127043&#39;%3e%3crect%20width=&#39;20&#39;%20height=&#39;20&#39;%20fill=&#39;white&#39;%20transform=&#39;translate(0%200.78125)&#39;/%3e%3c/clipPath%3e%3c/defs%3e%3c/svg%3e,https://www.apthai.com/images/production/Dg5nzhAnzaslUr9CgeIiZgXxWV6veO-metaZmQ2R0pwOGVGTml5aFM0SDFuOU8tMTc1NzY2ODg5NDAzMDE3NTc2Njg4OTQwMzAuanBn-.jpg,https://assets.apthai365.com/fd1J1/app-assets/bg-l-1.O9j6Ubif.png",
+      "images": null,
+      "facilities": [
+        "สระว่ายน้ำ",
+        "Clubhouse",
+        "คลับเฮ้าส์"
+      ],
+      "promotions": null,
+      "floors": null,
+      "total_units": 97,
+      "created_at": "2026-08-20T13:27:37.659428+00:00",
+      "priceTo": 0,
+      "distanceToStation": "",
+      "livingFormat": "",
+      "special": [],
+      "healthFacilities": [],
+      "services": [],
+      "security": [],
+      "transport": [],
+      "district": "",
+      "province": "กรุงเทพมหานคร",
+      "transitSystem": "",
+      "transitLine": "",
+      "projectType": "",
+      "priceSqm": 0,
+      "landSize": "",
+      "totalUnits": "",
+      "roomType": "",
+      "unitTypes": [],
+      "promotion": null,
+      "categorizedLandmarks": null,
+      "logo": null,
+      "building_details": [],
+      "unit_types": [
+        {
+          "name": "AP",
+          "size": "580 ตร.ม.",
+          "price": null,
+          "parking": "3",
+          "bedrooms": "4",
+          "bathrooms": "5",
+          "facilities": [
+            "สระว่ายน้ำ",
+            "Clubhouse",
+            "คลับเฮ้าส์"
+          ],
+          "planImages": [],
+          "roomImages": []
+        },
+        {
+          "name": "CAMPTON",
+          "size": "430 ตร.ม.",
+          "price": null,
+          "parking": "3",
+          "bedrooms": "4",
+          "bathrooms": "5",
+          "facilities": [
+            "สระว่ายน้ำ",
+            "Clubhouse",
+            "คลับเฮ้าส์"
+          ],
+          "planImages": [],
+          "roomImages": []
+        },
+        {
+          "name": "WALENTON",
+          "size": "500 ตร.ม.",
+          "price": null,
+          "parking": "4",
+          "bedrooms": "5",
+          "bathrooms": "6",
+          "facilities": [
+            "สระว่ายน้ำ",
+            "Clubhouse",
+            "คลับเฮ้าส์"
+          ],
+          "planImages": [],
+          "roomImages": []
+        },
+        {
+          "name": "OXBURGH",
+          "size": "580 ตร.ม.",
+          "price": null,
+          "parking": "4",
+          "bedrooms": "5",
+          "bathrooms": "6",
+          "facilities": [
+            "สระว่ายน้ำ",
+            "Clubhouse",
+            "คลับเฮ้าส์"
+          ],
+          "planImages": [],
+          "roomImages": []
+        },
+        {
+          "name": "บ้านเดี่ยว",
+          "size": "580 ตร.ม.",
+          "price": null,
+          "parking": "3",
+          "bedrooms": "4",
+          "bathrooms": "5",
+          "facilities": [
+            "สระว่ายน้ำ",
+            "Clubhouse",
+            "คลับเฮ้าส์"
+          ],
+          "planImages": [],
+          "roomImages": []
+        },
+        {
+          "name": "คอนโดมิเนียม",
+          "size": "580 ตร.ม.",
+          "price": null,
+          "parking": "3",
+          "bedrooms": "4",
+          "bathrooms": "5",
+          "facilities": [
+            "สระว่ายน้ำ",
+            "Clubhouse",
+            "คลับเฮ้าส์"
+          ],
+          "planImages": [],
+          "roomImages": []
+        },
+        {
+          "name": "ดอนเมือง-ติวานนท์",
+          "size": "580 ตร.ม.",
+          "price": null,
+          "parking": "3",
+          "bedrooms": "4",
+          "bathrooms": "5",
+          "facilities": [
+            "สระว่ายน้ำ",
+            "Clubhouse",
+            "คลับเฮ้าส์"
+          ],
+          "planImages": [],
+          "roomImages": []
+        }
+      ],
+      "project_parking": null,
+      "total_land_area": "39 ไร่",
+      "price_to": null,
+      "facility_type": null,
+      "categorized_landmarks": {
+        "malls": [
+          {
+            "name": "ทางพิเศษฉลองรัช ด่านฯ จตุโชติ",
+            "distance": "2.4 กิโลเมตร"
+          },
+          {
+            "name": "แฟชั่นไอส์แลนด์",
+            "distance": "8.7 กิโลเมตร"
+          },
+          {
+            "name": "ตลาดมารวย หทัยราษฏร์ 54",
+            "distance": "5.3 กิโลเมตร"
+          },
+          {
+            "name": "JAS Green Village คู้บอน",
+            "distance": "6 กิโลเมตร"
+          },
+          {
+            "name": "บิ๊กซี ฟู้ดเพลส สุขาภิบาล 5",
+            "distance": "6.2 กิโลเมตร"
+          },
+          {
+            "name": "Ruamrudee International School Early Years Campus",
+            "distance": "3.5 กิโลเมตร"
+          }
+        ],
+        "schools": [
+          {
+            "name": "รร.สาธิตพัฒนา",
+            "distance": "5.3 กิโลเมตร"
+          },
+          {
+            "name": "รร.สารสาสน์วิเทศสายไหม",
+            "distance": "7.7 กิโลเมตร"
+          }
+        ],
+        "transit": [
+          {
+            "name": "รร.เลิศหล้า ถ.เกษตร-นวมินทร์",
+            "distance": "12.1 กิโลเมตร"
+          }
+        ],
+        "hospitals": [
+          {
+            "name": "รพ.สินแพทย์ รามอินทรา",
+            "distance": "9.3 กิโลเมตร"
+          },
+          {
+            "name": "รพ.ซีจีเอช สายไหม",
+            "distance": "7.5 กิโลเมตร"
+          },
+          {
+            "name": "รพ.อินทรารัตน์",
+            "distance": "8.3 กิโลเมตร"
+          },
+          {
+            "name": "รพ.พญาไท นวมินทร์",
+            "distance": "9.5 กิโลเมตร"
+          }
+        ]
+      },
+      "transit_system": null,
+      "transit_line": null,
+      "room_type": null,
+      "living_format": null,
+      "health_facilities": null,
+      "buildings": null,
+      "fully_furnished": null,
+      "project_highlights": "บ้านเดี่ยว 2 ชั้น THE CITY รามอินทรา - วงแหวน 2 โครงการบ้านหรู 100 ตร.ว.* ทำเล 5 นาที* ถึงทางด่วนฉลองรัชเชื่อมลาดพร้าว-พระราม 9 ใกล้รร.นานาชาติร่วมฤดี",
+      "listing_type": "ซื้อ",
+      "land_size": null
+    }
+  ]
+}
