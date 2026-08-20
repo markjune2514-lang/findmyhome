@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Layout from './components/Layout';
+import HomePage from './pages/HomePage';
 import SearchPage from './pages/SearchPage';
 import PropertyDetail from './pages/PropertyDetail';
 import ComparePage from './pages/ComparePage';
@@ -28,7 +29,7 @@ function App() {
             <AnalyticsTracker />
             <Routes>
               <Route path="/" element={<Layout />}>
-                <Route index element={<Navigate to="/search" replace />} />
+                <Route index element={<HomePage />} />
                 <Route path="search" element={<SearchPage />} />
                 <Route path="projects" element={<ProjectsPage />} />
                 <Route path="property/:id" element={<PropertyDetail />} />
