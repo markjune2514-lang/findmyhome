@@ -37,10 +37,10 @@ export default function HomePage() {
         <div className="absolute inset-0 bg-black/60"></div>
         
         <div className="relative z-10 w-full max-w-4xl px-4 flex flex-col items-center text-center">
-          <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 drop-shadow-[0_4px_4px_rgba(0,0,0,0.8)] leading-tight">
+          <h1 className="text-4xl md:text-6xl font-bold text-white mb-8 drop-shadow-[0_4px_4px_rgba(0,0,0,0.8)] leading-snug tracking-wide">
             ค้นหาบ้านที่ใช่ ในสไตล์คุณ
           </h1>
-          <p className="text-lg md:text-2xl text-gray-100 mb-10 drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)] font-medium">
+          <p className="text-lg md:text-2xl text-gray-100 mb-12 drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)] font-medium tracking-wide leading-relaxed">
             แพลตฟอร์มที่รวบรวมโครงการบ้าน คอนโด และทาวน์โฮม มากที่สุด
           </p>
           
@@ -69,11 +69,11 @@ export default function HomePage() {
       </div>
 
       {/* Featured Section */}
-      <div className="py-16 bg-gray-50">
+      <div className="py-20 bg-gray-50">
         <div className="container mx-auto px-4 max-w-6xl">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-800 mb-4">โครงการแนะนำ</h2>
-            <p className="text-gray-600">โครงการที่ได้รับความสนใจสูงสุดในขณะนี้</p>
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4 tracking-wide">โครงการแนะนำ</h2>
+            <p className="text-gray-600 text-lg tracking-wide">โครงการที่ได้รับความสนใจสูงสุดในขณะนี้</p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
