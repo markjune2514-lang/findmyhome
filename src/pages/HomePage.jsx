@@ -29,7 +29,7 @@ export default function HomePage() {
       
       {/* Hero Section */}
       <div 
-        className="relative h-[75vh] md:h-[85vh] min-h-[500px] md:min-h-[600px] flex flex-col justify-between pt-28 md:pt-36 pb-12 md:pb-16 bg-cover bg-center"
+        className="relative h-[75vh] md:h-[85vh] min-h-[500px] md:min-h-[600px] flex flex-col justify-between pt-8 md:pt-16 pb-12 md:pb-16 bg-cover bg-center"
         style={{ 
           backgroundImage: 'url("https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80")'
         }}
