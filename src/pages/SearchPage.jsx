@@ -5,6 +5,7 @@ import { provincesAndDistricts, transitData } from '../data/locations';
 import { Link } from 'react-router-dom';
 import { useProperties } from '../PropertiesContext';
 import { useCompare } from '../CompareContext';
+import { useFavorites } from '../FavoritesContext';
 import { supabase } from '../supabaseClient';
 import SEO from '../components/SEO';
 import './SearchPage.css';
