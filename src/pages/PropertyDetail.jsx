@@ -79,6 +79,14 @@ export default function PropertyDetail({ previewData }) {
   
   const cleanSpec = (s) => typeof s === 'string' ? s.replace(/beds?|bedrooms?|ห้องนอน|ห้องน้ำ|ที่จอดรถ|ห้องอเนกประสงค์/gi, '').trim() : s;
 
+  // Helper to split comma-separated strings into arrays for distinct tags
+  const splitTags = (arr) => {
+    if (!Array.isArray(arr)) return [];
+    return arr.flatMap(item => typeof item === 'string' ? item.split(',') : [item])
+              .map(s => typeof s === 'string' ? s.trim() : s)
+              .filter(Boolean);
+  };
+
   React.useEffect(() => {
     setCurrentIndex(0);
   }, [activeTab, prop?.id]);
@@ -427,55 +435,55 @@ export default function PropertyDetail({ previewData }) {
                 </h3>
 
                 <div className="space-y-4">
-                  {Array.isArray(prop.special) && prop.special.length > 0 && (
+                  {Array.isArray(prop.special) && prop.special.length > 0 && splitTags(prop.special).length > 0 && (
                     <div className="facility-group">
                       <span className="facility-group-title text-pink"><Sparkles size={14} /> จุดเด่น / รูปแบบการอยู่อาศัย:</span>
                       <div className="facility-tags-wrapper">
-                        {prop.special.map((s, i) => (
+                        {splitTags(prop.special).map((s, i) => (
                           <span key={i} className="facility-tag tag-pink">{s}</span>
                         ))}
                       </div>
                     </div>
                   )}
 
-                  {Array.isArray(prop.facilities) && prop.facilities.length > 0 && (
+                  {Array.isArray(prop.facilities) && prop.facilities.length > 0 && splitTags(prop.facilities).length > 0 && (
                     <div className="facility-group">
                       <span className="facility-group-title text-blue"><Waves size={14} /> สิ่งอำนวยความสะดวกส่วนกลาง:</span>
                       <div className="facility-tags-wrapper">
-                        {prop.facilities.map((f, i) => (
+                        {splitTags(prop.facilities).map((f, i) => (
                           <span key={i} className="facility-tag tag-blue">{f}</span>
                         ))}
                       </div>
                     </div>
                   )}
 
-                  {Array.isArray(prop.security) && prop.security.length > 0 && (
+                  {Array.isArray(prop.security) && prop.security.length > 0 && splitTags(prop.security).length > 0 && (
                     <div className="facility-group">
                       <span className="facility-group-title text-emerald"><ShieldCheck size={14} /> ระบบรักษาความปลอดภัย:</span>
                       <div className="facility-tags-wrapper">
-                        {prop.security.map((s, i) => (
+                        {splitTags(prop.security).map((s, i) => (
                           <span key={i} className="facility-tag tag-emerald">{s}</span>
                         ))}
                       </div>
                     </div>
                   )}
 
-                  {Array.isArray(prop.healthFacilities) && prop.healthFacilities.length > 0 && (
+                  {Array.isArray(prop.healthFacilities) && prop.healthFacilities.length > 0 && splitTags(prop.healthFacilities).length > 0 && (
                     <div className="facility-group">
                       <span className="facility-group-title text-purple"><Activity size={14} /> บริการด้านสุขภาพ:</span>
                       <div className="facility-tags-wrapper">
-                        {prop.healthFacilities.map((h, i) => (
+                        {splitTags(prop.healthFacilities).map((h, i) => (
                           <span key={i} className="facility-tag tag-purple">{h}</span>
                         ))}
                       </div>
                     </div>
                   )}
 
-                  {Array.isArray(prop.services) && prop.services.length > 0 && (
+                  {Array.isArray(prop.services) && prop.services.length > 0 && splitTags(prop.services).length > 0 && (
                     <div className="facility-group">
                       <span className="facility-group-title text-amber"><BellRing size={14} /> บริการพิเศษ:</span>
                       <div className="facility-tags-wrapper">
-                        {prop.services.map((s, i) => (
+                        {splitTags(prop.services).map((s, i) => (
                           <span key={i} className="facility-tag tag-amber">{s}</span>
                         ))}
                       </div>
@@ -498,9 +506,9 @@ export default function PropertyDetail({ previewData }) {
                         {prop.building_details.map((bldg, idx) => (
                           <div key={idx} className="bg-gray-50 p-3 rounded-xl border border-gray-100 flex flex-col gap-2">
                             <span className="font-bold text-gray-800 text-sm">{bldg.name || `อาคาร ${idx + 1}`}</span>
-                            {Array.isArray(bldg.facilities) && bldg.facilities.length > 0 ? (
+                            {Array.isArray(bldg.facilities) && bldg.facilities.length > 0 && splitTags(bldg.facilities).length > 0 ? (
                               <div className="flex flex-wrap gap-1.5">
-                                {bldg.facilities.map((f, i) => (
+                                {splitTags(bldg.facilities).map((f, i) => (
                                   <span key={i} className="text-[10px] bg-white border border-gray-200 text-gray-600 px-2 py-0.5 rounded-full">{f}</span>
                                 ))}
                               </div>
