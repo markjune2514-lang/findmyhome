@@ -119,12 +119,12 @@ function MapUpdater({ properties }) {
 export default function SearchPage() {
   const { properties } = useProperties();
   const { addToCompare, removeFromCompare, compareList } = useCompare();
-  const [activeTab, setActiveTab] = useState('buy');
+  const [activeTab, setActiveTab] = useState(() => sessionStorage.getItem('search_activeTab') || 'buy');
   const [polygonFilter, setPolygonFilter] = useState(null);
   
   // Location Filter State
-  const [selectedProvince, setSelectedProvince] = useState('กรุงเทพมหานคร');
-  const [selectedDistrict, setSelectedDistrict] = useState('');
+  const [selectedProvince, setSelectedProvince] = useState(() => sessionStorage.getItem('search_province') || 'กรุงเทพมหานคร');
+  const [selectedDistrict, setSelectedDistrict] = useState(() => sessionStorage.getItem('search_district') || '');
 
   // Transit Filter State
   const [transitSystem, setTransitSystem] = useState('');
@@ -132,7 +132,7 @@ export default function SearchPage() {
   const [transitStation, setTransitStation] = useState('');
 
   // Search State
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState(() => sessionStorage.getItem('search_query') || '');
 
   // Track searches to Supabase with debounce
   useEffect(() => {
@@ -150,7 +150,7 @@ export default function SearchPage() {
   }, [searchQuery]);
 
   // Property Type State
-  const [activePropertyType, setActivePropertyType] = useState('condo');
+  const [activePropertyType, setActivePropertyType] = useState(() => sessionStorage.getItem('search_propertyType') || 'condo');
 
   // Advanced Filter State
   const [showAdvanced, setShowAdvanced] = useState(false);
@@ -169,7 +169,21 @@ export default function SearchPage() {
     priceRangeStr: 'ไม่จำกัด',
     priceRange: [1, 50]
   };
-  const [filters, setFilters] = useState(initialFiltersState);
+  
+  const [filters, setFilters] = useState(() => {
+    const saved = sessionStorage.getItem('search_filters');
+    return saved ? JSON.parse(saved) : initialFiltersState;
+  });
+
+  // Save state to sessionStorage
+  useEffect(() => {
+    sessionStorage.setItem('search_activeTab', activeTab);
+    sessionStorage.setItem('search_province', selectedProvince);
+    sessionStorage.setItem('search_district', selectedDistrict);
+    sessionStorage.setItem('search_query', searchQuery);
+    sessionStorage.setItem('search_propertyType', activePropertyType);
+    sessionStorage.setItem('search_filters', JSON.stringify(filters));
+  }, [activeTab, selectedProvince, selectedDistrict, searchQuery, activePropertyType, filters]);
 
   const toggleFilter = (category, value) => {
     setFilters(prev => {
