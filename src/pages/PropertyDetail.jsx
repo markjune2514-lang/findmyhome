@@ -140,13 +140,15 @@ export default function PropertyDetail({ previewData }) {
       <div className="relative group mb-6">
         {/* Left Arrow Indicator */}
         {canScrollLeft && (
-          <button 
-            onClick={() => scrollTabs('left')}
-            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/95 shadow-md border border-gray-100 w-8 h-8 rounded-full flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all -ml-2 sm:-ml-4 opacity-90 hover:opacity-100"
-            aria-label="Scroll left"
-          >
-            <ChevronLeft size={20} />
-          </button>
+          <div className="absolute left-0 top-0 bottom-[0.25rem] flex items-center pr-8 bg-gradient-to-r from-white via-white to-transparent z-10 pointer-events-none">
+            <button 
+              onClick={() => scrollTabs('left')}
+              className="pointer-events-auto bg-white shadow-[0_2px_8px_rgba(0,0,0,0.12)] border border-gray-100 w-8 h-8 rounded-full flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all ml-1"
+              aria-label="Scroll left"
+            >
+              <ChevronLeft size={18} />
+            </button>
+          </div>
         )}
 
         <div 
@@ -177,13 +179,15 @@ export default function PropertyDetail({ previewData }) {
 
         {/* Right Arrow Indicator */}
         {canScrollRight && (
-          <button 
-            onClick={() => scrollTabs('right')}
-            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/95 shadow-md border border-gray-100 w-8 h-8 rounded-full flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all -mr-2 sm:-mr-4 opacity-90 hover:opacity-100"
-            aria-label="Scroll right"
-          >
-            <ChevronRight size={20} />
-          </button>
+          <div className="absolute right-0 top-0 bottom-[0.25rem] flex items-center pl-8 bg-gradient-to-l from-white via-white to-transparent z-10 pointer-events-none">
+            <button 
+              onClick={() => scrollTabs('right')}
+              className="pointer-events-auto bg-white shadow-[0_2px_8px_rgba(0,0,0,0.12)] border border-gray-100 w-8 h-8 rounded-full flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all mr-1"
+              aria-label="Scroll right"
+            >
+              <ChevronRight size={18} />
+            </button>
+          </div>
         )}
       </div>
 
