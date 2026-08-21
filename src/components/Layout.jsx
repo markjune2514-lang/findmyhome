@@ -101,18 +101,18 @@ export default function Layout() {
 
       {/* Floating Compare Button */}
       {compareList.length > 0 && location.pathname !== '/compare' && (
-        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 animate-in slide-in-from-bottom-5 fade-in duration-300">
+        <div className="fixed bottom-6 left-0 w-full px-4 z-50 flex justify-center pointer-events-none animate-in slide-in-from-bottom-5 fade-in duration-300">
           <Link 
             to="/compare" 
-            className="flex items-center gap-2 px-6 py-3 bg-[var(--primary)] text-white rounded-full shadow-[0_8px_30px_rgba(249,115,22,0.4)] hover:shadow-[0_8px_30px_rgba(249,115,22,0.6)] hover:-translate-y-1 transition-all"
+            className="pointer-events-auto flex w-full max-w-md items-center justify-center gap-3 px-6 py-3.5 bg-[var(--primary)] text-white rounded-full shadow-[0_8px_30px_rgba(249,115,22,0.4)] hover:shadow-[0_8px_30px_rgba(249,115,22,0.6)] hover:-translate-y-1 transition-all"
           >
             <div className="relative">
-              <Scale size={20} className="text-white" />
-              <span className="absolute -top-2 -right-2 bg-white text-[var(--primary)] text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded-full shadow-sm">
+              <Scale size={22} className="text-white" />
+              <span className="absolute -top-2 -right-3 bg-white text-[var(--primary)] text-[11px] font-bold w-5 h-5 flex items-center justify-center rounded-full shadow-sm">
                 {compareList.length}
               </span>
             </div>
-            <span className="font-semibold text-[0.95rem]">เปรียบเทียบโครงการ</span>
+            <span className="font-semibold text-[1rem]">เปรียบเทียบโครงการ</span>
           </Link>
         </div>
       )}
