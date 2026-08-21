@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { Home, Heart, Bell, User, Menu, X, Search, Building, Scale, Newspaper, Info } from 'lucide-react';
+import { useCompare } from '../CompareContext';
 import './Layout.css';
 
 export default function Layout() {
   const location = useLocation();
+  const { compareList } = useCompare();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
@@ -96,6 +98,24 @@ export default function Layout() {
       <main className="main-content">
         <Outlet />
       </main>
+
+      {/* Floating Compare Button */}
+      {compareList.length > 0 && location.pathname !== '/compare' && (
+        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 animate-in slide-in-from-bottom-5 fade-in duration-300">
+          <Link 
+            to="/compare" 
+            className="flex items-center gap-2 px-6 py-3 bg-white text-gray-800 rounded-full shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-gray-100 hover:shadow-[0_8px_30px_rgb(0,0,0,0.2)] hover:-translate-y-1 transition-all"
+          >
+            <div className="relative">
+              <Scale size={20} className="text-[var(--primary)]" />
+              <span className="absolute -top-2 -right-2 bg-[var(--primary)] text-white text-[10px] font-bold w-4 h-4 flex items-center justify-center rounded-full">
+                {compareList.length}
+              </span>
+            </div>
+            <span className="font-semibold text-[0.95rem]">เปรียบเทียบโครงการ</span>
+          </Link>
+        </div>
+      )}
     </div>
   );
 }
