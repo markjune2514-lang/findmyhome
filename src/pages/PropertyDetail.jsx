@@ -138,6 +138,11 @@ export default function PropertyDetail({ previewData }) {
           <h1 className="prop-title">
             {prop.name}
           </h1>
+          {prop.developer && (
+            <div className="prop-developer-badge" style={{ marginTop: '8px' }}>
+              <span className="developer-name">{prop.developer}</span>
+            </div>
+          )}
         </div>
         <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
           <button 
@@ -148,12 +153,6 @@ export default function PropertyDetail({ previewData }) {
             <Heart size={20} color={isFavorite(prop.id) ? "#e11d48" : "#64748b"} fill={isFavorite(prop.id) ? "#e11d48" : "transparent"} />
           </button>
         </div>
-      </div>
-      {prop.developer && (
-          <div className="prop-developer-badge">
-            <span className="developer-name">{prop.developer}</span>
-          </div>
-        )}
       </div>
 
       {/* Modern Premium Tab Bar */}

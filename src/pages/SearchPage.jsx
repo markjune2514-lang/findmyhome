@@ -136,7 +136,8 @@ function MapUpdater({ properties }) {
 
 export default function SearchPage() {
   const { properties } = useProperties();
-  const { addToCompare, removeFromCompare, compareList } = useCompare();\n  const { isFavorite, toggleFavorite } = useFavorites();
+  const { addToCompare, removeFromCompare, compareList } = useCompare();
+  const { isFavorite, toggleFavorite } = useFavorites();
   const [activeTab, setActiveTab] = useState(() => sessionStorage.getItem('search_activeTab') || 'buy');
   const [polygonFilter, setPolygonFilter] = useState(null);
   const [mapBounds, setMapBounds] = useState(null);
