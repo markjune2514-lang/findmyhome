@@ -182,6 +182,10 @@ export default function SearchPage() {
   const [viewMode, setViewMode] = useState(() => sessionStorage.getItem('search_viewMode') || 'list');
   const [visibleCount, setVisibleCount] = useState(20);
 
+  useEffect(() => {
+    setVisibleCount(20);
+  }, [filters, searchQuery, activePropertyType, polygonFilter]);
+
   // Save state to sessionStorage
   useEffect(() => {
     sessionStorage.setItem('search_activeTab', activeTab);
