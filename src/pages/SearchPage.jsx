@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMap, LayersControl, ZoomControl } from 'react-leaflet';
-import { Search, SlidersHorizontal, Heart, Map as MapIcon, Star, X, ChevronDown, Plus, Check, PenTool, MapPin } from 'lucide-react';
+import { Search, SlidersHorizontal, Heart, Map as MapIcon, Star, X, ChevronDown, Plus, Check, PenTool, MapPin, LayoutGrid, List } from 'lucide-react';
 import { provincesAndDistricts, transitData } from '../data/locations';
 import { Link } from 'react-router-dom';
 import { useProperties } from '../PropertiesContext';
@@ -177,6 +177,10 @@ export default function SearchPage() {
 
   // Sort State
   const [sortBy, setSortBy] = useState(() => sessionStorage.getItem('search_sortBy') || 'recommended');
+  
+  // View & Pagination State
+  const [viewMode, setViewMode] = useState(() => sessionStorage.getItem('search_viewMode') || 'list');
+  const [visibleCount, setVisibleCount] = useState(20);
 
   // Save state to sessionStorage
   useEffect(() => {
@@ -187,7 +191,8 @@ export default function SearchPage() {
     sessionStorage.setItem('search_propertyType', activePropertyType);
     sessionStorage.setItem('search_filters', JSON.stringify(filters));
     sessionStorage.setItem('search_sortBy', sortBy);
-  }, [activeTab, selectedProvince, selectedDistrict, searchQuery, activePropertyType, filters, sortBy]);
+    sessionStorage.setItem('search_viewMode', viewMode);
+  }, [activeTab, selectedProvince, selectedDistrict, searchQuery, activePropertyType, filters, sortBy, viewMode]);
 
   const toggleFilter = (category, value) => {
     setFilters(prev => {
@@ -537,6 +542,34 @@ export default function SearchPage() {
           <input type="text" placeholder="ค้นหาโครงการ, ทำเล, BTS, MRT" className="search-input" value={searchQuery} onChange={e => setSearchQuery(e.target.value)} />
         </div>
 
+        {/* Trending Tags / Quick Filters */}
+        <div className="flex flex-wrap gap-2 mt-3 mb-2 px-1">
+          <button 
+            className="text-[10px] sm:text-xs bg-orange-50 text-primary px-3 py-1.5 rounded-full border border-orange-100 hover:bg-orange-100 transition-colors cursor-pointer flex items-center gap-1 font-medium whitespace-nowrap" 
+            onClick={() => { setActivePropertyType('condo'); setFilters({...initialFiltersState, priceRange: [1, 3], priceRangeStr: '1 - 3 ล้านบาท'}); }}
+          >
+            🏢 คอนโดไม่เกิน 3 ล้าน
+          </button>
+          <button 
+            className="text-[10px] sm:text-xs bg-orange-50 text-primary px-3 py-1.5 rounded-full border border-orange-100 hover:bg-orange-100 transition-colors cursor-pointer flex items-center gap-1 font-medium whitespace-nowrap" 
+            onClick={() => { setSearchQuery('BTS'); }}
+          >
+            🚆 ใกล้รถไฟฟ้า BTS
+          </button>
+          <button 
+            className="text-[10px] sm:text-xs bg-orange-50 text-primary px-3 py-1.5 rounded-full border border-orange-100 hover:bg-orange-100 transition-colors cursor-pointer flex items-center gap-1 font-medium whitespace-nowrap" 
+            onClick={() => { setActivePropertyType('house'); setFilters({...initialFiltersState, special: ['บ้านเดี่ยวพร้อมอยู่']}); }}
+          >
+            🏡 บ้านเดี่ยวพร้อมอยู่
+          </button>
+          <button 
+            className="text-[10px] sm:text-xs bg-orange-50 text-primary px-3 py-1.5 rounded-full border border-orange-100 hover:bg-orange-100 transition-colors cursor-pointer flex items-center gap-1 font-medium whitespace-nowrap" 
+            onClick={() => { setFilters({...initialFiltersState, facilities: ['Pet-Friendly']}); }}
+          >
+            🐾 Pet-Friendly
+          </button>
+        </div>
+
         <div className="filter-section">
           <h3>ค้นหาบ้านและคอนโด</h3>
           <div className="toggle-group">
@@ -773,22 +806,47 @@ export default function SearchPage() {
             <h3>โครงการในพื้นที่นี้</h3>
             <p>{filteredProperties.length} โครงการ {polygonFilter && `| ขอบเขต ${polygonFilter.areaSqKm?.toFixed(2) || 0} ตร.กม.`}</p>
           </div>
-          <div className="sort-dropdown">
-            <select 
-              value={sortBy} 
-              onChange={(e) => setSortBy(e.target.value)}
-              className="px-2 py-1.5 border border-gray-200 rounded-md text-xs sm:text-sm bg-white focus:outline-none focus:ring-1 focus:ring-[var(--primary)] text-gray-700 shadow-sm cursor-pointer"
-            >
-              <option value="recommended">เรียงตาม: แนะนำ</option>
-              <option value="price_asc">ราคา: ต่ำ-สูง</option>
-              <option value="price_desc">ราคา: สูง-ต่ำ</option>
-              <option value="newest">มาใหม่ล่าสุด</option>
-            </select>
+          <div className="flex items-center gap-2">
+            <div className="flex bg-gray-100 rounded-md p-0.5">
+              <button 
+                onClick={() => setViewMode('list')} 
+                className={`p-1 rounded-sm flex items-center justify-center transition-colors ${viewMode === 'list' ? 'bg-white shadow-sm text-primary' : 'text-gray-400 hover:text-gray-600'}`}
+                title="มุมมองแบบรายการ"
+              >
+                <List size={16} />
+              </button>
+              <button 
+                onClick={() => setViewMode('grid')} 
+                className={`p-1 rounded-sm flex items-center justify-center transition-colors ${viewMode === 'grid' ? 'bg-white shadow-sm text-primary' : 'text-gray-400 hover:text-gray-600'}`}
+                title="มุมมองแบบตาราง"
+              >
+                <LayoutGrid size={16} />
+              </button>
+            </div>
+            <div className="sort-dropdown">
+              <select 
+                value={sortBy} 
+                onChange={(e) => setSortBy(e.target.value)}
+                className="px-2 py-1.5 border border-gray-200 rounded-md text-xs sm:text-sm bg-white focus:outline-none focus:ring-1 focus:ring-[var(--primary)] text-gray-700 shadow-sm cursor-pointer"
+              >
+                <option value="recommended">เรียงตาม: แนะนำ</option>
+                <option value="price_asc">ราคา: ต่ำ-สูง</option>
+                <option value="price_desc">ราคา: สูง-ต่ำ</option>
+                <option value="newest">มาใหม่ล่าสุด</option>
+              </select>
+            </div>
           </div>
         </div>
-        <div className="property-list">
+        <div 
+          className={`property-list ${viewMode === 'grid' ? 'grid-view-mode' : ''}`}
+          onScroll={(e) => { 
+            if (e.target.scrollHeight - e.target.scrollTop <= e.target.clientHeight + 300 && visibleCount < filteredProperties.length) { 
+              setVisibleCount(v => v + 20); 
+            } 
+          }}
+        >
           {filteredProperties.length > 0 ? (
-            filteredProperties.map(prop => {
+            filteredProperties.slice(0, visibleCount).map(prop => {
               const isCompared = compareList.some(item => item.id === prop.id);
               return (
                 <Link to={`/property/${prop.id}`} key={prop.id} className="prop-card-small" style={{ position: 'relative' }}>
