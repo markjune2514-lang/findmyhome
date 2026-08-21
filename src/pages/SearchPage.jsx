@@ -175,6 +175,9 @@ export default function SearchPage() {
     return saved ? JSON.parse(saved) : initialFiltersState;
   });
 
+  // Sort State
+  const [sortBy, setSortBy] = useState(() => sessionStorage.getItem('search_sortBy') || 'recommended');
+
   // Save state to sessionStorage
   useEffect(() => {
     sessionStorage.setItem('search_activeTab', activeTab);
@@ -183,7 +186,8 @@ export default function SearchPage() {
     sessionStorage.setItem('search_query', searchQuery);
     sessionStorage.setItem('search_propertyType', activePropertyType);
     sessionStorage.setItem('search_filters', JSON.stringify(filters));
-  }, [activeTab, selectedProvince, selectedDistrict, searchQuery, activePropertyType, filters]);
+    sessionStorage.setItem('search_sortBy', sortBy);
+  }, [activeTab, selectedProvince, selectedDistrict, searchQuery, activePropertyType, filters, sortBy]);
 
   const toggleFilter = (category, value) => {
     setFilters(prev => {
@@ -290,10 +294,28 @@ export default function SearchPage() {
 
     return true;
   }).sort((a, b) => {
-    // Priority 1: package_tier === 'sponsored'
+    // Priority 1: package_tier === 'sponsored' (Always float to top)
     if (a.package_tier === 'sponsored' && b.package_tier !== 'sponsored') return -1;
     if (a.package_tier !== 'sponsored' && b.package_tier === 'sponsored') return 1;
-    // Priority 2: rank_score
+    
+    // Priority 2: User's Sort Choice
+    if (sortBy === 'price_asc') {
+      const priceA = a.price || 999999;
+      const priceB = b.price || 999999;
+      return priceA - priceB;
+    }
+    if (sortBy === 'price_desc') {
+      const priceA = a.price || 0;
+      const priceB = b.price || 0;
+      return priceB - priceA;
+    }
+    if (sortBy === 'newest') {
+      const dateA = new Date(a.created_at || 0).getTime();
+      const dateB = new Date(b.created_at || 0).getTime();
+      return dateB - dateA;
+    }
+
+    // Default: rank_score
     const scoreA = a.rank_score || 0;
     const scoreB = b.rank_score || 0;
     if (scoreA !== scoreB) return scoreB - scoreA; // descending
@@ -746,9 +768,23 @@ export default function SearchPage() {
 
       {/* Right Sidebar - List */}
       <aside className="list-sidebar">
-        <div className="list-header">
-          <h3>โครงการในพื้นที่นี้</h3>
-          <p>{filteredProperties.length} โครงการ {polygonFilter && `| ขอบเขต ${polygonFilter.areaSqKm?.toFixed(2) || 0} ตร.กม.`}</p>
+        <div className="list-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div>
+            <h3>โครงการในพื้นที่นี้</h3>
+            <p>{filteredProperties.length} โครงการ {polygonFilter && `| ขอบเขต ${polygonFilter.areaSqKm?.toFixed(2) || 0} ตร.กม.`}</p>
+          </div>
+          <div className="sort-dropdown">
+            <select 
+              value={sortBy} 
+              onChange={(e) => setSortBy(e.target.value)}
+              className="px-2 py-1.5 border border-gray-200 rounded-md text-xs sm:text-sm bg-white focus:outline-none focus:ring-1 focus:ring-[var(--primary)] text-gray-700 shadow-sm cursor-pointer"
+            >
+              <option value="recommended">เรียงตาม: แนะนำ</option>
+              <option value="price_asc">ราคา: ต่ำ-สูง</option>
+              <option value="price_desc">ราคา: สูง-ต่ำ</option>
+              <option value="newest">มาใหม่ล่าสุด</option>
+            </select>
+          </div>
         </div>
         <div className="property-list">
           {filteredProperties.length > 0 ? (
