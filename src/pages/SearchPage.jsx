@@ -546,33 +546,7 @@ export default function SearchPage() {
           <input type="text" placeholder="ค้นหาโครงการ, ทำเล, BTS, MRT" className="search-input" value={searchQuery} onChange={e => setSearchQuery(e.target.value)} />
         </div>
 
-        {/* Trending Tags / Quick Filters */}
-        <div className="flex flex-wrap gap-2 mt-3 mb-2 px-1">
-          <button 
-            className="text-[10px] sm:text-xs bg-orange-50 text-primary px-3 py-1.5 rounded-full border border-orange-100 hover:bg-orange-100 transition-colors cursor-pointer flex items-center gap-1 font-medium whitespace-nowrap" 
-            onClick={() => { setActivePropertyType('condo'); setFilters({...initialFiltersState, priceRange: [1, 3], priceRangeStr: '1 - 3 ล้านบาท'}); }}
-          >
-            🏢 คอนโดไม่เกิน 3 ล้าน
-          </button>
-          <button 
-            className="text-[10px] sm:text-xs bg-orange-50 text-primary px-3 py-1.5 rounded-full border border-orange-100 hover:bg-orange-100 transition-colors cursor-pointer flex items-center gap-1 font-medium whitespace-nowrap" 
-            onClick={() => { setSearchQuery('BTS'); }}
-          >
-            🚆 ใกล้รถไฟฟ้า BTS
-          </button>
-          <button 
-            className="text-[10px] sm:text-xs bg-orange-50 text-primary px-3 py-1.5 rounded-full border border-orange-100 hover:bg-orange-100 transition-colors cursor-pointer flex items-center gap-1 font-medium whitespace-nowrap" 
-            onClick={() => { setActivePropertyType('house'); setFilters({...initialFiltersState, special: ['บ้านเดี่ยวพร้อมอยู่']}); }}
-          >
-            🏡 บ้านเดี่ยวพร้อมอยู่
-          </button>
-          <button 
-            className="text-[10px] sm:text-xs bg-orange-50 text-primary px-3 py-1.5 rounded-full border border-orange-100 hover:bg-orange-100 transition-colors cursor-pointer flex items-center gap-1 font-medium whitespace-nowrap" 
-            onClick={() => { setFilters({...initialFiltersState, facilities: ['Pet-Friendly']}); }}
-          >
-            🐾 Pet-Friendly
-          </button>
-        </div>
+        
 
         <div className="filter-section">
           <h3>ค้นหาบ้านและคอนโด</h3>
