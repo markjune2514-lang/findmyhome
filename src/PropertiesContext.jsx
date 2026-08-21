@@ -94,7 +94,8 @@ export const PropertiesProvider = ({ children }) => {
       'unit_types', 'project_parking', 'total_land_area', 'facility_type',
       'categorized_landmarks', 'province', 'district', 'transit_system', 'transit_line',
       'room_type', 'living_format', 'promotion', 'special', 'health_facilities',
-      'services', 'security', 'transport', 'buildings', 'fully_furnished', 'listing_type', 'project_highlights'
+      'services', 'security', 'transport', 'buildings', 'fully_furnished', 'listing_type', 'project_highlights',
+      'package_tier', 'rank_score'
     ];
     const cleaned = {};
     for (const key of Object.keys(payload)) {

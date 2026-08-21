@@ -275,6 +275,15 @@ export default function SearchPage() {
     }
 
     return true;
+  }).sort((a, b) => {
+    // Priority 1: package_tier === 'sponsored'
+    if (a.package_tier === 'sponsored' && b.package_tier !== 'sponsored') return -1;
+    if (a.package_tier !== 'sponsored' && b.package_tier === 'sponsored') return 1;
+    // Priority 2: rank_score
+    const scoreA = a.rank_score || 0;
+    const scoreB = b.rank_score || 0;
+    if (scoreA !== scoreB) return scoreB - scoreA; // descending
+    return 0;
   });
 
   const handleSearchClick = () => {
@@ -735,7 +744,10 @@ export default function SearchPage() {
                 <Link to={`/property/${prop.id}`} key={prop.id} className="prop-card-small" style={{ position: 'relative' }}>
                   <img src={prop.image ? prop.image.split(',')[0] : ''} alt={prop.name} />
                   <div className="prop-card-info" style={{ paddingRight: '30px' }}>
-                    <h4>{prop.name}</h4>
+                    <h4 className="flex items-center gap-1">
+                      {prop.package_tier === 'sponsored' && <Star size={14} fill="#f59e0b" color="#f59e0b" title="โครงการแนะนำ" />}
+                      {prop.name}
+                    </h4>
                     <p className="developer">{prop.developer}</p>
                     <p className="price">
                       {prop.price 

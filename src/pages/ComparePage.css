@@ -8,12 +8,257 @@
   -webkit-overflow-scrolling: touch;
 }
 
-@media (max-width: 640px) {
+.compare-grid-refined {
+  align-items: stretch;
+  scrollbar-width: thin;
+}
+
+.compare-grid-refined .compare-column {
+  flex: 0 0 280px;
+  min-width: 280px;
+}
+
+.compare-grid-refined .label-col {
+  flex-basis: 220px;
+  min-width: 220px;
+  position: sticky;
+  left: 0;
+  z-index: 6;
+  background: var(--white);
+  box-shadow: 4px 0 14px rgba(0, 0, 0, 0.04);
+}
+
+.compare-grid-refined .label-top-section {
+  height: 290px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1.25rem 1rem 0;
+  border-bottom: 1px solid var(--neutral-2);
+}
+
+.compare-grid-refined .spacer-card h3 {
+  margin-bottom: 1rem;
+}
+
+.compare-grid-refined .content-tabs {
+  margin-bottom: 0;
+  gap: 0.15rem;
+}
+
+.compare-grid-refined .content-tabs .tab {
+  min-height: 42px;
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.compare-grid-refined .content-tabs .tab.active {
+  background: var(--neutral-1);
+}
+
+.compare-grid-refined .prop-card-compare {
+  height: 290px;
+  overflow: hidden;
+  background: var(--white);
+  border-bottom: 1px solid var(--neutral-2);
+}
+
+.compare-grid-refined .prop-card-compare img {
+  height: 150px;
+}
+
+.compare-grid-refined .prop-card-compare .p-4 {
+  padding: 0.9rem 1rem;
+}
+
+.compare-grid-refined .prop-card-compare h4 {
+  margin: 0 0 0.35rem;
+  line-height: 1.45;
+  min-height: 2.9em;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  overflow: hidden;
+}
+
+.compare-grid-refined .prop-card-compare p {
+  line-height: 1.45;
+}
+
+.compare-grid-refined .prop-card-compare .text-primary {
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+.compare-grid-refined .metric-row {
+  font-size: 0.86rem;
+  font-weight: 400;
+  color: var(--text-main);
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.compare-grid-refined .label-col .metric-row {
+  font-size: 0.84rem;
+  font-weight: 600;
+}
+
+.compare-grid-refined .prop-col .metric-row.font-semibold {
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.compare-grid-refined .metric-row {
+  min-height: 56px;
+  height: auto;
+  padding: 0.75rem 0.5rem;
+  line-height: 1.4;
+  text-align: center;
+}
+
+.compare-grid-refined .label-col .metric-row {
+  justify-content: flex-start;
+  text-align: left;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  color: var(--text-light);
+}
+
+@media (max-width: 768px) {
   .compare-grid {
     border-radius: var(--radius-lg);
     min-height: 400px;
+    margin-left: -1rem;
+    margin-right: -1rem;
+    width: calc(100% + 2rem);
+    border-radius: 0;
+  }
+  
+  .compare-grid-refined .compare-column {
+    flex-basis: 180px;
+    min-width: 180px;
+  }
+
+  .compare-grid-refined .label-col {
+    flex-basis: 120px;
+    min-width: 120px;
+    box-shadow: 4px 0 12px rgba(0,0,0,0.06);
+    background-color: var(--neutral-1);
+    border-right: 1px solid var(--neutral-2);
+  }
+
+  .compare-grid-refined .label-top-section {
+    padding: 1rem 0.5rem 0;
+    justify-content: flex-start;
+  }
+
+  .compare-grid-refined .spacer-card h3 {
+    font-size: 1rem;
+    margin-bottom: 0.75rem;
+    line-height: 1.3;
+  }
+  
+  .compare-grid-refined .spacer-card .btn {
+    padding: 0.4rem;
+    font-size: 0.75rem;
+    width: 100%;
+    margin-bottom: 1rem;
+    background-color: var(--white);
+    color: var(--primary);
+    border: 1px solid var(--primary-light);
+  }
+
+  .compare-grid-refined .content-tabs {
+    flex-direction: column;
+    gap: 0;
+    margin-top: auto;
+  }
+
+  .compare-grid-refined .content-tabs .tab {
+    font-size: 0.75rem;
+    padding: 0.6rem 0.5rem !important;
+    min-height: unset;
+    border-radius: 0;
+    border-bottom: 1px solid var(--neutral-2) !important;
+    text-align: left !important;
+  }
+  
+  .compare-grid-refined .content-tabs .tab.active {
+    background-color: var(--white);
+    border-left: 3px solid var(--primary);
+    font-weight: 700 !important;
+  }
+
+  /* Keep the label header and property header exactly aligned on phones. */
+  .compare-grid-refined .label-top-section,
+  .compare-grid-refined .prop-card-compare {
+    height: 250px;
+    min-height: 250px;
+    box-sizing: border-box;
+  }
+
+  .compare-grid-refined .prop-card-compare img {
+    height: 120px;
+    display: block;
+    border-radius: var(--radius-md) var(--radius-md) 0 0;
+  }
+  
+  .compare-grid-refined .prop-col {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+
+  .compare-grid-refined .prop-col:first-of-type {
+    padding-left: 1rem;
+  }
+
+  .compare-grid-refined .prop-card-compare .p-4 {
+    min-height: 130px;
+    box-sizing: border-box;
+    padding: 0.75rem;
+  }
+
+  .compare-grid-refined .prop-card-compare h4 {
+    min-height: 2.8em;
+    max-height: 2.8em;
+    font-size: 0.85rem;
+    line-height: 1.4;
+    margin-bottom: 0.25rem;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+
+  .compare-grid-refined .prop-card-compare p {
+    margin-bottom: 0.25rem;
+    line-height: 1.3;
+    font-size: 0.75rem;
+  }
+
+  .compare-grid-refined .prop-card-compare .text-primary {
+    line-height: 1.3;
+    font-size: 0.85rem;
+    font-weight: 700;
+  }
+
+  .compare-grid-refined .metric-row {
+    min-height: 50px;
+    padding: 0.5rem 0.25rem;
+    font-size: 0.8rem;
+    border-bottom: 1px solid var(--neutral-2);
+  }
+  
+  .compare-grid-refined .label-col .metric-row {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    font-size: 0.75rem;
+    color: var(--text-main);
+    background-color: var(--white);
   }
 }
+
+
 
 .compare-column {
   flex: 1;

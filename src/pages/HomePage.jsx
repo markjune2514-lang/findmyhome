@@ -18,7 +18,16 @@ export default function HomePage() {
     }
   };
 
-  const featuredProperties = properties.slice(0, 3);
+  // Sort properties by package_tier/rank_score for featured section
+  const featuredProperties = [...properties].sort((a, b) => {
+    if (a.package_tier === 'sponsored' && b.package_tier !== 'sponsored') return -1;
+    if (a.package_tier !== 'sponsored' && b.package_tier === 'sponsored') return 1;
+    const scoreA = a.rank_score || 0;
+    const scoreB = b.rank_score || 0;
+    if (scoreA !== scoreB) return scoreB - scoreA;
+    // Fallback to random or created_at if same tier
+    return 0;
+  }).slice(0, 3);
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -105,6 +114,12 @@ export default function HomePage() {
                   <div className="absolute top-4 left-4 bg-white/90 backdrop-blur px-3 py-1 rounded-full text-sm font-medium text-primary shadow-sm">
                     {prop.type || 'บ้าน'}
                   </div>
+                  {prop.package_tier === 'sponsored' && (
+                    <div className="absolute top-4 right-4 bg-amber-400/90 backdrop-blur px-3 py-1 rounded-full text-sm font-bold text-white shadow-sm flex items-center gap-1">
+                      <Star size={14} fill="currentColor" />
+                      แนะนำ
+                    </div>
+                  )}
                 </div>
                 <div className="p-6 flex-1 flex flex-col">
                   <h3 className="text-xl font-bold text-gray-800 mb-2 line-clamp-1">{prop.name}</h3>

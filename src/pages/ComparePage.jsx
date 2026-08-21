@@ -29,7 +29,7 @@ export default function ComparePage() {
       </div>
 
       <div className="compare-matrix">
-        <div className="compare-grid">
+        <div className="compare-grid compare-grid-refined">
           {compareList.length === 0 ? (
             <div className="p-12 text-center text-light col-span-full w-full bg-white rounded shadow-sm">
               ยังไม่มีโครงการในรายการเปรียบเทียบ<br/>
@@ -41,7 +41,7 @@ export default function ComparePage() {
             <>
               {/* Sticky Header Row (Labels) */}
               <div className="compare-column label-col">
-                <div className="label-top-section" style={{ height: '290px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', padding: '1rem 1rem 0 1rem', borderBottom: '1px solid var(--neutral-2)' }}>
+                <div className="label-top-section">
                   <div className="spacer-card">
                     <h3 className="mb-4">ข้อมูลโครงการ</h3>
                     <button className="btn btn-secondary w-full text-sm" onClick={() => navigate('/search')}><Plus size={14} /> เพิ่มโครงการ</button>
@@ -88,7 +88,7 @@ export default function ComparePage() {
               {/* Property Columns */}
               {compareList.map((prop, index) => (
                 <div key={prop.id} className="compare-column prop-col">
-                  <div className="prop-card-compare" style={{ height: '290px' }}>
+                  <div className="prop-card-compare">
                     <span className="badge absolute-badge-top">{index + 1}</span>
                     <button className="remove-btn" onClick={() => removeFromCompare(prop.id)}><X size={14} /></button>
                     <img src={prop.image ? prop.image.split(',')[0] : ''} alt={prop.name} />
