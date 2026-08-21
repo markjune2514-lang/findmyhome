@@ -135,34 +135,35 @@
   }
   
   .compare-grid-refined .compare-column {
-    flex-basis: 180px;
-    min-width: 180px;
+    flex-basis: 140px;
+    min-width: 140px;
   }
 
   .compare-grid-refined .label-col {
-    flex-basis: 120px;
-    min-width: 120px;
+    flex-basis: 95px;
+    min-width: 95px;
     box-shadow: 4px 0 12px rgba(0,0,0,0.06);
     background-color: var(--neutral-1);
     border-right: 1px solid var(--neutral-2);
   }
 
   .compare-grid-refined .label-top-section {
-    padding: 1rem 0.5rem 0;
+    padding: 0.75rem 0.25rem 0;
     justify-content: flex-start;
   }
 
   .compare-grid-refined .spacer-card h3 {
-    font-size: 1rem;
-    margin-bottom: 0.75rem;
-    line-height: 1.3;
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    line-height: 1.2;
+    text-align: center;
   }
   
   .compare-grid-refined .spacer-card .btn {
-    padding: 0.4rem;
-    font-size: 0.75rem;
+    padding: 0.35rem 0.1rem;
+    font-size: 0.7rem;
     width: 100%;
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem;
     background-color: var(--white);
     color: var(--primary);
     border: 1px solid var(--primary-light);
@@ -175,8 +176,8 @@
   }
 
   .compare-grid-refined .content-tabs .tab {
-    font-size: 0.75rem;
-    padding: 0.6rem 0.5rem !important;
+    font-size: 0.7rem;
+    padding: 0.5rem 0.25rem !important;
     min-height: unset;
     border-radius: 0;
     border-bottom: 1px solid var(--neutral-2) !important;
@@ -192,38 +193,38 @@
   /* Keep the label header and property header exactly aligned on phones. */
   .compare-grid-refined .label-top-section,
   .compare-grid-refined .prop-card-compare {
-    height: 250px;
-    min-height: 250px;
+    height: 230px;
+    min-height: 230px;
     box-sizing: border-box;
   }
 
   .compare-grid-refined .prop-card-compare img {
-    height: 120px;
+    height: 100px;
     display: block;
     border-radius: var(--radius-md) var(--radius-md) 0 0;
   }
   
   .compare-grid-refined .prop-col {
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
   }
 
   .compare-grid-refined .prop-col:first-of-type {
-    padding-left: 1rem;
+    padding-left: 0.5rem;
   }
 
   .compare-grid-refined .prop-card-compare .p-4 {
     min-height: 130px;
     box-sizing: border-box;
-    padding: 0.75rem;
+    padding: 0.5rem;
   }
 
   .compare-grid-refined .prop-card-compare h4 {
     min-height: 2.8em;
     max-height: 2.8em;
-    font-size: 0.85rem;
+    font-size: 0.75rem;
     line-height: 1.4;
-    margin-bottom: 0.25rem;
+    margin-bottom: 0.2rem;
     overflow: hidden;
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -231,28 +232,28 @@
   }
 
   .compare-grid-refined .prop-card-compare p {
-    margin-bottom: 0.25rem;
-    line-height: 1.3;
-    font-size: 0.75rem;
+    margin-bottom: 0.2rem;
+    line-height: 1.2;
+    font-size: 0.7rem;
   }
 
   .compare-grid-refined .prop-card-compare .text-primary {
-    line-height: 1.3;
-    font-size: 0.85rem;
+    line-height: 1.2;
+    font-size: 0.75rem;
     font-weight: 700;
   }
 
   .compare-grid-refined .metric-row {
-    min-height: 50px;
-    padding: 0.5rem 0.25rem;
-    font-size: 0.8rem;
+    min-height: 48px;
+    padding: 0.25rem;
+    font-size: 0.75rem;
     border-bottom: 1px solid var(--neutral-2);
   }
   
   .compare-grid-refined .label-col .metric-row {
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
-    font-size: 0.75rem;
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
+    font-size: 0.7rem;
     color: var(--text-main);
     background-color: var(--white);
   }
