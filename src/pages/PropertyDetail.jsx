@@ -6,6 +6,7 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { useCompare } from '../CompareContext';
 import { useProperties } from '../PropertiesContext';
+import { useFavorites } from '../FavoritesContext';
 import SEO from '../components/SEO';
 import './PropertyDetail.css';
 
@@ -13,6 +14,7 @@ export default function PropertyDetail({ previewData }) {
   const { id } = useParams();
   const { properties, loading } = useProperties();
   const { addToCompare } = useCompare();
+  const { isFavorite, toggleFavorite } = useFavorites();
 
   const prop = previewData || properties.find(p => p.id === id) || (properties.length > 0 ? properties[0] : null);
   
@@ -131,13 +133,23 @@ export default function PropertyDetail({ previewData }) {
       />
       {/* Title & Developer Row */}
       {/* Header Section: Name & Developer */}
-      <div className="prop-header-container">
+      <div className="prop-header-container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
         <div>
           <h1 className="prop-title">
             {prop.name}
           </h1>
         </div>
-        {prop.developer && (
+        <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+          <button 
+            onClick={(e) => { e.preventDefault(); toggleFavorite(prop.id); }}
+            style={{ width: '40px', height: '40px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'var(--white)', cursor: 'pointer', boxShadow: 'var(--shadow-sm)', border: '1px solid var(--neutral-2)' }}
+            title={isFavorite(prop.id) ? "ลบออกจากรายการโปรด" : "บันทึกรายการโปรด"}
+          >
+            <Heart size={20} color={isFavorite(prop.id) ? "#e11d48" : "#64748b"} fill={isFavorite(prop.id) ? "#e11d48" : "transparent"} />
+          </button>
+        </div>
+      </div>
+      {prop.developer && (
           <div className="prop-developer-badge">
             <span className="developer-name">{prop.developer}</span>
           </div>

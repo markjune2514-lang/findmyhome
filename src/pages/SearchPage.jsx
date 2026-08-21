@@ -95,6 +95,24 @@ function MapDrawControl({ onPolygonDrawn, polygonFilter }) {
 }
 
 
+function MapBoundsObserver({ onBoundsChange, isEnabled }) {
+  const map = useMapEvents({
+    moveend: () => {
+      if (isEnabled) onBoundsChange(map.getBounds());
+    },
+    zoomend: () => {
+      if (isEnabled) onBoundsChange(map.getBounds());
+    }
+  });
+
+  React.useEffect(() => {
+    if (isEnabled) onBoundsChange(map.getBounds());
+    else onBoundsChange(null);
+  }, [isEnabled, map, onBoundsChange]);
+
+  return null;
+}
+
 function MapUpdater({ properties }) {
   const map = useMap();
   React.useEffect(() => {
@@ -118,9 +136,11 @@ function MapUpdater({ properties }) {
 
 export default function SearchPage() {
   const { properties } = useProperties();
-  const { addToCompare, removeFromCompare, compareList } = useCompare();
+  const { addToCompare, removeFromCompare, compareList } = useCompare();\n  const { isFavorite, toggleFavorite } = useFavorites();
   const [activeTab, setActiveTab] = useState(() => sessionStorage.getItem('search_activeTab') || 'buy');
   const [polygonFilter, setPolygonFilter] = useState(null);
+  const [mapBounds, setMapBounds] = useState(null);
+  const [isMapSearchActive, setIsMapSearchActive] = useState(false);
   
   // Location Filter State
   const [selectedProvince, setSelectedProvince] = useState(() => sessionStorage.getItem('search_province') || 'กรุงเทพมหานคร');
@@ -247,6 +267,15 @@ export default function SearchPage() {
       }
     }
     
+    if (mapBounds && isMapSearchActive) {
+      const pLat = parseFloat(prop.location?.lat);
+      const pLng = parseFloat(prop.location?.lng);
+      if (!isNaN(pLat) && !isNaN(pLng)) {
+        const pt = L.latLng(pLat, pLng);
+        if (!mapBounds.contains(pt)) return false;
+      }
+    }
+
     // Search Query
     if (searchQuery && !prop.name.toLowerCase().includes(searchQuery.toLowerCase()) && !prop.station.toLowerCase().includes(searchQuery.toLowerCase())) {
       return false;
@@ -722,6 +751,11 @@ export default function SearchPage() {
             </LayersControl.BaseLayer>
           </LayersControl>
           <MapDrawControl onPolygonDrawn={handlePolygonDrawn} polygonFilter={polygonFilter} />
+          <MapBoundsObserver onBoundsChange={setMapBounds} isEnabled={isMapSearchActive} />
+          <div style={{ position: 'absolute', top: '10px', left: '50%', transform: 'translateX(-50%)', zIndex: 1000, backgroundColor: 'white', padding: '8px 16px', borderRadius: '20px', boxShadow: '0 2px 10px rgba(0,0,0,0.1)', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', fontWeight: 600 }}>
+            <input type="checkbox" id="mapSearchToggle" checked={isMapSearchActive} onChange={e => setIsMapSearchActive(e.target.checked)} style={{ cursor: 'pointer' }} />
+            <label htmlFor="mapSearchToggle" style={{ cursor: 'pointer' }}>ค้นหาโครงการในบริเวณนี้</label>
+          </div>
           <MapUpdater properties={filteredProperties} />
           {filteredProperties.map(prop => {
             const fallbackImage = prop.image ? prop.image.split(',')[0] : 'https://placehold.co/100x100?text=No+Image';
@@ -739,7 +773,12 @@ export default function SearchPage() {
               <Popup className="property-popup">
                 <div className="popup-card">
                   <div className="popup-img" style={{ backgroundImage: `url(${prop.image ? prop.image.split(',')[0] : ''})` }}>
-                    <button className="like-btn"><Heart size={16} color="white" /></button>
+                    <button 
+                      className="like-btn" 
+                      onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggleFavorite(prop.id); }}
+                    >
+                      <Heart size={16} color={isFavorite(prop.id) ? "#e11d48" : "white"} fill={isFavorite(prop.id) ? "#e11d48" : "transparent"} />
+                    </button>
                   </div>
                   <div className="popup-content">
                     <h4>{prop.name}</h4>
@@ -841,6 +880,13 @@ export default function SearchPage() {
                         : 'ราคาติดต่อสอบถาม'}
                     </p>
                   </div>
+                  <button 
+                    onClick={(e) => { e.preventDefault(); toggleFavorite(prop.id); }}
+                    style={{ position: 'absolute', right: '8px', top: '8px', width: '28px', height: '28px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(255,255,255,0.9)', cursor: 'pointer', boxShadow: 'var(--shadow-sm)', border: 'none' }}
+                    title={isFavorite(prop.id) ? "ลบออกจากรายการโปรด" : "บันทึกรายการโปรด"}
+                  >
+                    <Heart size={14} color={isFavorite(prop.id) ? "#e11d48" : "#64748b"} fill={isFavorite(prop.id) ? "#e11d48" : "transparent"} />
+                  </button>
                   <button 
                     className="compare-mini-btn"
                     style={{

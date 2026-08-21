@@ -14,6 +14,7 @@ import AdminLayout from './components/AdminLayout';
 import { CompareProvider } from './CompareContext';
 import { PropertiesProvider } from './PropertiesContext';
 import { AuthProvider } from './AuthContext';
+import { FavoritesProvider } from './FavoritesContext';
 import ProtectedRoute from './ProtectedRoute';
 import AnalyticsTracker from './components/AnalyticsTracker';
 
@@ -25,6 +26,7 @@ function App() {
       <AuthProvider>
       <PropertiesProvider>
         <CompareProvider>
+          <FavoritesProvider>
           <Router>
             <AnalyticsTracker />
             <Routes>
@@ -52,6 +54,7 @@ function App() {
               </Route>
             </Routes>
           </Router>
+          </FavoritesProvider>
         </CompareProvider>
       </PropertiesProvider>
       </AuthProvider>
