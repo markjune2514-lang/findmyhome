@@ -84,7 +84,7 @@ export default function AddPropertyPage() {
         const safeProp = {
           ...propToEdit,
           location: propToEdit.location || { lat: 13.7563, lng: 100.5018 },
-          categorizedLandmarks: propToEdit.categorizedLandmarks || { transport: [], shopping: [], hospitals: [], schools: [] },
+          categorizedLandmarks: propToEdit.categorizedLandmarks || { transit: [], malls: [], hospitals: [], schools: [] },
           special: propToEdit.special || [],
           facilities: propToEdit.facilities || [],
           healthFacilities: propToEdit.healthFacilities || [],
@@ -107,7 +107,7 @@ export default function AddPropertyPage() {
         name: propToCopy.name + " (Copy)",
         id: undefined,
         location: propToCopy.location || { lat: 13.7563, lng: 100.5018 },
-        categorizedLandmarks: propToCopy.categorizedLandmarks || { transport: [], shopping: [], hospitals: [], schools: [] },
+        categorizedLandmarks: propToCopy.categorizedLandmarks || { transit: [], malls: [], hospitals: [], schools: [] },
         special: propToCopy.special || [],
         facilities: propToCopy.facilities || [],
         healthFacilities: propToCopy.healthFacilities || [],
