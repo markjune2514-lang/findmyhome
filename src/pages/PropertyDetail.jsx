@@ -20,6 +20,34 @@ export default function PropertyDetail({ previewData }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
 
+  // Scroll Tab Logic
+  const tabScrollRef = React.useRef(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
+
+  const checkScroll = () => {
+    if (tabScrollRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = tabScrollRef.current;
+      setCanScrollLeft(scrollLeft > 0);
+      setCanScrollRight(Math.ceil(scrollLeft + clientWidth) < scrollWidth);
+    }
+  };
+
+  React.useEffect(() => {
+    // Slight delay to allow DOM to render tabs before checking
+    setTimeout(checkScroll, 100);
+    window.addEventListener('resize', checkScroll);
+    return () => window.removeEventListener('resize', checkScroll);
+  }, [prop?.unitTypes]);
+
+  const scrollTabs = (direction) => {
+    if (tabScrollRef.current) {
+      const scrollAmount = 250;
+      tabScrollRef.current.scrollBy({ left: direction === 'left' ? -scrollAmount : scrollAmount, behavior: 'smooth' });
+      setTimeout(checkScroll, 300); // Check again after smooth scroll
+    }
+  };
+
   // Determine current unit selected (null if 'overview')
   const selectedUnit = (activeTab !== 'overview' && prop?.unitTypes && prop.unitTypes[parseInt(activeTab)])
     ? prop.unitTypes[parseInt(activeTab)]
@@ -109,25 +137,54 @@ export default function PropertyDetail({ previewData }) {
       </div>
 
       {/* Modern Premium Tab Bar */}
-      <div className="tab-scroll-container">
-        <div className="tab-track">
-          <button
-            onClick={() => setActiveTab('overview')}
-            className={`tab-btn ${activeTab === 'overview' ? 'active' : ''}`}
+      <div className="relative group mb-6">
+        {/* Left Arrow Indicator */}
+        {canScrollLeft && (
+          <button 
+            onClick={() => scrollTabs('left')}
+            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/95 shadow-md border border-gray-100 w-8 h-8 rounded-full flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all -ml-2 sm:-ml-4 opacity-90 hover:opacity-100"
+            aria-label="Scroll left"
           >
-            ภาพรวมโครงการ
+            <ChevronLeft size={20} />
           </button>
+        )}
 
-          {Array.isArray(prop.unitTypes) && prop.unitTypes.map((u, i) => (
+        <div 
+          className="tab-scroll-container" 
+          style={{ marginBottom: 0 }}
+          ref={tabScrollRef}
+          onScroll={checkScroll}
+        >
+          <div className="tab-track">
             <button
-              key={i}
-              onClick={() => setActiveTab(i.toString())}
-              className={`tab-btn ${activeTab === i.toString() ? 'active' : ''}`}
+              onClick={() => setActiveTab('overview')}
+              className={`tab-btn ${activeTab === 'overview' ? 'active' : ''}`}
             >
-              {u.name ? `TYPE: ${u.name}` : `TYPE ${i + 1}`}
+              ภาพรวมโครงการ
             </button>
-          ))}
+
+            {Array.isArray(prop.unitTypes) && prop.unitTypes.map((u, i) => (
+              <button
+                key={i}
+                onClick={() => setActiveTab(i.toString())}
+                className={`tab-btn ${activeTab === i.toString() ? 'active' : ''}`}
+              >
+                {u.name ? `TYPE: ${u.name}` : `TYPE ${i + 1}`}
+              </button>
+            ))}
+          </div>
         </div>
+
+        {/* Right Arrow Indicator */}
+        {canScrollRight && (
+          <button 
+            onClick={() => scrollTabs('right')}
+            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/95 shadow-md border border-gray-100 w-8 h-8 rounded-full flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all -mr-2 sm:-mr-4 opacity-90 hover:opacity-100"
+            aria-label="Scroll right"
+          >
+            <ChevronRight size={20} />
+          </button>
+        )}
       </div>
 
       {/* Price & Specs Summary Row */}
