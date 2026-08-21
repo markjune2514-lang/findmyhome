@@ -17,15 +17,9 @@ export default function ComparePage() {
         <Link to="/search">หน้าหลัก</Link> &gt; <span className="text-main">เปรียบเทียบโครงการ</span>
       </div>
 
-      <div className="flex justify-between items-end mb-6">
-        <div>
-          <h2>เปรียบเทียบโครงการ</h2>
-          <p className="text-light">เลือกโครงการที่คุณสนใจเพื่อเปรียบเทียบรายละเอียด</p>
-        </div>
-        <div className="flex gap-4">
-          <button className="btn btn-secondary" onClick={() => handleAction('แชร์ข้อมูลเปรียบเทียบ')}><Share2 size={16} /> แชร์</button>
-          <button className="btn btn-secondary" onClick={() => handleAction('ดาวน์โหลดข้อมูลเปรียบเทียบ PDF')}><Download size={16} /> ดาวน์โหลด PDF</button>
-        </div>
+      <div className="mb-6">
+        <h2 className="text-2xl md:text-3xl font-bold whitespace-nowrap mb-2">เปรียบเทียบโครงการ</h2>
+        <p className="text-light text-sm md:text-base">เลือกโครงการที่คุณสนใจเพื่อเปรียบเทียบรายละเอียด</p>
       </div>
 
       <div className="compare-matrix">
