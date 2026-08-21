@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { MapContainer, TileLayer, Marker, Popup, useMap, LayersControl, ZoomControl } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, useMap, useMapEvents, LayersControl, ZoomControl } from 'react-leaflet';
 import { Search, SlidersHorizontal, Heart, Map as MapIcon, Star, X, ChevronDown, Plus, Check, PenTool, MapPin, LayoutGrid, List } from 'lucide-react';
 import { provincesAndDistricts, transitData } from '../data/locations';
 import { Link } from 'react-router-dom';
@@ -172,6 +172,13 @@ export default function SearchPage() {
 
   // Property Type State
   const [activePropertyType, setActivePropertyType] = useState(() => sessionStorage.getItem('search_propertyType') || 'condo');
+
+  useEffect(() => {
+    sessionStorage.setItem('search_activeTab', activeTab);
+    sessionStorage.setItem('search_propertyType', activePropertyType);
+    sessionStorage.setItem('search_province', selectedProvince);
+    sessionStorage.setItem('search_district', selectedDistrict);
+  }, [activeTab, activePropertyType, selectedProvince, selectedDistrict]);
 
   // Advanced Filter State
   const [showAdvanced, setShowAdvanced] = useState(false);
@@ -720,7 +727,11 @@ export default function SearchPage() {
       </aside>
 
       {/* Main Map Area */}
-      <main className="map-area">
+      <main className="map-area" style={{ position: 'relative' }}>
+        <div style={{ position: 'absolute', top: '10px', left: '50%', transform: 'translateX(-50%)', zIndex: 1000, backgroundColor: 'white', padding: '8px 16px', borderRadius: '20px', boxShadow: '0 2px 10px rgba(0,0,0,0.1)', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', fontWeight: 600 }}>
+          <input type="checkbox" id="mapSearchToggle" checked={isMapSearchActive} onChange={e => setIsMapSearchActive(e.target.checked)} style={{ cursor: 'pointer' }} />
+          <label htmlFor="mapSearchToggle" style={{ cursor: 'pointer' }}>ค้นหาโครงการในบริเวณนี้</label>
+        </div>
         <MapContainer center={[13.6700, 100.6200]} zoom={12} zoomControl={false} style={{ height: '100%', width: '100%' }}>
           <ZoomControl position="bottomright" />
           <LayersControl position="topright">
@@ -753,10 +764,6 @@ export default function SearchPage() {
           </LayersControl>
           <MapDrawControl onPolygonDrawn={handlePolygonDrawn} polygonFilter={polygonFilter} />
           <MapBoundsObserver onBoundsChange={setMapBounds} isEnabled={isMapSearchActive} />
-          <div style={{ position: 'absolute', top: '10px', left: '50%', transform: 'translateX(-50%)', zIndex: 1000, backgroundColor: 'white', padding: '8px 16px', borderRadius: '20px', boxShadow: '0 2px 10px rgba(0,0,0,0.1)', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', fontWeight: 600 }}>
-            <input type="checkbox" id="mapSearchToggle" checked={isMapSearchActive} onChange={e => setIsMapSearchActive(e.target.checked)} style={{ cursor: 'pointer' }} />
-            <label htmlFor="mapSearchToggle" style={{ cursor: 'pointer' }}>ค้นหาโครงการในบริเวณนี้</label>
-          </div>
           <MapUpdater properties={filteredProperties} />
           {filteredProperties.map(prop => {
             const fallbackImage = prop.image ? prop.image.split(',')[0] : 'https://placehold.co/100x100?text=No+Image';
@@ -916,4 +923,4 @@ export default function SearchPage() {
       </aside>
     </div>
   );
-}
+}
