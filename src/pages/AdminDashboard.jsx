@@ -159,10 +159,21 @@ export default function AdminDashboard() {
   // Analytics State
   const [totalViews, setTotalViews] = useState(0);
   const [topSearches, setTopSearches] = useState([]);
+  const [dailyViews, setDailyViews] = useState([]);
 
   useEffect(() => {
     const fetchStats = async () => {
       try {
+        // Fetch daily page views
+        const { data: dailyData, error: dailyError } = await supabase
+          .from('daily_page_views')
+          .select('*')
+          .order('view_date', { ascending: false })
+          .limit(7);
+        if (!dailyError && dailyData) {
+          setDailyViews(dailyData.reverse()); // Reverse to show oldest to newest left to right
+        }
+
         // Fetch total page views
         const { data: viewsData, error: viewsError } = await supabase
           .from('page_views')
@@ -295,23 +306,55 @@ export default function AdminDashboard() {
           ))}
         </div>
 
-        {/* ── Analytics Chart (Real Data) */}
-        <div style={{ background: '#fff', borderRadius: '1.5rem', border: '1px solid #f1f5f9', padding: '1.5rem', marginBottom: '1.75rem', boxShadow: '0 1px 12px rgba(0,0,0,0.06)' }}>
-          <h3 style={{ margin: '0 0 1rem', fontSize: '1.1rem', fontWeight: 800, color: '#0f172a', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <Search size={18} color="var(--primary)" /> คำค้นหายอดฮิต (Top Searches)
-          </h3>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-            {topSearches.length > 0 ? topSearches.map((item, idx) => (
-              <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                <div style={{ width: '120px', fontSize: '0.875rem', color: '#475569', fontWeight: 600, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{item.term}</div>
-                <div style={{ flex: 1, background: '#f1f5f9', height: '24px', borderRadius: '12px', overflow: 'hidden' }}>
-                  <div style={{ width: `${(item.count / maxSearchCount) * 100}%`, background: 'var(--primary)', height: '100%', borderRadius: '12px', transition: 'width 1s ease-in-out' }}></div>
+        {/* ── Analytics Charts ── */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.5rem', marginBottom: '1.75rem' }}>
+          
+          {/* Daily Views Bar Chart */}
+          <div style={{ background: '#fff', borderRadius: '1.5rem', border: '1px solid #f1f5f9', padding: '1.5rem', boxShadow: '0 1px 12px rgba(0,0,0,0.06)' }}>
+            <h3 style={{ margin: '0 0 1rem', fontSize: '1.1rem', fontWeight: 800, color: '#0f172a', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <TrendingUp size={18} color="var(--primary)" /> ยอดผู้เข้าชมรายวัน (7 วันล่าสุด)
+            </h3>
+            <div style={{ display: 'flex', alignItems: 'flex-end', gap: '10px', height: '180px', paddingBottom: '10px' }}>
+              {dailyViews.length > 0 ? dailyViews.map((item, idx) => {
+                const maxDaily = Math.max(...dailyViews.map(d => d.views));
+                const heightPercent = maxDaily > 0 ? (item.views / maxDaily) * 100 : 0;
+                return (
+                  <div key={idx} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px', height: '100%' }}>
+                    <div style={{ width: '100%', flex: 1, display: 'flex', alignItems: 'flex-end', justifyContent: 'center' }}>
+                      <div style={{ width: '80%', height: `${heightPercent}%`, background: 'var(--primary)', borderRadius: '6px 6px 0 0', minHeight: '4px', transition: 'height 1s ease-in-out' }}></div>
+                    </div>
+                    <div style={{ fontSize: '10px', color: '#64748b', fontWeight: 600, whiteSpace: 'nowrap' }}>
+                      {new Date(item.view_date).toLocaleDateString('th-TH', { month: 'short', day: 'numeric' })}
+                    </div>
+                    <div style={{ fontSize: '12px', fontWeight: 800, color: '#0f172a' }}>{item.views}</div>
+                  </div>
+                );
+              }) : (
+                <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#94a3b8', fontSize: '0.875rem', fontStyle: 'italic', textAlign: 'center' }}>
+                  กำลังรอข้อมูลแรก...<br/>(กรุณารัน SQL เพื่อสร้างตาราง daily_page_views)
                 </div>
-                <div style={{ width: '40px', fontSize: '0.875rem', color: '#94a3b8', fontWeight: 600, textAlign: 'right' }}>{item.count}</div>
-              </div>
-            )) : (
-              <div style={{ color: '#94a3b8', fontSize: '0.875rem', fontStyle: 'italic' }}>ยังไม่มีข้อมูลการค้นหา (หรือยังไม่ได้สร้างตารางในฐานข้อมูล)</div>
-            )}
+              )}
+            </div>
+          </div>
+
+          {/* Top Searches */}
+          <div style={{ background: '#fff', borderRadius: '1.5rem', border: '1px solid #f1f5f9', padding: '1.5rem', boxShadow: '0 1px 12px rgba(0,0,0,0.06)' }}>
+            <h3 style={{ margin: '0 0 1rem', fontSize: '1.1rem', fontWeight: 800, color: '#0f172a', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <Search size={18} color="var(--primary)" /> คำค้นหายอดฮิต (Top Searches)
+            </h3>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+              {topSearches.length > 0 ? topSearches.map((item, idx) => (
+                <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                  <div style={{ width: '120px', fontSize: '0.875rem', color: '#475569', fontWeight: 600, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{item.term}</div>
+                  <div style={{ flex: 1, background: '#f1f5f9', height: '24px', borderRadius: '12px', overflow: 'hidden' }}>
+                    <div style={{ width: `${(item.count / maxSearchCount) * 100}%`, background: 'var(--primary)', height: '100%', borderRadius: '12px', transition: 'width 1s ease-in-out' }}></div>
+                  </div>
+                  <div style={{ width: '40px', fontSize: '0.875rem', color: '#94a3b8', fontWeight: 600, textAlign: 'right' }}>{item.count}</div>
+                </div>
+              )) : (
+                <div style={{ color: '#94a3b8', fontSize: '0.875rem', fontStyle: 'italic' }}>ยังไม่มีข้อมูลการค้นหา (หรือยังไม่ได้สร้างตารางในฐานข้อมูล)</div>
+              )}
+            </div>
           </div>
         </div>
 
