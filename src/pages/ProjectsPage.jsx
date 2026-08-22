@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { Star, Map as MapIcon, ChevronRight, LayoutGrid, List, Crown, CheckCircle2, Heart } from 'lucide-react';
 import SEO from '../components/SEO';
 import './ProjectsPage.css';
+import './SearchPage.css';
 
 export default function ProjectsPage() {
   const { properties } = useProperties();
@@ -139,59 +140,86 @@ export default function ProjectsPage() {
           </div>
         </div>
 
-        {/* Projects Grid */}
-        <div className={`projects-grid ${viewMode === 'list' ? 'list-view-mode' : ''}`}>
+        {/* Projects Grid/List */}
+        <div className={viewMode === 'grid' ? 'projects-grid' : 'property-list'}>
           {filteredProperties.map(prop => (
-            <Link to={`/property/${prop.id}`} key={prop.id} className="project-card-large">
-              <div className="project-img-wrapper">
+            viewMode === 'grid' ? (
+              <Link to={`/property/${prop.id}`} key={prop.id} className="project-card-large">
+                <div className="project-img-wrapper">
+                  <img src={prop.image ? prop.image.split(',')[0] : ''} alt={prop.name} />
+                  <button 
+                    onClick={(e) => { e.preventDefault(); toggleFavorite(prop.id); }}
+                    className={`absolute top-3 right-3 w-8 h-8 rounded-full flex items-center justify-center shadow-sm transition-transform z-10 border-none cursor-pointer ${isFavorite(prop.id) ? 'bg-white/90 text-rose-500 hover:scale-110' : 'bg-black/30 text-white hover:bg-white/90 hover:text-rose-500'}`}
+                    title={isFavorite(prop.id) ? "ลบออกจากรายการโปรด" : "เพิ่มในรายการโปรด"}
+                  >
+                    <Heart size={16} fill={isFavorite(prop.id) ? "currentColor" : "none"} strokeWidth={isFavorite(prop.id) ? 0 : 2} />
+                  </button>
+                  <div className="project-badges">
+                    <span className="badge badge-dark">
+                      {(prop.type === 'บ้าน' || prop.type === 'ทาวน์โฮม') && ['High Rise', 'Low Rise', 'Mixed Use'].includes(prop.projectType) 
+                          ? prop.type 
+                          : prop.projectType}
+                    </span>
+                    {prop.status === 'เปิด Presale' && <span className="badge badge-primary">Presale</span>}
+                  </div>
+                </div>
+                <div className="project-info p-6 flex flex-col justify-between flex-1">
+                  <div>
+                    <h3 className="mb-1 flex items-center gap-1">
+                      {prop.package_tier === 'super' && <Crown size={16} fill="#e11d48" color="#e11d48" title="Super Exclusive" />}
+                      {prop.package_tier === 'sponsored' && <Star size={16} fill="#f59e0b" color="#f59e0b" title="โครงการแนะนำ" />}
+                      {prop.package_tier === 'premium' && <CheckCircle2 size={16} color="#3b82f6" title="Verified" />}
+                      <span className="line-clamp-1">{prop.name}</span>
+                    </h3>
+                    <p className="developer text-sm text-light mb-4">{prop.developer}</p>
+                    
+                    <div className="flex justify-between items-center mb-4 text-sm">
+                      <div className="flex items-center gap-1 text-light line-clamp-1">
+                        <MapIcon size={14} /> {prop.station}
+                      </div>
+                      <div className="flex items-center gap-1 shrink-0">
+                        <Star size={14} fill="gold" color="gold" /> {prop.rating}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex justify-between items-end border-t border-gray-100 pt-4 mt-auto">
+                    <div>
+                      <p className="text-xs text-light">{prop.price ? 'ราคาเริ่มต้น' : 'ราคา'}</p>
+                      <h3 className="text-[var(--primary)]">{prop.price ? `${prop.price} ลบ.` : 'ติดต่อสอบถาม'}</h3>
+                    </div>
+                    <div className="btn-text text-[var(--primary)] flex items-center text-sm font-semibold shrink-0">
+                      ดูรายละเอียด <ChevronRight size={16} />
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            ) : (
+              <Link to={`/property/${prop.id}`} key={prop.id} className="prop-card-small" style={{ position: 'relative' }}>
                 <img src={prop.image ? prop.image.split(',')[0] : ''} alt={prop.name} />
+                <div className="prop-card-info" style={{ paddingRight: '30px', flex: 1 }}>
+                  <h4 className="flex items-center gap-1">
+                    {prop.package_tier === 'super' && <Crown size={14} fill="#e11d48" color="#e11d48" title="Super Exclusive" />}
+                    {prop.package_tier === 'sponsored' && <Star size={14} fill="#f59e0b" color="#f59e0b" title="โครงการแนะนำ" />}
+                    {prop.package_tier === 'premium' && <CheckCircle2 size={14} color="#3b82f6" title="Verified" />}
+                    <span className="line-clamp-1">{prop.name}</span>
+                  </h4>
+                  <p className="developer">{prop.developer}</p>
+                  <p className="price">
+                    {prop.price 
+                      ? `เริ่มต้น ${prop.price} ${prop.listingType === 'เช่า' ? 'บาท/เดือน' : 'ลบ.'}` 
+                      : 'ราคาติดต่อสอบถาม'}
+                  </p>
+                </div>
                 <button 
                   onClick={(e) => { e.preventDefault(); toggleFavorite(prop.id); }}
-                  className={`absolute top-3 right-3 w-8 h-8 rounded-full flex items-center justify-center shadow-sm transition-transform z-10 border-none cursor-pointer ${isFavorite(prop.id) ? 'bg-white/90 text-rose-500 hover:scale-110' : 'bg-black/30 text-white hover:bg-white/90 hover:text-rose-500'}`}
-                  title={isFavorite(prop.id) ? "ลบออกจากรายการโปรด" : "เพิ่มในรายการโปรด"}
+                  style={{ position: 'absolute', right: '12px', top: '12px', width: '28px', height: '28px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(255,255,255,0.9)', cursor: 'pointer', boxShadow: 'var(--shadow-sm)', border: 'none' }}
+                  title={isFavorite(prop.id) ? "ลบออกจากรายการโปรด" : "บันทึกรายการโปรด"}
                 >
-                  <Heart size={16} fill={isFavorite(prop.id) ? "currentColor" : "none"} strokeWidth={isFavorite(prop.id) ? 0 : 2} />
+                  <Heart size={14} fill={isFavorite(prop.id) ? "var(--primary)" : "none"} strokeWidth={isFavorite(prop.id) ? 0 : 2} color="var(--primary)" />
                 </button>
-                <div className="project-badges">
-                  <span className="badge badge-dark">
-                    {(prop.type === 'บ้าน' || prop.type === 'ทาวน์โฮม') && ['High Rise', 'Low Rise', 'Mixed Use'].includes(prop.projectType) 
-                        ? prop.type 
-                        : prop.projectType}
-                  </span>
-                  {prop.status === 'เปิด Presale' && <span className="badge badge-primary">Presale</span>}
-                </div>
-              </div>
-              <div className="project-info p-6 flex flex-col justify-between flex-1">
-                <div>
-                  <h3 className="mb-1 flex items-center gap-1">
-                    {prop.package_tier === 'super' && <Crown size={16} fill="#e11d48" color="#e11d48" title="Super Exclusive" />}
-                    {prop.package_tier === 'sponsored' && <Star size={16} fill="#f59e0b" color="#f59e0b" title="โครงการแนะนำ" />}
-                    {prop.package_tier === 'premium' && <CheckCircle2 size={16} color="#3b82f6" title="Verified" />}
-                    <span className="line-clamp-1">{prop.name}</span>
-                  </h3>
-                  <p className="developer text-sm text-light mb-4">{prop.developer}</p>
-                  
-                  <div className="flex justify-between items-center mb-4 text-sm">
-                    <div className="flex items-center gap-1 text-light line-clamp-1">
-                      <MapIcon size={14} /> {prop.station}
-                    </div>
-                    <div className="flex items-center gap-1 shrink-0">
-                      <Star size={14} fill="gold" color="gold" /> {prop.rating}
-                    </div>
-                  </div>
-                </div>
-
-                <div className="flex justify-between items-end border-t border-gray-100 pt-4 mt-auto">
-                  <div>
-                    <p className="text-xs text-light">{prop.price ? 'ราคาเริ่มต้น' : 'ราคา'}</p>
-                    <h3 className="text-[var(--primary)]">{prop.price ? `${prop.price} ลบ.` : 'ติดต่อสอบถาม'}</h3>
-                  </div>
-                  <div className="btn-text text-[var(--primary)] flex items-center text-sm font-semibold shrink-0">
-                    ดูรายละเอียด <ChevronRight size={16} />
-                  </div>
-                </div>
-              </div>
-            </Link>
+              </Link>
+            )
           ))}
           
           {filteredProperties.length === 0 && (
