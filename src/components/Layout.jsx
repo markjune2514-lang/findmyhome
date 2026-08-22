@@ -2,11 +2,13 @@ import { useState } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { Home, Heart, Bell, User, Menu, X, Search, Building, Scale, Newspaper, Info } from 'lucide-react';
 import { useCompare } from '../CompareContext';
+import { useFavorites } from '../FavoritesContext';
 import './Layout.css';
 
 export default function Layout() {
   const location = useLocation();
   const { compareList } = useCompare();
+  const { favorites } = useFavorites();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
@@ -33,7 +35,12 @@ export default function Layout() {
 
           {/* User Actions & Mobile Hamburger */}
           <div className="user-actions flex items-center gap-3">
-            <button className="icon-btn"><Heart size={20} /></button>
+            <Link to="/favorites" className="icon-btn relative" title="รายการโปรด">
+              <Heart size={20} />
+              {favorites?.length > 0 && (
+                <span className="notification-dot" style={{ background: '#e11d48' }}>{favorites.length}</span>
+              )}
+            </Link>
             <button className="icon-btn relative">
               <Bell size={20} />
               <span className="notification-dot">2</span>
@@ -76,6 +83,13 @@ export default function Layout() {
               onClick={() => setMobileMenuOpen(false)}
             >
               <span className="flex items-center gap-2"><Scale size={18}/> เปรียบเทียบโครงการ</span>
+            </Link>
+            <Link 
+              to="/favorites" 
+              className={`mobile-menu-link ${location.pathname === '/favorites' ? 'active' : ''}`}
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              <span className="flex items-center gap-2"><Heart size={18}/> โครงการโปรด</span>
             </Link>
             <Link 
               to="/blog" 

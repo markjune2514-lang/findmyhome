@@ -4,6 +4,7 @@ import HomePage from './pages/HomePage';
 import SearchPage from './pages/SearchPage';
 import PropertyDetail from './pages/PropertyDetail';
 import ComparePage from './pages/ComparePage';
+import FavoritesPage from './pages/FavoritesPage';
 import BlogPage from './pages/BlogPage';
 import AboutPage from './pages/AboutPage';
 import ProjectsPage from './pages/ProjectsPage';
@@ -38,6 +39,7 @@ function App() {
                 <Route path="projects" element={<ProjectsPage />} />
                 <Route path="property/:id" element={<PropertyDetail />} />
                 <Route path="compare" element={<ComparePage />} />
+                <Route path="favorites" element={<FavoritesPage />} />
                 <Route path="blog" element={<BlogPage />} />
                 <Route path="about" element={<AboutPage />} />
               </Route>
