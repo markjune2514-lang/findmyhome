@@ -35,15 +35,17 @@ export default function HomePage() {
           backgroundImage: 'url("https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80")'
         }}
       >
-        {/* Uniform High-Contrast Overlay (UX Pro Max Rule: 60-80% dark overlay for readable white text) */}
-        <div className="absolute inset-0 bg-slate-900/70 backdrop-blur-[2px]"></div>
+        {/* Subtle Gradients for Readability instead of full dark overlay */}
+        <div className="absolute inset-0 bg-black/10"></div>
+        <div className="absolute top-0 w-full h-1/2 bg-gradient-to-b from-slate-900/80 to-transparent"></div>
+        <div className="absolute bottom-0 w-full h-1/3 bg-gradient-to-t from-slate-900/60 to-transparent"></div>
         
         {/* Top Text Section */}
         <div className="relative z-10 w-full max-w-5xl mx-auto px-4 md:px-8 flex flex-col items-center text-center mt-6 md:mt-10">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 sm:mb-6 tracking-tight leading-tight drop-shadow-md text-balance">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 sm:mb-6 tracking-tight leading-tight drop-shadow-[0_4px_10px_rgba(0,0,0,0.8)] text-balance">
             ค้นหาบ้านที่ใช่ <span className="text-orange-400">สไตล์คุณ</span>
           </h1>
-          <p className="text-base sm:text-lg md:text-xl text-gray-200 font-medium tracking-wide leading-relaxed max-w-2xl text-balance drop-shadow-sm">
+          <p className="text-base sm:text-lg md:text-xl text-gray-100 font-medium tracking-wide leading-relaxed max-w-2xl text-balance drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
             แพลตฟอร์มที่รวบรวมโครงการบ้านและคอนโดคุณภาพ และสังคมบ้านที่ดีที่สุด เพื่อการเริ่มต้นชีวิตที่สมบูรณ์แบบ
           </p>
         </div>
@@ -52,7 +54,8 @@ export default function HomePage() {
         <div className="relative z-10 w-full mx-auto px-4 mt-auto mb-10 md:mb-16 flex flex-col items-center">
           <Link 
             to="/search" 
-            className="bg-orange-500/30 backdrop-blur-md border border-orange-400/50 rounded-full px-8 py-4 sm:px-10 sm:py-5 inline-flex justify-center items-center gap-3 text-lg md:text-xl shadow-[0_8px_32px_rgba(249,115,22,0.3)] hover:bg-orange-500/50 hover:shadow-[0_8px_32px_rgba(249,115,22,0.5)] hover:scale-105 transition-all duration-300 font-bold text-white tracking-wide"
+            style={{ textDecoration: 'none' }}
+            className="bg-orange-500 rounded-full px-8 py-4 sm:px-10 sm:py-5 inline-flex justify-center items-center gap-3 text-lg md:text-xl shadow-[0_8px_25px_rgba(249,115,22,0.5)] hover:bg-orange-400 hover:shadow-[0_8px_30px_rgba(249,115,22,0.7)] hover:scale-105 transition-all duration-300 font-bold text-white tracking-wide border-none"
           >
             <Search size={24} className="text-white" />
             ค้นหาโครงการ
