@@ -17,6 +17,7 @@ import { AuthProvider } from './AuthContext';
 import { FavoritesProvider } from './FavoritesContext';
 import ProtectedRoute from './ProtectedRoute';
 import AnalyticsTracker from './components/AnalyticsTracker';
+import ScrollToTop from './components/ScrollToTop';
 
 import { HelmetProvider } from 'react-helmet-async';
 
@@ -28,6 +29,7 @@ function App() {
         <CompareProvider>
           <FavoritesProvider>
           <Router>
+            <ScrollToTop />
             <AnalyticsTracker />
             <Routes>
               <Route path="/" element={<Layout />}>
