@@ -102,9 +102,9 @@ export default function HomePage() {
                 className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow cursor-pointer group flex flex-col"
               >
                 <div className="h-60 overflow-hidden relative">
-                  {prop.images ? (
+                  {prop.image ? (
                     <img 
-                      src={prop.images.split(',')[0]} 
+                      src={prop.image.split(',')[0]} 
                       alt={prop.name} 
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                     />
