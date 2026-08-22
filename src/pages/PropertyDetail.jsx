@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { MapPin, Star, Heart, Share2, Info, LayoutDashboard, ChevronLeft, ChevronRight, Navigation, ExternalLink, Building, Landmark, GraduationCap, Hospital, ShoppingBag, Search, Phone, Waves, Sparkles, ShieldCheck, Activity, BellRing, Gift, Home, Ruler, ZoomIn, Image as ImageIcon, Train, Car, Map, Sofa, X } from 'lucide-react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import LoanCalculator from '../components/LoanCalculator';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { useCompare } from '../CompareContext';
@@ -777,6 +778,8 @@ export default function PropertyDetail({ previewData }) {
               <ExternalLink size={14} /> เปิดดูแผนที่สถานที่สำคัญรอบข้างทั้งหมดบน Google Maps
             </a>
           </div>
+
+          <LoanCalculator priceStr={displayPrice} />
         </div>
       </div>
 
