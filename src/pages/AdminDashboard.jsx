@@ -4,7 +4,7 @@ import { useProperties } from '../PropertiesContext';
 import { supabase } from '../supabaseClient';
 import {
   Plus, Building2, Home as HomeIcon, LayoutList, Edit, Trash2,
-  Layers, Search, X, Save, ChevronDown, ChevronUp, TrendingUp, Eye, Copy, Send, Star, Crown
+  Layers, Search, X, Save, ChevronDown, ChevronUp, TrendingUp, Eye, Copy, Send, Star, Crown, CheckCircle2, FileEdit, ThumbsUp
 } from 'lucide-react';
 
 // ── Unit Types Manager Modal ────────────────────────────────────────────────
@@ -220,6 +220,14 @@ export default function AdminDashboard() {
   const condoCount = properties.filter(p => p.type === 'คอนโด').length;
   const houseCount = properties.filter(p => p.type === 'บ้าน' || p.type === 'ทาวน์โฮม').length;
   const seniorCount = properties.filter(p => p.type === 'Senior Living').length;
+  
+  const draftCount = properties.filter(p => p.status === 'ฉบับร่าง').length;
+  const publishedCount = properties.length - draftCount;
+  
+  const superCount = properties.filter(p => p.package_tier === 'super').length;
+  const sponsoredCount = properties.filter(p => p.package_tier === 'sponsored').length;
+  const premiumCount = properties.filter(p => p.package_tier === 'premium').length;
+  const standardCount = properties.filter(p => !p.package_tier || p.package_tier === 'standard').length;
 
   const filtered = properties.filter(p => {
     const matchSearch = !search || p.name?.toLowerCase().includes(search.toLowerCase()) || p.developer?.toLowerCase().includes(search.toLowerCase()) || p.province?.includes(search);
@@ -269,9 +277,13 @@ export default function AdminDashboard() {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(170px, 1fr))', gap: '1rem', marginBottom: '1.75rem' }}>
           {[
             { label: 'โครงการทั้งหมด', value: properties.length, icon: <LayoutList size={22} />, iconColor: '#6366f1', iconBg: '#eef2ff' },
-            { label: 'ผู้เข้าชมทั้งหมด (คน)', value: totalViews.toLocaleString(), icon: <Eye size={22} />, iconColor: '#ec4899', iconBg: '#fce7f3' },
-            { label: 'บ้านและทาวน์โฮม', value: houseCount, icon: <HomeIcon size={22} />, iconColor: '#10b981', iconBg: '#ecfdf5' },
-            { label: 'คอนโดมิเนียม', value: condoCount, icon: <Building2 size={22} />, iconColor: '#8b5cf6', iconBg: '#f5f3ff' },
+            { label: 'เผยแพร่แล้ว', value: publishedCount, icon: <CheckCircle2 size={22} />, iconColor: '#10b981', iconBg: '#ecfdf5' },
+            { label: 'ฉบับร่าง', value: draftCount, icon: <FileEdit size={22} />, iconColor: '#64748b', iconBg: '#f1f5f9' },
+            { label: 'ผู้เข้าชมรวม', value: totalViews.toLocaleString(), icon: <Eye size={22} />, iconColor: '#ec4899', iconBg: '#fce7f3' },
+            { label: 'Tier: Super', value: superCount, icon: <Crown size={22} />, iconColor: '#eab308', iconBg: '#fef08a' },
+            { label: 'Tier: Sponsored', value: sponsoredCount, icon: <Star size={22} />, iconColor: '#3b82f6', iconBg: '#dbeafe' },
+            { label: 'Tier: Premium', value: premiumCount, icon: <ThumbsUp size={22} />, iconColor: '#f97316', iconBg: '#ffedd5' },
+            { label: 'Tier: Standard', value: standardCount, icon: <LayoutList size={22} />, iconColor: '#94a3b8', iconBg: '#f8fafc' },
           ].map((s, i) => (
             <div key={i} style={{ background: '#fff', borderRadius: '1.25rem', padding: '1.25rem', border: '1px solid #f1f5f9', boxShadow: '0 1px 8px rgba(0,0,0,0.04)', display: 'flex', alignItems: 'center', gap: '1rem' }}>
               <div style={{ width: 48, height: 48, borderRadius: '0.875rem', background: s.iconBg, display: 'flex', alignItems: 'center', justifyContent: 'center', color: s.iconColor, flexShrink: 0 }}>{s.icon}</div>
