@@ -335,13 +335,21 @@ export default function PropertyDetail({ previewData }) {
         </button>
 
         <div className="grid grid-cols-3 gap-2">
-          <button className="btn btn-secondary text-xs py-2 rounded-xl" onClick={() => handleAction('บันทึกโครงการ')}>
-            <Heart size={15} /> บันทึก
+          <button 
+            className="btn btn-secondary text-xs py-2 rounded-xl flex items-center justify-center gap-1" 
+            onClick={(e) => { e.preventDefault(); toggleFavorite(prop.id); }}
+            title={isFavorite(prop.id) ? "ลบออกจากรายการโปรด" : "บันทึกรายการโปรด"}
+          >
+            <Heart size={15} color={isFavorite(prop.id) ? "#e11d48" : "currentColor"} fill={isFavorite(prop.id) ? "#e11d48" : "transparent"} /> 
+            {isFavorite(prop.id) ? "บันทึกแล้ว" : "บันทึก"}
           </button>
-          <button className="btn btn-secondary text-xs py-2 rounded-xl" onClick={() => handleAction('คัดลอกลิงก์เพื่อแชร์')}>
+          <button className="btn btn-secondary text-xs py-2 rounded-xl flex items-center justify-center gap-1" onClick={() => {
+            navigator.clipboard.writeText(window.location.href);
+            alert('คัดลอกลิงก์เรียบร้อยแล้ว');
+          }}>
             <Share2 size={15} /> แชร์
           </button>
-          <button className="btn btn-secondary text-xs py-2 rounded-xl" onClick={() => addToCompare(prop)}>
+          <button className="btn btn-secondary text-xs py-2 rounded-xl flex items-center justify-center gap-1" onClick={() => addToCompare(prop)}>
             <LayoutDashboard size={15} /> เปรียบเทียบ
           </button>
         </div>
