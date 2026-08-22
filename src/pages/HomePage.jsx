@@ -5,17 +5,12 @@ import SEO from '../components/SEO';
 import { useProperties } from '../PropertiesContext';
 
 export default function HomePage() {
-  const [searchQuery, setSearchQuery] = useState('');
   const navigate = useNavigate();
   const { properties } = useProperties();
 
   const handleSearch = (e) => {
     e.preventDefault();
-    if (searchQuery.trim()) {
-      navigate(`/search?q=${encodeURIComponent(searchQuery)}`);
-    } else {
-      navigate('/search');
-    }
+    navigate('/search');
   };
 
   // Sort properties by package_tier/rank_score for featured section
@@ -62,27 +57,15 @@ export default function HomePage() {
         
         {/* Bottom Search Section (At the bottom of the screen) */}
         <div className="relative z-20 w-full max-w-6xl mx-auto px-4 md:px-8 flex flex-col items-center">
-          <form 
-            onSubmit={handleSearch}
-            className="w-full max-w-4xl bg-white/20 backdrop-blur-md border border-white/30 p-2 md:p-3 rounded-[2rem] md:rounded-full shadow-[0_8px_32px_0_rgba(0,0,0,0.3)] flex flex-col md:flex-row items-center gap-2 md:gap-3"
-          >
-            <div className="flex-1 w-full flex items-center px-4 bg-white/80 backdrop-blur-sm rounded-[1.5rem] md:rounded-full h-14 md:h-16 border border-white/50">
-              <Search className="text-gray-600 mr-2 md:mr-3 shrink-0" size={24} />
-              <input 
-                type="text" 
-                placeholder="พิมพ์ชื่อโครงการ, ทำเล, หรือ BTS..." 
-                className="w-full bg-transparent border-none outline-none text-gray-800 text-base md:text-lg placeholder:text-gray-500"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
-            </div>
+          <div className="w-full max-w-sm flex flex-col items-center">
             <button 
-              type="submit"
-              className="w-full md:w-auto bg-[var(--primary)] hover:bg-[var(--accent)] text-white font-medium text-lg px-8 py-3.5 md:h-16 rounded-[1.5rem] md:rounded-full transition-colors flex items-center justify-center gap-2 shadow-lg hover:shadow-xl shrink-0"
+              onClick={handleSearch}
+              className="w-full bg-[var(--primary)] hover:bg-[var(--accent)] text-white font-bold text-xl px-10 py-4 md:h-16 rounded-full transition-all flex items-center justify-center gap-3 shadow-[0_8px_32px_0_rgba(0,0,0,0.5)] hover:shadow-xl hover:-translate-y-1"
             >
-              ค้นหาเลย
+              <Search size={26} />
+              ค้นหาโครงการทั้งหมดเลย
             </button>
-          </form>
+          </div>
         </div>
       </div>
 
