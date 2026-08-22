@@ -33,38 +33,30 @@ export default function HomePage() {
         description="Find My Home แพลตฟอร์มค้นหาบ้าน คอนโด ทาวน์โฮม และที่ดิน พร้อมรายละเอียดครบถ้วนเพื่อการตัดสินใจที่ดีที่สุดของคุณ"
       />
       
-      {/* Hero Section */}
+      {/* Hero Section - Designed using UI/UX Pro Max 'Hero-Centric' Pattern */}
       <div 
-        className="relative h-[calc(100dvh-64px)] md:h-[calc(100dvh-72px)] min-h-[500px] flex flex-col justify-between pt-8 md:pt-16 pb-6 md:pb-10 bg-cover bg-center"
+        className="relative h-[calc(100dvh-64px)] md:h-[calc(100dvh-72px)] min-h-[500px] flex flex-col justify-center items-center bg-cover bg-center overflow-hidden"
         style={{ 
           backgroundImage: 'url("https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80")'
         }}
       >
-        {/* Gradient Overlays: Dedicated strong gradients for top (text) and bottom (search bar) */}
-        <div className="absolute inset-0 bg-black/10"></div>
-        <div className="absolute top-0 w-full h-[50%] bg-gradient-to-b from-black/90 via-black/60 to-transparent"></div>
-        <div className="absolute bottom-0 w-full h-[40%] bg-gradient-to-t from-black/90 via-black/50 to-transparent"></div>
+        {/* Uniform High-Contrast Overlay (UX Pro Max Rule: 60-80% dark overlay for readable white text) */}
+        <div className="absolute inset-0 bg-slate-900/70 backdrop-blur-[2px]"></div>
         
-        {/* Top Text Section */}
-        <div className="relative z-10 w-full max-w-6xl mx-auto px-4 md:px-8 flex flex-col items-center text-center">
-          <h1 className="text-[1.75rem] sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-3 md:mb-4 drop-shadow-[0_4px_10px_rgba(0,0,0,0.9)] tracking-wide whitespace-nowrap">
-            ค้นหาบ้านที่ใช่ สไตล์คุณ
+        {/* Content Container */}
+        <div className="relative z-10 w-full max-w-5xl mx-auto px-4 md:px-8 flex flex-col items-center text-center mt-[-40px]">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 sm:mb-6 tracking-tight leading-tight drop-shadow-md text-balance">
+            ค้นหาบ้านที่ใช่ <span className="text-rose-400">สไตล์คุณ</span>
           </h1>
-          <p className="text-base sm:text-lg md:text-xl text-gray-100 drop-shadow-[0_4px_10px_rgba(0,0,0,1)] font-medium tracking-wide leading-relaxed max-w-2xl text-balance">
-            แพลตฟอร์มที่รวบรวมโครงการบ้านและคอนโด และสังคมบ้านที่ดีที่สุด
+          <p className="text-base sm:text-lg md:text-xl text-gray-200 font-medium tracking-wide leading-relaxed max-w-2xl text-balance drop-shadow-sm mb-10">
+            แพลตฟอร์มที่รวบรวมโครงการบ้านและคอนโดคุณภาพ และสังคมบ้านที่ดีที่สุด เพื่อการเริ่มต้นชีวิตที่สมบูรณ์แบบ
           </p>
-        </div>
-        
-        {/* Bottom Search Section (At the bottom of the screen) */}
-        <div className="relative z-20 w-full max-w-6xl mx-auto px-4 md:px-8 flex flex-col items-center">
+          
+          {/* CTA Section */}
           <div className="w-full max-w-sm flex flex-col items-center">
-            <button 
-              onClick={handleSearch}
-              className="w-full bg-[var(--primary)] hover:bg-[var(--accent)] text-white font-bold text-xl px-10 py-4 md:h-16 rounded-full transition-all flex items-center justify-center gap-3 shadow-[0_8px_32px_0_rgba(0,0,0,0.5)] hover:shadow-xl hover:-translate-y-1"
-            >
-              <Search size={26} />
+            <Link to="/search" className="btn btn-primary btn-lg rounded-full px-8 py-3.5 w-full sm:w-auto inline-block text-lg shadow-[0_8px_30px_rgb(225,29,72,0.3)] hover:shadow-[0_8px_30px_rgb(225,29,72,0.5)] hover:scale-105 transition-all duration-300 font-bold border-2 border-rose-500 bg-rose-500 text-white">
               ค้นหาโครงการทั้งหมดเลย
-            </button>
+            </Link>
           </div>
         </div>
       </div>
