@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { Search, MapPin, Building, Star, Crown, CheckCircle2 } from 'lucide-react';
 import SEO from '../components/SEO';
 import { useProperties } from '../PropertiesContext';
@@ -7,11 +7,6 @@ import { useProperties } from '../PropertiesContext';
 export default function HomePage() {
   const navigate = useNavigate();
   const { properties } = useProperties();
-
-  const handleSearch = (e) => {
-    e.preventDefault();
-    navigate('/search');
-  };
 
   // Sort properties by package_tier/rank_score for featured section
   const featuredProperties = [...properties].sort((a, b) => {
