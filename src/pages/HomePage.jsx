@@ -49,15 +49,14 @@ export default function HomePage() {
         </div>
         
         {/* Bottom Search Section */}
-        <div className="relative z-10 w-full max-w-3xl mx-auto px-4 mt-auto mb-4 md:mb-8 flex flex-col items-center">
-          {/* Translucent Orange Rounded Container */}
-          <div className="w-full bg-orange-500/20 backdrop-blur-md border border-orange-400/30 rounded-[2rem] p-6 sm:p-8 md:p-10 flex flex-col items-center justify-center shadow-[0_8px_32px_rgba(0,0,0,0.3)]">
-            <h3 className="text-white text-lg md:text-xl font-medium mb-5 drop-shadow-sm text-center tracking-wide">เริ่มต้นค้นหาบ้านในฝันของคุณ</h3>
-            <Link to="/search" className="btn rounded-full px-8 py-3.5 w-full sm:w-auto inline-flex justify-center items-center gap-2 text-lg shadow-[0_8px_30px_rgb(249,115,22,0.4)] hover:shadow-[0_8px_30px_rgb(249,115,22,0.6)] hover:scale-105 transition-all duration-300 font-bold bg-gradient-to-r from-orange-500 to-amber-500 text-white border-none">
-              <Search size={22} />
-              ค้นหาโครงการทั้งหมด
-            </Link>
-          </div>
+        <div className="relative z-10 w-full mx-auto px-4 mt-auto mb-10 md:mb-16 flex flex-col items-center">
+          <Link 
+            to="/search" 
+            className="bg-orange-500/30 backdrop-blur-md border border-orange-400/50 rounded-full px-8 py-4 sm:px-10 sm:py-5 inline-flex justify-center items-center gap-3 text-lg md:text-xl shadow-[0_8px_32px_rgba(249,115,22,0.3)] hover:bg-orange-500/50 hover:shadow-[0_8px_32px_rgba(249,115,22,0.5)] hover:scale-105 transition-all duration-300 font-bold text-white tracking-wide"
+          >
+            <Search size={24} className="text-white" />
+            ค้นหาโครงการ
+          </Link>
         </div>
       </div>
 
