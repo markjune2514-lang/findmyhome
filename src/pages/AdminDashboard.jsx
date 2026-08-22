@@ -205,20 +205,13 @@ export default function AdminDashboard() {
     }
   };
 
-  const handlePromote = async (prop) => {
-    const isSponsored = prop.package_tier === 'sponsored';
-    const newTier = isSponsored ? 'free' : 'sponsored';
-    const newScore = isSponsored ? 0 : 999; // 999 for top rank
-    const confirmMsg = isSponsored 
-      ? `ยกเลิกการโปรโมท (Sponsored) โครงการ "${prop.name}" ใช่หรือไม่?`
-      : `ตั้งค่าโครงการ "${prop.name}" เป็น Sponsored (ดันขึ้นอันดับแรก) ใช่หรือไม่?`;
-
-    if (window.confirm(confirmMsg)) {
-      const result = await updateProperty(prop.id, { ...prop, package_tier: newTier, rank_score: newScore });
+  const handleChangeTier = async (prop, newTier) => {
+    if (window.confirm(`เปลี่ยนเทียร์ของโครงการ "${prop.name}" เป็น ${newTier} ใช่หรือไม่?`)) {
+      const result = await updateProperty(prop.id, { ...prop, package_tier: newTier });
       if (result === true || result?.success) {
         if (fetchProperties) fetchProperties();
       } else {
-        alert('เกิดข้อผิดพลาด กรุณาตรวจสอบว่าเพิ่มคอลัมน์ package_tier และ rank_score ใน Supabase แล้วหรือยัง');
+        alert('เกิดข้อผิดพลาดในการเปลี่ยนแพ็กเกจ');
       }
     }
   };
@@ -380,7 +373,16 @@ export default function AdminDashboard() {
                         {prop.status === 'ฉบับร่าง' && (
                           <button onClick={() => handlePublish(prop)} title="เผยแพร่ (Publish)" style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', padding: '0.35rem 0.75rem', borderRadius: '0.5rem', background: '#4f46e5', color: '#fff', textDecoration: 'none', border: 'none', cursor: 'pointer', fontSize: '0.72rem', fontWeight: 700, whiteSpace: 'nowrap' }}><Send size={12} /> เผยแพร่</button>
                         )}
-                        <button onClick={() => handlePromote(prop)} title="โปรโมท (Sponsored)" style={{ width: 32, height: 32, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '0.5rem', background: prop.package_tier === 'sponsored' ? '#fffbeb' : '#f8fafc', color: prop.package_tier === 'sponsored' ? '#f59e0b' : '#cbd5e1', border: '1px solid', borderColor: prop.package_tier === 'sponsored' ? '#fde68a' : '#e2e8f0', cursor: 'pointer', flexShrink: 0 }}><Star size={14} fill={prop.package_tier === 'sponsored' ? '#f59e0b' : 'none'} /></button>
+                        <select 
+                          value={prop.package_tier || 'standard'} 
+                          onChange={(e) => handleChangeTier(prop, e.target.value)}
+                          style={{ padding: '0.25rem', borderRadius: '0.5rem', border: '1px solid #e2e8f0', fontSize: '0.75rem', cursor: 'pointer' }}
+                        >
+                          <option value="super">👑 Super</option>
+                          <option value="sponsored">⭐ Sponsored</option>
+                          <option value="premium">✅ Premium</option>
+                          <option value="standard">⚪ Standard</option>
+                        </select>
                         <Link to={`/admin/add`} state={{ duplicateFrom: prop }} title="คัดลอก (Copy)" style={{ width: 32, height: 32, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '0.5rem', background: '#f8fafc', color: '#64748b', textDecoration: 'none', border: '1px solid #e2e8f0', flexShrink: 0 }}><Copy size={14} /></Link>
                         <Link to={`/admin/edit/${prop.id}`} title="แก้ไข" style={{ width: 32, height: 32, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '0.5rem', background: '#eff6ff', color: '#3b82f6', textDecoration: 'none', border: '1px solid #dbeafe', flexShrink: 0 }}><Edit size={14} /></Link>
                         <Link to={`/property/${prop.id}`} target="_blank" title="ดูหน้าเว็บ" style={{ width: 32, height: 32, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '0.5rem', background: '#f0fdf4', color: '#22c55e', textDecoration: 'none', border: '1px solid #dcfce7', flexShrink: 0 }}><Eye size={14} /></Link>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMap, useMapEvents, LayersControl, ZoomControl } from 'react-leaflet';
-import { Search, SlidersHorizontal, Heart, Map as MapIcon, Star, X, ChevronDown, Plus, Check, PenTool, MapPin, LayoutGrid, List } from 'lucide-react';
+import { Search, SlidersHorizontal, Heart, Map as MapIcon, Star, X, ChevronDown, Plus, Check, PenTool, MapPin, LayoutGrid, List, Crown, CheckCircle2 } from 'lucide-react';
 import { provincesAndDistricts, transitData } from '../data/locations';
 import { Link } from 'react-router-dom';
 import { useProperties } from '../PropertiesContext';
@@ -341,9 +341,13 @@ export default function SearchPage() {
 
     return true;
   }).sort((a, b) => {
-    // Priority 1: package_tier === 'sponsored' (Always float to top)
-    if (a.package_tier === 'sponsored' && b.package_tier !== 'sponsored') return -1;
-    if (a.package_tier !== 'sponsored' && b.package_tier === 'sponsored') return 1;
+    // Priority 1: package_tier (4 Tiers)
+    const tierWeights = { super: 4, sponsored: 3, premium: 2, standard: 1 };
+    const weightA = tierWeights[a.package_tier] || tierWeights['standard'];
+    const weightB = tierWeights[b.package_tier] || tierWeights['standard'];
+    if (weightA !== weightB) {
+      return weightB - weightA; // Higher tier floats to top
+    }
     
     // Priority 2: User's Sort Choice
     if (sortBy === 'price_asc') {
@@ -879,7 +883,9 @@ export default function SearchPage() {
                   <img src={prop.image ? prop.image.split(',')[0] : ''} alt={prop.name} />
                   <div className="prop-card-info" style={{ paddingRight: '30px' }}>
                     <h4 className="flex items-center gap-1">
+                      {prop.package_tier === 'super' && <Crown size={14} fill="#e11d48" color="#e11d48" title="Super Exclusive" />}
                       {prop.package_tier === 'sponsored' && <Star size={14} fill="#f59e0b" color="#f59e0b" title="โครงการแนะนำ" />}
+                      {prop.package_tier === 'premium' && <CheckCircle2 size={14} color="#3b82f6" title="Verified" />}
                       {prop.name}
                     </h4>
                     <p className="developer">{prop.developer}</p>

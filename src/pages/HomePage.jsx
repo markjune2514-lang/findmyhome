@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, MapPin, Building, Star } from 'lucide-react';
+import { Search, MapPin, Building, Star, Crown, CheckCircle2 } from 'lucide-react';
 import SEO from '../components/SEO';
 import { useProperties } from '../PropertiesContext';
 
@@ -20,8 +20,10 @@ export default function HomePage() {
 
   // Sort properties by package_tier/rank_score for featured section
   const featuredProperties = [...properties].sort((a, b) => {
-    if (a.package_tier === 'sponsored' && b.package_tier !== 'sponsored') return -1;
-    if (a.package_tier !== 'sponsored' && b.package_tier === 'sponsored') return 1;
+    const tierWeights = { super: 4, sponsored: 3, premium: 2, standard: 1 };
+    const weightA = tierWeights[a.package_tier] || tierWeights['standard'];
+    const weightB = tierWeights[b.package_tier] || tierWeights['standard'];
+    if (weightA !== weightB) return weightB - weightA;
     const scoreA = a.rank_score || 0;
     const scoreB = b.rank_score || 0;
     if (scoreA !== scoreB) return scoreB - scoreA;
@@ -114,10 +116,22 @@ export default function HomePage() {
                   <div className="absolute top-4 left-4 bg-white/90 backdrop-blur px-3 py-1 rounded-full text-sm font-medium text-primary shadow-sm">
                     {prop.type || 'บ้าน'}
                   </div>
+                  {prop.package_tier === 'super' && (
+                    <div className="absolute top-4 right-4 bg-rose-600/90 backdrop-blur px-3 py-1 rounded-full text-sm font-bold text-white shadow-sm flex items-center gap-1">
+                      <Crown size={14} fill="currentColor" />
+                      Hot Deal
+                    </div>
+                  )}
                   {prop.package_tier === 'sponsored' && (
                     <div className="absolute top-4 right-4 bg-amber-400/90 backdrop-blur px-3 py-1 rounded-full text-sm font-bold text-white shadow-sm flex items-center gap-1">
                       <Star size={14} fill="currentColor" />
                       แนะนำ
+                    </div>
+                  )}
+                  {prop.package_tier === 'premium' && (
+                    <div className="absolute top-4 right-4 bg-blue-500/90 backdrop-blur px-3 py-1 rounded-full text-sm font-bold text-white shadow-sm flex items-center gap-1">
+                      <CheckCircle2 size={14} color="white" />
+                      Verified
                     </div>
                   )}
                 </div>
