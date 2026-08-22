@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Calculator } from 'lucide-react';
 
 export default function LoanCalculator({ priceStr }) {
-  const getInitialPrice = (str) => {
-    if (!str) return 3000000;
+  const getInitialPrice = (val) => {
+    if (!val) return 3000000;
+    const str = String(val);
     const num = parseFloat(str.replace(/,/g, ''));
     if (isNaN(num)) return 3000000;
     if (num < 1000) return num * 1000000; 
