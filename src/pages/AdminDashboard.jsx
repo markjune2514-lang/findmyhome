@@ -150,10 +150,11 @@ function UnitTypesModal({ prop, onClose, onSaved }) {
 
 // ── Main Dashboard ──────────────────────────────────────────────────────────
 export default function AdminDashboard() {
-  const { properties, deleteProperty, fetchProperties, updateProperty } = useProperties();
+  const { properties, deleteProperty, fetchProperties, updateProperty, heroImage, setHeroImage } = useProperties();
   const [search, setSearch] = useState('');
   const [typeFilter, setTypeFilter] = useState('ทั้งหมด');
   const [managingProp, setManagingProp] = useState(null);
+  const [settingsOpen, setSettingsOpen] = useState(false);
 
   // Analytics State
   const [totalViews, setTotalViews] = useState(0);
@@ -254,9 +255,14 @@ export default function AdminDashboard() {
             </h1>
             <p style={{ margin: '0.25rem 0 0', color: '#64748b', fontSize: '0.875rem' }}>จัดการข้อมูลโครงการอสังหาริมทรัพย์ทั้งหมด</p>
           </div>
-          <Link to="/admin/add" style={{ background: 'var(--primary)', color: '#fff', padding: '0.75rem 1.5rem', borderRadius: '0.875rem', fontWeight: 700, textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '0.5rem', boxShadow: '0 4px 14px rgba(211,135,100,0.35)', fontSize: '0.875rem' }}>
-            <Plus size={18} /> เพิ่มโครงการใหม่
-          </Link>
+          <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+            <button onClick={() => setSettingsOpen(true)} style={{ background: '#f1f5f9', border: '1px solid #e2e8f0', color: '#475569', padding: '0.75rem 1.25rem', borderRadius: '0.875rem', fontWeight: 600, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem' }}>
+              <Star size={18} /> เปลี่ยนภาพพื้นหลัง
+            </button>
+            <Link to="/admin/add" style={{ background: 'var(--primary)', color: '#fff', padding: '0.75rem 1.5rem', borderRadius: '0.875rem', fontWeight: 700, textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '0.5rem', boxShadow: '0 4px 14px rgba(211,135,100,0.35)', fontSize: '0.875rem' }}>
+              <Plus size={18} /> เพิ่มโครงการใหม่
+            </Link>
+          </div>
         </div>
 
         {/* ── Stats */}
@@ -412,6 +418,50 @@ export default function AdminDashboard() {
           onClose={() => setManagingProp(null)}
           onSaved={() => { if (fetchProperties) fetchProperties(); }}
         />
+      )}
+
+      {settingsOpen && (
+        <div style={{ position: 'fixed', inset: 0, zIndex: 9999, background: 'rgba(15,23,42,0.8)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem' }}>
+          <div style={{ background: '#fff', borderRadius: '1.25rem', width: '100%', maxWidth: '900px', maxHeight: '90vh', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+            <div style={{ padding: '1.25rem 1.5rem', borderBottom: '1px solid #e2e8f0', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <h2 style={{ margin: 0, fontSize: '1.25rem', fontWeight: 800 }}>เลือกภาพพื้นหลังเว็บไซต์</h2>
+              <button onClick={() => setSettingsOpen(false)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#64748b' }}><X size={24} /></button>
+            </div>
+            <div style={{ padding: '1.5rem', overflowY: 'auto' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '1rem' }}>
+                {[
+                  'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=2000&q=80',
+                  'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=2000&q=80',
+                  'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=2000&q=80',
+                  'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2000&q=80',
+                  'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=2000&q=80',
+                  'https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=2000&q=80',
+                  'https://images.unsplash.com/photo-1510627489930-0c1b0bfb6785?auto=format&fit=crop&w=2000&q=80',
+                  'https://images.unsplash.com/photo-1605276374104-caa14152554a?auto=format&fit=crop&w=2000&q=80',
+                  'https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=2000&q=80',
+                  'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=2000&q=80'
+                ].map((img, i) => (
+                  <div 
+                    key={i} 
+                    onClick={() => setHeroImage(img)}
+                    style={{ 
+                      borderRadius: '0.75rem', overflow: 'hidden', height: '140px', cursor: 'pointer', border: heroImage === img ? '4px solid var(--primary)' : '2px solid transparent',
+                      boxShadow: heroImage === img ? '0 4px 12px rgba(249,115,22,0.3)' : 'none',
+                      transition: 'all 0.2s'
+                    }}
+                  >
+                    <img src={img} alt="Background" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div style={{ padding: '1.25rem 1.5rem', borderTop: '1px solid #e2e8f0', display: 'flex', justifyContent: 'flex-end', background: '#f8fafc' }}>
+              <button onClick={() => setSettingsOpen(false)} style={{ background: 'var(--primary)', color: '#fff', padding: '0.75rem 2rem', borderRadius: '0.75rem', fontWeight: 700, border: 'none', cursor: 'pointer' }}>
+                เสร็จสิ้น
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

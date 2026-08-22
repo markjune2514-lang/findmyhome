@@ -6,7 +6,7 @@ import { useProperties } from '../PropertiesContext';
 
 export default function HomePage() {
   const navigate = useNavigate();
-  const { properties } = useProperties();
+  const { properties, heroImage } = useProperties();
 
   // Sort properties by package_tier/rank_score for featured section
   const featuredProperties = [...properties].sort((a, b) => {
@@ -32,7 +32,7 @@ export default function HomePage() {
       <div 
         className="relative h-[calc(100dvh-64px)] md:h-[calc(100dvh-72px)] min-h-[500px] flex flex-col justify-between items-center bg-cover bg-center overflow-hidden py-10 md:py-16"
         style={{ 
-          backgroundImage: 'url("https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80")'
+          backgroundImage: `url("${heroImage}")`
         }}
       >
         {/* Subtle Gradients for Readability instead of full dark overlay */}

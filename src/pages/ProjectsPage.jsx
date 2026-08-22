@@ -8,7 +8,7 @@ import './ProjectsPage.css';
 import './SearchPage.css';
 
 export default function ProjectsPage() {
-  const { properties } = useProperties();
+  const { properties, heroImage } = useProperties();
   const { toggleFavorite, isFavorite } = useFavorites();
   const [activeCategory, setActiveCategory] = useState('all');
   const [viewMode, setViewMode] = useState('grid');
@@ -83,7 +83,10 @@ export default function ProjectsPage() {
         description="เลือกดูโครงการบ้านเดี่ยว ทาวน์โฮม คอนโดมิเนียมที่คุณสนใจ เรียงตามโครงการใหม่ โครงการติดรถไฟฟ้า และอื่นๆ" 
       />
       {/* Hero Section */}
-      <section className="projects-hero">
+      <section 
+        className="projects-hero"
+        style={{ backgroundImage: `linear-gradient(to right, rgba(15, 23, 42, 0.7), rgba(15, 23, 42, 0.2)), url("${heroImage}")` }}
+      >
         <div className="hero-content text-center">
           <h1>ค้นหาแรงบันดาลใจสำหรับที่อยู่อาศัยใหม่</h1>
           <p>รวมโครงการบ้านและคอนโดคุณภาพจากผู้พัฒนาชั้นนำ คัดสรรมาเพื่อคุณโดยเฉพาะ</p>

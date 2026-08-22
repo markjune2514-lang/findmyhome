@@ -8,6 +8,11 @@ export const useProperties = () => useContext(PropertiesContext);
 export const PropertiesProvider = ({ children }) => {
   const [properties, setProperties] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [heroImage, setHeroImage] = useState(() => localStorage.getItem('heroImage') || 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=2000&q=80');
+
+  useEffect(() => {
+    localStorage.setItem('heroImage', heroImage);
+  }, [heroImage]);
 
   const fetchProperties = async () => {
     setLoading(true);
@@ -202,7 +207,7 @@ export const PropertiesProvider = ({ children }) => {
   };
 
   return (
-    <PropertiesContext.Provider value={{ properties, addProperty, updateProperty, deleteProperty, fetchProperties, loading, uploadImage }}>
+    <PropertiesContext.Provider value={{ properties, addProperty, updateProperty, deleteProperty, fetchProperties, loading, uploadImage, heroImage, setHeroImage }}>
       {children}
     </PropertiesContext.Provider>
   );
