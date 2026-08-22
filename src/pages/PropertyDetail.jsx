@@ -144,6 +144,16 @@ export default function PropertyDetail({ previewData }) {
               <span className="developer-name">{prop.developer}</span>
             </div>
           )}
+          <div className="flex items-center gap-2 mt-3 flex-wrap">
+            <div className="flex items-center gap-1.5 bg-emerald-50 text-emerald-700 px-2.5 py-1 rounded-full border border-emerald-100 shadow-sm">
+              <ShieldCheck size={14} className="text-emerald-600" />
+              <span className="text-[11px] font-bold">ข้อมูลตรวจสอบแล้ว (Verified)</span>
+            </div>
+            <div className="flex items-center gap-1.5 text-gray-500 text-[11px] font-medium px-1">
+              <Activity size={12} className="text-orange-500" />
+              อัปเดตล่าสุด: {prop.updated_at ? new Date(prop.updated_at).toLocaleDateString('th-TH', {year: 'numeric', month: 'short', day: 'numeric'}) : 'วันนี้'}
+            </div>
+          </div>
         </div>
         <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
           <button 
