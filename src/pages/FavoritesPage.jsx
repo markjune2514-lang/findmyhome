@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { useFavorites } from '../FavoritesContext';
 import { useProperties } from '../PropertiesContext';
 import { Link } from 'react-router-dom';
@@ -28,7 +28,12 @@ export default function FavoritesPage() {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {favoriteProperties.map(prop => (
-            <Link to={`/property/${prop.id}`} key={prop.id} className="bg-white rounded-2xl overflow-hidden shadow-[0_2px_10px_rgba(0,0,0,0.06)] hover:shadow-xl transition-shadow relative border border-gray-100 group flex flex-col">
+            <Link 
+              to={`/property/${prop.id}`} 
+              key={prop.id} 
+              className="bg-white rounded-2xl overflow-hidden shadow-[0_2px_10px_rgba(0,0,0,0.06)] hover:shadow-xl transition-shadow relative border border-gray-100 group flex flex-col"
+              style={{ textDecoration: 'none' }}
+            >
               <div className="h-48 relative overflow-hidden">
                 {prop.image ? (
                   <img src={prop.image.split(',')[0]} alt={prop.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
@@ -47,10 +52,10 @@ export default function FavoritesPage() {
                 {prop.package_tier === 'premium' && <div className="absolute top-3 left-3 bg-blue-500/90 text-white text-xs px-3 py-1 rounded-full flex items-center gap-1 font-bold"><CheckCircle2 size={12}/> Verified</div>}
               </div>
               <div className="p-5 flex flex-col flex-1">
-                <h3 className="font-bold text-gray-800 text-lg line-clamp-1">{prop.name}</h3>
-                <p className="text-sm text-gray-500 mt-1 line-clamp-1">{prop.developer}</p>
+                <h3 className="font-bold text-gray-800 text-lg line-clamp-1" style={{ textDecoration: 'none' }}>{prop.name}</h3>
+                <p className="text-sm text-gray-500 mt-1 line-clamp-1" style={{ textDecoration: 'none' }}>{prop.developer}</p>
                 <div className="mt-4 pt-3 flex items-center text-[var(--primary)] font-bold text-lg border-t border-gray-100">
-                  {prop.price ? `เริ่มต้น  ` : 'ราคาติดต่อสอบถาม'}
+                  {prop.price ? `เริ่มต้น ${prop.price} ${prop.listingType === 'เช่า' ? 'บาท/เดือน' : 'ลบ.'}` : 'ราคาติดต่อสอบถาม'}
                 </div>
               </div>
             </Link>
