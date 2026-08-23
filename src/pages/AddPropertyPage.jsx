@@ -893,14 +893,14 @@ export default function AddPropertyPage() {
                     <div className="form-group mb-0 md:col-span-4 mt-2">
                       <ImageUploader 
                         label="แปลนห้อง (Top View)"
-                        images={unit.planImages}
+                        images={unit.planImages ? (Array.isArray(unit.planImages) ? unit.planImages : [unit.planImages]) : []}
                         onChange={(images) => handleUnitTypeChange(idx, 'planImages', images)}
                       />
                     </div>
                     <div className="form-group mb-0 md:col-span-4 mt-2">
                       <ImageUploader 
                         label="รูปภาพห้อง / บรรยากาศ (Gallery)"
-                        images={unit.roomImages}
+                        images={unit.roomImages ? (Array.isArray(unit.roomImages) ? unit.roomImages : [unit.roomImages]) : []}
                         onChange={(images) => handleUnitTypeChange(idx, 'roomImages', images)}
                       />
                     </div>
@@ -1213,7 +1213,7 @@ export default function AddPropertyPage() {
               label="อัปโหลดรูปโลโก้โครงการ"
               multiple={false}
               isLogo={true}
-              images={formData.logo ? [formData.logo] : []}
+              images={formData.logo ? (Array.isArray(formData.logo) ? formData.logo : [formData.logo]) : []}
               onChange={(images) => setFormData(p => ({...p, logo: images[0] || ''}))}
             />
           </section>
@@ -1224,7 +1224,7 @@ export default function AddPropertyPage() {
             <ImageUploader 
               label="อัปโหลดรูปภาพจากเครื่อง หรือวาง URL"
               multiple={true}
-              images={formData.image ? formData.image.split(',') : []}
+              images={formData.image ? (Array.isArray(formData.image) ? formData.image : (typeof formData.image === 'string' ? formData.image.split(',') : [])) : []}
               onChange={(images) => setFormData(p => ({...p, image: images.join(',')}))}
             />
           </section>

@@ -4,6 +4,7 @@ import { Upload, Link as LinkIcon, X, Loader2 } from 'lucide-react';
 import ImageCropper from './ImageCropper';
 
 export default function ImageUploader({ images = [], onChange, label = 'รูปภาพ', multiple = true, isLogo = false }) {
+  const safeImages = Array.isArray(images) ? images : (images && typeof images === 'string' ? images.split(',').filter(Boolean) : []);
   const [uploading, setUploading] = useState(false);
   const [urlInput, setUrlInput] = useState('');
   const [mode, setMode] = useState('file'); // 'file' or 'url'
@@ -45,7 +46,7 @@ export default function ImageUploader({ images = [], onChange, label = 'รู�
 
       if (data?.publicUrl) {
         if (multiple) {
-          onChange([...images, data.publicUrl]);
+          onChange([...safeImages, data.publicUrl]);
         } else {
           onChange([data.publicUrl]);
         }
@@ -76,19 +77,19 @@ export default function ImageUploader({ images = [], onChange, label = 'รู�
 
   const handleAddUrl = () => {
     if (urlInput.trim()) {
-      onChange([...images, urlInput.trim()]);
+      onChange([...safeImages, urlInput.trim()]);
       setUrlInput('');
     }
   };
 
   const handleRemove = (indexToRemove) => {
-    onChange(images.filter((_, index) => index !== indexToRemove));
+    onChange(safeImages.filter((_, index) => index !== indexToRemove));
   };
 
   return (
     <div className="image-uploader border rounded-lg p-4 bg-gray-50/50">
       <div className="flex justify-between items-center mb-3">
-        <label className="text-sm font-semibold text-gray-700">{label} ({images.length})</label>
+        <label className="text-sm font-semibold text-gray-700">{label} ({safeImages.length})</label>
         <div className="flex gap-1 bg-gray-200 p-1 rounded-md">
           <button 
             type="button" 
@@ -155,9 +156,9 @@ export default function ImageUploader({ images = [], onChange, label = 'รู�
         )}
       </div>
 
-      {images.length > 0 && (
+      {safeImages.length > 0 && (
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mt-4">
-          {images.map((img, idx) => (
+          {safeImages.map((img, idx) => (
             <div 
               key={idx} 
               draggable={!isLogo}
