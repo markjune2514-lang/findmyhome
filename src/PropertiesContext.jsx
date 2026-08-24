@@ -24,28 +24,58 @@ export const PropertiesProvider = ({ children }) => {
     if (error) {
       console.error("Error fetching properties:", error);
     } else {
-      const formattedData = data.map(item => ({
-        ...item,
-        location: { lat: item.location_lat, lng: item.location_lng },
-        projectType: item.project_type,
-        priceSqm: item.price_sqm,
-        priceTo: item.price_to,
-        totalUnits: item.total_units,
-        unitTypes: item.unit_types,
-        projectParking: item.project_parking,
-        totalLandArea: item.total_land_area,
-        facilityType: item.facility_type,
-        distanceToStation: item.distance_to_station,
-        categorizedLandmarks: item.categorized_landmarks,
-        transitSystem: item.transit_system,
-        transitLine: item.transit_line,
-        roomType: item.room_type,
-        livingFormat: item.living_format,
-        healthFacilities: item.health_facilities,
-        fullyFurnished: item.fully_furnished,
-        listingType: item.listing_type || 'ซื้อ',
-        projectHighlights: item.project_highlights
-      }));
+      const formattedData = (data || []).map(item => {
+        let imageStr = '';
+        if (Array.isArray(item.image)) {
+          imageStr = item.image.filter(Boolean).join(',');
+        } else if (typeof item.image === 'string') {
+          imageStr = item.image;
+        } else if (item.image) {
+          imageStr = String(item.image);
+        }
+
+        const toArray = (val) => {
+          if (!val) return [];
+          if (Array.isArray(val)) return val;
+          if (typeof val === 'string') return val.split(',').map(s => s.trim()).filter(Boolean);
+          return [val];
+        };
+
+        return {
+          ...item,
+          image: imageStr,
+          location: { 
+            lat: typeof item.location_lat === 'number' ? item.location_lat : (parseFloat(item.location_lat) || 13.7563), 
+            lng: typeof item.location_lng === 'number' ? item.location_lng : (parseFloat(item.location_lng) || 100.5018) 
+          },
+          projectType: item.project_type || '',
+          priceSqm: item.price_sqm,
+          priceTo: item.price_to,
+          totalUnits: item.total_units,
+          unitTypes: Array.isArray(item.unit_types) ? item.unit_types : [],
+          projectParking: item.project_parking,
+          totalLandArea: item.total_land_area,
+          facilityType: item.facility_type,
+          distanceToStation: item.distance_to_station || '',
+          categorizedLandmarks: item.categorized_landmarks || { transit: [], malls: [], hospitals: [], schools: [] },
+          transitSystem: item.transit_system || '',
+          transitLine: item.transit_line || '',
+          roomType: item.room_type || '',
+          livingFormat: item.living_format || '',
+          special: toArray(item.special),
+          facilities: toArray(item.facilities),
+          healthFacilities: toArray(item.health_facilities),
+          services: toArray(item.services),
+          security: toArray(item.security),
+          transport: toArray(item.transport),
+          promotions: toArray(item.promotions),
+          building_details: Array.isArray(item.building_details) ? item.building_details : [],
+          fullyFurnished: !!item.fully_furnished,
+          listingType: item.listing_type || 'ซื้อ',
+          projectHighlights: item.project_highlights,
+          package_tier: item.package_tier || 'standard'
+        };
+      });
       setProperties(formattedData);
     }
     setLoading(false);

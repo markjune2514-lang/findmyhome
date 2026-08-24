@@ -81,7 +81,7 @@ export default function HomePage() {
                 <div className="h-60 overflow-hidden relative">
                   {prop.image ? (
                     <img 
-                      src={prop.image.split(',')[0]} 
+                      src={Array.isArray(prop.image) ? prop.image[0] : (typeof prop.image === 'string' ? prop.image.split(',')[0] : '')} 
                       alt={prop.name} 
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                     />

@@ -149,7 +149,7 @@ export default function ProjectsPage() {
             viewMode === 'grid' ? (
               <Link to={`/property/${prop.id}`} key={prop.id} className="project-card-large">
                 <div className="project-img-wrapper">
-                  <img src={prop.image ? prop.image.split(',')[0] : ''} alt={prop.name} />
+                  <img src={prop.image ? (Array.isArray(prop.image) ? prop.image[0] : (typeof prop.image === 'string' ? prop.image.split(',')[0] : '')) : ''} alt={prop.name} />
                   <button 
                     onClick={(e) => { e.preventDefault(); toggleFavorite(prop.id); }}
                     className={`absolute top-3 right-3 w-8 h-8 rounded-full flex items-center justify-center shadow-sm transition-transform z-10 border-none cursor-pointer ${isFavorite(prop.id) ? 'bg-white/90 text-rose-500 hover:scale-110' : 'bg-black/30 text-white hover:bg-white/90 hover:text-rose-500'}`}
@@ -199,7 +199,7 @@ export default function ProjectsPage() {
               </Link>
             ) : (
               <Link to={`/property/${prop.id}`} key={prop.id} className="prop-card-small" style={{ position: 'relative' }}>
-                <img src={prop.image ? prop.image.split(',')[0] : ''} alt={prop.name} />
+                <img src={prop.image ? (Array.isArray(prop.image) ? prop.image[0] : (typeof prop.image === 'string' ? prop.image.split(',')[0] : '')) : ''} alt={prop.name} />
                 <div className="prop-card-info" style={{ paddingRight: '30px', flex: 1 }}>
                   <h4 className="flex items-center gap-1">
                     {prop.package_tier === 'super' && <Crown size={14} fill="#e11d48" color="#e11d48" title="Super Exclusive" />}

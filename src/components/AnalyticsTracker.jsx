@@ -18,7 +18,9 @@ export default function AnalyticsTracker() {
         if (error) console.error('Error logging page view:', error);
         
         // Call daily view increment (it will fail silently if table/RPC is not yet created in Supabase)
-        await supabase.rpc('increment_daily_view').catch(() => {});
+        try {
+          await supabase.rpc('increment_daily_view');
+        } catch (e) {}
       } catch (err) {
         console.error('Exception logging page view:', err);
       }

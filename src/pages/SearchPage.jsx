@@ -771,7 +771,8 @@ export default function SearchPage() {
           <MapBoundsObserver onBoundsChange={setMapBounds} isEnabled={isMapSearchActive} />
           <MapUpdater properties={filteredProperties} />
           {filteredProperties.map(prop => {
-            const fallbackImage = prop.image ? prop.image.split(',')[0] : 'https://placehold.co/100x100?text=No+Image';
+            const safeImage = prop.image ? (Array.isArray(prop.image) ? prop.image[0] : (typeof prop.image === 'string' ? prop.image.split(',')[0] : '')) : '';
+            const fallbackImage = safeImage || 'https://placehold.co/100x100?text=No+Image';
             const imageUrl = prop.logo || fallbackImage;
             const customIcon = L.divIcon({
               className: 'custom-brand-marker-wrapper',
@@ -785,7 +786,7 @@ export default function SearchPage() {
             <Marker key={prop.id} position={[prop.location.lat, prop.location.lng]} icon={customIcon}>
               <Popup className="property-popup">
                 <div className="popup-card">
-                  <div className="popup-img" style={{ backgroundImage: `url(${prop.image ? prop.image.split(',')[0] : ''})` }}>
+                  <div className="popup-img" style={{ backgroundImage: `url(${safeImage})` }}>
                     <button 
                       className="like-btn" 
                       onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggleFavorite(prop.id); }}
@@ -880,7 +881,7 @@ export default function SearchPage() {
               const isCompared = compareList.some(item => item.id === prop.id);
               return (
                 <Link to={`/property/${prop.id}`} key={prop.id} className="prop-card-small" style={{ position: 'relative' }}>
-                  <img src={prop.image ? prop.image.split(',')[0] : ''} alt={prop.name} />
+                  <img src={prop.image ? (Array.isArray(prop.image) ? prop.image[0] : (typeof prop.image === 'string' ? prop.image.split(',')[0] : '')) : ''} alt={prop.name} />
                   <div className="prop-card-info" style={{ paddingRight: '30px' }}>
                     <h4 className="flex items-center gap-1">
                       {prop.package_tier === 'super' && <Crown size={14} fill="#e11d48" color="#e11d48" title="Super Exclusive" />}

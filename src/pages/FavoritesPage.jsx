@@ -36,7 +36,7 @@ export default function FavoritesPage() {
             >
               <div className="h-48 relative overflow-hidden">
                 {prop.image ? (
-                  <img src={prop.image.split(',')[0]} alt={prop.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                  <img src={Array.isArray(prop.image) ? prop.image[0] : (typeof prop.image === 'string' ? prop.image.split(',')[0] : '')} alt={prop.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                 ) : (
                   <div className="w-full h-full bg-gray-200 flex items-center justify-center"><Building className="text-gray-400" size={32} /></div>
                 )}

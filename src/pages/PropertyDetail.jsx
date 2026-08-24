@@ -57,7 +57,7 @@ export default function PropertyDetail({ previewData }) {
     : null;
 
   // Filter Images based on activeTab
-  const mainImages = prop?.image ? prop.image.split(',') : [];
+  const mainImages = prop?.image ? (Array.isArray(prop.image) ? prop.image : (typeof prop.image === 'string' ? prop.image.split(',') : [String(prop.image)])).filter(Boolean) : [];
   const selectedUnitImages = selectedUnit
     ? [...(selectedUnit.planImages || []), ...(selectedUnit.roomImages || [])].filter(Boolean)
     : [];
