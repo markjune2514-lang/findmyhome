@@ -112,6 +112,8 @@ export default function ImageUploader({ images = [], onChange, label = 'รู�
     };
   }, [currentObjectUrl]);
 
+  const fileInputRef = React.useRef(null);
+
   return (
     <div className="image-uploader border rounded-lg p-4 bg-gray-50/50">
       <div className="flex justify-between items-center mb-3">
@@ -137,32 +139,30 @@ export default function ImageUploader({ images = [], onChange, label = 'รู�
       <div className="mb-4">
         {mode === 'file' ? (
           <div className="space-y-3">
-            <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-primary transition-colors bg-white">
+            <div 
+              onClick={() => !uploading && fileInputRef.current?.click()}
+              className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-primary transition-colors bg-white cursor-pointer flex flex-col items-center justify-center gap-2 group"
+            >
               <input
+                ref={fileInputRef}
                 type="file"
                 accept="image/*"
                 multiple={multiple}
                 onChange={handleFileUpload}
                 disabled={uploading}
                 className="hidden"
-                id={`image-upload-${label}`}
               />
-              <label
-                htmlFor={`image-upload-${label}`}
-                className="cursor-pointer flex flex-col items-center justify-center gap-2"
-              >
-                {uploading ? (
-                  <Loader2 className="w-8 h-8 text-primary animate-spin" />
-                ) : (
-                  <Upload className="w-8 h-8 text-gray-400" />
-                )}
-                <span className="text-sm font-medium text-gray-600">
-                  {uploading ? 'กำลังอัปโหลด...' : 'คลิกเพื่อเลือกรูปภาพ'}
-                </span>
-                <span className="text-xs text-gray-400">
-                  รองรับ JPG, PNG, WEBP (เลือกได้หลายไฟล์)
-                </span>
-              </label>
+              {uploading ? (
+                <Loader2 className="w-8 h-8 text-primary animate-spin" />
+              ) : (
+                <Upload className="w-8 h-8 text-gray-400 group-hover:text-primary transition-colors" />
+              )}
+              <span className="text-sm font-medium text-gray-600 group-hover:text-primary transition-colors">
+                {uploading ? 'กำลังอัปโหลด...' : 'คลิกเพื่อเลือกรูปภาพ'}
+              </span>
+              <span className="text-xs text-gray-400">
+                รองรับ JPG, PNG, WEBP (เลือกได้หลายไฟล์)
+              </span>
             </div>
           </div>
         ) : (
