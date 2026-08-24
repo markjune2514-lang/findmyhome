@@ -3,7 +3,9 @@ export const createImage = (url) =>
     const image = new Image()
     image.addEventListener('load', () => resolve(image))
     image.addEventListener('error', (error) => reject(error))
-    image.setAttribute('crossOrigin', 'anonymous')
+    if (!url.startsWith('blob:') && !url.startsWith('data:')) {
+      image.setAttribute('crossOrigin', 'anonymous')
+    }
     image.src = url
   })
 
@@ -34,6 +36,13 @@ export default async function getCroppedImg(
     return null
   }
 
+  const cropArea = pixelCrop || {
+    x: 0,
+    y: 0,
+    width: image.width,
+    height: image.height,
+  }
+
   const rotRad = getRadianAngle(rotation)
 
   const { width: bBoxWidth, height: bBoxHeight } = rotateSize(
@@ -53,20 +62,21 @@ export default async function getCroppedImg(
   ctx.drawImage(image, 0, 0)
 
   const data = ctx.getImageData(
-    pixelCrop.x,
-    pixelCrop.y,
-    pixelCrop.width,
-    pixelCrop.height
+    cropArea.x,
+    cropArea.y,
+    cropArea.width,
+    cropArea.height
   )
 
-  canvas.width = pixelCrop.width
-  canvas.height = pixelCrop.height
+  canvas.width = cropArea.width
+  canvas.height = cropArea.height
 
   ctx.putImageData(data, 0, 0)
 
   return new Promise((resolve, reject) => {
     canvas.toBlob((file) => {
-      resolve(file)
+      if (file) resolve(file)
+      else reject(new Error('Canvas is empty'))
     }, 'image/jpeg', 0.9)
   })
 }

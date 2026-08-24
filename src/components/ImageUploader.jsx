@@ -28,13 +28,19 @@ export default function ImageUploader({ images = [], onChange, label = 'รู�
     try {
       setUploading(true);
       const originalFile = pendingFiles[currentCropIndex];
-      const fileExt = originalFile.name.split('.').pop() || 'jpg';
+      const fileExt = originalFile?.name ? originalFile.name.split('.').pop() : 'jpg';
       const fileName = `${Math.random().toString(36).substring(2, 15)}_${Date.now()}.${fileExt}`;
       const filePath = `${fileName}`;
 
+      // Upload blob or fallback to original file if blob is invalid
+      const uploadPayload = croppedBlob || originalFile;
+
       const { error: uploadError } = await supabase.storage
         .from('property-images')
-        .upload(filePath, croppedBlob);
+        .upload(filePath, uploadPayload, {
+          cacheControl: '3600',
+          upsert: false
+        });
 
       if (uploadError) {
         throw uploadError;
@@ -61,7 +67,7 @@ export default function ImageUploader({ images = [], onChange, label = 'รู�
       }
     } catch (error) {
       console.error('Error uploading image:', error);
-      alert('เกิดข้อผิดพลาดในการอัปโหลดรูปภาพ: ' + error.message);
+      alert('เกิดข้อผิดพลาดในการอัปโหลดรูปภาพ: ' + (error.message || error.error_description || JSON.stringify(error)));
       setIsCropping(false);
       setPendingFiles([]);
     } finally {
@@ -76,8 +82,13 @@ export default function ImageUploader({ images = [], onChange, label = 'รู�
   };
 
   const handleAddUrl = () => {
-    if (urlInput.trim()) {
-      onChange([...safeImages, urlInput.trim()]);
+    const trimmed = urlInput.trim();
+    if (trimmed) {
+      if (multiple) {
+        onChange([...safeImages, trimmed]);
+      } else {
+        onChange([trimmed]);
+      }
       setUrlInput('');
     }
   };
