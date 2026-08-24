@@ -86,6 +86,21 @@ export default function ImageUploader({ images = [], onChange, label = 'รู�
     onChange(safeImages.filter((_, index) => index !== indexToRemove));
   };
 
+  const currentObjectUrl = React.useMemo(() => {
+    if (isCropping && pendingFiles[currentCropIndex]) {
+      return URL.createObjectURL(pendingFiles[currentCropIndex]);
+    }
+    return null;
+  }, [isCropping, pendingFiles, currentCropIndex]);
+
+  React.useEffect(() => {
+    return () => {
+      if (currentObjectUrl) {
+        URL.revokeObjectURL(currentObjectUrl);
+      }
+    };
+  }, [currentObjectUrl]);
+
   return (
     <div className="image-uploader border rounded-lg p-4 bg-gray-50/50">
       <div className="flex justify-between items-center mb-3">
@@ -110,45 +125,53 @@ export default function ImageUploader({ images = [], onChange, label = 'รู�
 
       <div className="mb-4">
         {mode === 'file' ? (
-          <div className="relative border-2 border-dashed border-gray-300 rounded-lg p-6 hover:bg-white hover:border-primary/50 transition-colors text-center cursor-pointer group bg-white">
-            <input 
-              type="file" 
-              accept="image/*" 
-              multiple={multiple}
-              onChange={handleFileUpload}
-              disabled={uploading}
-              className="absolute inset-0 w-full h-full opacity-0 cursor-pointer disabled:cursor-not-allowed"
-            />
-            {uploading ? (
-              <div className="flex flex-col items-center gap-2 text-primary">
-                <Loader2 className="animate-spin" size={24} />
-                <span className="text-sm">กำลังอัปโหลด...</span>
-              </div>
-            ) : (
-              <div className="flex flex-col items-center gap-2 text-gray-400 group-hover:text-primary transition-colors">
-                <Upload size={24} />
-                <span className="text-sm">คลิกเพื่อเลือกไฟล์จากอุปกรณ์</span>
-              </div>
-            )}
+          <div className="space-y-3">
+            <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-primary transition-colors bg-white">
+              <input
+                type="file"
+                accept="image/*"
+                multiple={multiple}
+                onChange={handleFileUpload}
+                disabled={uploading}
+                className="hidden"
+                id={`image-upload-${label}`}
+              />
+              <label
+                htmlFor={`image-upload-${label}`}
+                className="cursor-pointer flex flex-col items-center justify-center gap-2"
+              >
+                {uploading ? (
+                  <Loader2 className="w-8 h-8 text-primary animate-spin" />
+                ) : (
+                  <Upload className="w-8 h-8 text-gray-400" />
+                )}
+                <span className="text-sm font-medium text-gray-600">
+                  {uploading ? 'กำลังอัปโหลด...' : 'คลิกเพื่อเลือกรูปภาพ'}
+                </span>
+                <span className="text-xs text-gray-400">
+                  รองรับ JPG, PNG, WEBP (เลือกได้หลายไฟล์)
+                </span>
+              </label>
+            </div>
           </div>
         ) : (
           <div className="flex gap-2">
             <div className="relative flex-1">
-              <LinkIcon className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
-              <input 
-                type="url" 
+              <input
+                type="url"
+                placeholder="วางลิงก์รูปภาพ (URL)"
                 value={urlInput}
                 onChange={(e) => setUrlInput(e.target.value)}
-                placeholder="https://example.com/image.jpg"
-                className="w-full pl-9 pr-3 py-2 text-sm border rounded-md focus:ring-1 focus:ring-primary focus:border-primary outline-none"
                 onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddUrl())}
+                className="w-full pl-9 pr-3 py-2 text-sm border rounded-md focus:outline-none focus:ring-1 focus:ring-primary"
               />
+              <LinkIcon size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
             </div>
-            <button 
-              type="button" 
+            <button
+              type="button"
               onClick={handleAddUrl}
-              className="btn btn-secondary text-sm px-4"
               disabled={!urlInput.trim()}
+              className="px-4 py-2 bg-primary text-white text-sm font-medium rounded-md hover:bg-primary-dark disabled:opacity-50 transition-colors"
             >
               เพิ่ม
             </button>
@@ -157,39 +180,22 @@ export default function ImageUploader({ images = [], onChange, label = 'รู�
       </div>
 
       {safeImages.length > 0 && (
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mt-4">
+        <div className={`grid gap-3 mt-4 ${isLogo ? 'grid-cols-3 sm:grid-cols-4 max-w-sm' : 'grid-cols-2 sm:grid-cols-3 md:grid-cols-4'}`}>
           {safeImages.map((img, idx) => (
             <div 
               key={idx} 
-              draggable={!isLogo}
-              onDragStart={(e) => {
-                if (isLogo) return;
-                e.dataTransfer.setData('text/plain', idx);
-              }}
-              onDragOver={(e) => {
-                if (isLogo) return;
-                e.preventDefault();
-              }}
-              onDrop={(e) => {
-                if (isLogo) return;
-                e.preventDefault();
-                const fromIdx = parseInt(e.dataTransfer.getData('text/plain'), 10);
-                if (fromIdx !== idx && !isNaN(fromIdx)) {
-                  const newImages = [...images];
-                  const [movedItem] = newImages.splice(fromIdx, 1);
-                  newImages.splice(idx, 0, movedItem);
-                  onChange(newImages);
-                }
-              }}
-              className={`relative group overflow-hidden bg-white border flex items-center justify-center ${isLogo ? 'rounded-full w-32 h-32 mx-auto shadow-sm p-2' : 'rounded-md min-h-[120px] bg-gray-100 cursor-move'}`}
+              className={`relative rounded-lg overflow-hidden border border-gray-200 bg-white group shadow-sm flex items-center justify-center ${isLogo ? 'h-24 p-2 bg-white' : 'h-28'}`}
             >
               <img 
                 src={img} 
-                alt={`${label} ${idx + 1}`} 
-                className={`w-full h-full object-contain ${!isLogo && 'max-h-[200px]'}`} 
-                onError={(e) => e.target.src = 'https://via.placeholder.com/150?text=Error'} 
+                alt={`Uploaded ${idx}`} 
+                className={`w-full h-full ${isLogo ? 'object-contain' : 'object-cover'}`}
+                onError={(e) => {
+                  e.target.onerror = null;
+                  e.target.src = 'https://placehold.co/400x300?text=Invalid+Image';
+                }}
               />
-              <button 
+              <button
                 type="button"
                 onClick={() => handleRemove(idx)}
                 className={`absolute bg-white/90 text-red-500 hover:bg-red-50 p-1.5 rounded-md opacity-0 group-hover:opacity-100 transition-opacity shadow-sm ${isLogo ? 'top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-full' : 'top-1 right-1'}`}
@@ -201,9 +207,9 @@ export default function ImageUploader({ images = [], onChange, label = 'รู�
         </div>
       )}
 
-      {isCropping && pendingFiles.length > 0 && (
+      {isCropping && currentObjectUrl && (
         <ImageCropper
-          imageSrc={URL.createObjectURL(pendingFiles[currentCropIndex])}
+          imageSrc={currentObjectUrl}
           onCropDone={handleCropDone}
           onCropCancel={handleCropCancel}
           onSkipCrop={() => handleCropDone(pendingFiles[currentCropIndex])}

@@ -41,13 +41,9 @@ export default function Layout() {
                 <span className="notification-dot" style={{ background: '#e11d48' }}>{favorites.length}</span>
               )}
             </Link>
-            <button className="icon-btn relative">
-              <Bell size={20} />
-              <span className="notification-dot">2</span>
-            </button>
-            <button className="profile-btn">
+            <Link to="/admin" className="profile-btn" title="ระบบจัดการหลังบ้าน (Admin)">
               <User size={20} />
-            </button>
+            </Link>
 
             {/* Mobile Menu Toggle Button */}
             <button 

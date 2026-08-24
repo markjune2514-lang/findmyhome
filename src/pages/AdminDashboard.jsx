@@ -179,7 +179,7 @@ export default function AdminDashboard() {
           .from('page_views')
           .select('views');
         if (!viewsError && viewsData) {
-          const sum = viewsData.reduce((acc, curr) => acc + curr.views, 0);
+          const sum = viewsData.reduce((acc, curr) => acc + (Number(curr.views) || 0), 0);
           setTotalViews(sum);
         }
 

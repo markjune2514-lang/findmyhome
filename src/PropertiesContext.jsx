@@ -41,8 +41,15 @@ export const PropertiesProvider = ({ children }) => {
           return [val];
         };
 
+        const rawPrice = item.price !== null && item.price !== undefined && item.price !== '' ? parseFloat(item.price) : null;
+        let normalizedPrice = rawPrice;
+        if (item.listing_type !== 'เช่า' && rawPrice !== null && !isNaN(rawPrice) && rawPrice >= 10000) {
+          normalizedPrice = parseFloat((rawPrice / 1000000).toFixed(2));
+        }
+
         return {
           ...item,
+          price: normalizedPrice,
           image: imageStr,
           location: { 
             lat: typeof item.location_lat === 'number' ? item.location_lat : (parseFloat(item.location_lat) || 13.7563), 

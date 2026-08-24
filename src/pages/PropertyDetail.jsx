@@ -17,7 +17,7 @@ export default function PropertyDetail({ previewData }) {
   const { addToCompare } = useCompare();
   const { isFavorite, toggleFavorite } = useFavorites();
 
-  const prop = previewData || properties.find(p => p.id === id) || (properties.length > 0 ? properties[0] : null);
+  const prop = previewData || properties.find(p => p.id === id) || null;
   
   const [activeTab, setActiveTab] = useState('overview'); // 'overview' or unit index '0', '1', '2'
   const [currentIndex, setCurrentIndex] = useState(0);

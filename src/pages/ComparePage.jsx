@@ -128,9 +128,13 @@ export default function ComparePage() {
                     )}
                     {activeTab === 'การผ่อนชำระ' && (
                       <>
-                        <div className="metric-row">10,000 บาท</div>
-                        <div className="metric-row">{(prop.price * 1000).toLocaleString()} บาท</div>
-                        <div className="metric-row">{(prop.price * 950000).toLocaleString()} บาท</div>
+                        <div className="metric-row">10,000 - 50,000 บาท</div>
+                        <div className="metric-row">
+                          {prop.price ? `${Math.round((prop.price < 1000 ? prop.price * 1000000 : prop.price) * 0.10 / 24).toLocaleString()} บาท/งวด` : '-'}
+                        </div>
+                        <div className="metric-row">
+                          {prop.price ? `${Math.round((prop.price < 1000 ? prop.price * 1000000 : prop.price) * 0.90).toLocaleString()} บาท` : '-'}
+                        </div>
                       </>
                     )}
                   </div>

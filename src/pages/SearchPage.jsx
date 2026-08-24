@@ -248,12 +248,27 @@ export default function SearchPage() {
       return;
     }
     let areaSqKm = 0;
-    if (layerType === 'circle') {
-      const radius = layer.getRadius();
-      areaSqKm = (Math.PI * radius * radius) / 1000000;
-    } else {
-      const latlngs = layer.getLatLngs()[0];
-      areaSqKm = L.GeometryUtil.geodesicArea(latlngs) / 1000000;
+    try {
+      if (layerType === 'circle') {
+        const radius = layer.getRadius();
+        areaSqKm = (Math.PI * radius * radius) / 1000000;
+      } else {
+        const latlngs = layer.getLatLngs()[0];
+        if (L.GeometryUtil && typeof L.GeometryUtil.geodesicArea === 'function') {
+          areaSqKm = L.GeometryUtil.geodesicArea(latlngs) / 1000000;
+        } else if (Array.isArray(latlngs) && latlngs.length >= 3) {
+          // Fallback planar area calculation
+          let area = 0;
+          for (let i = 0; i < latlngs.length; i++) {
+            const j = (i + 1) % latlngs.length;
+            area += latlngs[i].lat * latlngs[j].lng;
+            area -= latlngs[j].lat * latlngs[i].lng;
+          }
+          areaSqKm = Math.abs(area / 2) * 111.32 * 111.32;
+        }
+      }
+    } catch (err) {
+      console.warn('Error calculating area:', err);
     }
     setPolygonFilter({ layer, layerType, areaSqKm });
   };
@@ -285,9 +300,17 @@ export default function SearchPage() {
       }
     }
 
-    // Search Query
-    if (searchQuery && !prop.name.toLowerCase().includes(searchQuery.toLowerCase()) && !prop.station.toLowerCase().includes(searchQuery.toLowerCase())) {
-      return false;
+    // Search Query (Safe matching on name, developer, station, province, district)
+    if (searchQuery && searchQuery.trim()) {
+      const q = searchQuery.trim().toLowerCase();
+      const matchName = (prop.name || '').toLowerCase().includes(q);
+      const matchDev = (prop.developer || '').toLowerCase().includes(q);
+      const matchStation = (prop.station || '').toLowerCase().includes(q);
+      const matchDistrict = (prop.district || '').toLowerCase().includes(q);
+      const matchProvince = (prop.province || '').toLowerCase().includes(q);
+      if (!matchName && !matchDev && !matchStation && !matchDistrict && !matchProvince) {
+        return false;
+      }
     }
 
     // Buy/Rent Filter
@@ -308,10 +331,11 @@ export default function SearchPage() {
     // Transit
     if (transitStation) {
       if (prop.station !== transitStation) return false;
-    } else if (transitLine) {
-      if (!transitData[transitSystem][transitLine].includes(prop.station)) return false;
+    } else if (transitLine && transitSystem) {
+      const lineStations = transitData[transitSystem]?.[transitLine] || [];
+      if (!lineStations.includes(prop.station)) return false;
     } else if (transitSystem) {
-      const allStationsInSystem = Object.values(transitData[transitSystem]).flat();
+      const allStationsInSystem = transitData[transitSystem] ? Object.values(transitData[transitSystem]).flat() : [];
       if (!allStationsInSystem.includes(prop.station)) return false;
     }
 
