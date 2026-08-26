@@ -153,6 +153,8 @@ export default function AdminDashboard() {
   const { properties, deleteProperty, fetchProperties, updateProperty, heroImage, setHeroImage } = useProperties();
   const [search, setSearch] = useState('');
   const [typeFilter, setTypeFilter] = useState('ทั้งหมด');
+  const [developerFilter, setDeveloperFilter] = useState('ทั้งหมด');
+  const [statusFilter, setStatusFilter] = useState('ทั้งหมด');
   const [managingProp, setManagingProp] = useState(null);
   const [settingsOpen, setSettingsOpen] = useState(false);
 
@@ -228,6 +230,16 @@ export default function AdminDashboard() {
     }
   };
 
+  // Developer / Contractor List with Counts
+  const developerList = React.useMemo(() => {
+    const counts = {};
+    properties.forEach(p => {
+      const dev = p.developer?.trim() || 'ไม่ระบุผู้พัฒนา/ผู้รับเหมา';
+      counts[dev] = (counts[dev] || 0) + 1;
+    });
+    return Object.entries(counts).sort((a, b) => b[1] - a[1]);
+  }, [properties]);
+
   const condoCount = properties.filter(p => p.type === 'คอนโด').length;
   const houseCount = properties.filter(p => p.type === 'บ้าน' || p.type === 'ทาวน์โฮม').length;
   const seniorCount = properties.filter(p => p.type === 'Senior Living').length;
@@ -241,10 +253,36 @@ export default function AdminDashboard() {
   const standardCount = properties.filter(p => !p.package_tier || p.package_tier === 'standard').length;
 
   const filtered = properties.filter(p => {
-    const matchSearch = !search || p.name?.toLowerCase().includes(search.toLowerCase()) || p.developer?.toLowerCase().includes(search.toLowerCase()) || p.province?.includes(search);
+    const matchSearch = !search || 
+      p.name?.toLowerCase().includes(search.toLowerCase()) || 
+      p.developer?.toLowerCase().includes(search.toLowerCase()) || 
+      p.province?.toLowerCase().includes(search.toLowerCase()) ||
+      p.district?.toLowerCase().includes(search.toLowerCase());
+    
     const matchType = typeFilter === 'ทั้งหมด' || p.type === typeFilter;
-    return matchSearch && matchType;
+    
+    const devName = p.developer?.trim() || 'ไม่ระบุผู้พัฒนา/ผู้รับเหมา';
+    const matchDeveloper = developerFilter === 'ทั้งหมด' || devName === developerFilter;
+    
+    const matchStatus = statusFilter === 'ทั้งหมด' || 
+      (statusFilter === 'เผยแพร่แล้ว' && p.status !== 'ฉบับร่าง') ||
+      (statusFilter === 'ฉบับร่าง' && p.status === 'ฉบับร่าง') ||
+      p.status === statusFilter;
+
+    return matchSearch && matchType && matchDeveloper && matchStatus;
   });
+
+  // Selected developer specific stats
+  const selectedDevStats = React.useMemo(() => {
+    if (developerFilter === 'ทั้งหมด') return null;
+    const devProps = properties.filter(p => (p.developer?.trim() || 'ไม่ระบุผู้พัฒนา/ผู้รับเหมา') === developerFilter);
+    const published = devProps.filter(p => p.status !== 'ฉบับร่าง').length;
+    const drafts = devProps.filter(p => p.status === 'ฉบับร่าง').length;
+    const prices = devProps.map(p => Number(p.price) || 0).filter(p => p > 0);
+    const minPrice = prices.length ? Math.min(...prices) : 0;
+    const maxPrice = prices.length ? Math.max(...prices) : 0;
+    return { total: devProps.length, published, drafts, minPrice, maxPrice };
+  }, [properties, developerFilter]);
 
   const statusStyle = (status) => {
     if (status === 'พร้อมอยู่') return { background: '#dcfce7', color: '#16a34a' };
@@ -288,19 +326,19 @@ export default function AdminDashboard() {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(170px, 1fr))', gap: '1rem', marginBottom: '1.75rem' }}>
           {[
             { label: 'โครงการทั้งหมด', value: properties.length, icon: <LayoutList size={22} />, iconColor: '#6366f1', iconBg: '#eef2ff' },
+            { label: 'บริษัทผู้พัฒนา/ผู้รับเหมา', value: `${developerList.length} บริษัท`, icon: <Building2 size={22} />, iconColor: '#0284c7', iconBg: '#e0f2fe' },
             { label: 'เผยแพร่แล้ว', value: publishedCount, icon: <CheckCircle2 size={22} />, iconColor: '#10b981', iconBg: '#ecfdf5' },
             { label: 'ฉบับร่าง', value: draftCount, icon: <FileEdit size={22} />, iconColor: '#64748b', iconBg: '#f1f5f9' },
             { label: 'ผู้เข้าชมรวม', value: totalViews.toLocaleString(), icon: <Eye size={22} />, iconColor: '#ec4899', iconBg: '#fce7f3' },
             { label: 'Tier: Super', value: superCount, icon: <Crown size={22} />, iconColor: '#eab308', iconBg: '#fef08a' },
             { label: 'Tier: Sponsored', value: sponsoredCount, icon: <Star size={22} />, iconColor: '#3b82f6', iconBg: '#dbeafe' },
             { label: 'Tier: Premium', value: premiumCount, icon: <ThumbsUp size={22} />, iconColor: '#f97316', iconBg: '#ffedd5' },
-            { label: 'Tier: Standard', value: standardCount, icon: <LayoutList size={22} />, iconColor: '#94a3b8', iconBg: '#f8fafc' },
           ].map((s, i) => (
             <div key={i} style={{ background: '#fff', borderRadius: '1.25rem', padding: '1.25rem', border: '1px solid #f1f5f9', boxShadow: '0 1px 8px rgba(0,0,0,0.04)', display: 'flex', alignItems: 'center', gap: '1rem' }}>
               <div style={{ width: 48, height: 48, borderRadius: '0.875rem', background: s.iconBg, display: 'flex', alignItems: 'center', justifyContent: 'center', color: s.iconColor, flexShrink: 0 }}>{s.icon}</div>
               <div>
                 <p style={{ margin: 0, fontSize: '0.68rem', color: '#94a3b8', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.04em' }}>{s.label}</p>
-                <p style={{ margin: 0, fontSize: '1.75rem', fontWeight: 900, color: '#0f172a', lineHeight: 1.1 }}>{s.value}</p>
+                <p style={{ margin: 0, fontSize: '1.5rem', fontWeight: 900, color: '#0f172a', lineHeight: 1.1 }}>{s.value}</p>
               </div>
             </div>
           ))}
@@ -360,17 +398,60 @@ export default function AdminDashboard() {
 
         {/* ── Table Card */}
         <div style={{ background: '#fff', borderRadius: '1.5rem', border: '1px solid #f1f5f9', boxShadow: '0 1px 12px rgba(0,0,0,0.06)', overflow: 'hidden' }}>
-          {/* Toolbar */}
+          {/* Toolbar Header */}
           <div style={{ padding: '1rem 1.5rem', borderBottom: '1px solid #f8fafc', display: 'flex', gap: '0.75rem', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', background: '#fafafa' }}>
-            <h3 style={{ margin: 0, fontWeight: 800, color: '#0f172a', fontSize: '1rem' }}>
-              รายการโครงการ <span style={{ fontSize: '0.78rem', fontWeight: 500, color: '#94a3b8' }}>({filtered.length} โครงการ)</span>
-            </h3>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+              <h3 style={{ margin: 0, fontWeight: 800, color: '#0f172a', fontSize: '1rem' }}>
+                รายการโครงการ <span style={{ fontSize: '0.78rem', fontWeight: 500, color: '#94a3b8' }}>({filtered.length} โครงการ)</span>
+              </h3>
+              {developerFilter !== 'ทั้งหมด' && (
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.3rem', padding: '0.2rem 0.6rem', borderRadius: '1rem', background: '#ffedd5', color: '#c2410c', fontSize: '0.72rem', fontWeight: 700 }}>
+                  <Building2 size={12} /> {developerFilter}
+                  <X size={12} style={{ cursor: 'pointer' }} onClick={() => setDeveloperFilter('ทั้งหมด')} />
+                </span>
+              )}
+            </div>
+
+            {/* Search & Filter Controls */}
             <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', alignItems: 'center' }}>
+              {/* Search Box */}
               <div style={{ position: 'relative' }}>
                 <Search size={13} style={{ position: 'absolute', left: 10, top: '50%', transform: 'translateY(-50%)', color: '#94a3b8', pointerEvents: 'none' }} />
-                <input placeholder="ค้นหาโครงการ..." value={search} onChange={e => setSearch(e.target.value)} style={{ paddingLeft: '2rem', paddingRight: '0.75rem', paddingTop: '0.45rem', paddingBottom: '0.45rem', border: '1.5px solid #e2e8f0', borderRadius: '0.625rem', fontSize: '0.8rem', outline: 'none', width: 200, background: '#fff' }} />
+                <input placeholder="ค้นหาโครงการ, บริษัท, ทำเล..." value={search} onChange={e => setSearch(e.target.value)} style={{ paddingLeft: '2rem', paddingRight: '0.75rem', paddingTop: '0.45rem', paddingBottom: '0.45rem', border: '1.5px solid #e2e8f0', borderRadius: '0.625rem', fontSize: '0.8rem', outline: 'none', width: 180, background: '#fff' }} />
               </div>
-              {['ทั้งหมด', 'คอนโด', 'บ้าน', 'ทาวน์โฮม', 'Senior Living'].map(t => (
+
+              {/* Developer / Contractor Dropdown Selector */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', background: '#fff', border: '1.5px solid', borderColor: developerFilter !== 'ทั้งหมด' ? 'var(--primary)' : '#e2e8f0', borderRadius: '0.625rem', padding: '0.25rem 0.6rem', transition: 'all 0.15s' }}>
+                <Building2 size={14} color={developerFilter !== 'ทั้งหมด' ? 'var(--primary)' : '#64748b'} />
+                <select
+                  value={developerFilter}
+                  onChange={e => setDeveloperFilter(e.target.value)}
+                  style={{ border: 'none', background: 'transparent', outline: 'none', fontSize: '0.75rem', fontWeight: 700, color: developerFilter !== 'ทั้งหมด' ? 'var(--primary)' : '#334155', cursor: 'pointer', maxWidth: '170px' }}
+                >
+                  <option value="ทั้งหมด">🏢 ทุกบริษัทผู้รับเหมา/ผู้พัฒนา ({properties.length})</option>
+                  {developerList.map(([dev, count]) => (
+                    <option key={dev} value={dev}>{dev} ({count} โครงการ)</option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Status Filter Dropdown */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', background: '#fff', border: '1.5px solid #e2e8f0', borderRadius: '0.625rem', padding: '0.25rem 0.6rem' }}>
+                <select
+                  value={statusFilter}
+                  onChange={e => setStatusFilter(e.target.value)}
+                  style={{ border: 'none', background: 'transparent', outline: 'none', fontSize: '0.75rem', fontWeight: 700, color: '#334155', cursor: 'pointer' }}
+                >
+                  <option value="ทั้งหมด">สถานะทั้งหมด</option>
+                  <option value="เผยแพร่แล้ว">เผยแพร่แล้ว ({publishedCount})</option>
+                  <option value="ฉบับร่าง">ฉบับร่าง ({draftCount})</option>
+                  <option value="เปิด Presale">เปิด Presale</option>
+                  <option value="พร้อมอยู่">พร้อมอยู่</option>
+                </select>
+              </div>
+
+              {/* Property Type Buttons */}
+              {['ทั้งหมด', 'คอนโด', 'บ้าน', 'ทาวน์โฮม'].map(t => (
                 <button key={t} onClick={() => setTypeFilter(t)} style={{ padding: '0.375rem 0.875rem', border: '1.5px solid', borderColor: typeFilter === t ? 'var(--primary)' : '#e2e8f0', borderRadius: '2rem', fontSize: '0.72rem', fontWeight: 700, background: typeFilter === t ? 'var(--primary)' : '#fff', color: typeFilter === t ? '#fff' : '#64748b', cursor: 'pointer', whiteSpace: 'nowrap', transition: 'all 0.15s' }}>
                   {t}
                 </button>
@@ -378,12 +459,86 @@ export default function AdminDashboard() {
             </div>
           </div>
 
+          {/* Quick Developer Selection Bar */}
+          <div style={{ display: 'flex', gap: '0.4rem', overflowX: 'auto', padding: '0.5rem 1.5rem', background: '#fff', borderBottom: '1px solid #f1f5f9', alignItems: 'center' }}>
+            <span style={{ fontSize: '0.72rem', fontWeight: 700, color: '#94a3b8', whiteSpace: 'nowrap', display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
+              <Building2 size={13} /> เลือกบริษัท:
+            </span>
+            <button
+              onClick={() => setDeveloperFilter('ทั้งหมด')}
+              style={{
+                padding: '0.25rem 0.65rem',
+                borderRadius: '1rem',
+                fontSize: '0.72rem',
+                fontWeight: 700,
+                border: '1px solid',
+                borderColor: developerFilter === 'ทั้งหมด' ? 'var(--primary)' : '#e2e8f0',
+                background: developerFilter === 'ทั้งหมด' ? 'var(--primary)' : '#f8fafc',
+                color: developerFilter === 'ทั้งหมด' ? '#fff' : '#64748b',
+                cursor: 'pointer',
+                whiteSpace: 'nowrap',
+                transition: 'all 0.15s'
+              }}
+            >
+              ทุกบริษัท ({properties.length})
+            </button>
+            {developerList.map(([dev, count]) => (
+              <button
+                key={dev}
+                onClick={() => setDeveloperFilter(dev)}
+                style={{
+                  padding: '0.25rem 0.65rem',
+                  borderRadius: '1rem',
+                  fontSize: '0.72rem',
+                  fontWeight: 700,
+                  border: '1px solid',
+                  borderColor: developerFilter === dev ? 'var(--primary)' : '#e2e8f0',
+                  background: developerFilter === dev ? 'var(--primary)' : '#f8fafc',
+                  color: developerFilter === dev ? '#fff' : '#475569',
+                  cursor: 'pointer',
+                  whiteSpace: 'nowrap',
+                  transition: 'all 0.15s'
+                }}
+              >
+                {dev} ({count})
+              </button>
+            ))}
+          </div>
+
+          {/* Company Overview Banner (shown when a specific company is selected) */}
+          {selectedDevStats && (
+            <div style={{ margin: '0.75rem 1.5rem', padding: '0.75rem 1rem', background: 'linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%)', borderRadius: '0.875rem', border: '1px solid #fdba74', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                <div style={{ width: 36, height: 36, borderRadius: '0.5rem', background: '#f97316', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                  <Building2 size={18} />
+                </div>
+                <div>
+                  <div style={{ fontSize: '0.9rem', fontWeight: 800, color: '#9a3412' }}>
+                    บริษัท / ผู้รับเหมา: {developerFilter}
+                  </div>
+                  <div style={{ fontSize: '0.75rem', color: '#c2410c', display: 'flex', gap: '0.75rem', flexWrap: 'wrap', marginTop: '0.15rem' }}>
+                    <span>ทั้งหมด: <strong>{selectedDevStats.total}</strong> โครงการ</span>
+                    <span>• เผยแพร่แล้ว: <strong>{selectedDevStats.published}</strong> โครงการ</span>
+                    <span>• ฉบับร่าง: <strong>{selectedDevStats.drafts}</strong> โครงการ</span>
+                    {selectedDevStats.minPrice > 0 && <span>• ช่วงราคา: <strong>{selectedDevStats.minPrice} - {selectedDevStats.maxPrice}</strong> ล้านบาท</span>}
+                  </div>
+                </div>
+              </div>
+              <button
+                onClick={() => setDeveloperFilter('ทั้งหมด')}
+                style={{ background: '#fff', border: '1px solid #fdba74', color: '#ea580c', padding: '0.35rem 0.75rem', borderRadius: '0.5rem', fontSize: '0.75rem', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.3rem' }}
+              >
+                <X size={13} /> ล้างตัวกรองบริษัท
+              </button>
+            </div>
+          )}
+
           {/* Table */}
           <div style={{ overflowX: 'auto' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.875rem' }}>
               <thead>
                 <tr style={{ background: '#f8fafc' }}>
-                  {['โครงการ', 'ประเภท', 'ราคาเริ่มต้น', 'จังหวัด', 'สถานะ', 'Types', 'จัดการ'].map(h => (
+                  {['โครงการ', 'ผู้พัฒนา / ผู้รับเหมา', 'ประเภท', 'ราคาเริ่มต้น', 'จังหวัด', 'สถานะ', 'Types', 'จัดการ'].map(h => (
                     <th key={h} style={{ padding: '0.75rem 1rem', textAlign: 'left', fontSize: '0.68rem', fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.06em', whiteSpace: 'nowrap', borderBottom: '1px solid #f1f5f9' }}>{h}</th>
                   ))}
                 </tr>
@@ -400,9 +555,46 @@ export default function AdminDashboard() {
                         <img src={prop.image ? (Array.isArray(prop.image) ? prop.image[0] : (typeof prop.image === 'string' ? prop.image.split(',')[0] : '')) : ''} alt={prop.name} style={{ width: 44, height: 44, borderRadius: '0.75rem', objectFit: 'cover', flexShrink: 0, background: '#f1f5f9', border: '1px solid #f1f5f9' }} onError={e => e.target.style.display = 'none'} />
                         <div>
                           <p style={{ margin: 0, fontWeight: 700, color: '#0f172a', fontSize: '0.875rem', maxWidth: 180, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{prop.name}</p>
-                          <p style={{ margin: 0, fontSize: '0.7rem', color: '#94a3b8' }}>{prop.developer}</p>
+                          <p style={{ margin: 0, fontSize: '0.7rem', color: '#94a3b8' }}>ID: {prop.id}</p>
                         </div>
                       </div>
+                    </td>
+                    {/* Developer / Contractor */}
+                    <td style={{ padding: '0.75rem 1rem' }}>
+                      <button
+                        onClick={() => setDeveloperFilter(prop.developer?.trim() || 'ไม่ระบุผู้พัฒนา/ผู้รับเหมา')}
+                        title={`กรองเฉพาะโครงการของ ${prop.developer || 'ผู้พัฒนานี้'}`}
+                        style={{
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '0.35rem',
+                          padding: '0.25rem 0.6rem',
+                          borderRadius: '0.5rem',
+                          background: developerFilter === (prop.developer?.trim() || 'ไม่ระบุผู้พัฒนา/ผู้รับเหมา') ? '#ffedd5' : '#f1f5f9',
+                          color: developerFilter === (prop.developer?.trim() || 'ไม่ระบุผู้พัฒนา/ผู้รับเหมา') ? '#c2410c' : '#475569',
+                          border: '1px solid',
+                          borderColor: developerFilter === (prop.developer?.trim() || 'ไม่ระบุผู้พัฒนา/ผู้รับเหมา') ? '#fdba74' : '#e2e8f0',
+                          cursor: 'pointer',
+                          fontSize: '0.75rem',
+                          fontWeight: 700,
+                          whiteSpace: 'nowrap',
+                          transition: 'all 0.15s'
+                        }}
+                        onMouseEnter={e => {
+                          e.currentTarget.style.background = '#ffedd5';
+                          e.currentTarget.style.color = '#c2410c';
+                          e.currentTarget.style.borderColor = '#fdba74';
+                        }}
+                        onMouseLeave={e => {
+                          if (developerFilter !== (prop.developer?.trim() || 'ไม่ระบุผู้พัฒนา/ผู้รับเหมา')) {
+                            e.currentTarget.style.background = '#f1f5f9';
+                            e.currentTarget.style.color = '#475569';
+                            e.currentTarget.style.borderColor = '#e2e8f0';
+                          }
+                        }}
+                      >
+                        <Building2 size={12} /> {prop.developer || 'ไม่ระบุ'}
+                      </button>
                     </td>
                     {/* Type */}
                     <td style={{ padding: '0.75rem 1rem' }}>
