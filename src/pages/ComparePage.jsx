@@ -120,10 +120,10 @@ export default function ComparePage() {
                     )}
                     {activeTab === 'สิ่งอำนวยความสะดวก' && (
                       <>
-                        <div className="metric-row">{prop.facilities?.includes('สระว่ายน้ำ') ? <Check size={16} color="green" /> : <X size={16} color="red" />}</div>
-                        <div className="metric-row">{prop.facilities?.includes('ฟิตเนส') ? <Check size={16} color="green" /> : <X size={16} color="red" />}</div>
-                        <div className="metric-row">{prop.facilities?.includes('Co-working Space') ? <Check size={16} color="green" /> : <X size={16} color="red" />}</div>
-                        <div className="metric-row">{prop.facilities?.includes('สวนส่วนกลาง') ? <Check size={16} color="green" /> : <X size={16} color="red" />}</div>
+                        <div className="metric-row">{prop.facilities?.some(f => typeof f === 'string' && (f.includes('สระว่ายน้ำ') || f.toLowerCase().includes('swimming') || f.toLowerCase().includes('pool'))) ? <Check size={16} color="green" /> : <X size={16} color="red" />}</div>
+                        <div className="metric-row">{prop.facilities?.some(f => typeof f === 'string' && (f.includes('ฟิตเนส') || f.toLowerCase().includes('fitness') || f.toLowerCase().includes('gym'))) ? <Check size={16} color="green" /> : <X size={16} color="red" />}</div>
+                        <div className="metric-row">{prop.facilities?.some(f => typeof f === 'string' && (f.toLowerCase().includes('co-working') || f.includes('โคเวิร์ค') || f.includes('ทำงาน'))) ? <Check size={16} color="green" /> : <X size={16} color="red" />}</div>
+                        <div className="metric-row">{prop.facilities?.some(f => typeof f === 'string' && (f.includes('สวน') || f.toLowerCase().includes('garden') || f.toLowerCase().includes('park'))) ? <Check size={16} color="green" /> : <X size={16} color="red" />}</div>
                       </>
                     )}
                     {activeTab === 'การผ่อนชำระ' && (

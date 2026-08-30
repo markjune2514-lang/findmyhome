@@ -1,0 +1,484 @@
+{
+  "jsonLd": [
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebPage",
+          "@id": "https://www.sansiri.com/townhome/siri-place-mega-bangna/th/#webpage",
+          "url": "https://www.sansiri.com/townhome/siri-place-mega-bangna/th/",
+          "name": "สิริ เพลส เมกาบางนา| แสนสิริ",
+          "isPartOf": {
+            "@type": "WebSite",
+            "@id": "https://www.sansiri.com/#website"
+          },
+          "breadcrumb": {
+            "@id": "https://www.sansiri.com/townhome/siri-place-mega-bangna/th/#breadcrumb"
+          },
+          "mainEntity": {
+            "@id": "https://www.sansiri.com/townhome/siri-place-mega-bangna/th/#product"
+          }
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "https://www.sansiri.com/townhome/siri-place-mega-bangna/th/#breadcrumb",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "หน้าแรก",
+              "item": "https://www.sansiri.com/thai/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "ทาวน์โฮม",
+              "item": "https://www.sansiri.com/thai/ทาวน์โฮม"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "สิริ เพลส เมกาบางนา",
+              "item": "https://www.sansiri.com/townhome/siri-place-mega-bangna/th/"
+            }
+          ]
+        },
+        {
+          "@type": "Product",
+          "@id": "https://www.sansiri.com/townhome/siri-place-mega-bangna/th/#product",
+          "name": "สิริ เพลส เมกาบางนา",
+          "description": "ทาวน์โฮมพร้อมอยู่ ดีไซน์ปารีส บรรยากาศทะเลสาบ ส่วนกลางครบขนาดใหญ่ ทำเลดีใกล้ทางด่วน และเมกาบางนา",
+          "brand": {
+            "@type": "Corporation",
+            "@id": "https://www.sansiri.com/#corporation"
+          },
+          "isSimilarTo": {
+            "@type": "GatedCommunity",
+            "@id": "https://www.sansiri.com/townhome/siri-place-mega-bangna/th/#residence",
+            "name": "โครงการทาวน์โฮม สิริ เพลส เมกาบางนา",
+            "containedInPlace": {
+              "@type": "Place",
+              "address": {
+                "@type": "PostalAddress",
+                "addressCountry": "TH",
+                "streetAddress": "999 หมู่ 8 บัวนครินทร์",
+                "addressLocality": "บางพลี",
+                "addressRegion": "สมุทรปราการ",
+                "postalCode": "10540"
+              },
+              "geo": {
+                "@type": "GeoCoordinates",
+                "latitude": "13.639271",
+                "longitude": "100.662575"
+              }
+            }
+          },
+          "image": {
+            "@type": "ImageObject",
+            "url": "https://o77site.s3.ap-southeast-1.amazonaws.com/webproject-source/townhome/siri-place-mega-bangna/img/share/siri-place-megabangna-townhome-share-project-1200x630.jpg",
+            "caption": "ภาพโครงการทาวน์โฮม สิริ เพลส เมกาบางนา"
+          },
+          "offers": {
+            "@type": "AggregateOffer",
+            "priceCurrency": "THB",
+            "lowPrice": "3390000",
+            "availability": "https://schema.org/InStock",
+            "seller": {
+              "@type": "Corporation",
+              "@id": "https://www.sansiri.com/#corporation"
+            }
+          },
+          "subjectOf": [
+            {
+              "@type": "FAQPage",
+              "mainEntity": [
+                {
+                  "@type": "Question",
+                  "name": "การเดินทางเข้าเมืองจากโครงการ สิริ เพลส เมกาบางนา สะดวกแค่ไหน?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "เดินทางสะดวกมากด้วยจุดขึ้นลงทางด่วนกาญจนาฯ และบูรพาวิถีเพียง 5 นาที* พร้อมเชื่อมต่อรถไฟฟ้าสายสีเหลือง เข้าออกได้ทั้งถนนบางนา-ตราด และถนนศรีนครินทร์ ช่วยให้การเดินทางเข้าสู่ใจกลางเมืองรวดเร็วและง่ายดาย"
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "รอบโครงการมีห้างสรรพสินค้าและสถานศึกษาชั้นนำที่ไหนบ้าง?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "โครงการอยู่ใกล้ Mega Bangna และ IKEA เพียง 5 นาที* รายล้อมด้วยห้างชั้นนำอย่าง Central Bangna และ Market Village รวมถึงใกล้โรงเรียนชื่อดัง เช่น รร.ราชวินิตบางแก้ว และนานาชาติ Verso ตอบโจทย์ไลฟ์สไตล์การใช้ชีวิตที่ครบวงจร"
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "สิริ เพลส เมกาบางนา มีจุดเด่นอะไรที่แตกต่างจากทาวน์โฮมทั่วไป?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "โดดเด่นด้วยดีไซน์สไตล์ปารีสที่สวยงามและมีเอกลักษณ์ ตั้งแต่หน้าบ้านจนถึงส่วนกลางที่มีบรรยากาศทะเลสาบ ให้ความรู้สึกเหมือนพักผ่อนในยุโรป พร้อมฟังก์ชันพื้นที่ใช้สอยภายในบ้านที่ออกแบบมาให้ตอบโจทย์การใช้งานจริงของผู้อยู่อาศัย"
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "ระบบรักษาความปลอดภัยและบริการหลังการขายของแสนสิริเป็นอย่างไร?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "มั่นใจด้วยระบบรักษาความปลอดภัย LIV-24 ที่ดูแลด้วยเทคโนโลยีอัจฉริยะแบบเรียลไทม์ตลอด 24 ชั่วโมง พร้อมบริการ Sansiri Home Care ดูแลซ่อมบำรุงบ้านตลอดอายุการอยู่อาศัย และจัดการทุกเรื่องบ้านได้ง่ายผ่านแอปพลิเคชัน KUHU"
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "โครงการ สิริ เพลส เมกาบางนา มีความคุ้มค่าด้านการลงทุนอย่างไร?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "เป็นทำเลศักยภาพที่มีความต้องการเช่าสูงจากพนักงานบริษัทในย่านบางนาและชาวต่างชาติ ด้วยจุดแข็งที่อยู่ใกล้ Mega Bangna ทำให้มีโอกาสรับผลตอบแทนจากค่าเช่าที่สม่ำเสมอและมูลค่าอสังหาริมทรัพย์ที่มีแนวโน้มเพิ่มสูงขึ้นในอนาคต"
+                  }
+                }
+              ]
+            },
+            {
+              "@type": "ItemList",
+              "name": "แบบบ้านทั้งหมดในโครงการ",
+              "numberOfItems": 2,
+              "itemListElement": [
+                {
+                  "@type": "ListItem",
+                  "position": 1,
+                  "item": {
+                    "@type": "FloorPlan",
+                    "name": "แบบบ้าน MONTMARTRE (มงต์มาตร์) (ขนาด 99 ตร.ม.)"
+                  }
+                },
+                {
+                  "@type": "ListItem",
+                  "position": 2,
+                  "item": {
+                    "@type": "FloorPlan",
+                    "name": "แบบบ้าน LOUVRE (ลูฟวร์) (ขนาด 111 ตร.ม.)"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "dataLayerScripts": [
+    "\n    {\n  \"@context\": \"https://schema.org\",\n  \"@graph\": [\n    {\n      \"@type\": \"WebPage\",\n      \"@id\": \"https://www.sansiri.com/townhome/siri-place-mega-bangna/th/#webpage\",\n      \"url\": \"https://www.sansiri.com/townhome/siri-place-mega-bangna/th/\",\n      \"name\": \"สิริ เพลส เมกาบางนา| แสนสิริ\",\n      \"isPartOf\": {\n        \"@type\": \"WebSite\",\n        \"@id\": \"https://www.sansiri.com/#website\"\n      },\n      \"breadcrumb\": {\n        \"@id\": \"https://www.sansiri.com/townhome/siri-place-mega-bangna/th/#breadcrumb\"\n      },\n      \"mainEntity\": {\n        \"@id\": \"https://www.sansiri.com/townhome/siri-place-mega-bangna/th/#product\"\n      }\n    },\n    {\n      \"@type\": \"BreadcrumbList\",\n      \"@id\": \"https://www.sansiri.com/townhome/siri-place-mega-bangna/th/#breadcrumb\",\n      \"itemListElement\": [\n        {\n          \"@type\": \"ListItem\",\n          \"position\": 1,\n          \"name\": \"หน้าแรก\",\n          \"item\": \"https://www.sansiri.com/thai/\"\n        },\n        {\n          \"@type\": \"ListItem\",\n          \"position\": 2,\n          \"name\": \"ทาวน์โฮม\",\n          \"item\": \"https://www.sansiri.com/thai/ทาวน์โฮม\"\n        },\n        {\n          \"@type\": \"ListItem\",\n          \"position\": 3,\n          \"name\": \"สิริ เพลส เมกาบางนา\",\n          \"item\": \"https://www.sansiri.com/townhome/siri-place-mega-bangna/th/\"\n        }\n      ]\n    },\n    {\n      \"@type\": \"Product\",\n      \"@id\": \"https://www.sansiri.com/townhome/siri-place-mega-bangna/th/#product\",\n      \"name\": \"สิริ เพลส เมกาบางนา\",\n      \"description\": \"ทาวน์โฮมพร้อมอยู่ ดีไซน์ปารีส บรรยากาศทะเลสาบ ส่วนกลางครบขนาดใหญ่ ทำเลดีใกล้ทางด่วน และเมกาบางนา\",\n      \"brand\": {\n        \"@type\": \"Corporation\",\n        \"@id\": \"https://www.sansiri.com/#corporation\"\n      },\n      \"isSimilarTo\": {\n        \"@type\": \"GatedCommunity\",\n        \"@id\": \"https://www.sansiri.com/townhome/siri-place-mega-bangna/th/#residence\",\n        \"name\": \"โครงการทาวน์โฮม สิริ เพลส เมกาบางนา\",\n        \"containedInPlace\": {\n          \"@type\": \"Place\",\n          \"address\": {\n            \"@type\": \"PostalAddress\",\n            \"addressCountry\": \"TH\",\n            \"streetAddress\": \"999 หมู่ 8 บัวนครินทร์\",\n            \"addressLocality\": \"บางพลี\",\n            \"addressRegion\": \"สมุทรปราการ\",\n            \"postalCode\": \"10540\"\n          },\n          \"geo\": {\n            \"@type\": \"GeoCoordinates\",\n            \"latitude\": \"13.639271\",\n            \"longitude\": \"100.662575\"\n          }\n        }\n      },\n      \"image\": {\n        \"@type\": \"ImageObject\",\n        \"url\": \"https://o77site.s3.ap-southeast-1.amazonaws.com/webproject-source/townhome/siri-place-mega-bangna/img/share/siri-place-megabangna-townhome-share-project-1200x630.jpg\",\n        \"caption\": \"ภาพโครงการทาวน์โฮม สิริ เพลส เมกาบางนา\"\n      },\n      \"offers\": {\n        \"@type\": \"AggregateOffer\",\n        \"priceCurrency\": \"THB\",\n        \"lowPrice\": \"3390000\",\n        \"availability\": \"https://schema.org/InStock\",\n        \"seller\": {\n          \"@type\": \"Corporation\",\n          \"@id\": \"https://www.sansiri.com/#corporation\"\n        }\n      },\n      \"subjectOf\": [\n        {\n          \"@type\": \"FAQPage\",\n          \"mainEntity\": [\n            {\n              \"@type\": \"Question\",\n              \"name\": \"การเดินทางเข้าเมืองจากโครงการ สิริ เพลส เมกาบางนา สะดวกแค่ไหน?\",\n              \"acceptedAnswer\": {\n                \"@type\": \"Answer\",\n                \"text\": \"เดินทางสะดวกมากด้วยจุดขึ้นลงทางด่วนกาญจนาฯ และบูรพาวิถีเพียง 5 นาที* พร้อมเชื่อมต่อรถไฟฟ้าสายสีเหลือง เข้าออกได้ทั้งถนนบางนา-ตราด และถนนศรีนครินทร์ ช่วยให้การเดินทางเข้าสู่ใจกลางเมืองรวดเร็วและง่ายดาย\"\n              }\n            },\n            {\n              \"@type\": \"Question\",\n              \"name\": \"รอบโครงการมีห้างสรรพสินค้าและสถานศึกษาชั้นนำที่ไหนบ้าง?\",\n              \"acceptedAnswer\": {\n                \"@type\": \"Answer\",\n                \"text\": \"โครงการอยู่ใกล้ Mega Bangna และ IKEA เพียง 5 นาที* รายล้อมด้วยห้างชั้นนำอย่าง Central Bangna และ Market Village รวมถึงใกล้โรงเรียนชื่อดัง เช่น รร.ราชวินิตบางแก้ว และนานาชาติ Verso ตอบโจทย์ไลฟ์สไตล์การใช้ชีวิตที่ครบวงจร\"\n              }\n            },\n            {\n              \"@type\": \"Question\",\n              \"name\": \"สิริ เพลส เมกาบางนา มีจุดเด่นอะไรที่แตกต่างจากทาวน์โฮมทั่วไป?\",\n              \"acceptedAnswer\": {\n                \"@type\": \"Answer\",\n                \"text\": \"โดดเด่นด้วยดีไซน์สไตล์ปารีสที่สวยงามและมีเอกลักษณ์ ตั้งแต่หน้าบ้านจนถึงส่วนกลางที่มีบรรยากาศทะเลสาบ ให้ความรู้สึกเหมือนพักผ่อนในยุโรป พร้อมฟังก์ชันพื้นที่ใช้สอยภายในบ้านที่ออกแบบมาให้ตอบโจทย์การใช้งานจริงของผู้อยู่อาศัย\"\n              }\n            },\n            {\n              \"@type\": \"Question\",\n              \"name\": \"ระบบรักษาความปลอดภัยและบริการหลังการขายของแสนสิริเป็นอย่างไร?\",\n              \"acceptedAnswer\": {\n                \"@type\": \"Answer\",\n                \"text\": \"มั่นใจด้วยระบบรักษาความปลอดภัย LIV-24 ที่ดูแลด้วยเทคโนโลยีอัจฉริยะแบบเรียลไทม์ตลอด 24 ชั่วโมง พร้อมบริการ Sansiri Home Care ดูแลซ่อมบำรุงบ้านตลอดอายุการอยู่อาศัย และจัดการทุกเรื่องบ้านได้ง่ายผ่านแอปพลิเคชัน KUHU\"\n              }\n            },\n            {\n              \"@type\": \"Question\",\n              \"name\": \"โครงการ สิริ เพลส เมกาบางนา มีความคุ้มค่าด้านการลงทุนอย่างไร?\",\n              \"acceptedAnswer\": {\n                \"@type\": \"Answer\",\n                \"text\": \"เป็นทำเลศักยภาพที่มีความต้องการเช่าสูงจากพนักงานบริษัทในย่านบางนาและชาวต่างชาติ ด้วยจุดแข็งที่อยู่ใกล้ Mega Bangna ทำให้มีโอกาสรับผลตอบแทนจากค่าเช่าที่สม่ำเสมอและมูลค่าอสังหาริมทรัพย์ที่มีแนวโน้มเพิ่มสูงขึ้นในอนาคต\"\n              }\n            }\n          ]\n        },\n        {\n          \"@type\": \"ItemList\",\n          \"name\": \"แบบบ้านทั้งหมดในโครงการ\",\n          \"numberOfItems\": 2,\n          \"itemListElement\": [\n            {\n              \"@type\": \"ListItem\",\n              \"position\": 1,\n              \"item\": {\n                \"@type\": \"FloorPlan\",\n                \"name\": \"แบบบ้าน MONTMARTRE (มงต์มาตร์) (ขนาด 99 ตร.ม.)\"\n              }\n            },\n            {\n              \"@type\": \"ListItem\",\n              \"position\": 2,\n              \"item\": {\n                \"@type\": \"FloorPlan\",\n                \"name\": \"แบบบ้าน LOUVRE (ลูฟวร์) (ขนาด 111 ตร.ม.)\"\n              }\n            }\n          ]\n        }\n      ]\n    }\n  ]\n}\n",
+    "\n        window.dataLayer = window.dataLayer || [];\n        dataLayer.push({\n            'page': 'Siri Place Mega bangna',\n            'projectId': '529',\n            'projectNameEN': 'Siri Place Mega bangna',\n            'projectNameTH': 'สิริ เพลส เมกาบางนา',\n            'projectBrandEN': 'SIRI PLACE',\n            'projectBrandTH': 'สิริ เพลส',\n            'propertyTypeEN': 'Townhome',\n            'propertyTypeTH': 'ทาวน์โฮม',\n            'SoldOut': 'False'\n        });\n        var projectid = dataLayer[0].projectId;\n        var propertyTypeTH = dataLayer[0].propertyTypeTH;\n        var projectNameTH = dataLayer[0].projectNameTH;\n        var BrandNameTH = dataLayer[0].projectBrandTH;\n        if (typeof projectid == 'undefined') { var projectid = 0; }\n        \n        var chkItem = getCookie(\"visit_project\");\n        // console.log(chkItem);\n\n        if (chkItem == null || chkItem == \"\") {\n            setCookie(\"visit_project\", projectid, 30);\n        } else {\n            if (chkItem.includes(projectid) == false) {\n                setCookie(\"visit_project\", chkItem + \"|\" + projectid, 30);\n            }\n        }\n\n        function setCookie(cname, cvalue, exdays) {\n            const d = new Date();\n            d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));\n            let expires = \"expires=\" + d.toUTCString();\n            document.cookie = cname + \"=\" + cvalue + \";\" + expires + \";path=/\";\n        }\n\n        function getCookie(cname) {\n            let name = cname + \"=\";\n            let decodedCookie = decodeURIComponent(document.cookie);\n            let ca = decodedCookie.split(';');\n            for (let i = 0; i < ca.length; i++) {\n                let c = ca[i];\n                while (c.charAt(0) == ' ') {\n                    c = c.substring(1);\n                }\n                if (c.indexOf(name) == 0) {\n                    return c.substring(name.length, c.length);\n                }\n            }\n            return \"\";\n        }\n    ",
+    "\n        if (3.39 > 0.00) {\n            dataLayer.push({ ecommerce: null });  // Clear the previous ecommerce object.\n            dataLayer.push({\n                'event': 'view_item',\n                'ecommerce': {\n                    'currency': 'THB',\n                     'value': 3390000,\n                    'items': [\n                        {\n                            'item_id': '529',\n                            'item_name': 'สิริ เพลส เมกาบางนา',\n                            'item_brand': 'สิริ เพลส',\n                            'item_category': 'ทาวน์โฮม',\n                            'price': 3390000,\n                        }\n                    ]\n                }\n            });\n        }\n\n            function numberWithCommas(x) {\n                x = x.toString();\n                var pattern = /(-?\\d+)(\\d{3})/;\n                while (pattern.test(x))\n                    x = x.replace(pattern, \"$1,$2\");\n                return x;\n            }\n    ",
+    "\n   // console.log(\"data\");\n    $(document).ready(function(){\n        $(\".ga-project-pr-video\").click(function(){\n            window.dataLayer = window.dataLayer || [];\n            window.dataLayer.push({\n              event: 'youtube_lightbox_open'\n            });\n        });\n    });\n",
+    "\n    $(document).ready(function () {\n        \n        \n        if (window.currentLanguage.isInter > 0) {\n            $(\"#factsheet-price\").css(\"display\", \"none\");\n            $(\"#factsheet-parking \").css(\"display\", \"none\");\n            \n            $(\"#factsheet-\").css(\"display\", \"none\");\n            $(\".ssr-factsheet a\").attr(\"href\", \"#boxContact\")\n\n            if (isZh == true) {\n                var title = '完成';\n                var year = '年';\n            } else {\n                var title = 'Completion';\n                var year = '';\n            }\n\n            $.ajax({\n                url: \"https://prd-apigateway.sansiri.com/api/project-detail?api_type=filter&filter_name=filter&projectId=\" + projectid + \"&lang=en\"\n                , type: \"get\"\n                , data: {}\n                , crossDomain: true\n                , async: false\n                , dataType: \"json\"\n                , headers: {\n                    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImFiOTQ4NDk1LThmNDEtNGM1Ni1hNzE3LWI0NTEyNTNiZjRlYyIsImlhdCI6MTczNjkwOTk5MX0.w6Rz7p6mDQMVM88sdGq2fWyCW9feXumR-XfcT5UpXwA\"\n                }\n                , success: function (sr) {\n                    dataObj = sr.result;\n\n                    //console.log(\"Data obj ===\", dataObj);\n\n                    var templateFactsheetInter = \"\";\n                    if (dataObj.length > 0) {\n                        if (dataObj[0][\"complete_year\"] > 0) {\n                            templateFactsheetInter += \"<div class='row'><div class='col-4 pr-0'><p class='mt-3 mb-0'>\" + title + \"</p></div><div class='col-5 text-right'><p class='info-text'>\" + dataObj[0][\"complete_year\"] + \"</p></div><div class='col-3 pr-0'><p class='mt-3 mb-0'>\"+ year + \"</p></div></div>\";\n                        } else {\n                            $('#ssr-factsheet-inter').hide();\n                        }\n                        $('#ssr-factsheet-inter').html(templateFactsheetInter);\n                    }\n                }\n                , error: function (error) {\n                    console.log(error);\n                }\n            });\n\n\n            //$(\"#fancybox-LINE\").trigger('click');\n            $(\".ssr-factsheet a\").attr(\"href\", \"#boxContact\")\n            $(\".ssr-factsheet a\").attr('target','_self');\n            //$(\".ssr-factsheet a\").click(function() {\n            //    $('html,body').animate({\n            //        scrollTop: $(\".second\").offset().top},\n            //        'slow');\n            //});\n        } else {\n            $('#ssr-factsheet-inter').hide();\n        }\n    });                           \n                            ",
+    "\n(function () {\n    'use strict';\n\n    /* — Constants — */\n    var ANIMATION_DURATION_MS = 600;\n    var ANIMATION_EASING      = 'cubic-bezier(0.4, 0, 0.2, 1)';\n    var BG_CROSSFADE_DELAY_MS = 850;\n    var RESIZE_DEBOUNCE_MS    = 150;\n    var MOBILE_BREAKPOINT     = 991;\n    var TABLET_MIN_WIDTH      = 768;\n    var DESKTOP_THUMB_WIDTH   = 220;\n    var MOBILE_PEEK_WIDTH     = 40;\n    var ACTIVE_SLIDE_RATIO    = 0.45;\n\n    /* — DOM References — */\n    var track       = document.getElementById('facilityTrack');\n    var box         = document.getElementById('facilityBox');\n    var bgBack      = document.getElementById('facilityBgBack');\n    var bgFront     = document.getElementById('facilityBgFront');\n    var heroImg     = document.getElementById('facilityHeroImg');\n    var mobileTitle = document.getElementById('facilityMobileTitle');\n    var mobileDesc  = document.getElementById('facilityMobileDesc');\n    var btnPrev     = document.getElementById('facilityBtnPrev');\n    var btnNext     = document.getElementById('facilityBtnNext');\n\n    var isAnimating = false;\n\n    /* — Breakpoint Helpers — */\n\n    /** @returns {boolean} True when viewport is at or below mobile breakpoint */\n    function isMobileViewport() {\n        return window.innerWidth <= MOBILE_BREAKPOINT;\n    }\n\n    /** @returns {boolean} True when viewport is in the tablet range */\n    function isTabletViewport() {\n        return window.innerWidth >= TABLET_MIN_WIDTH && isMobileViewport();\n    }\n\n    /**\n     * Returns responsive layout configuration.\n     * @returns {{ gap: number, columns: number|null, padding: number }}\n     */\n    function getResponsiveConfig() {\n        if (isTabletViewport()) return { gap: 12, columns: 3, padding: 32 };\n        if (isMobileViewport()) return { gap: 10, columns: 2, padding: 24 };\n        return { gap: 15, columns: null, padding: 40 };\n    }\n\n    /* — Slide Queries & Sizing — */\n\n    /** @returns {HTMLElement[]} All slide elements in current DOM order */\n    function getAllSlides() {\n        return [].slice.call(track.querySelectorAll('.facility-slide'));\n    }\n\n    /**\n     * Calculates the width of a single thumbnail image.\n     * Desktop: fixed width. Mobile/Tablet: fills available columns with peek space.\n     * @returns {number}\n     */\n    function calculateThumbWidth() {\n        var cfg = getResponsiveConfig();\n        if (!cfg.columns) return DESKTOP_THUMB_WIDTH;\n\n        var availableWidth = box.clientWidth - cfg.padding - cfg.gap * (cfg.columns - 1) - MOBILE_PEEK_WIDTH;\n        return Math.floor(availableWidth / cfg.columns);\n    }\n\n    /**\n     * Calculates the width of the active (expanded) slide.\n     * Mobile: same as thumb. Desktop: percentage of box inner width.\n     * @returns {number}\n     */\n    function calculateActiveSlideWidth() {\n        if (isMobileViewport()) return calculateThumbWidth();\n\n        var cfg = getResponsiveConfig();\n        return Math.floor((box.clientWidth - cfg.padding) * ACTIVE_SLIDE_RATIO);\n    }\n\n    /* — Mobile Active Info Sync — */\n\n    /**\n     * Copies the active slide's title and description into the mobile info panel.\n     * @param {HTMLElement} slide - The currently active slide element\n     */\n    function syncMobileActiveInfo(slide) {\n        var infoPanel = slide.querySelector('.facility-slide-info');\n        if (!infoPanel) return;\n\n        mobileTitle.textContent = infoPanel.querySelector('.slide-title').textContent;\n        mobileDesc.textContent  = infoPanel.querySelector('.slide-description').textContent;\n    }\n\n    /* — Background Crossfade — */\n\n    /**\n     * Crossfades the full-bleed background image to a new source.\n     * Skips if the image is already showing.\n     * @param {string} imageUrl - URL of the new background image\n     */\n    function crossfadeBackground(imageUrl) {\n        var cssValue = 'url(' + imageUrl + ')';\n        if (bgBack.style.backgroundImage === cssValue) return;\n\n        bgFront.style.backgroundImage = cssValue;\n        void bgFront.offsetHeight; /* force reflow for transition */\n        bgFront.classList.add('is-active');\n\n        setTimeout(function () {\n            bgBack.style.backgroundImage = cssValue;\n            bgFront.classList.remove('is-active');\n        }, BG_CROSSFADE_DELAY_MS);\n    }\n\n    /* — Layout Engine — */\n\n    /**\n     * Recalculates and applies widths to all slides.\n     * On mobile: positions nav buttons at the vertical center of the track.\n     * On desktop: resets any mobile-specific inline styles.\n     */\n    function applyLayout(skipBackground) {\n        var slides = getAllSlides();\n        if (!slides.length) return;\n\n        /* ── Read phase (avoid layout thrashing) ── */\n        var cfg          = getResponsiveConfig();\n        var thumbWidth   = calculateThumbWidth();\n        var activeWidth  = calculateActiveSlideWidth();\n        var mobile       = isMobileViewport();\n        var infoWidth    = mobile ? 0 : activeWidth - thumbWidth - cfg.gap;\n\n        /* ── Write phase ── */\n        slides.forEach(function (slide, index) {\n            var isActiveSlide = index === 0;\n            var infoPanel     = slide.querySelector('.facility-slide-info');\n            var infoInner     = slide.querySelector('.slide-info-inner');\n\n            slide.classList.toggle('is-active', isActiveSlide);\n\n            /* Always set inner width so text is pre-laid-out at full width */\n            infoInner.style.width = infoWidth + 'px';\n\n            if (mobile || !isActiveSlide) {\n                slide.style.width       = thumbWidth + 'px';\n                infoPanel.style.width      = '0';\n                infoPanel.style.marginLeft = '0';\n            } else {\n                slide.style.width          = activeWidth + 'px';\n                infoPanel.style.width      = infoWidth + 'px';\n                infoPanel.style.marginLeft = cfg.gap + 'px';\n            }\n        });\n\n        /* ── Update active content ── */\n        var activeImageUrl = slides[0].getAttribute('data-img');\n\n        if (mobile) {\n            syncMobileActiveInfo(slides[0]);\n            heroImg.style.backgroundImage = 'url(' + activeImageUrl + ')';\n            positionNavButtonsAtTrackCenter();\n        } else {\n            resetNavButtonPositions();\n        }\n\n        if (!skipBackground) crossfadeBackground(activeImageUrl);\n    }\n\n    /**\n     * On mobile, positions nav buttons vertically at the center of the track area,\n     * accounting for the box's offset and padding.\n     */\n    function positionNavButtonsAtTrackCenter() {\n        /* box.offsetTop = distance from .facility-slider to .facility-box\n           track.offsetTop = distance from .facility-box to .facility-track (includes mobile-info height + padding) */\n        var buttonTop = (box.offsetTop + track.offsetTop + track.offsetHeight / 2) + 'px';\n\n        btnPrev.style.top = buttonTop;\n        btnNext.style.top = buttonTop;\n    }\n\n    /** Clears mobile-specific inline positioning from nav buttons. */\n    function resetNavButtonPositions() {\n        btnPrev.style.top = '';\n        btnNext.style.top = '';\n    }\n\n    /* — Track Animation — */\n\n    /**\n     * Animates the track element from one X position to another.\n     * Uses CSS transitions with a safety timeout fallback.\n     * @param {number} fromX  - Starting translateX value (px)\n     * @param {number} toX    - Ending translateX value (px)\n     * @param {Function} onComplete - Called once after animation settles\n     */\n    function animateTrack(fromX, toX, onComplete) {\n        track.style.transition = 'none';\n        track.style.transform  = 'translateX(' + fromX + 'px)';\n        void track.offsetHeight; /* force reflow */\n\n        track.style.transition = 'transform ' + ANIMATION_DURATION_MS + 'ms ' + ANIMATION_EASING;\n        track.style.transform  = 'translateX(' + toX + 'px)';\n\n        var hasSettled = false;\n\n        function settle() {\n            if (hasSettled) return;\n            hasSettled = true;\n            track.removeEventListener('transitionend', onTransitionEnd);\n            track.style.transition = 'none';\n            track.style.transform  = 'translateX(0)';\n            isAnimating = false;\n            onComplete();\n        }\n\n        function onTransitionEnd(event) {\n            if (event.target === track) settle();\n        }\n\n        track.addEventListener('transitionend', onTransitionEnd);\n        setTimeout(settle, ANIMATION_DURATION_MS + 100); /* safety fallback */\n    }\n\n    /* — Navigation — */\n\n    /**\n     * Navigates the carousel by one slide in the given direction.\n     * @param {number} direction - 1 for next, -1 for previous\n     */\n    function navigateByOne(direction) {\n        if (isAnimating) return;\n\n        var slides = getAllSlides();\n        if (slides.length <= 1) return;\n\n        isAnimating = true;\n        var gap = getResponsiveConfig().gap;\n\n        if (direction === 1) {\n            var slideWidth = slides[0].offsetWidth + gap;\n            animateTrack(0, -slideWidth, function () {\n                track.appendChild(slides[0]);\n                applyLayout();\n            });\n        } else {\n            var lastSlide = slides[slides.length - 1];\n            track.insertBefore(lastSlide, slides[0]);\n            applyLayout(true);\n\n            var newFirstWidth = getAllSlides()[0].offsetWidth + gap;\n            animateTrack(-newFirstWidth, 0, function () {\n                applyLayout();\n            });\n        }\n    }\n\n    /**\n     * Navigates directly to a slide at the given index.\n     * @param {number} targetIndex - Zero-based index of the target slide\n     */\n    function navigateToSlide(targetIndex) {\n        if (isAnimating || targetIndex === 0) return;\n\n        var slides = getAllSlides();\n        if (targetIndex >= slides.length) return;\n\n        isAnimating = true;\n        var gap = getResponsiveConfig().gap;\n\n        var totalDistance = 0;\n        for (var i = 0; i < targetIndex; i++) {\n            totalDistance += slides[i].offsetWidth + gap;\n        }\n\n        animateTrack(0, -totalDistance, function () {\n            for (var i = 0; i < targetIndex; i++) {\n                track.appendChild(getAllSlides()[0]);\n            }\n            applyLayout();\n        });\n    }\n\n    /* — Event Binding — */\n\n    btnNext.addEventListener('click', function () { navigateByOne(1); });\n    btnPrev.addEventListener('click', function () { navigateByOne(-1); });\n\n    track.addEventListener('click', function (event) {\n        var clickedSlide = event.target.closest('.facility-slide');\n        if (clickedSlide) {\n            navigateToSlide(getAllSlides().indexOf(clickedSlide));\n        }\n    });\n\n    /* — Drag / Swipe — */\n    var DRAG_THRESHOLD = 30;\n    var dragStartX     = 0;\n    var dragCurrentX   = 0;\n    var isDragging     = false;\n    var hasDragged     = false;\n\n    function onDragStart(x) {\n        if (isAnimating) return;\n        isDragging   = true;\n        hasDragged   = false;\n        dragStartX   = x;\n        dragCurrentX = x;\n        track.style.transition = 'none';\n    }\n\n    function onDragMove(x) {\n        if (!isDragging) return;\n        dragCurrentX = x;\n        var delta = dragCurrentX - dragStartX;\n        if (Math.abs(delta) > 5) hasDragged = true;\n        track.style.transform = 'translateX(' + delta + 'px)';\n    }\n\n    function onDragEnd() {\n        if (!isDragging) return;\n        isDragging = false;\n        var delta = dragCurrentX - dragStartX;\n\n        /* Reset transform immediately */\n        track.style.transition = 'none';\n        track.style.transform  = 'translateX(0)';\n\n        if (Math.abs(delta) >= DRAG_THRESHOLD) {\n            navigateByOne(delta < 0 ? 1 : -1);\n        }\n    }\n\n    /* Mouse events */\n    track.addEventListener('mousedown', function (e) {\n        e.preventDefault();\n        onDragStart(e.clientX);\n    });\n    document.addEventListener('mousemove', function (e) {\n        onDragMove(e.clientX);\n    });\n    document.addEventListener('mouseup', function () {\n        onDragEnd();\n    });\n\n    /* Touch events */\n    track.addEventListener('touchstart', function (e) {\n        onDragStart(e.touches[0].clientX);\n    }, { passive: true });\n    track.addEventListener('touchmove', function (e) {\n        if (isDragging && hasDragged) e.preventDefault();\n        onDragMove(e.touches[0].clientX);\n    }, { passive: false });\n    track.addEventListener('touchend', function () {\n        onDragEnd();\n    });\n\n    /* Prevent click when dragged */\n    track.addEventListener('click', function (e) {\n        if (hasDragged) {\n            e.stopImmediatePropagation();\n            e.preventDefault();\n        }\n    }, true);\n\n    var resizeTimer;\n    window.addEventListener('resize', function () {\n        clearTimeout(resizeTimer);\n        resizeTimer = setTimeout(applyLayout, RESIZE_DEBOUNCE_MS);\n    });\n\n    /* — Bootstrap — */\n\n    /**\n     * Initializes the carousel: sets the first background image,\n     * runs layout twice (once to measure, once after paint to stabilize),\n     * then reveals the track.\n     */\n    function initialize() {\n        var slides = getAllSlides();\n        if (!slides.length) return;\n\n        /* ── Build SEO alt/title from dataLayer ── */\n        var dlData = {};\n        if (window.dataLayer) {\n            for (var i = 0; i < window.dataLayer.length; i++) {\n                var entry = window.dataLayer[i];\n                if (entry.projectNameTH) { dlData = entry; break; }\n            }\n        }\n\n        if (dlData.propertyTypeTH && dlData.projectNameTH && dlData.projectNameEN) {\n            var prefix = dlData.propertyTypeTH + ' ' + dlData.projectNameTH + ' (' + dlData.projectNameEN + ') พื้นที่ส่วนกลาง Facility - ';\n            slides.forEach(function (slide) {\n                var facilityTitle = slide.getAttribute('data-facility-title') || '';\n                var altText = prefix + facilityTitle;\n                var img = slide.querySelector('img');\n                if (img) {\n                    img.alt   = altText;\n                    img.title = altText;\n                }\n            });\n        }\n\n        var firstImageUrl = 'url(' + slides[0].getAttribute('data-img') + ')';\n        bgBack.style.backgroundImage  = firstImageUrl;\n        heroImg.style.backgroundImage = firstImageUrl;\n\n        applyLayout();\n        requestAnimationFrame(function () {\n            applyLayout();\n            track.classList.add('is-ready');\n        });\n    }\n\n    if (document.readyState === 'complete') {\n        initialize();\n    } else {\n        window.addEventListener('load', initialize);\n    }\n})();\n",
+    "\n   // console.log(\"data\");\n    $(document).ready(function(){\n        $(\".ga-project-pr-video\").click(function(){\n            window.dataLayer = window.dataLayer || [];\n            window.dataLayer.push({\n              event: 'youtube_lightbox_open'\n            });\n        });\n    });\n",
+    "\n   // console.log(\"data\");\n    $(document).ready(function(){\n        $(\".ga-project-pr-video\").click(function(){\n            window.dataLayer = window.dataLayer || [];\n            window.dataLayer.push({\n              event: 'youtube_lightbox_open'\n            });\n        });\n    });\n",
+    "\n    (function () {\n      var ARROW_SVG = '<svg class=\"bank-dropdown__arrow\" width=\"12\" height=\"8\" viewBox=\"0 0 12 8\" fill=\"none\">'\n        + '<path d=\"M1 1.5L6 6.5L11 1.5\" stroke=\"#666\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>';\n\n        var DEFAULT_VALUES = {\n          loan: Math.round((3.39 > 0 ? 3.39 : 3.5) * 1000000).toString().replace(/\\B(?=(\\d{3})+(?!\\d))/g, \",\"),\n          year: \"30\",\n          monthlyIncome: \"20,000\",\n          debt: \"0\"\n        };\n\n      var TAB_TITLES = {\n        \"1\": 'คำนวณยอดผ่อนต่อเดือน <br class=\"d-block d-md-none\"/>แบบลดต้น ลดดอก',\n        \"2\": \"คำนวณวงเงินที่สามารถกู้ได้\"\n      };\n\n      var VALIDATION_FIELDS = [\n        { id: \"txtloan\", warningId: \"warning-txtloan\", msg: \"กรุณาระบุวงเงินที่ต้องการกู้\" },\n        { id: \"txtyear\", warningId: \"warning-txtyear\", msg: \"กรุณาระบุจำนวนปี​\" },\n        { id: \"txtMonthlyIncome\", warningId: \"warning-txtMonthlyIncome\", msg: \"กรุณาระบุรายได้ต่อเดือน\" }\n      ];\n\n      // ─── Utility ───\n\n      function el(id) { return document.getElementById(id); }\n\n      function getInputValue(id) {\n        return parseFloat(el(id).value.replace(/,/g, \"\"));\n      }\n\n      function animateCounter(target, end) {\n        var startTime = null;\n        function step(now) {\n          if (!startTime) startTime = now;\n          var p = Math.min((now - startTime) / 1000, 1);\n          var val = Math.ceil(end * p);\n          target.textContent = val <= 0 ? \"0\" : (val >= 1e9 ? val.toExponential(2) : val.toLocaleString());\n          if (p < 1) requestAnimationFrame(step);\n        }\n        requestAnimationFrame(step);\n      }\n\n      // ─── Input Handlers (ใช้ใน oninput) ───\n\n      window.formatNumberInput = function (input) {\n        var cursor = input.selectionStart;\n        var raw = input.value.replace(/,/g, \"\");\n        if (!isNaN(raw) && raw !== \"\") {\n          var parts = raw.split(\".\");\n          parts[0] = parts[0].replace(/\\B(?=(\\d{3})+(?!\\d))/g, \",\");\n          input.value = parts.join(\".\");\n          var newCursor = cursor + (input.value.length - raw.length);\n          input.setSelectionRange(newCursor, newCursor);\n        }\n      };\n\n      window.filterNumericInput = function (input) {\n        input.value = input.value.replace(/[^0-9.]/g, \"\");\n        var parts = input.value.split(\".\");\n        if (parts.length > 2) input.value = parts[0] + \".\" + parts[1];\n        if (input.value.length > 1 && input.value.startsWith(\"0\") && input.value[1] !== \".\") {\n          input.value = input.value.replace(/^0+/, \"\");\n        }\n        validateInputFields();\n      };\n\n      window.handleEmptyInput = function (input) {\n        if (input.value.trim() === \"\") input.value = \"0\";\n      };\n\n      window.handleZeroInput = function (input) {\n        if (input.value === \"0\") input.value = \"\";\n        validateInputFields();\n      };\n\n      // ─── Validation ───\n\n      function validateInputFields() {\n        VALIDATION_FIELDS.forEach(function (f) {\n          var input = el(f.id);\n          var val = input.value.replace(/,/g, \"\").trim();\n          var warn = el(f.warningId);\n          var span = input.nextElementSibling;\n          var invalid = isNaN(val) || val === \"\";\n\n          input.classList.toggle(\"warning-calculator-active\", invalid);\n          if (span) span.classList.toggle(\"warning-calculator-active\", invalid);\n          warn.classList.toggle(\"d-none\", !invalid);\n          warn.classList.toggle(\"d-block\", invalid);\n          if (invalid) warn.textContent = f.msg;\n        });\n      }\n      window.validateInputFields = validateInputFields;\n\n      // ─── Bank Dropdown ───\n\n      window.toggleBankDropdown = function () {\n        el(\"bankDropdown\").classList.toggle(\"open\");\n      };\n\n      window.selectBank = function (item) {\n        var mrr = item.getAttribute(\"data-mrr\");\n        var selected = el(\"bankDropdown\").querySelector(\".bank-dropdown__selected\");\n\n        if (mrr) {\n          var bankName = item.getAttribute(\"data-bank-name\");\n          var img = item.querySelector(\"img\");\n          var imgHtml = img ? '<img src=\"' + img.src + '\" alt=\"' + bankName + '\" />' : '';\n          selected.innerHTML = '<span class=\"bank-dropdown__text\">' + imgHtml\n            + '<span>' + item.querySelector(\"span\").textContent + '</span></span>' + ARROW_SVG;\n          el(\"txtinterest\").value = mrr;\n          el(\"interestGroup\").style.display = \"none\";\n        } else {\n          selected.innerHTML = '<span class=\"bank-dropdown__placeholder\">-- อัตราดอกเบี้ยกำหนดเอง​ --</span>' + ARROW_SVG;\n          el(\"interestGroup\").style.display = \"block\";\n          el(\"txtinterest\").value = \"\";\n          el(\"txtinterest\").focus();\n        }\n\n        el(\"bankDropdown\").classList.remove(\"open\");\n      };\n\n      function selectFirstBank() {\n        var first = document.querySelector(\".bank-dropdown__item[data-mrr]:not([data-mrr=''])\");\n        if (first) window.selectBank(first);\n      }\n\n      document.addEventListener(\"click\", function (e) {\n        var dd = el(\"bankDropdown\");\n        if (dd && !dd.contains(e.target)) dd.classList.remove(\"open\");\n      });\n\n      // ─── Calculations ───\n\n      function calculateFormCalculator1() {\n        var loan = getInputValue(\"txtloan\");\n        var interest = getInputValue(\"txtinterest\");\n        var year = getInputValue(\"txtyear\");\n\n        if (!isNaN(loan) && !isNaN(interest) && !isNaN(year) && year > 0) {\n          var r = interest / 100 / 12;\n          var n = year * 12;\n          var monthly = (r === 0) ? loan / n : (loan * r) / (1 - Math.pow(1 + r, -n));\n\n          \n\n            el(\"text1\").textContent = Math.ceil(monthly).toLocaleString();\n            el(\"text2\").textContent = Math.ceil(monthly / 0.4).toLocaleString();\n        }\n\n        el(\"txtinterestDisplay1\").textContent = el(\"txtinterest\").value || \"0\";\n        updateResultBankInfo();\n      }\n      window.calculateFormCalculator1 = calculateFormCalculator1;\n\n      function updateResultBankInfo() {\n        var selected = el(\"bankDropdown\").querySelector(\".bank-dropdown__selected\");\n        var img = selected.querySelector(\"img\");\n        var text = selected.querySelector(\".bank-dropdown__text span:last-child\")\n          || selected.querySelector(\".bank-dropdown__placeholder\");\n        var logo = el(\"resultBankLogo\");\n        var name = el(\"resultBankName\");\n\n        if (img) {\n          logo.src = img.src;\n          logo.alt = img.alt;\n          logo.style.display = \"block\";\n          name.textContent = (text ? text.textContent : \"\").split(\"(\")[0].trim();\n        } else {\n          logo.style.display = \"none\";\n          name.textContent = \"อัตราดอกเบี้ยกำหนดเอง​\";\n        }\n      }\n\n      function calculateFormCalculator2() {\n        var income = getInputValue(\"txtMonthlyIncome\");\n        var debt = getInputValue(\"txtDebt\");\n        if (isNaN(debt)) debt = 0;\n\n        if (!isNaN(income)) {\n          var ability = income * 0.4 - debt;\n          \n            el(\"text3\").textContent = Math.ceil(ability * 150).toLocaleString();\n            el(\"text4\").textContent = Math.ceil(ability).toLocaleString();\n        }\n      }\n      window.calculateFormCalculator2 = calculateFormCalculator2;\n\n      // ─── Reset ───\n\n      window.resetFormCalculator1 = function () {\n        el(\"txtloan\").value = DEFAULT_VALUES.loan;\n        el(\"txtyear\").value = DEFAULT_VALUES.year;\n        selectFirstBank();\n        calculateFormCalculator1();\n      };\n\n      window.resetFormCalculator2 = function () {\n        el(\"txtMonthlyIncome\").value = DEFAULT_VALUES.monthlyIncome;\n        el(\"txtDebt\").value = DEFAULT_VALUES.debt;\n        calculateFormCalculator2();\n      };\n\n      // ─── Tab Switching ───\n\n      var buttons = document.querySelectorAll(\"[id^='btnFormCalculator']\");\n      var forms = document.querySelectorAll(\"[id^='FormCalculator']\");\n\n      buttons.forEach(function (btn) {\n        btn.addEventListener(\"click\", function () {\n          var num = btn.id.replace(\"btnFormCalculator\", \"\");\n\n          forms.forEach(function (f) { f.style.display = \"none\"; });\n          el(\"FormCalculator\" + num).style.display = \"flex\";\n\n          buttons.forEach(function (b) { b.classList.remove(\"btnFormCalculator-active\"); });\n          btn.classList.add(\"btnFormCalculator-active\");\n\n          el(\"titleCalculator\").innerHTML = TAB_TITLES[num];\n\n          if (typeof window[\"calculateFormCalculator\" + num] === \"function\") {\n            window[\"calculateFormCalculator\" + num]();\n          }\n        });\n      });\n\n      // ─── Enter Key ───\n\n      document.addEventListener(\"keydown\", function (e) {\n        if (e.key === \"Enter\") {\n          e.preventDefault();\n          validateInputFields();\n          calculateFormCalculator1();\n          calculateFormCalculator2();\n        }\n      });\n\n      // ─── Init ───\n\n      document.addEventListener(\"DOMContentLoaded\", function () {\n        window.resetFormCalculator1();\n        window.resetFormCalculator2();\n      });\n    })();\n",
+    "\n            $(document).ready(function () {\n    \n                $(\"#sansiri_footer\").sansiri_footer({\n                    source: \"https://www.sansiri.com/embed/footer\",\n                    issubbar: true,\n                    iscalculator: true,\n                    isbuttonTop: true,\n                    isbuttonChats: true,\n                    currentlang: \"th\",\n                    projectid: 529,\n                    fixsubbar: false\n                });\n    \n                var url = window.location.href;\n    \n                var sharebarfb = \"https://www.facebook.com/sharer/sharer.php?u=\" + url;\n                var sharebartw = \"http://twitter.com/share?text=\" + $('meta[name=\"twitter:title\"]').attr(\"content\") + \"&url=\" + url + \"&hashtags=\" + $('meta[name=\"keywords\"]').attr(\"content\") + \"\";\n                var sharebarline = \"https://lineit.line.me/share/ui?url=\" + url;\n                $(\".ssr-icon-facebook a\").attr(\"href\", sharebarfb);\n                $(\".ssr-icon-twitter a\").attr(\"href\", sharebartw);\n                $(\".ssr-icon-line a\").attr(\"href\", sharebarline);\n            });\n        ",
+    "\n                $(window).on(\"ready load resize\", function () {\n                    if(window.currentLanguage.isTh){\n                        bannericon();\n                    }\n                    $(\".campaing-icon\").wrap(\"<a class='ga-project-campaign ssr-campaign-link d-block' href='#' target='_blank'></a>\");\n                });\n\n                function bannericon() {\n                    //สำหรับคำนวณเปลี่ยนตำแหน่ง icon ใน mobile\n                    var lastpromotionheight = 0;\n                    var campaigpriority = 0;\n\n\n                    if (true) {\n\n                        if (124 > campaigpriority) {\n                            campaigpriority = 124;\n                            var countslide = 0;\n\n                            function promotiontext() {\n                                $(\".ssr-box-inner\").each(function () {\n                                    $(this).addClass(\"ssr-rtm-style\");\n                                    $(this).addClass(\"ssr-campaign-text-color-\" + countslide);\n                                    if (countslide == 0) {\n                                        var rtm = '';\n                                        \n                                        if (!false) {\n\n\n\n                                        \trtm = '<h1 class=\"color-white title-seo\">';\n                                        \trtm += 'สิริ เพลส เมกาบางนา';\n                                        \trtm += '</h1>';\n                                        }\n                                        \n                                        if (!false) {\n                                            rtm += '<h2 class=\"color-white title-seo-2 mb-0\">';\n                                            rtm += 'ดีลนี้เริ่ด';\n                                            rtm += '</h2>';\n                                        }\n                                        if (!false) {\n                                            rtm += '<p class=\"color-white mt-0\">';\n                                            rtm += 'แจกแรง แซงทุกดีล สูงสุด 6 แสน<br/>ทาวน์โฮมโซนใหม่ ใกล้เมกาบางนา';\n                                            rtm += '</p>';\n                                        }\n                                        if (!false) {\n                                            rtm += '<h2 class=\"ssr-text-price color-white price-seo\">';\n                                            rtm += 'เริ่ม 3.39 ล้าน';\n                                            rtm += '</h2>';\n                                        }\n                                        if ('0' == \"1\") {\n                                            if (!true) {\n                                                //console.log(\"test\");\n                                                rtm += '<div class=\"ssr-box-venture\">';\n                                                rtm += '    <h3 class=\"color-white\">Joint venture</h3>';\n                                                rtm += '    <div class=\"ssr-logo-venture clearfix\">';\n                                                rtm += '        <div class=\"ssr-logo-ventures-black-bts-sansiri\"></div>';\n                                                rtm += '    </div>';\n                                                rtm += '</div>';\n                                            } else if (!true) {\n                                                //console.log(\"test\");\n                                                rtm += '<div class=\"ssr-box-venture\">';\n                                                rtm += '    <h3 class=\"color-white\">Joint venture</h3>';\n                                                rtm += '    <div class=\"ssr-logo-venture clearfix\">';\n                                                rtm += '        <div class=\"ssr-logo-ventures-white-bts-sansiri\"></div>';\n                                                rtm += '    </div>';\n                                                rtm += '</div>';\n                                            }\n                                        } else if ('0' == \"2\") {\n                                            if (!true) {\n                                                rtm += '<div class=\"ssr-box-venture\">';\n                                                rtm += '    <h3 class=\"color-white\">Joint venture</h3>';\n                                                rtm += '    <div class=\"ssr-logo-venture clearfix\">';\n                                                rtm += '        <div class=\"ssr-logo-ventures-black-tokyu-sansiri\"></div>';\n                                                rtm += '    </div>';\n                                                rtm += '</div>';\n                                            } else if (!true) {\n                                                rtm += '<div class=\"ssr-box-venture\">';\n                                                rtm += '    <h3 class=\"color-white\">Joint venture</h3>';\n                                                rtm += '    <div class=\"ssr-logo-venture clearfix\">';\n                                                rtm += '        <div class=\"ssr-logo-ventures-white-tokyu-sansiri\"></div>';\n                                                rtm += '    </div>';\n                                                rtm += '</div>';\n                                            }\n                                        }\n                                        if (!true) {\n                                            rtm += '<a class=\"ssr-condition-text\" href=\"' + data.campaignlink + '\" target=\"_blank\">';\n                                            rtm += '<span>';\n                                            rtm += '*เงื่อนไขโปรโมชัน >';\n                                            rtm += '</span>';\n                                            rtm += '</a>';\n                                        }\n                                        $(this).html(rtm);\n                                        countslide++;\n                                    } else {\n                                        var rtm = '';\n                                        \n                                        if (!false) {\n                                        \n                                        \n                                        \n                                            rtm = '<h2 class=\"color-white title-seo\">';\n                                            rtm += 'สิริ เพลส เมกาบางนา';\n                                            rtm += '</h2>';\n                                        }\n                                        \n                                        if (!false) {\n                                            rtm += '<h2 class=\"color-white title-seo-2 mb-0\">';\n                                            rtm += 'ดีลนี้เริ่ด';\n                                            rtm += '</h2>';\n                                        }\n                                        if (!false) {\n                                            rtm += '<p class=\"color-white mt-0\">';\n                                            rtm += 'แจกแรง แซงทุกดีล สูงสุด 6 แสน<br/>ทาวน์โฮมโซนใหม่ ใกล้เมกาบางนา';\n                                            rtm += '</p>';\n                                        }\n                                        if (!false) {\n                                            rtm += '<h3 class=\"ssr-text-price color-white price-seo\">'\n                                            rtm += 'เริ่ม 3.39 ล้าน'\n                                            rtm += '</h3>'\n                                        }\n                                        if ('0' == \"1\") {\n                                            if (!true) {\n                                                //console.log(\"test\");\n                                                rtm += '<div class=\"ssr-box-venture\">';\n                                                rtm += '    <h3 class=\"color-white\">Joint venture</h3>';\n                                                rtm += '    <div class=\"ssr-logo-venture clearfix\">';\n                                                rtm += '        <div class=\"ssr-logo-ventures-black-bts-sansiri\"></div>';\n                                                rtm += '    </div>';\n                                                rtm += '</div>';\n                                            } else if (!true) {\n                                                //console.log(\"test\");\n                                                rtm += '<div class=\"ssr-box-venture\">';\n                                                rtm += '    <h3 class=\"color-white\">Joint venture</h3>';\n                                                rtm += '    <div class=\"ssr-logo-venture clearfix\">';\n                                                rtm += '        <div class=\"ssr-logo-ventures-white-bts-sansiri\"></div>';\n                                                rtm += '    </div>';\n                                                rtm += '</div>';\n                                            }\n                                        } else if ('0' == \"2\") {\n                                            if (!true) {\n                                                rtm += '<div class=\"ssr-box-venture\">';\n                                                rtm += '    <h3 class=\"color-white\">Joint venture</h3>';\n                                                rtm += '    <div class=\"ssr-logo-venture clearfix\">';\n                                                rtm += '        <div class=\"ssr-logo-ventures-black-tokyu-sansiri\"></div>';\n                                                rtm += '    </div>';\n                                                rtm += '</div>';\n                                            } else if (!true) {\n                                                rtm += '<div class=\"ssr-box-venture\">';\n                                                rtm += '    <h3 class=\"color-white\">Joint venture</h3>';\n                                                rtm += '    <div class=\"ssr-logo-venture clearfix\">';\n                                                rtm += '        <div class=\"ssr-logo-ventures-white-tokyu-sansiri\"></div>';\n                                                rtm += '    </div>';\n                                                rtm += '</div>';\n                                            }\n                                        }\n                                        if (!true) {\n                                            rtm += '<a class=\"ssr-condition-text\" href=\"' + data.campaignlink + '\" target=\"_blank\">';\n                                            rtm += '<span>';\n                                            rtm += '*เงื่อนไขโปรโมชัน >';\n                                            rtm += '</span>';\n                                            rtm += '</a>';\n                                        }\n                                        $(this).html(rtm);\n                                    }\n                                });\n                            }\n                            if (!true) {\n                                $(\".ssr-campaign-link\").attr(\"href\", '');\n                            }\n                            else {\n                                $(\".ssr-campaign-link\").css({ \"pointer-events\": \"none\" });\n                            }                              \n                            var rtm4srt = \"background:unset!important\";\n                            var rtm4srt = \"background:url('https://assets.sansiri.com/o77site/webcampaign-source/sansiri-rtmq3-promotion-pl-2026-campaign-project-icon.png')!important;\";\n                            rtm4srt += \"position: absolute!important;\";\n                            rtm4srt += \"top: 20% !important;\";\n                            rtm4srt += \"background-repeat:no-repeat!important;\";\n                            rtm4srt += \"left: 51% !important;\";\n                            rtm4srt += \"background-position:bottom right!important;\";\n                            rtm4srt += \"background-size:100% auto!important;\";\n                            rtm4srt += \"z-index:10!important;\";\n                            rtm4srt += \"width:8% !important;\";\n                            rtm4srt += \"transform:translate(-50%, -50%)\";\n                            $(\".campaing-icon\").attr('style', rtm4srt);\n                            promotiontext();\n\n                            if (window.matchMedia(\"(max-width: 991px)\").matches) {\n                                setTimeout(function () {\n                                    // Change icon location\n                                    $(\".ssr-box-project-hero\").each(function () {\n                                        promotionheight = $(this).height();\n                                        if (lastpromotionheight < promotionheight) {\n                                            lastpromotionheight = promotionheight;\n                                            lastpromotionheight2 = promotionheight - 1.5;\n                                        }\n                                    });\n                                    $(\".ssr-box-project-hero\").css({ \"height\": lastpromotionheight + \"px\" })\n                                    //around ipad device\n                                    if (window.matchMedia(\"(min-width: 500px) and (max-width: 991px)\").matches) {\n                                        var bannerheight = '25%';\n                                        var bannerwidth = '20%';\n\n                                        $(\".campaing-icon\").css({ \"transform\": \"translate(-50%, 0px)\", \"top\": \"unset\" });\n                                    }\n                                    // mobile device\n                                    else {\n                                        var bannerheight = '20%';\n                                        var bannerwidth = '40%';\n\n                                        $(\".campaing-icon\").css({ \"transform\": \"translate(-50%, 0px)\", \"top\": \"unset\" });\n                                    }\n                                    $(\".campaing-icon\").css({ \"bottom\": lastpromotionheight2 + \"px\", \"height\": bannerheight, \"width\": bannerwidth });\n                                }, 500);\n                            }\n                            // desktop device\n                            else {\n                                $(\".ssr-box-project-hero\").css({ \"height\": \"100%\" });\n                                $(\".ssr-box-project-hero.bottom-banner\").css({ \"height\": \"unset\" });\n                                $(\".campaing-icon\").css({ \"top\": '20%', \"left\": '51%', \"height\": '20%' });\n                            }\n                        }\n                    }\n                }\n               \n            "
+  ],
+  "factsheet": [
+    {
+      "class": "reset-aos btn-tab btn-layout nav-item btn-nav-link ga-project-information active",
+      "text": "แนวคิดโครงการ"
+    },
+    {
+      "class": "reset-aos btn-tab btn-layout nav-item btn-nav-link ga-project-information ",
+      "text": "นวัตกรรม"
+    },
+    {
+      "class": "reset-aos btn-tab btn-layout nav-item btn-nav-link ga-project-information ",
+      "text": "FACTSHEET"
+    },
+    {
+      "class": "nav-item nav-link ga-project-information-innovation ssr-innovation-act active",
+      "text": "UV SHIELD"
+    },
+    {
+      "class": "nav-item nav-link ga-project-information-innovation ssr-innovation-act ",
+      "text": "Tinted Glass"
+    },
+    {
+      "class": "nav-item nav-link ga-project-information-innovation ssr-innovation-act ",
+      "text": "WIFI"
+    },
+    {
+      "class": "nav-item nav-link ga-project-information-innovation ssr-innovation-act ",
+      "text": "SKY LIGHT"
+    },
+    {
+      "class": "ssr-innovacle ga-project-information-innovation ssr-innovation-act border-ci1 active",
+      "text": ""
+    },
+    {
+      "class": "ssr-innovacle ga-project-information-innovation ssr-innovation-act border-ci1 ",
+      "text": ""
+    },
+    {
+      "class": "ssr-innovacle ga-project-information-innovation ssr-innovation-act border-ci1 ",
+      "text": ""
+    },
+    {
+      "class": "ssr-innovacle ga-project-information-innovation ssr-innovation-act border-ci1 ",
+      "text": ""
+    },
+    {
+      "class": "ssr-ico-play ga-project-information-innovation-vdo ssr-innovation-act",
+      "text": ""
+    },
+    {
+      "class": "bt-text ssr-ico-play ga-project-information-innovation-vdo ssr-innovation-act",
+      "text": "คลิกดูวิธีการทำงาน"
+    },
+    {
+      "class": "ssr-factsheet color-white",
+      "text": "โบรชัวร์ข้อมูลโครงการ สิริ เพลส เมกาบางนา ดาวน์โหลด"
+    },
+    {
+      "class": "ssr-factsheet-span",
+      "text": "โบรชัวร์ข้อมูลโครงการ"
+    },
+    {
+      "class": "ssr-factsheet-img",
+      "text": ""
+    },
+    {
+      "class": "ssr-bt  bt-icon ssr-bt-download ga-project-information-factsheet-download btn-layout-border-radius",
+      "text": "ดาวน์โหลด"
+    },
+    {
+      "class": "ssr-factsheet-background bg-ci1",
+      "text": ""
+    }
+  ],
+  "allTextBlocks": {
+    "id:factsheet": "ข้อมูลโครงการ .fade { opacity: 1; transition: opacity .15s linear; } .tab-scope-2e5bee78e9a24911bf9e940ff3499a7d .card-tab { display: flex; flex-wrap: nowrap; justify-content: flex-start; background-color: #fff; border-radius: 50px; margin: 0 auto; width: auto; text-align: center; gap: 24px; padding: 8px 16px; max-width: 100%; overflow-x: auto; -ms-overflow-style: none; scrollbar-width: none; cursor: grab; -webkit-overflow-scrolling: touch; } .tab-scope-2e5bee78e9a24911bf9e940ff3499a7d .card-tab",
+    "id:factsheet-price": "ราคาเริ่มต้น 3.39 ล้านบาท",
+    "id:factsheet-parking": "พื้นที่จอดรถ 1 - 2 คัน",
+    "id:facilityBgBack": "",
+    "id:facilityBgFront": "",
+    "id:facilityHeroImg": "",
+    "id:facilityBtnPrev": "",
+    "id:facilityBox": "Garden​ สวนส่วนกลางขนาดใหญ์ปารีส Swimming Pool สระว่ายน้ำระบบเกลือ แยกสระเด็กและผู้ใหญ่ Fitness Room ห้องออกกำลังกาย Relaxing Area พื้นที่มุมพักผ่อน หรือนั่งเล่นรับลมได้เต็มที่ Parisian Garden โดมและน้ำพุสไตล์ปารีส Education Playground สนามเด็กเล่น เพื่อเสริมพัฒนาการและเอาใจเด็กๆ Lake ส่วนกลางทะเลสาบหน้าคลับเฮาส์",
+    "id:facilityMobileInfo": "",
+    "id:facilityMobileTitle": "",
+    "id:facilityMobileDesc": "",
+    "id:facilityTrack": "Garden​ สวนส่วนกลางขนาดใหญ์ปารีส Swimming Pool สระว่ายน้ำระบบเกลือ แยกสระเด็กและผู้ใหญ่ Fitness Room ห้องออกกำลังกาย Relaxing Area พื้นที่มุมพักผ่อน หรือนั่งเล่นรับลมได้เต็มที่ Parisian Garden โดมและน้ำพุสไตล์ปารีส Education Playground สนามเด็กเล่น เพื่อเสริมพัฒนาการและเอาใจเด็กๆ Lake ส่วนกลางทะเลสาบหน้าคลับเฮาส์",
+    "id:facilityBtnNext": "",
+    "id:plan": "แบบแปลน .ssr-plan-house-slide a { color: !important; } .ssr-plan-house-slide a.bt-icon .icon { fill: !important; } .ssr-plan-house-slide a.bg-ci1 { background-color: !important; } .ssr-plan-house-slide a.border-ci1 { border-color: !important; } .ssr-plan-house-slide a:not(.bt-text):not(.bt-disabled):hover { color: !important; } .ssr-plan-house-slide a.bt-icon:not(.bt-text):not(.bt-disabled):hover .icon { fill: !important; } .ssr-plan-house-slide a.bg-ci1:not(.bt-text):not(.bt-disabled)::after { ",
+    "id:projectCountUnit": "0",
+    "id:projectCountMax": "(เลือกได้สูงสุด 3 ยูนิต)"
+  },
+  "models": [
+    {
+      "title": "MONTMARTRE (มงต์มาตร์)",
+      "parentClass": "row",
+      "parentText": "MONTMARTRE (มงต์มาตร์) พื้นที่ใช้สอย 99 ตร.ม. 2 ห้องนอน 3 ห้องน้ำ ห้องรับแขก ห้องอเนกประสงค์ ส่วนรับประทานอาหาร ที่จอดรถ 1 คัน พร้อม 1 ส่วน ซักล้าง ชั้น 1 ชั้น 2",
+      "images": [
+        {
+          "src": "https://s3.ap-southeast-1.amazonaws.com/o77site/webproject-source/townhome/siri-place-mega-bangna/img/housetype/siri-place-pattanakarn-townhome-housetype-montmarte-99.webp",
+          "alt": "ทาวน์โฮม พัฒนาการ สิริ เพลส พัฒนาการ (siri place pattanakarn) แบบบ้าน montmartre (มงต์มาตร์)"
+        },
+        {
+          "src": "https://s3.ap-southeast-1.amazonaws.com/o77site/webproject-source/townhome/siri-place-mega-bangna/img/housetype/siri-place-pattanakarn-townhome-floorplan-montmarte-99-1.webp",
+          "alt": "ทาวน์โฮม พัฒนาการ สิริ เพลส พัฒนาการ (siri place pattanakarn) แบบบ้าน montmartre (มงต์มาตร์) ชั้น 1"
+        },
+        {
+          "src": "https://s3.ap-southeast-1.amazonaws.com/o77site/webproject-source/townhome/siri-place-mega-bangna/img/housetype/siri-place-pattanakarn-townhome-floorplan-montmarte-99-2.webp",
+          "alt": "ทาวน์โฮม พัฒนาการ สิริ เพลส พัฒนาการ (siri place pattanakarn) แบบบ้าน montmartre (มงต์มาตร์) ชั้น 2"
+        }
+      ]
+    },
+    {
+      "title": "LOUVRE (ลูฟวร์)",
+      "parentClass": "row",
+      "parentText": "LOUVRE (ลูฟวร์) พื้นที่ใช้สอย 111 ตร.ม. 3 ห้องนอน 3 ห้องน้ำ ห้องรับแขก ส่วนซักล้าง ส่วนรับประทานอาหาร ที่จอดรถ 2 คัน ชั้น 1 ชั้น 2",
+      "images": [
+        {
+          "src": "https://s3.ap-southeast-1.amazonaws.com/o77site/webproject-source/townhome/siri-place-mega-bangna/img/housetype/siri-place-mega-bangna-townhome-housetype-louvre-111.webp",
+          "alt": "ทาวน์โฮม พัฒนาการ สิริ เพลส พัฒนาการ (siri place pattanakarn) แบบบ้าน Louvre (ลูฟวร์)"
+        },
+        {
+          "src": "https://s3.ap-southeast-1.amazonaws.com/o77site/webproject-source/townhome/siri-place-mega-bangna/img/housetype/siri-place-mega-bangna-townhome-floorplan-louvre-111-01.webp",
+          "alt": "ทาวน์โฮม พัฒนาการ สิริ เพลส พัฒนาการ (siri place pattanakarn) แบบบ้าน Louvre (ลูฟวร์) ชั้น 1"
+        },
+        {
+          "src": "https://s3.ap-southeast-1.amazonaws.com/o77site/webproject-source/townhome/siri-place-mega-bangna/img/housetype/siri-place-mega-bangna-townhome-floorplan-louvre-111-02.webp",
+          "alt": "ทาวน์โฮม พัฒนาการ สิริ เพลส พัฒนาการ (siri place pattanakarn) แบบบ้าน Louvre (ลูฟวร์) ชั้น 2"
+        }
+      ]
+    }
+  ],
+  "facilities": [
+    {
+      "class": "facility-slide ga-project-facility-view",
+      "text": "Garden​ สวนส่วนกลางขนาดใหญ์ปารีส"
+    },
+    {
+      "class": "facility-slide-info",
+      "text": "Garden​ สวนส่วนกลางขนาดใหญ์ปารีส"
+    },
+    {
+      "class": "facility-slide ga-project-facility-view",
+      "text": "Swimming Pool สระว่ายน้ำระบบเกลือ แยกสระเด็กและผู้ใหญ่"
+    },
+    {
+      "class": "facility-slide-info",
+      "text": "Swimming Pool สระว่ายน้ำระบบเกลือ แยกสระเด็กและผู้ใหญ่"
+    },
+    {
+      "class": "facility-slide ga-project-facility-view",
+      "text": "Fitness Room ห้องออกกำลังกาย"
+    },
+    {
+      "class": "facility-slide-info",
+      "text": "Fitness Room ห้องออกกำลังกาย"
+    },
+    {
+      "class": "facility-slide ga-project-facility-view",
+      "text": "Relaxing Area พื้นที่มุมพักผ่อน หรือนั่งเล่นรับลมได้เต็มที่"
+    },
+    {
+      "class": "facility-slide-info",
+      "text": "Relaxing Area พื้นที่มุมพักผ่อน หรือนั่งเล่นรับลมได้เต็มที่"
+    },
+    {
+      "class": "facility-slide ga-project-facility-view",
+      "text": "Parisian Garden โดมและน้ำพุสไตล์ปารีส"
+    },
+    {
+      "class": "facility-slide-info",
+      "text": "Parisian Garden โดมและน้ำพุสไตล์ปารีส"
+    },
+    {
+      "class": "facility-slide ga-project-facility-view",
+      "text": "Education Playground สนามเด็กเล่น เพื่อเสริมพัฒนาการและเอาใจเด็กๆ"
+    },
+    {
+      "class": "facility-slide-info",
+      "text": "Education Playground สนามเด็กเล่น เพื่อเสริมพัฒนาการและเอาใจเด็กๆ"
+    },
+    {
+      "class": "facility-slide ga-project-facility-view",
+      "text": "Lake ส่วนกลางทะเลสาบหน้าคลับเฮาส์"
+    },
+    {
+      "class": "facility-slide-info",
+      "text": "Lake ส่วนกลางทะเลสาบหน้าคลับเฮาส์"
+    }
+  ],
+  "pricing": [
+    {
+      "class": "hero-banner-price",
+      "text": "เริ่ม 3.39 ล้าน"
+    },
+    {
+      "class": "hero-banner-price",
+      "text": "เริ่ม 3.39 ล้าน"
+    },
+    {
+      "class": "section-price-unit-hotdeal mt-4",
+      "text": "3.39 ล้าน* 3.89 ล้าน ลด 5 แสน*"
+    },
+    {
+      "class": "h-deal-price",
+      "text": "3.39 ล้าน*"
+    },
+    {
+      "class": "price-default",
+      "text": "3.89 ล้าน"
+    },
+    {
+      "class": "d-none h-unit-promotion",
+      "text": "ฟรีค่าโอน + ค่าส่วนกลาง*"
+    },
+    {
+      "class": "detail-unit-btn-hotdeal ga-unit-detail",
+      "text": "ดูรายละเอียด >"
+    },
+    {
+      "class": "select-unit-btn-hotdeal text-decoration-none ga-unit-select",
+      "text": "สนใจยูนิตนี้"
+    },
+    {
+      "class": "section-price-unit-hotdeal mt-4",
+      "text": "3.39 ล้าน* 3.89 ล้าน ลด 5 แสน*"
+    },
+    {
+      "class": "h-deal-price",
+      "text": "3.39 ล้าน*"
+    },
+    {
+      "class": "price-default",
+      "text": "3.89 ล้าน"
+    },
+    {
+      "class": "d-none h-unit-promotion",
+      "text": "ฟรีค่าโอน + ค่าส่วนกลาง*"
+    },
+    {
+      "class": "detail-unit-btn-hotdeal ga-unit-detail",
+      "text": "ดูรายละเอียด >"
+    },
+    {
+      "class": "select-unit-btn-hotdeal text-decoration-none ga-unit-select",
+      "text": "สนใจยูนิตนี้"
+    },
+    {
+      "class": "section-price-unit-hotdeal mt-4",
+      "text": "3.39 ล้าน* 3.89 ล้าน ลด 5 แสน*"
+    },
+    {
+      "class": "h-deal-price",
+      "text": "3.39 ล้าน*"
+    },
+    {
+      "class": "price-default",
+      "text": "3.89 ล้าน"
+    },
+    {
+      "class": "d-none h-unit-promotion",
+      "text": "ฟรีค่าโอน + ค่าส่วนกลาง*"
+    },
+    {
+      "class": "detail-unit-btn-hotdeal ga-unit-detail",
+      "text": "ดูรายละเอียด >"
+    },
+    {
+      "class": "select-unit-btn-hotdeal text-decoration-none ga-unit-select",
+      "text": "สนใจยูนิตนี้"
+    }
+  ],
+  "location": [
+    {
+      "class": "ssr-location",
+      "text": "แผนที่ Google ดูแผนที่กราฟิก ขอเส้นทาง"
+    },
+    {
+      "class": "mapNav bg-ci1",
+      "text": "แผนที่ Google ดูแผนที่กราฟิก ขอเส้นทาง"
+    },
+    {
+      "class": "col-lg-3 ml-md-auto col-md-4 col-12 listmaplink text-md-right",
+      "text": "แผนที่ Google"
+    },
+    {
+      "class": "maplink google-map ga-project-map-google-map",
+      "text": "แผนที่ Google"
+    },
+    {
+      "class": "col-lg-2 col-md-4 col-12 listmaplink text-md-center",
+      "text": "ดูแผนที่กราฟิก"
+    },
+    {
+      "class": "maplink download-map ga-project-map-download",
+      "text": "ดูแผนที่กราฟิก"
+    },
+    {
+      "class": "col-lg-3 mr-md-auto col-md-4 col-12 listmaplink text-md-left",
+      "text": "ขอเส้นทาง"
+    },
+    {
+      "class": "maplink get-direction ga-project-map-direction",
+      "text": "ขอเส้นทาง"
+    }
+  ]
+}

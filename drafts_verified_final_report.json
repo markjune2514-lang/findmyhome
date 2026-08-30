@@ -1,0 +1,755 @@
+[
+  {
+    "id": "p1787142273672qfj5",
+    "name": "BEON เกษตร - นวมินทร์",
+    "url": "https://www.apthai.com/th/single-detached-house/beon-kaset-nawamin",
+    "changes": [
+      "Price: 50 -> 45 MB"
+    ]
+  },
+  {
+    "id": "p1787282179491",
+    "name": "PLENO ติวานนท์ - แจ้งวัฒนะ 2",
+    "url": "https://www.apthai.com/th/townhome/pleno-chaengwattana-tiwanon",
+    "changes": [
+      "Price: 3.49 -> 2.69 MB",
+      "Unit Types: 2 -> 3 types"
+    ]
+  },
+  {
+    "id": "p1787282169137",
+    "name": "PLENO ติวานนท์",
+    "url": "https://www.apthai.com/th/townhome/pleno-chaengwattana-tiwanon",
+    "changes": [
+      "Price: 1.99 -> 2.69 MB",
+      "Unit Types: 1 -> 3 types"
+    ]
+  },
+  {
+    "id": "p1787281974471",
+    "name": "THE PALAZZO ปิ่นเกล้า - บรมฯ",
+    "url": "https://www.apthai.com/th/single-detached-house/the-palazzo-pinklao-borom",
+    "changes": [
+      "Price: 50 -> 3 MB",
+      "Facilities: 2 -> 5 items",
+      "Total Units: 45",
+      "Land Area: 31 - 2 - 97"
+    ]
+  },
+  {
+    "id": "p1787282176551",
+    "name": "PLENO พหลโยธิน - สายไหม 2",
+    "url": "https://www.apthai.com/th/townhome/pleno-phaholyothin-saimai-57",
+    "changes": [
+      "Price: 2.69 -> 2.99 MB"
+    ]
+  },
+  {
+    "id": "p1787282900310",
+    "name": "CENTRO ลาดพร้าว - เสรีไทย",
+    "url": "https://www.apthai.com/th/single-detached-house/centro-ladprao-serithai",
+    "changes": [
+      "Price: 50 -> 11.9 MB",
+      "Facilities: 3 -> 4 items"
+    ]
+  },
+  {
+    "id": "p1787282507128",
+    "name": "GRANDE PLENO กรุงเทพกรีฑา",
+    "url": "https://www.apthai.com/th/semi-detached-house/grande-pleno-rama9-krungthep-kreetha",
+    "changes": [
+      "Price: 50 -> 7.89 MB",
+      "Land Area: 1 - 0 - 356.8"
+    ]
+  },
+  {
+    "id": "p1787281993276",
+    "name": "GRANDE PLENO รามอินทรา - วงแหวน 2",
+    "url": "https://www.apthai.com/th/townhome/grande-pleno-ramintra-wongwaen-2",
+    "changes": [
+      "Facilities: 2 -> 3 items",
+      "Total Units: 158",
+      "Land Area: 24 - 0 - 0"
+    ]
+  },
+  {
+    "id": "p1787232524932",
+    "name": "THE CITY พระราม 5 - นครอินทร์",
+    "url": "https://www.apthai.com/th/single-detached-house/the-city-rama-5-nakhon-in-2",
+    "changes": [
+      "Price: 50 -> 12.9 MB",
+      "Unit Types: 2 -> 3 types"
+    ]
+  },
+  {
+    "id": "p1787282516737",
+    "name": "GRANDE PLENO วิภาวดี - รังสิต",
+    "url": "https://www.apthai.com/th/semi-detached-house/grande-pleno-vibhavadi-rangsit",
+    "changes": [
+      "Facilities: 3 -> 5 items",
+      "Total Units: 110",
+      "Land Area: 18"
+    ]
+  },
+  {
+    "id": "p1787282006939",
+    "name": "THE CITY รามอินทรา - วงแหวน 3",
+    "url": "https://www.apthai.com/th/single-detached-house/the-city-ramintra-wongwaen-3",
+    "changes": [
+      "Price: 50 -> 16.99 MB",
+      "Land Area: 44"
+    ]
+  },
+  {
+    "id": "p1787142272602j0rn",
+    "name": "MODEN บางนา - เทพารักษ์",
+    "url": "https://www.apthai.com/th/single-detached-house/moden-bangna-theparak",
+    "changes": [
+      "Price: 50 -> 4.89 MB",
+      "Facilities: 3 -> 4 items"
+    ]
+  },
+  {
+    "id": "p1787282223044",
+    "name": "PLENO TOWN ลาดกระบัง - ฉลองกรุง",
+    "url": "https://www.apthai.com/th/townhome/pleno-town-ladkrabang-chalongkrung",
+    "changes": [
+      "Facilities: 3 -> 4 items"
+    ]
+  },
+  {
+    "id": "p1787282503626",
+    "name": "GRANDE PLENO สุขุมวิท - แพรกษา",
+    "url": "https://www.apthai.com/th/semi-detached-house/grande-pleno-sukhumvit-preakasa",
+    "changes": [
+      "Price: 50 -> 5.39 MB",
+      "Total Units: 200",
+      "Land Area: 35.74"
+    ]
+  },
+  {
+    "id": "p1787281998135",
+    "name": "GRANDE PLENO พหลฯ - วิภาวดี 2",
+    "url": "https://www.apthai.com/th/townhome/grande-pleno-phaholyothin-vibhavadi-2",
+    "changes": [
+      "Facilities: 2 -> 3 items",
+      "Total Units: 285",
+      "Land Area: 41 - 0 - 34.9"
+    ]
+  },
+  {
+    "id": "p17871422732444s8x",
+    "name": "MODEN บางนา - ศรีนครินทร์",
+    "url": "https://www.apthai.com/th/single-detached-house/moden-bangna-srinakarin",
+    "changes": [
+      "Price: 50 -> 5.99 MB",
+      "Facilities: 2 -> 4 items"
+    ]
+  },
+  {
+    "id": "p1787282511766",
+    "name": "GRANDE PLENO ทวีวัฒนา",
+    "url": "https://www.apthai.com/th/semi-detached-house/grande-pleno-thawiwatthana",
+    "changes": [
+      "Price: 50 -> 5.99 MB",
+      "Facilities: 1 -> 5 items",
+      "Total Units: 240",
+      "Land Area: 42 - 2 - 13.5"
+    ]
+  },
+  {
+    "id": "p1787142276312rlnq",
+    "name": "THE CITY ดอนเมือง - แจ้งวัฒนะ",
+    "url": "https://www.apthai.com/th/single-detached-house/the-city-donmueang-chaengwattana",
+    "changes": [
+      "Price: 50 -> 13.9 MB",
+      "Facilities: 1 -> 4 items"
+    ]
+  },
+  {
+    "id": "p1787282578867",
+    "name": "GRANDE PLENO เมกา บางนา",
+    "url": "https://www.apthai.com/th/semi-detached-house/grande-pleno-bangna-kingkaew",
+    "changes": [
+      "Price: 50 -> 5.59 MB",
+      "Total Units: 98",
+      "Land Area: 17 - 0 - 60"
+    ]
+  },
+  {
+    "id": "p1787142274047m30r",
+    "name": "THE CITY เพชรเกษม - บางบอน",
+    "url": "https://www.apthai.com/th/single-detached-house/the-city-petchkasem-bangbon",
+    "changes": [
+      "Facilities: 4 -> 5 items"
+    ]
+  },
+  {
+    "id": "p1787232460774",
+    "name": "THE CITY ปิ่นเกล้า - สิรินธร",
+    "url": "https://www.apthai.com/th/single-detached-house/the-city-pinklao-sirindhorn",
+    "changes": [
+      "Price: 50 -> 15.9 MB",
+      "Facilities: 3 -> 4 items",
+      "Land Area: 44"
+    ]
+  },
+  {
+    "id": "p1787282331327",
+    "name": "THE CITY ทวีวัฒนา",
+    "url": "https://www.apthai.com/th/single-detached-house/the-city-thawiwatthana-2",
+    "changes": [
+      "Price: 11.9 -> 12.9 MB"
+    ]
+  },
+  {
+    "id": "p17871422758295syk",
+    "name": "THE CITY ราชพฤกษ์ - พรานนก",
+    "url": "https://www.apthai.com/th/single-detached-house/the-city-ratchapruek-phrannok",
+    "changes": [
+      "Price: 50 -> 23.9 MB"
+    ]
+  },
+  {
+    "id": "p1787233526118",
+    "name": "DISTRICT พหลโยธิน - วิภาวดี โฮมออฟฟิศ 3 ชั้น",
+    "url": "https://www.apthai.com/th/townhome/baanklangmueng-phaholyothin-vibhavadi",
+    "changes": [
+      "Price: 3.99 -> 4.79 MB",
+      "Facilities: 0 -> 5 items"
+    ]
+  },
+  {
+    "id": "p1787282495556",
+    "name": "GRANDE PLENO พหลโยธิน - ธูปะเตมีย์",
+    "url": "https://www.apthai.com/th/townhome/grande-pleno-phaholyothin-phoemsin-28",
+    "changes": [
+      "Price: 7.19 -> 4.68 MB",
+      "Facilities: 2 -> 3 items",
+      "Total Units: 239",
+      "Land Area: 30 - 3 - 83"
+    ]
+  },
+  {
+    "id": "p1787282521953",
+    "name": "GRANDE PLENO สุขสวัสดิ์ 64",
+    "url": "https://www.apthai.com/th/semi-detached-house/grande-pleno-suksawat-64",
+    "changes": [
+      "Price: 50 -> 6.99 MB",
+      "Facilities: 2 -> 5 items",
+      "Total Units: 158",
+      "Land Area: 29 - 0 - 35"
+    ]
+  },
+  {
+    "id": "p1787142276670gbxb",
+    "name": "THE CITY พระราม 5 - นครอินทร์ 2",
+    "url": "https://www.apthai.com/th/single-detached-house/the-city-rama-5-nakhon-in-2",
+    "changes": [
+      "Price: 50 -> 12.9 MB",
+      "Facilities: 2 -> 3 items"
+    ]
+  },
+  {
+    "id": "p17871422751362y9v",
+    "name": "THE CITY บางนา 3",
+    "url": "https://www.apthai.com/th/single-detached-house/the-city-bangna-3",
+    "changes": [
+      "Price: 50 -> 15.9 MB"
+    ]
+  },
+  {
+    "id": "p1787282317012",
+    "name": "THE CITY กาญจนาฯ - บางแค",
+    "url": "https://www.apthai.com/th/single-detached-house/the-city-kanchana-bangkae",
+    "changes": [
+      "Price: 50 -> 23 MB"
+    ]
+  },
+  {
+    "id": "p1787232066877",
+    "name": "THE CITY ติวานนท์ - งามวงศ์วาน 2",
+    "url": "https://www.apthai.com/th/single-detached-house/the-city-tiwanon-ngamwongwan-2",
+    "changes": [
+      "Price: 50 -> 19.9 MB",
+      "Facilities: 3 -> 4 items"
+    ]
+  },
+  {
+    "id": "p1787232456950",
+    "name": "THE CITY รามอินทรา - วงแหวน 2",
+    "url": "https://www.apthai.com/th/single-detached-house/the-city-ramintra-wongwaen-3",
+    "changes": [
+      "Price: 50 -> 16.99 MB"
+    ]
+  },
+  {
+    "id": "p178714227548129u1",
+    "name": "THE CITY พัฒนาการ 2",
+    "url": "https://www.apthai.com/th/single-detached-house/the-city-phatthanakan-2",
+    "changes": [
+      "Price: 50 -> 15.9 MB"
+    ]
+  },
+  {
+    "id": "p17871422744215ffh",
+    "name": "THE CITY เสรีไทย - วงแหวน",
+    "url": "https://www.apthai.com/th/single-detached-house/the-city-serithai-wongwaen",
+    "changes": [
+      "Price: 50 -> 14.9 MB"
+    ]
+  },
+  {
+    "id": "p1787282531666",
+    "name": "GRANDE PLENO แจ้งวัฒนะ - ราชพฤกษ์",
+    "url": "https://www.apthai.com/th/semi-detached-house/grande-pleno-chaengwattana-ratchapruek",
+    "changes": [
+      "Facilities: 2 -> 3 items",
+      "Total Units: 190",
+      "Land Area: 33 - 2 - 65.1"
+    ]
+  },
+  {
+    "id": "p1787282536356",
+    "name": "GRANDE PLENO วัชรพล - จตุโชติ 10",
+    "url": "https://www.apthai.com/th/townhome/grande-pleno-ramintra-chatuchot-bangchan-station",
+    "changes": [
+      "Price: 5.38 -> 3.99 MB",
+      "Facilities: 2 -> 3 items",
+      "Total Units: 123",
+      "Land Area: 21"
+    ]
+  },
+  {
+    "id": "p1787142277041ecp8",
+    "name": "THE CITY บางนา 2",
+    "url": "https://www.apthai.com/th/single-detached-house/the-city-bangna-3",
+    "changes": [
+      "Price: 50 -> 15.9 MB"
+    ]
+  },
+  {
+    "id": "p1787160447202",
+    "name": "THE CITY ปิ่นเกล้า - พรานนก",
+    "url": "https://www.apthai.com/th/single-detached-house/the-city-pinklao-phrannok",
+    "changes": [
+      "Price: 50 -> 23.9 MB",
+      "Facilities: 3 -> 5 items"
+    ]
+  },
+  {
+    "id": "p1787282385101",
+    "name": "CENTRO บางนา กม.5",
+    "url": "https://www.apthai.com/th/single-detached-house/centro-bangna-km5",
+    "changes": [
+      "Price: 50 -> 8.9 MB"
+    ]
+  },
+  {
+    "id": "p1787282495226",
+    "name": "CENTRO พหลโยธิน - สายไหม",
+    "url": "https://www.apthai.com/th/single-detached-house/centro-phaholyothin-saimai",
+    "changes": [
+      "Price: 50 -> 8.59 MB"
+    ]
+  },
+  {
+    "id": "p1787282324244",
+    "name": "THE CITY สุขุมวิท - อ่อนนุช 2",
+    "url": "https://www.apthai.com/th/single-detached-house/the-city-sukhumvit-onnut-2",
+    "changes": [
+      "Price: 50 -> 25.9 MB"
+    ]
+  },
+  {
+    "id": "p1787282375917",
+    "name": "CENTRO ปิ่นเกล้า - บรมฯ",
+    "url": "https://www.apthai.com/th/single-detached-house/centro-pinklao-borom",
+    "changes": [
+      "Price: 50 -> 18 MB"
+    ]
+  },
+  {
+    "id": "p1787282072350",
+    "name": "THE CITY พระราม 9 - อ่อนนุช",
+    "url": "https://www.apthai.com/th/single-detached-house/the-city-rama-9-onnut",
+    "changes": [
+      "Price: 50 -> 3 MB"
+    ]
+  },
+  {
+    "id": "p1787282555557",
+    "name": "GRANDE PLENO บางใหญ่",
+    "url": "https://www.apthai.com/th/townhome/grande-pleno-ramintra-wongwaen-2",
+    "changes": [
+      "Price: 4.59 -> 3.39 MB",
+      "Facilities: 2 -> 3 items"
+    ]
+  },
+  {
+    "id": "p1787282395806",
+    "name": "CENTRO ติวานนท์ - งามวงศ์วาน",
+    "url": "https://www.apthai.com/th/single-detached-house/centro-tiwanon-ngamwongwan",
+    "changes": [
+      "Price: 50 -> 10.9 MB"
+    ]
+  },
+  {
+    "id": "p1787282435117",
+    "name": "GRANDE PLENO บางนา - กิ่งแก้ว",
+    "url": "https://www.apthai.com/th/semi-detached-house/grande-pleno-bangna-kingkaew",
+    "changes": [
+      "Price: 50 -> 5.59 MB"
+    ]
+  },
+  {
+    "id": "p1787282082658",
+    "name": "PLENO ราชพฤกษ์ - นครอินทร์",
+    "url": "https://www.apthai.com/th/townhome/pleno-ratchapruek-nakhon-in",
+    "changes": [
+      "Price: 50 -> 3 MB"
+    ]
+  },
+  {
+    "id": "p1787282094408",
+    "name": "PLENO พระราม 3 - สุขสวัสดิ์ 30",
+    "url": "https://www.apthai.com/th/townhome/pleno-rama-3-suksawat-30",
+    "changes": [
+      "Facilities: 0 -> 4 items"
+    ]
+  },
+  {
+    "id": "p1787282447038",
+    "name": "GRANDE PLENO พระราม 9 - กรุงเทพกรีฑา",
+    "url": "https://www.apthai.com/th/townhome/grande-pleno-rama-9-motorway",
+    "changes": [
+      "Price: 50 -> 3.39 MB",
+      "Unit Types: 0 -> 3 types",
+      "Facilities: 0 -> 3 items",
+      "Total Units: 290"
+    ]
+  },
+  {
+    "id": "p1787282491002",
+    "name": "CENTRO เพชรเกษม - บางบอน",
+    "url": "https://www.apthai.com/th/single-detached-house/centro-petchkasem-bangbon",
+    "changes": [
+      "Price: 50 -> 9.99 MB"
+    ]
+  },
+  {
+    "id": "p1787282082750",
+    "name": "GRANDE PLENO รามอินทรา - จตุโชติ",
+    "url": "https://www.apthai.com/th/townhome/grande-pleno-ramintra-chatuchot-bangchan-station",
+    "changes": [
+      "Price: 2.98 -> 3.99 MB",
+      "Unit Types: 4 -> 5 types",
+      "Facilities: 0 -> 3 items"
+    ]
+  },
+  {
+    "id": "p1787282888892",
+    "name": "CENTRO ศาลายา - ปิ่นเกล้า",
+    "url": "https://www.apthai.com/th/single-detached-house/centro-salaya-pinklao",
+    "changes": [
+      "Price: 50 -> 6.99 MB"
+    ]
+  },
+  {
+    "id": "p1787282080745",
+    "name": "THE CITY สุขสวัสดิ์ - พระราม 3",
+    "url": "https://www.apthai.com/th/single-detached-house/the-city-suksawat-rama-3",
+    "changes": [
+      "Price: 50 -> 15 MB"
+    ]
+  },
+  {
+    "id": "p1787282108890",
+    "name": "PLENO พระราม 9 - กรุงเทพกรีฑา 3",
+    "url": "https://www.apthai.com/th/townhome/pleno-rama-9-krungthep-kreetha-4",
+    "changes": [
+      "Price: 3.48 -> 3.38 MB"
+    ]
+  },
+  {
+    "id": "p1787282220400",
+    "name": "PLENO TOWN ราชพฤกษ์ - 345",
+    "url": "https://www.apthai.com/th/townhome/pleno-town-ratchapruek-345",
+    "changes": [
+      "Facilities: 1 -> 3 items"
+    ]
+  },
+  {
+    "id": "p1787282121752",
+    "name": "PLENO สุขุมวิท - บางนา 3",
+    "url": "https://www.apthai.com/th/townhome/pleno-sukhumvit-bangna-4",
+    "changes": [
+      "Price: 3.59 -> 4.69 MB"
+    ]
+  },
+  {
+    "id": "p1787282880485",
+    "name": "CENTRO สุขุมวิท - บางนา",
+    "url": "https://www.apthai.com/th/single-detached-house/centro-sukhumvit-bangna",
+    "changes": [
+      "Price: 50 -> 11.9 MB"
+    ]
+  },
+  {
+    "id": "p1787282133231",
+    "name": "PLENO รามอินทรา - บางชัน สเตชั่น 2",
+    "url": "https://www.apthai.com/th/townhome/grande-pleno-ramintra-wongwaen-2",
+    "changes": [
+      "Price: 2.98 -> 3.39 MB",
+      "Unit Types: 1 -> 2 types",
+      "Facilities: 2 -> 3 items"
+    ]
+  },
+  {
+    "id": "p1787282885585",
+    "name": "CENTRO พระราม 2",
+    "url": "https://www.apthai.com/th/single-detached-house/centro-rama-2",
+    "changes": [
+      "Price: 50 -> 8.99 MB",
+      "Facilities: 2 -> 5 items"
+    ]
+  },
+  {
+    "id": "p1787282136475",
+    "name": "PLENO ประชาอุทิศ - สุขสวัสดิ์",
+    "url": "https://www.apthai.com/th/townhome/pleno-suksawat-prachauthit-60",
+    "changes": [
+      "Price: 3.19 -> 2.99 MB"
+    ]
+  },
+  {
+    "id": "p1787282904061",
+    "name": "CENTRO วิภาวดี - รังสิต",
+    "url": "https://www.apthai.com/th/single-detached-house/centro-vibhavadi-rangsit",
+    "changes": [
+      "Price: 50 -> 7.29 MB"
+    ]
+  },
+  {
+    "id": "p1787282139818",
+    "name": "PLENO สุขสวัสดิ์ - ประชาอุทิศ 76",
+    "url": "https://www.apthai.com/th/townhome/pleno-suksawat-prachauthit-60",
+    "changes": [
+      "Price: 3.59 -> 2.99 MB",
+      "Facilities: 1 -> 2 items"
+    ]
+  },
+  {
+    "id": "p1787282917105",
+    "name": "CENTRO อ่อนนุช - ลาดกระบัง",
+    "url": "https://www.apthai.com/th/single-detached-house/centro-onnut-ladkrabang",
+    "changes": [
+      "Price: 50 -> 8.5 MB",
+      "Facilities: 3 -> 5 items"
+    ]
+  },
+  {
+    "id": "p1787282499002",
+    "name": "GRANDE PLENO ศรีนครินทร์ - เทพารักษ์",
+    "url": "https://www.apthai.com/th/semi-detached-house/grande-pleno-srinakarin-theparak",
+    "changes": [
+      "Price: 3.69 -> 5.98 MB"
+    ]
+  },
+  {
+    "id": "p1787282569272",
+    "name": "GRANDE PLENO ศาลายา - บรมราชชนนี",
+    "url": "https://www.apthai.com/th/semi-detached-house/grande-pleno-salaya-borommaratchachonnani",
+    "changes": [
+      "Facilities: 2 -> 3 items"
+    ]
+  },
+  {
+    "id": "p1787282006153",
+    "name": "GRANDE PLENO รามอินทรา - บางชันสเตชั่น",
+    "url": "https://www.apthai.com/th/townhome/grande-pleno-ramintra-wongwaen-2",
+    "changes": [
+      "Price: 3.99 -> 3.39 MB",
+      "Facilities: 2 -> 3 items",
+      "Land Area: 24 - 0 - 0"
+    ]
+  },
+  {
+    "id": "p1787282993125",
+    "name": "MODEN รังสิต - คลอง 2",
+    "url": "https://www.apthai.com/th/single-detached-house/moden-rangsit-klong-2",
+    "changes": [
+      "Price: 50 -> 4.69 MB"
+    ]
+  },
+  {
+    "id": "p1787282560467",
+    "name": "GRANDE PLENO ปิ่นเกล้า - กาญจนาฯ",
+    "url": "https://www.apthai.com/th/semi-detached-house/grande-pleno-pinklao-kanchana",
+    "changes": [
+      "Facilities: 0 -> 3 items"
+    ]
+  },
+  {
+    "id": "p1787282179579",
+    "name": "PLENO สุขสวัสดิ์ - ประชาอุทิศ",
+    "url": "https://www.apthai.com/th/townhome/pleno-suksawat-prachauthit-60",
+    "changes": [
+      "Price: 1.79 -> 2.99 MB"
+    ]
+  },
+  {
+    "id": "p1787282112049",
+    "name": "PLENO ดอนเมือง",
+    "url": "https://www.apthai.com/th/townhome/pleno-donmuang",
+    "changes": [
+      "Facilities: 2 -> 3 items"
+    ]
+  },
+  {
+    "id": "p1787282116745",
+    "name": "PLENO เพชรเกษม 91",
+    "url": "https://www.apthai.com/th/townhome/pleno-petchkasem-91",
+    "changes": [
+      "Facilities: 3 -> 5 items"
+    ]
+  },
+  {
+    "id": "p1787282794785",
+    "name": "PLENO TOWN พหลโยธิน - ลำลูกกา",
+    "url": "https://www.apthai.com/th/semi-detached-house/pleno-town-phaholyothin-lamlukka",
+    "changes": [
+      "Facilities: 2 -> 3 items"
+    ]
+  },
+  {
+    "id": "p1787282876655",
+    "name": "CENTRO ศรีนครินทร์ - บางนา 2",
+    "url": "https://www.apthai.com/th/single-detached-house/centro-srinakarin-bangna-2",
+    "changes": [
+      "Price: 50 -> 10.9 MB",
+      "Facilities: 4 -> 5 items"
+    ]
+  },
+  {
+    "id": "p1787282897540",
+    "name": "CENTRO สาทร - สุขสวัสดิ์",
+    "url": "https://www.apthai.com/th/single-detached-house/centro-sathorn-suksawat",
+    "changes": [
+      "Price: 50 -> 11.5 MB"
+    ]
+  },
+  {
+    "id": "p1787281964992",
+    "name": "THE PALAZZO กรุงเทพกรีฑา",
+    "url": "https://www.apthai.com/th/single-detached-house/the-palazzo-krungthep-kreetha",
+    "changes": [
+      "Price: 50 -> 3 MB",
+      "Facilities: 1 -> 5 items"
+    ]
+  },
+  {
+    "id": "p1787282891966",
+    "name": "CENTRO ราชพฤกษ์ - นครอินทร์",
+    "url": "https://www.apthai.com/th/single-detached-house/centro-ratchapruek-nakhon-in",
+    "changes": [
+      "Price: 50 -> 8.9 MB",
+      "Facilities: 3 -> 5 items"
+    ]
+  },
+  {
+    "id": "p1787282908985",
+    "name": "CENTRO รามอินทรา - จตุโชติ 3",
+    "url": "https://www.apthai.com/th/townhome/grande-pleno-ramintra-chatuchot-bangchan-station",
+    "changes": [
+      "Price: 50 -> 3.99 MB"
+    ]
+  },
+  {
+    "id": "p1787282894559",
+    "name": "CENTRO เทพารักษ์ - ศรีนครินทร์",
+    "url": "https://www.apthai.com/th/single-detached-house/centro-theparak-srinakarin",
+    "changes": [
+      "Price: 50 -> 8.99 MB"
+    ]
+  },
+  {
+    "id": "p1787282905496",
+    "name": "CENTRO ราชพฤกษ์ - ปิ่นเกล้า",
+    "url": "https://www.apthai.com/th/single-detached-house/centro-ratchapruek-pinklao",
+    "changes": [
+      "Price: 50 -> 8.99 MB"
+    ]
+  },
+  {
+    "id": "p1787282920907",
+    "name": "CENTRO ติวานนท์ - ศรีสมาน",
+    "url": "https://www.apthai.com/th/single-detached-house/centro-tiwanon-ngamwongwan",
+    "changes": [
+      "Price: 50 -> 10.9 MB"
+    ]
+  },
+  {
+    "id": "p1787282914682",
+    "name": "CENTRO เพชรเกษม - บางแค",
+    "url": "https://www.apthai.com/th/single-detached-house/centro-petchkasem-bangbon",
+    "changes": [
+      "Price: 19.99 -> 9.99 MB"
+    ]
+  },
+  {
+    "id": "p1787282923605",
+    "name": "CENTRO รามอินทรา 2",
+    "url": "https://www.apthai.com/th/single-detached-house/centro-ramintra-2",
+    "changes": [
+      "Price: 50 -> 8.79 MB",
+      "Facilities: 2 -> 4 items"
+    ]
+  },
+  {
+    "id": "p1787282931596",
+    "name": "CENTRO พระราม 2 - พุทธบูชา 2",
+    "url": "https://www.apthai.com/th/single-detached-house/centro-rama-2",
+    "changes": [
+      "Price: 7.39 -> 8.99 MB",
+      "Unit Types: 5 -> 6 types",
+      "Facilities: 4 -> 5 items"
+    ]
+  },
+  {
+    "id": "p1787282108900",
+    "name": "PLENO วิภาวดี - รังสิต",
+    "url": "https://www.apthai.com/th/townhome/pleno-vibhavadi-rangsit",
+    "changes": [
+      "Facilities: 3 -> 4 items",
+      "Land Area: 32.45"
+    ]
+  },
+  {
+    "id": "p1787142272124h1mr",
+    "name": "MODEN พระราม 2",
+    "url": "https://www.apthai.com/th/single-detached-house/moden-rama-2",
+    "changes": [
+      "Price: 50 -> 4.39 MB",
+      "Facilities: 1 -> 3 items"
+    ]
+  },
+  {
+    "id": "p1787282094476",
+    "name": "PLENO แจ้งวัฒนะ",
+    "url": "https://www.apthai.com/th/townhome/pleno-chaengwattana-tiwanon",
+    "changes": [
+      "Price: 2.79 -> 2.69 MB",
+      "Unit Types: 2 -> 3 types",
+      "Facilities: 0 -> 4 items"
+    ]
+  },
+  {
+    "id": "p1787282082779",
+    "name": "GRANDE PLENO ราชพฤกษ์",
+    "url": "https://www.apthai.com/th/townhome/grande-pleno-ratchapruek",
+    "changes": [
+      "Price: 2.39 -> 3.19 MB"
+    ]
+  }
+]

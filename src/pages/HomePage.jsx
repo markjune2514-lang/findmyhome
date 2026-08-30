@@ -8,8 +8,8 @@ export default function HomePage() {
   const navigate = useNavigate();
   const { properties, heroImage } = useProperties();
 
-  // Sort properties by package_tier/rank_score for featured section
-  const featuredProperties = [...properties].sort((a, b) => {
+  // Sort properties by package_tier/rank_score for featured section (excluding drafts)
+  const featuredProperties = properties.filter(p => p.status !== 'ฉบับร่าง').sort((a, b) => {
     const tierWeights = { super: 4, sponsored: 3, premium: 2, standard: 1 };
     const weightA = tierWeights[a.package_tier] || tierWeights['standard'];
     const weightB = tierWeights[b.package_tier] || tierWeights['standard'];

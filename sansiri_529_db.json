@@ -1,0 +1,194 @@
+[
+  {
+    "id": "sansiri_529",
+    "name": "สิริ เพลส เมกาบางนา",
+    "developer": "แสนสิริ",
+    "price": 3.39,
+    "price_str": null,
+    "price_sqm": null,
+    "bedrooms": null,
+    "size": null,
+    "type": "ทาวน์โฮม",
+    "project_type": null,
+    "status": "ฉบับร่าง",
+    "location_lat": 13.6392711,
+    "location_lng": 100.6625753,
+    "station": null,
+    "distance_to_station": null,
+    "rating": null,
+    "reviews": null,
+    "image": "https://s3.ap-southeast-1.amazonaws.com/o77site/townhome/siri-place-mega-bangna/img/gallery/siri-place-mega-bangna-townhome-gallery-06.webp,https://s3.ap-southeast-1.amazonaws.com/o77site/townhome/siri-place-mega-bangna/img/gallery/siri-place-mega-bangna-townhome-gallery-07.webp,https://s3.ap-southeast-1.amazonaws.com/o77site/townhome/siri-place-mega-bangna/img/gallery/siri-place-mega-bangna-townhome-gallery-08.webp,https://s3.ap-southeast-1.amazonaws.com/o77site/townhome/siri-place-mega-bangna/img/gallery/siri-place-mega-bangna-townhome-gallery-04.webp,https://s3.ap-southeast-1.amazonaws.com/o77site/townhome/siri-place-mega-bangna/img/gallery/siri-place-mega-bangna-townhome-gallery-05.webp,https://s3.ap-southeast-1.amazonaws.com/o77site/townhome/siri-place-mega-bangna/img/gallery/siri-place-mega-bangna-townhome-gallery-02.webp,https://s3.ap-southeast-1.amazonaws.com/o77site/townhome/siri-place-mega-bangna/img/gallery/siri-place-mega-bangna-townhome-gallery-01.webp,https://s3.ap-southeast-1.amazonaws.com/o77site/townhome/siri-place-mega-bangna/img/gallery/siri-place-mega-bangna-townhome-gallery-03.webp,https://s3.ap-southeast-1.amazonaws.com/o77site/townhome/siri-place-mega-bangna/img/gallery/siri-place-mega-bangna-townhome-gallery-14.webp,https://s3.ap-southeast-1.amazonaws.com/o77site/townhome/siri-place-mega-bangna/img/gallery/siri-place-mega-bangna-townhome-gallery-13.webp,https://s3.ap-southeast-1.amazonaws.com/o77site/townhome/siri-place-mega-bangna/img/gallery/siri-place-mega-bangna-townhome-gallery-15.webp,https://s3.ap-southeast-1.amazonaws.com/o77site/townhome/siri-place-mega-bangna/img/gallery/siri-place-mega-bangna-townhome-gallery-16.webp,https://s3.ap-southeast-1.amazonaws.com/o77site/townhome/siri-place-mega-bangna/img/gallery/siri-place-mega-bangna-townhome-gallery-17.webp,https://s3.ap-southeast-1.amazonaws.com/o77site/townhome/siri-place-mega-bangna/img/gallery/siri-place-mega-bangna-townhome-gallery-18.webp,https://s3.ap-southeast-1.amazonaws.com/o77site/townhome/siri-place-mega-bangna/img/gallery/siri-place-mega-bangna-townhome-gallery-10.webp",
+    "images": null,
+    "facilities": [
+      "Garden​",
+      "Swimming Pool",
+      "Fitness Room",
+      "Relaxing Area",
+      "Parisian Garden",
+      "Education Playground",
+      "Lake"
+    ],
+    "promotions": null,
+    "floors": "2",
+    "total_units": 236,
+    "created_at": "2026-08-30T14:57:58.646693+00:00",
+    "priceTo": 0,
+    "distanceToStation": "",
+    "livingFormat": "",
+    "special": [],
+    "healthFacilities": [],
+    "services": [],
+    "security": [],
+    "transport": [],
+    "district": "",
+    "province": "กรุงเทพมหานคร",
+    "transitSystem": "",
+    "transitLine": "",
+    "projectType": "",
+    "priceSqm": 0,
+    "landSize": "",
+    "totalUnits": "",
+    "roomType": "",
+    "unitTypes": [],
+    "promotion": null,
+    "categorizedLandmarks": null,
+    "logo": null,
+    "building_details": [
+      "ทาวน์โฮม 2 ชั้น",
+      "จำนวนทั้งหมด 236 ยูนิต",
+      "พื้นที่โครงการ 22 ไร่ 2 งาน 10.4 ตร.ว.",
+      "พื้นที่ใช้สอย 99 - 111 ตร.ม.",
+      "ที่ดินเริ่มต้น 16 - 42 ตร.ว.",
+      "ที่จอดรถ 1 - 2 คัน",
+      "ค่าส่วนกลาง 36 บาท/ตร.ว."
+    ],
+    "unit_types": [
+      {
+        "name": "MONTMARTRE (มงต์มาตร์)",
+        "size": "99",
+        "type": "ทาวน์โฮม",
+        "price": "3.39",
+        "parking": "1",
+        "bedrooms": "3",
+        "bathrooms": "3",
+        "planImages": [
+          "https://s3.ap-southeast-1.amazonaws.com/o77site/webproject-source/townhome/siri-place-mega-bangna/img/housetype/siri-place-pattanakarn-townhome-floorplan-montmarte-99-1.webp",
+          "https://s3.ap-southeast-1.amazonaws.com/o77site/webproject-source/townhome/siri-place-mega-bangna/img/housetype/siri-place-pattanakarn-townhome-floorplan-montmarte-99-2.webp"
+        ],
+        "roomImages": [
+          "https://s3.ap-southeast-1.amazonaws.com/o77site/townhome/siri-place-mega-bangna/img/gallery/siri-place-mega-bangna-townhome-gallery-06.webp",
+          "https://s3.ap-southeast-1.amazonaws.com/o77site/townhome/siri-place-mega-bangna/img/gallery/siri-place-mega-bangna-townhome-gallery-07.webp",
+          "https://s3.ap-southeast-1.amazonaws.com/o77site/townhome/siri-place-mega-bangna/img/gallery/siri-place-mega-bangna-townhome-gallery-08.webp",
+          "https://s3.ap-southeast-1.amazonaws.com/o77site/townhome/siri-place-mega-bangna/img/gallery/siri-place-mega-bangna-townhome-gallery-04.webp",
+          "https://s3.ap-southeast-1.amazonaws.com/o77site/townhome/siri-place-mega-bangna/img/gallery/siri-place-mega-bangna-townhome-gallery-05.webp",
+          "https://s3.ap-southeast-1.amazonaws.com/o77site/townhome/siri-place-mega-bangna/img/gallery/siri-place-mega-bangna-townhome-gallery-02.webp",
+          "https://s3.ap-southeast-1.amazonaws.com/o77site/townhome/siri-place-mega-bangna/img/gallery/siri-place-mega-bangna-townhome-gallery-01.webp",
+          "https://s3.ap-southeast-1.amazonaws.com/o77site/townhome/siri-place-mega-bangna/img/gallery/siri-place-mega-bangna-townhome-gallery-03.webp"
+        ],
+        "building_type": "ทาวน์โฮม 2 ชั้น"
+      },
+      {
+        "name": "LOUVRE (ลูฟวร์)",
+        "size": "111",
+        "type": "ทาวน์โฮม",
+        "price": "3.39",
+        "parking": "2",
+        "bedrooms": "3",
+        "bathrooms": "3",
+        "planImages": [
+          "https://s3.ap-southeast-1.amazonaws.com/o77site/webproject-source/townhome/siri-place-mega-bangna/img/housetype/siri-place-mega-bangna-townhome-floorplan-louvre-111-01.webp",
+          "https://s3.ap-southeast-1.amazonaws.com/o77site/webproject-source/townhome/siri-place-mega-bangna/img/housetype/siri-place-mega-bangna-townhome-floorplan-louvre-111-02.webp"
+        ],
+        "roomImages": [
+          "https://s3.ap-southeast-1.amazonaws.com/o77site/townhome/siri-place-mega-bangna/img/gallery/siri-place-mega-bangna-townhome-gallery-14.webp",
+          "https://s3.ap-southeast-1.amazonaws.com/o77site/townhome/siri-place-mega-bangna/img/gallery/siri-place-mega-bangna-townhome-gallery-13.webp",
+          "https://s3.ap-southeast-1.amazonaws.com/o77site/townhome/siri-place-mega-bangna/img/gallery/siri-place-mega-bangna-townhome-gallery-15.webp",
+          "https://s3.ap-southeast-1.amazonaws.com/o77site/townhome/siri-place-mega-bangna/img/gallery/siri-place-mega-bangna-townhome-gallery-16.webp",
+          "https://s3.ap-southeast-1.amazonaws.com/o77site/townhome/siri-place-mega-bangna/img/gallery/siri-place-mega-bangna-townhome-gallery-17.webp",
+          "https://s3.ap-southeast-1.amazonaws.com/o77site/townhome/siri-place-mega-bangna/img/gallery/siri-place-mega-bangna-townhome-gallery-18.webp",
+          "https://s3.ap-southeast-1.amazonaws.com/o77site/townhome/siri-place-mega-bangna/img/gallery/siri-place-mega-bangna-townhome-gallery-10.webp",
+          "https://s3.ap-southeast-1.amazonaws.com/o77site/townhome/siri-place-mega-bangna/img/gallery/siri-place-mega-bangna-townhome-gallery-11.webp"
+        ],
+        "building_type": "ทาวน์โฮม 2 ชั้น"
+      }
+    ],
+    "project_parking": "1 - 2 คัน",
+    "total_land_area": "22 ไร่ 2 งาน 10.4 ตร.ว.",
+    "price_to": null,
+    "facility_type": null,
+    "categorized_landmarks": {
+      "schools": [
+        {
+          "name": "รร.ราชวินิตบางแก้ว",
+          "distance": "2 กม."
+        },
+        {
+          "name": "มหาวิทยาลัยรามคำแหง วิทยาเขตบางนา (รามคำแหง 2)",
+          "distance": "7.4 กม."
+        },
+        {
+          "name": "โรงเรียนสารสาสน์วิเทศสุวรรณภูมิ",
+          "distance": "7.5 กม."
+        }
+      ],
+      "shopping": [
+        {
+          "name": "เมกา บางนา",
+          "distance": "6 กม."
+        },
+        {
+          "name": "เซ็นทรัล บางนา",
+          "distance": "9 กม."
+        },
+        {
+          "name": "ห้างสรรพสินค้าซีคอนสแควร์",
+          "distance": "9.7 กม."
+        },
+        {
+          "name": "ห้างสรรพสินค้าพาราไดซ์ พาร์ค",
+          "distance": "9.8 กม."
+        }
+      ],
+      "hospitals": [
+        {
+          "name": "รพ.ไทยนครินทร์",
+          "distance": "7 กม."
+        },
+        {
+          "name": "รพ.ศิครินทร์",
+          "distance": "9 กม."
+        }
+      ],
+      "transport": [
+        {
+          "name": "ถ.บางนา-ตราด",
+          "distance": "3.7 กม."
+        },
+        {
+          "name": "ทางพิเศษบูรพาวิถี (บางนา-ชลบุรี)",
+          "distance": "5 กม."
+        },
+        {
+          "name": "รถไฟฟ้า MRT สวนหลวงร.9",
+          "distance": "8 กม."
+        },
+        {
+          "name": "ท่าอากาศยานสุวรรณภูมิ",
+          "distance": "15 กม."
+        }
+      ]
+    },
+    "transit_system": null,
+    "transit_line": null,
+    "room_type": null,
+    "living_format": null,
+    "health_facilities": null,
+    "buildings": null,
+    "fully_furnished": null,
+    "project_highlights": "ทาวน์โฮมใหม่ ใกล้รถไฟฟ้า และ ห้างชั้นนำ ออกแบบสวยสไตล์ปารีส ลงทะเบียนรอบ VIP เพื่อรับส่วนลดเพิ่ม 20,000 บาท*",
+    "listing_type": "ซื้อ",
+    "land_size": null,
+    "package_tier": "standard",
+    "rank_score": 0
+  }
+]

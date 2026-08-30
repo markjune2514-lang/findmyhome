@@ -533,22 +533,32 @@ export default function PropertyDetail({ previewData }) {
                     <div className="facility-group">
                       <span className="facility-group-title text-indigo"><Building size={14} /> ข้อมูลรายอาคาร:</span>
                       <div className="flex flex-col gap-3 mt-2">
-                        {prop.building_details.map((bldg, idx) => (
-                          <div key={idx} className="bg-gray-50 p-3 rounded-xl border border-gray-100 flex flex-col gap-2">
-                            <span className="font-bold text-gray-800 text-sm">{bldg.name || `อาคาร ${idx + 1}`}</span>
-                            {Array.isArray(bldg.facilities) && bldg.facilities.length > 0 && splitTags(bldg.facilities).length > 0 ? (
-                              <div className="flex flex-wrap gap-1.5">
-                                {splitTags(bldg.facilities).map((f, i) => (
-                                  <span key={i} className="text-[10px] bg-white border border-gray-200 text-gray-600 px-2 py-0.5 rounded-full">{f}</span>
-                                ))}
+                        {prop.building_details.map((bldg, idx) => {
+                          if (typeof bldg === 'string') {
+                            return (
+                              <div key={idx} className="bg-gray-50 p-2.5 rounded-xl border border-gray-100 text-xs font-semibold text-gray-700 flex items-center gap-2">
+                                <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 flex-shrink-0"></span>
+                                {bldg}
                               </div>
-                            ) : (
-                              <span className="text-[10px] text-gray-400 italic">
-                                {prop.facilityType === 'ส่วนกลางเหมือนกันทุกตึก' ? 'ใช้ส่วนกลางร่วมกันทุกอาคาร' : 'ไม่มีข้อมูลส่วนกลางเฉพาะอาคาร'}
-                              </span>
-                            )}
-                          </div>
-                        ))}
+                            );
+                          }
+                          return (
+                            <div key={idx} className="bg-gray-50 p-3 rounded-xl border border-gray-100 flex flex-col gap-2">
+                              <span className="font-bold text-gray-800 text-sm">{bldg?.name || `อาคาร ${idx + 1}`}</span>
+                              {Array.isArray(bldg?.facilities) && bldg.facilities.length > 0 && splitTags(bldg.facilities).length > 0 ? (
+                                <div className="flex flex-wrap gap-1.5">
+                                  {splitTags(bldg.facilities).map((f, i) => (
+                                    <span key={i} className="text-[10px] bg-white border border-gray-200 text-gray-600 px-2 py-0.5 rounded-full">{f}</span>
+                                  ))}
+                                </div>
+                              ) : (
+                                <span className="text-[10px] text-gray-400 italic">
+                                  {prop.facilityType === 'ส่วนกลางเหมือนกันทุกตึก' ? 'ใช้ส่วนกลางร่วมกันทุกอาคาร' : 'ไม่มีข้อมูลส่วนกลางเฉพาะอาคาร'}
+                                </span>
+                              )}
+                            </div>
+                          );
+                        })}
                       </div>
                     </div>
                   )}
@@ -696,14 +706,15 @@ export default function PropertyDetail({ previewData }) {
             {/* Categorized Landmark Distances */}
             <div className="space-y-3">
               {/* 1. รถไฟฟ้า / การเดินทาง */}
-              {((Array.isArray(prop.categorizedLandmarks?.transit) && prop.categorizedLandmarks.transit.length > 0) || prop.station) && (
+              {(((Array.isArray(prop.categorizedLandmarks?.transit) && prop.categorizedLandmarks.transit.length > 0) ||
+                (Array.isArray(prop.categorizedLandmarks?.transport) && prop.categorizedLandmarks.transport.length > 0)) || prop.station) && (
                 <div className="bg-blue-50/50 p-2.5 rounded-xl border border-blue-100">
                   <p className="text-xs font-bold text-blue-900 mb-1.5 flex items-center gap-1.5">
                     <Train size={14} /> รถไฟฟ้า / การเดินทาง
                   </p>
                   <div className="space-y-1">
-                    {Array.isArray(prop.categorizedLandmarks?.transit) && prop.categorizedLandmarks.transit.length > 0 ? (
-                      prop.categorizedLandmarks.transit.map((item, i) => (
+                    {(prop.categorizedLandmarks?.transit || prop.categorizedLandmarks?.transport)?.length > 0 ? (
+                      (prop.categorizedLandmarks.transit || prop.categorizedLandmarks.transport).map((item, i) => (
                         <div key={i} className="flex justify-between items-center text-xs">
                           <span className="text-gray-700 font-medium">{item.name}</span>
                           <span className="font-bold text-blue-600 bg-white px-2 py-0.5 rounded border border-blue-200">{item.distance}</span>
@@ -728,13 +739,14 @@ export default function PropertyDetail({ previewData }) {
               )}
 
               {/* 2. ห้างสรรพสินค้า / ช้อปปิ้ง */}
-              {Array.isArray(prop.categorizedLandmarks?.malls) && prop.categorizedLandmarks.malls.length > 0 && (
+              {((Array.isArray(prop.categorizedLandmarks?.malls) && prop.categorizedLandmarks.malls.length > 0) ||
+                (Array.isArray(prop.categorizedLandmarks?.shopping) && prop.categorizedLandmarks.shopping.length > 0)) && (
                 <div className="bg-amber-50/50 p-2.5 rounded-xl border border-amber-100">
                   <p className="text-xs font-bold text-amber-900 mb-1.5 flex items-center gap-1.5">
                     <ShoppingBag size={14} /> ห้างสรรพสินค้า / ช้อปปิ้ง
                   </p>
                   <div className="space-y-1">
-                    {prop.categorizedLandmarks.malls.map((item, i) => (
+                    {(prop.categorizedLandmarks.malls || prop.categorizedLandmarks.shopping).map((item, i) => (
                       <div key={i} className="flex justify-between items-center text-xs">
                         <span className="text-gray-700 font-medium">{item.name}</span>
                         <span className="font-bold text-amber-600 bg-white px-2 py-0.5 rounded border border-amber-200">{item.distance}</span>
@@ -762,13 +774,14 @@ export default function PropertyDetail({ previewData }) {
               )}
 
               {/* 4. โรงเรียน / มหาวิทยาลัย */}
-              {Array.isArray(prop.categorizedLandmarks?.schools) && prop.categorizedLandmarks.schools.length > 0 && (
+              {((Array.isArray(prop.categorizedLandmarks?.schools) && prop.categorizedLandmarks.schools.length > 0) ||
+                (Array.isArray(prop.categorizedLandmarks?.education) && prop.categorizedLandmarks.education.length > 0)) && (
                 <div className="bg-emerald-50/50 p-2.5 rounded-xl border border-emerald-100">
                   <p className="text-xs font-bold text-emerald-900 mb-1.5 flex items-center gap-1.5">
                     <GraduationCap size={14} /> โรงเรียน / มหาวิทยาลัย
                   </p>
                   <div className="space-y-1">
-                    {prop.categorizedLandmarks.schools.map((item, i) => (
+                    {(prop.categorizedLandmarks.schools || prop.categorizedLandmarks.education).map((item, i) => (
                       <div key={i} className="flex justify-between items-center text-xs">
                         <span className="text-gray-700 font-medium">{item.name}</span>
                         <span className="font-bold text-emerald-600 bg-white px-2 py-0.5 rounded border border-emerald-200">{item.distance}</span>

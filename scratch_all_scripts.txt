@@ -1,0 +1,2276 @@
+
+    {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": "https://www.sansiri.com/townhome/siri-place-mega-bangna/th/#webpage",
+      "url": "https://www.sansiri.com/townhome/siri-place-mega-bangna/th/",
+      "name": "สิริ เพลส เมกาบางนา| แสนสิริ",
+      "isPartOf": {
+        "@type": "WebSite",
+        "@id": "https://www.sansiri.com/#website"
+      },
+      "breadcrumb": {
+        "@id": "https://www.sansiri.com/townhome/siri-place-mega-bangna/th/#breadcrumb"
+      },
+      "mainEntity": {
+        "@id": "https://www.sansiri.com/townhome/siri-place-mega-bangna/th/#product"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://www.sansiri.com/townhome/siri-place-mega-bangna/th/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "หน้าแรก",
+          "item": "https://www.sansiri.com/thai/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "ทาวน์โฮม",
+          "item": "https://www.sansiri.com/thai/ทาวน์โฮม"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "สิริ เพลส เมกาบางนา",
+          "item": "https://www.sansiri.com/townhome/siri-place-mega-bangna/th/"
+        }
+      ]
+    },
+    {
+      "@type": "Product",
+      "@id": "https://www.sansiri.com/townhome/siri-place-mega-bangna/th/#product",
+      "name": "สิริ เพลส เมกาบางนา",
+      "description": "ทาวน์โฮมพร้อมอยู่ ดีไซน์ปารีส บรรยากาศทะเลสาบ ส่วนกลางครบขนาดใหญ่ ทำเลดีใกล้ทางด่วน และเมกาบางนา",
+      "brand": {
+        "@type": "Corporation",
+        "@id": "https://www.sansiri.com/#corporation"
+      },
+      "isSimilarTo": {
+        "@type": "GatedCommunity",
+        "@id": "https://www.sansiri.com/townhome/siri-place-mega-bangna/th/#residence",
+        "name": "โครงการทาวน์โฮม สิริ เพลส เมกาบางนา",
+        "containedInPlace": {
+          "@type": "Place",
+          "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "TH",
+            "streetAddress": "999 หมู่ 8 บัวนครินทร์",
+            "addressLocality": "บางพลี",
+            "addressRegion": "สมุทรปราการ",
+            "postalCode": "10540"
+          },
+          "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": "13.639271",
+            "longitude": "100.662575"
+          }
+        }
+      },
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://o77site.s3.ap-southeast-1.amazonaws.com/webproject-source/townhome/siri-place-mega-bangna/img/share/siri-place-megabangna-townhome-share-project-1200x630.jpg",
+        "caption": "ภาพโครงการทาวน์โฮม สิริ เพลส เมกาบางนา"
+      },
+      "offers": {
+        "@type": "AggregateOffer",
+        "priceCurrency": "THB",
+        "lowPrice": "3390000",
+        "availability": "https://schema.org/InStock",
+        "seller": {
+          "@type": "Corporation",
+          "@id": "https://www.sansiri.com/#corporation"
+        }
+      },
+      "subjectOf": [
+        {
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "การเดินทางเข้าเมืองจากโครงการ สิริ เพลส เมกาบางนา สะดวกแค่ไหน?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "เดินทางสะดวกมากด้วยจุดขึ้นลงทางด่วนกาญจนาฯ และบูรพาวิถีเพียง 5 นาที* พร้อมเชื่อมต่อรถไฟฟ้าสายสีเหลือง เข้าออกได้ทั้งถนนบางนา-ตราด และถนนศรีนครินทร์ ช่วยให้การเดินทางเข้าสู่ใจกลางเมืองรวดเร็วและง่ายดาย"
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "รอบโครงการมีห้างสรรพสินค้าและสถานศึกษาชั้นนำที่ไหนบ้าง?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "โครงการอยู่ใกล้ Mega Bangna และ IKEA เพียง 5 นาที* รายล้อมด้วยห้างชั้นนำอย่าง Central Bangna และ Market Village รวมถึงใกล้โรงเรียนชื่อดัง เช่น รร.ราชวินิตบางแก้ว และนานาชาติ Verso ตอบโจทย์ไลฟ์สไตล์การใช้ชีวิตที่ครบวงจร"
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "สิริ เพลส เมกาบางนา มีจุดเด่นอะไรที่แตกต่างจากทาวน์โฮมทั่วไป?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "โดดเด่นด้วยดีไซน์สไตล์ปารีสที่สวยงามและมีเอกลักษณ์ ตั้งแต่หน้าบ้านจนถึงส่วนกลางที่มีบรรยากาศทะเลสาบ ให้ความรู้สึกเหมือนพักผ่อนในยุโรป พร้อมฟังก์ชันพื้นที่ใช้สอยภายในบ้านที่ออกแบบมาให้ตอบโจทย์การใช้งานจริงของผู้อยู่อาศัย"
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "ระบบรักษาความปลอดภัยและบริการหลังการขายของแสนสิริเป็นอย่างไร?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "มั่นใจด้วยระบบรักษาความปลอดภัย LIV-24 ที่ดูแลด้วยเทคโนโลยีอัจฉริยะแบบเรียลไทม์ตลอด 24 ชั่วโมง พร้อมบริการ Sansiri Home Care ดูแลซ่อมบำรุงบ้านตลอดอายุการอยู่อาศัย และจัดการทุกเรื่องบ้านได้ง่ายผ่านแอปพลิเคชัน KUHU"
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "โครงการ สิริ เพลส เมกาบางนา มีความคุ้มค่าด้านการลงทุนอย่างไร?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "เป็นทำเลศักยภาพที่มีความต้องการเช่าสูงจากพนักงานบริษัทในย่านบางนาและชาวต่างชาติ ด้วยจุดแข็งที่อยู่ใกล้ Mega Bangna ทำให้มีโอกาสรับผลตอบแทนจากค่าเช่าที่สม่ำเสมอและมูลค่าอสังหาริมทรัพย์ที่มีแนวโน้มเพิ่มสูงขึ้นในอนาคต"
+              }
+            }
+          ]
+        },
+        {
+          "@type": "ItemList",
+          "name": "แบบบ้านทั้งหมดในโครงการ",
+          "numberOfItems": 2,
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "item": {
+                "@type": "FloorPlan",
+                "name": "แบบบ้าน MONTMARTRE (มงต์มาตร์) (ขนาด 99 ตร.ม.)"
+              }
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "item": {
+                "@type": "FloorPlan",
+                "name": "แบบบ้าน LOUVRE (ลูฟวร์) (ขนาด 111 ตร.ม.)"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+
+
+
+        
+        var currentLanguage = "th-TH";
+        console.log(currentLanguage);
+        var isTh = currentLanguage === "th-TH";
+        var isEn = currentLanguage === "en";
+        var isZh = currentLanguage === "zh";
+        var isInter = isEn || isZh;
+
+
+        window.currentLanguage = {
+            isTh: isTh,
+            isEn: isEn,
+            language: isZh ? "zh" : isEn ? "en" : "th",
+            isInter: isInter,
+        };
+    
+
+
+
+
+
+        window.dataLayer = window.dataLayer || [];
+        dataLayer.push({
+            'page': 'Siri Place Mega bangna',
+            'projectId': '529',
+            'projectNameEN': 'Siri Place Mega bangna',
+            'projectNameTH': 'สิริ เพลส เมกาบางนา',
+            'projectBrandEN': 'SIRI PLACE',
+            'projectBrandTH': 'สิริ เพลส',
+            'propertyTypeEN': 'Townhome',
+            'propertyTypeTH': 'ทาวน์โฮม',
+            'SoldOut': 'False'
+        });
+        var projectid = dataLayer[0].projectId;
+        var propertyTypeTH = dataLayer[0].propertyTypeTH;
+        var projectNameTH = dataLayer[0].projectNameTH;
+        var BrandNameTH = dataLayer[0].projectBrandTH;
+        if (typeof projectid == 'undefined') { var projectid = 0; }
+        
+        var chkItem = getCookie("visit_project");
+        // console.log(chkItem);
+
+        if (chkItem == null || chkItem == "") {
+            setCookie("visit_project", projectid, 30);
+        } else {
+            if (chkItem.includes(projectid) == false) {
+                setCookie("visit_project", chkItem + "|" + projectid, 30);
+            }
+        }
+
+        function setCookie(cname, cvalue, exdays) {
+            const d = new Date();
+            d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+            let expires = "expires=" + d.toUTCString();
+            document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+        }
+
+        function getCookie(cname) {
+            let name = cname + "=";
+            let decodedCookie = decodeURIComponent(document.cookie);
+            let ca = decodedCookie.split(';');
+            for (let i = 0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) == 0) {
+                    return c.substring(name.length, c.length);
+                }
+            }
+            return "";
+        }
+    
+
+        if (3.39 > 0.00) {
+            dataLayer.push({ ecommerce: null });  // Clear the previous ecommerce object.
+            dataLayer.push({
+                'event': 'view_item',
+                'ecommerce': {
+                    'currency': 'THB',
+                     'value': 3390000,
+                    'items': [
+                        {
+                            'item_id': '529',
+                            'item_name': 'สิริ เพลส เมกาบางนา',
+                            'item_brand': 'สิริ เพลส',
+                            'item_category': 'ทาวน์โฮม',
+                            'price': 3390000,
+                        }
+                    ]
+                }
+            });
+        }
+
+            function numberWithCommas(x) {
+                x = x.toString();
+                var pattern = /(-?\d+)(\d{3})/;
+                while (pattern.test(x))
+                    x = x.replace(pattern, "$1,$2");
+                return x;
+            }
+    
+
+            (function (w, d, s, l, i) { w[l] = w[l] || []; w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' }); var f = d.getElementsByTagName(s)[0], j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src = 'https://sgtm.sansiri.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f); })(window, document, 'script', 'dataLayer', 'GTM-P3S85HS');
+
+            (function (w, d, s, l, i) { w[l] = w[l] || []; w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' }); var f = d.getElementsByTagName(s)[0], j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src = 'https://sgtm.sansiri.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f); })(window, document, 'script', 'dataLayer', 'GTM-K8TTBLD');
+
+            (function (w, d, s, l, i) { w[l] = w[l] || []; w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' }); var f = d.getElementsByTagName(s)[0], j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src = 'https://sgtm.sansiri.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f); })(window, document, 'script', 'dataLayer', 'GTM-PTDR3V6');
+        
+
+        var projectNameEN = 'Siri Place Mega bangna';
+        var projectCodeIT = '1298';
+    
+
+
+        $(document).ready(function () {
+            var langdata = {
+                en: "https://www.sansiri.com/townhome/siri-place-mega-bangna/en/",
+                th: "https://www.sansiri.com/townhome/siri-place-mega-bangna/th/",
+                cnt: "https://www.sansiri.com/townhome/siri-place-mega-bangna/cnt/"
+            };
+    
+
+            $.ajax(
+                $("#sansiri_header").sansiri_header({
+                    currenturl: window.location.href,
+                    source: "https://www.sansiri.com/embed/header",
+                    login: true,
+                    switchlang: false,
+                    langdata: langdata,
+                    currentlang: "th",
+                    search: true,
+                    projectid: 529,
+                    buttonblack: true,
+                    showmenu: false,
+                    hamburgermenu: true
+                })
+            ).then(function () {
+                $(".header-top-bar").addClass("bg-white")
+            }).then(function () {
+                $(".header-tools").addClass("bg-white")
+            });
+        });
+    
+
+        (function () {
+            var img = document.getElementById('heroBannerImg-01c94452');
+            if (!img) return;
+
+            function updateSrc() {
+                if (window.innerHeight > window.innerWidth) {
+                    img.src = img.dataset.mobile;
+                } else {
+                    img.src = img.dataset.desktop;
+                }
+            }
+
+            updateSrc();
+            window.addEventListener('resize', updateSrc);
+            window.addEventListener('orientationchange', function () {
+                setTimeout(updateSrc, 100);
+            });
+        })();
+    
+
+        (function () {
+            var img = document.getElementById('heroBannerImg-a532bf0b');
+            if (!img) return;
+
+            function updateSrc() {
+                if (window.innerHeight > window.innerWidth) {
+                    img.src = img.dataset.mobile;
+                } else {
+                    img.src = img.dataset.desktop;
+                }
+            }
+
+            updateSrc();
+            window.addEventListener('resize', updateSrc);
+            window.addEventListener('orientationchange', function () {
+                setTimeout(updateSrc, 100);
+            });
+        })();
+    
+
+    var projectId = 529;
+    var projectNameTH = '[Property Name]';
+    var propertyType = '[Property Type]';
+    var projectLang =  'th';
+
+
+    var url = window.location.href;
+    var encodeurls = encodeURIComponent(url);
+    var urilinkFb = "https://www.facebook.com/v3.2/dialog/oauth?client_id=370090090112797\&redirect_uri=https://www.sansiri.com/member/facebook_auth\&state=" + encodeurls + "\&scope=email,public_profile";
+    var urilinkGg = "https://accounts.google.com/o/oauth2/v2/auth?scope=profile email&include_granted_scopes=true\&redirect_uri=https://www.sansiri.com/member/google_auth&response_type=code\&client_id=430676672336-99l0gslc66v2icp0qfqt5brrgfs3p8re.apps.googleusercontent.com\&state=" + encodeurls;
+    $(".ssr-btn-fb").attr("href", urilinkFb);
+    $(".ssr-btn-gg").attr("href", urilinkGg);
+
+    // Logout member (ลบ cookie ss_auth ฝั่ง backend แล้วเด้งกลับหน้าเดิม)
+    $(document).on("click", "#btnFormLogout", function (e) {
+        e.preventDefault();
+        var returnUrl = btoa(window.location.href);
+        window.location.href = "https://www.sansiri.com/member/Logout/?returnUrl=" + returnUrl;
+    });
+
+    // เมื่อ profile (.ssr-row-connected) แสดง (login แล้ว) ให้ปุ่ม Line มี class mb-25 ด้วย
+    (function () {
+        var connected = document.querySelector(".ssr-row-connected");
+        var lineRow = document.getElementById("lineContactRow");
+        if (!connected || !lineRow) return;
+
+        function syncLineMargin() {
+            var shown = window.getComputedStyle(connected).display !== "none";
+            lineRow.classList.toggle("mb-25", shown);
+        }
+
+        syncLineMargin();
+        new MutationObserver(syncLineMargin).observe(connected, {
+            attributes: true,
+            attributeFilter: ["style", "class"]
+        });
+    })();
+
+    $("#content img").each(function () {
+        var alttext = $(this).attr('alt');
+        if (alttext !== undefined) {
+            alttext = alttext.replace("[Property Type]", propertyType);
+            alttext = alttext.replace("[Project Name]", projectNameTH);
+            $(this).attr('alt', alttext);
+            $(this).attr('title', alttext);
+        }
+    });
+    var sharebarfb = "https://www.facebook.com/sharer/sharer.php?u=" + url;
+    var sharebartw = "http://twitter.com/share?text=" + $('meta[name="twitter:title"]').attr("content") + "&url=" + url + "&hashtags=" + $('meta[name="keywords"]').attr("content") + "";
+    var sharebarline = "https://lineit.line.me/share/ui?url=" + url;
+    $(".ssr-share-bar-fb a").attr("href", sharebarfb);
+    $(".ssr-share-bar-tw a").attr("href", sharebartw);
+    $(".ssr-share-bar-line a").attr("href", sharebarline);
+
+
+
+
+
+
+
+
+    $(document).ready(function () {
+        var projectId = "529";
+    
+        $.ajax({
+            url: "https://prd-apigateway.sansiri.com/api/project-default?api_type=filter&filter_name=filter&projectId=" + projectId + "&lang=th",
+            type: "GET",
+            crossDomain: true,
+            dataType: "json",
+            headers: {
+                "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImFiOTQ4NDk1LThmNDEtNGM1Ni1hNzE3LWI0NTEyNTNiZjRlYyIsImlhdCI6MTczNjkwOTk5MX0.w6Rz7p6mDQMVM88sdGq2fWyCW9feXumR-XfcT5UpXwA"
+            },
+            success: function (data) {
+                if (data.code === 200 && data.status === "success") {
+                    const result = data.result[0];
+                    const currentDate = new Date();
+                    const start = new Date(result.online_booking_startdate);
+                    const end = new Date(result.online_booking_enddate);
+                
+                    if (result.is_online_booking && currentDate >= start && currentDate <= end) {
+                        const html = `
+                            <div class="ssr-campaign-bar">
+                                <div class="container-fluid">
+                                    <div class="row align-items-center">
+                                        <div class="col-xl-12 col-12 box-campaign santh-pb-3 santh-pb-md-0" style="background: #001d2f;">
+                                            <div class="container">
+                                                <div class="row align-items-center">
+                                                    <div class="date-campaign text-center col-xl-2 offset-xl-1 col-lg-3 col-sm-3 col-6 color-white p-0" style="border-right: 1px solid #ffffff;">
+                                                        <p class="font-semibold mb-0 pb-0" style="font-size: 1.75rem !important;">24 Hrs.<br />7 Days</p>
+                                                    </div>
+                                                    <div class="icon-campaign col-xl-3 col-lg-3 col-sm-3 col-6 text-center p-0">
+                                                        <img class="svg-icon-campaign" src="https://o77site.s3.ap-southeast-1.amazonaws.com/webcampaign-source/24online_logo_wh.svg" alt="" width="100px" height="80px" />
+                                                    </div>
+                                                    <div class="content-campaign col-lg-5 col-sm-6 col-12 color-white text-center text-md-left">
+                                                        <h2 class="pb-0 mb-0">รับข้อเสนอพิเศษ เมื่อจองผ่าน Online</h2>
+                                                        <p class="pt-1 pb-0 mb-0">สะดวก ง่าย ตลอด 24 ชม. 
+                                                            <a style="color: #ffffff; text-decoration: underline;" rel="noopener" href="${result.online_booking_url}" target="_blank" class="color-white">คลิก</a>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>`;
+                        if ($('#boxVisual').length) {
+                            $('#boxVisual').append(html);
+                        }
+                    }
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error("Error: " + status + " " + error);
+            }
+        });
+    });
+
+
+   // console.log("data");
+    $(document).ready(function(){
+        $(".ga-project-pr-video").click(function(){
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({
+              event: 'youtube_lightbox_open'
+            });
+        });
+    });
+
+
+
+    $(document).ready(function () {
+        
+        
+        if (window.currentLanguage.isInter > 0) {
+            $("#factsheet-price").css("display", "none");
+            $("#factsheet-parking ").css("display", "none");
+            
+            $("#factsheet-").css("display", "none");
+            $(".ssr-factsheet a").attr("href", "#boxContact")
+
+            if (isZh == true) {
+                var title = '完成';
+                var year = '年';
+            } else {
+                var title = 'Completion';
+                var year = '';
+            }
+
+            $.ajax({
+                url: "https://prd-apigateway.sansiri.com/api/project-detail?api_type=filter&filter_name=filter&projectId=" + projectid + "&lang=en"
+                , type: "get"
+                , data: {}
+                , crossDomain: true
+                , async: false
+                , dataType: "json"
+                , headers: {
+                    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImFiOTQ4NDk1LThmNDEtNGM1Ni1hNzE3LWI0NTEyNTNiZjRlYyIsImlhdCI6MTczNjkwOTk5MX0.w6Rz7p6mDQMVM88sdGq2fWyCW9feXumR-XfcT5UpXwA"
+                }
+                , success: function (sr) {
+                    dataObj = sr.result;
+
+                    //console.log("Data obj ===", dataObj);
+
+                    var templateFactsheetInter = "";
+                    if (dataObj.length > 0) {
+                        if (dataObj[0]["complete_year"] > 0) {
+                            templateFactsheetInter += "<div class='row'><div class='col-4 pr-0'><p class='mt-3 mb-0'>" + title + "</p></div><div class='col-5 text-right'><p class='info-text'>" + dataObj[0]["complete_year"] + "</p></div><div class='col-3 pr-0'><p class='mt-3 mb-0'>"+ year + "</p></div></div>";
+                        } else {
+                            $('#ssr-factsheet-inter').hide();
+                        }
+                        $('#ssr-factsheet-inter').html(templateFactsheetInter);
+                    }
+                }
+                , error: function (error) {
+                    console.log(error);
+                }
+            });
+
+
+            //$("#fancybox-LINE").trigger('click');
+            $(".ssr-factsheet a").attr("href", "#boxContact")
+            $(".ssr-factsheet a").attr('target','_self');
+            //$(".ssr-factsheet a").click(function() {
+            //    $('html,body').animate({
+            //        scrollTop: $(".second").offset().top},
+            //        'slow');
+            //});
+        } else {
+            $('#ssr-factsheet-inter').hide();
+        }
+    });                           
+                            
+
+            (function () {
+                var el = document.getElementById('nav-tab-2e5bee78e9a24911bf9e940ff3499a7d');
+                if (!el) return;
+
+                // Check overflow and toggle class
+                function checkOverflow() {
+                    if (el.scrollWidth > el.clientWidth) {
+                        el.classList.add('is-overflow');
+                    } else {
+                        el.classList.remove('is-overflow');
+                    }
+                }
+                checkOverflow();
+                window.addEventListener('resize', checkOverflow);
+
+                // Mouse drag scroll
+                var isDown = false, startX, scrollLeft;
+
+                el.addEventListener('mousedown', function (e) {
+                    isDown = true;
+                    el.classList.add('dragging');
+                    startX = e.pageX - el.offsetLeft;
+                    scrollLeft = el.scrollLeft;
+                });
+
+                el.addEventListener('mouseleave', function () {
+                    isDown = false;
+                    el.classList.remove('dragging');
+                });
+
+                el.addEventListener('mouseup', function () {
+                    isDown = false;
+                    el.classList.remove('dragging');
+                });
+
+                el.addEventListener('mousemove', function (e) {
+                    if (!isDown) return;
+                    e.preventDefault();
+                    var x = e.pageX - el.offsetLeft;
+                    var walk = (x - startX) * 1.5;
+                    el.scrollLeft = scrollLeft - walk;
+                });
+            })();
+        
+
+(function () {
+    'use strict';
+
+    /* — Constants — */
+    var ANIMATION_DURATION_MS = 600;
+    var ANIMATION_EASING      = 'cubic-bezier(0.4, 0, 0.2, 1)';
+    var BG_CROSSFADE_DELAY_MS = 850;
+    var RESIZE_DEBOUNCE_MS    = 150;
+    var MOBILE_BREAKPOINT     = 991;
+    var TABLET_MIN_WIDTH      = 768;
+    var DESKTOP_THUMB_WIDTH   = 220;
+    var MOBILE_PEEK_WIDTH     = 40;
+    var ACTIVE_SLIDE_RATIO    = 0.45;
+
+    /* — DOM References — */
+    var track       = document.getElementById('facilityTrack');
+    var box         = document.getElementById('facilityBox');
+    var bgBack      = document.getElementById('facilityBgBack');
+    var bgFront     = document.getElementById('facilityBgFront');
+    var heroImg     = document.getElementById('facilityHeroImg');
+    var mobileTitle = document.getElementById('facilityMobileTitle');
+    var mobileDesc  = document.getElementById('facilityMobileDesc');
+    var btnPrev     = document.getElementById('facilityBtnPrev');
+    var btnNext     = document.getElementById('facilityBtnNext');
+
+    var isAnimating = false;
+
+    /* — Breakpoint Helpers — */
+
+    /** @returns {boolean} True when viewport is at or below mobile breakpoint */
+    function isMobileViewport() {
+        return window.innerWidth <= MOBILE_BREAKPOINT;
+    }
+
+    /** @returns {boolean} True when viewport is in the tablet range */
+    function isTabletViewport() {
+        return window.innerWidth >= TABLET_MIN_WIDTH && isMobileViewport();
+    }
+
+    /**
+     * Returns responsive layout configuration.
+     * @returns {{ gap: number, columns: number|null, padding: number }}
+     */
+    function getResponsiveConfig() {
+        if (isTabletViewport()) return { gap: 12, columns: 3, padding: 32 };
+        if (isMobileViewport()) return { gap: 10, columns: 2, padding: 24 };
+        return { gap: 15, columns: null, padding: 40 };
+    }
+
+    /* — Slide Queries & Sizing — */
+
+    /** @returns {HTMLElement[]} All slide elements in current DOM order */
+    function getAllSlides() {
+        return [].slice.call(track.querySelectorAll('.facility-slide'));
+    }
+
+    /**
+     * Calculates the width of a single thumbnail image.
+     * Desktop: fixed width. Mobile/Tablet: fills available columns with peek space.
+     * @returns {number}
+     */
+    function calculateThumbWidth() {
+        var cfg = getResponsiveConfig();
+        if (!cfg.columns) return DESKTOP_THUMB_WIDTH;
+
+        var availableWidth = box.clientWidth - cfg.padding - cfg.gap * (cfg.columns - 1) - MOBILE_PEEK_WIDTH;
+        return Math.floor(availableWidth / cfg.columns);
+    }
+
+    /**
+     * Calculates the width of the active (expanded) slide.
+     * Mobile: same as thumb. Desktop: percentage of box inner width.
+     * @returns {number}
+     */
+    function calculateActiveSlideWidth() {
+        if (isMobileViewport()) return calculateThumbWidth();
+
+        var cfg = getResponsiveConfig();
+        return Math.floor((box.clientWidth - cfg.padding) * ACTIVE_SLIDE_RATIO);
+    }
+
+    /* — Mobile Active Info Sync — */
+
+    /**
+     * Copies the active slide's title and description into the mobile info panel.
+     * @param {HTMLElement} slide - The currently active slide element
+     */
+    function syncMobileActiveInfo(slide) {
+        var infoPanel = slide.querySelector('.facility-slide-info');
+        if (!infoPanel) return;
+
+        mobileTitle.textContent = infoPanel.querySelector('.slide-title').textContent;
+        mobileDesc.textContent  = infoPanel.querySelector('.slide-description').textContent;
+    }
+
+    /* — Background Crossfade — */
+
+    /**
+     * Crossfades the full-bleed background image to a new source.
+     * Skips if the image is already showing.
+     * @param {string} imageUrl - URL of the new background image
+     */
+    function crossfadeBackground(imageUrl) {
+        var cssValue = 'url(' + imageUrl + ')';
+        if (bgBack.style.backgroundImage === cssValue) return;
+
+        bgFront.style.backgroundImage = cssValue;
+        void bgFront.offsetHeight; /* force reflow for transition */
+        bgFront.classList.add('is-active');
+
+        setTimeout(function () {
+            bgBack.style.backgroundImage = cssValue;
+            bgFront.classList.remove('is-active');
+        }, BG_CROSSFADE_DELAY_MS);
+    }
+
+    /* — Layout Engine — */
+
+    /**
+     * Recalculates and applies widths to all slides.
+     * On mobile: positions nav buttons at the vertical center of the track.
+     * On desktop: resets any mobile-specific inline styles.
+     */
+    function applyLayout(skipBackground) {
+        var slides = getAllSlides();
+        if (!slides.length) return;
+
+        /* ── Read phase (avoid layout thrashing) ── */
+        var cfg          = getResponsiveConfig();
+        var thumbWidth   = calculateThumbWidth();
+        var activeWidth  = calculateActiveSlideWidth();
+        var mobile       = isMobileViewport();
+        var infoWidth    = mobile ? 0 : activeWidth - thumbWidth - cfg.gap;
+
+        /* ── Write phase ── */
+        slides.forEach(function (slide, index) {
+            var isActiveSlide = index === 0;
+            var infoPanel     = slide.querySelector('.facility-slide-info');
+            var infoInner     = slide.querySelector('.slide-info-inner');
+
+            slide.classList.toggle('is-active', isActiveSlide);
+
+            /* Always set inner width so text is pre-laid-out at full width */
+            infoInner.style.width = infoWidth + 'px';
+
+            if (mobile || !isActiveSlide) {
+                slide.style.width       = thumbWidth + 'px';
+                infoPanel.style.width      = '0';
+                infoPanel.style.marginLeft = '0';
+            } else {
+                slide.style.width          = activeWidth + 'px';
+                infoPanel.style.width      = infoWidth + 'px';
+                infoPanel.style.marginLeft = cfg.gap + 'px';
+            }
+        });
+
+        /* ── Update active content ── */
+        var activeImageUrl = slides[0].getAttribute('data-img');
+
+        if (mobile) {
+            syncMobileActiveInfo(slides[0]);
+            heroImg.style.backgroundImage = 'url(' + activeImageUrl + ')';
+            positionNavButtonsAtTrackCenter();
+        } else {
+            resetNavButtonPositions();
+        }
+
+        if (!skipBackground) crossfadeBackground(activeImageUrl);
+    }
+
+    /**
+     * On mobile, positions nav buttons vertically at the center of the track area,
+     * accounting for the box's offset and padding.
+     */
+    function positionNavButtonsAtTrackCenter() {
+        /* box.offsetTop = distance from .facility-slider to .facility-box
+           track.offsetTop = distance from .facility-box to .facility-track (includes mobile-info height + padding) */
+        var buttonTop = (box.offsetTop + track.offsetTop + track.offsetHeight / 2) + 'px';
+
+        btnPrev.style.top = buttonTop;
+        btnNext.style.top = buttonTop;
+    }
+
+    /** Clears mobile-specific inline positioning from nav buttons. */
+    function resetNavButtonPositions() {
+        btnPrev.style.top = '';
+        btnNext.style.top = '';
+    }
+
+    /* — Track Animation — */
+
+    /**
+     * Animates the track element from one X position to another.
+     * Uses CSS transitions with a safety timeout fallback.
+     * @param {number} fromX  - Starting translateX value (px)
+     * @param {number} toX    - Ending translateX value (px)
+     * @param {Function} onComplete - Called once after animation settles
+     */
+    function animateTrack(fromX, toX, onComplete) {
+        track.style.transition = 'none';
+        track.style.transform  = 'translateX(' + fromX + 'px)';
+        void track.offsetHeight; /* force reflow */
+
+        track.style.transition = 'transform ' + ANIMATION_DURATION_MS + 'ms ' + ANIMATION_EASING;
+        track.style.transform  = 'translateX(' + toX + 'px)';
+
+        var hasSettled = false;
+
+        function settle() {
+            if (hasSettled) return;
+            hasSettled = true;
+            track.removeEventListener('transitionend', onTransitionEnd);
+            track.style.transition = 'none';
+            track.style.transform  = 'translateX(0)';
+            isAnimating = false;
+            onComplete();
+        }
+
+        function onTransitionEnd(event) {
+            if (event.target === track) settle();
+        }
+
+        track.addEventListener('transitionend', onTransitionEnd);
+        setTimeout(settle, ANIMATION_DURATION_MS + 100); /* safety fallback */
+    }
+
+    /* — Navigation — */
+
+    /**
+     * Navigates the carousel by one slide in the given direction.
+     * @param {number} direction - 1 for next, -1 for previous
+     */
+    function navigateByOne(direction) {
+        if (isAnimating) return;
+
+        var slides = getAllSlides();
+        if (slides.length <= 1) return;
+
+        isAnimating = true;
+        var gap = getResponsiveConfig().gap;
+
+        if (direction === 1) {
+            var slideWidth = slides[0].offsetWidth + gap;
+            animateTrack(0, -slideWidth, function () {
+                track.appendChild(slides[0]);
+                applyLayout();
+            });
+        } else {
+            var lastSlide = slides[slides.length - 1];
+            track.insertBefore(lastSlide, slides[0]);
+            applyLayout(true);
+
+            var newFirstWidth = getAllSlides()[0].offsetWidth + gap;
+            animateTrack(-newFirstWidth, 0, function () {
+                applyLayout();
+            });
+        }
+    }
+
+    /**
+     * Navigates directly to a slide at the given index.
+     * @param {number} targetIndex - Zero-based index of the target slide
+     */
+    function navigateToSlide(targetIndex) {
+        if (isAnimating || targetIndex === 0) return;
+
+        var slides = getAllSlides();
+        if (targetIndex >= slides.length) return;
+
+        isAnimating = true;
+        var gap = getResponsiveConfig().gap;
+
+        var totalDistance = 0;
+        for (var i = 0; i < targetIndex; i++) {
+            totalDistance += slides[i].offsetWidth + gap;
+        }
+
+        animateTrack(0, -totalDistance, function () {
+            for (var i = 0; i < targetIndex; i++) {
+                track.appendChild(getAllSlides()[0]);
+            }
+            applyLayout();
+        });
+    }
+
+    /* — Event Binding — */
+
+    btnNext.addEventListener('click', function () { navigateByOne(1); });
+    btnPrev.addEventListener('click', function () { navigateByOne(-1); });
+
+    track.addEventListener('click', function (event) {
+        var clickedSlide = event.target.closest('.facility-slide');
+        if (clickedSlide) {
+            navigateToSlide(getAllSlides().indexOf(clickedSlide));
+        }
+    });
+
+    /* — Drag / Swipe — */
+    var DRAG_THRESHOLD = 30;
+    var dragStartX     = 0;
+    var dragCurrentX   = 0;
+    var isDragging     = false;
+    var hasDragged     = false;
+
+    function onDragStart(x) {
+        if (isAnimating) return;
+        isDragging   = true;
+        hasDragged   = false;
+        dragStartX   = x;
+        dragCurrentX = x;
+        track.style.transition = 'none';
+    }
+
+    function onDragMove(x) {
+        if (!isDragging) return;
+        dragCurrentX = x;
+        var delta = dragCurrentX - dragStartX;
+        if (Math.abs(delta) > 5) hasDragged = true;
+        track.style.transform = 'translateX(' + delta + 'px)';
+    }
+
+    function onDragEnd() {
+        if (!isDragging) return;
+        isDragging = false;
+        var delta = dragCurrentX - dragStartX;
+
+        /* Reset transform immediately */
+        track.style.transition = 'none';
+        track.style.transform  = 'translateX(0)';
+
+        if (Math.abs(delta) >= DRAG_THRESHOLD) {
+            navigateByOne(delta < 0 ? 1 : -1);
+        }
+    }
+
+    /* Mouse events */
+    track.addEventListener('mousedown', function (e) {
+        e.preventDefault();
+        onDragStart(e.clientX);
+    });
+    document.addEventListener('mousemove', function (e) {
+        onDragMove(e.clientX);
+    });
+    document.addEventListener('mouseup', function () {
+        onDragEnd();
+    });
+
+    /* Touch events */
+    track.addEventListener('touchstart', function (e) {
+        onDragStart(e.touches[0].clientX);
+    }, { passive: true });
+    track.addEventListener('touchmove', function (e) {
+        if (isDragging && hasDragged) e.preventDefault();
+        onDragMove(e.touches[0].clientX);
+    }, { passive: false });
+    track.addEventListener('touchend', function () {
+        onDragEnd();
+    });
+
+    /* Prevent click when dragged */
+    track.addEventListener('click', function (e) {
+        if (hasDragged) {
+            e.stopImmediatePropagation();
+            e.preventDefault();
+        }
+    }, true);
+
+    var resizeTimer;
+    window.addEventListener('resize', function () {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(applyLayout, RESIZE_DEBOUNCE_MS);
+    });
+
+    /* — Bootstrap — */
+
+    /**
+     * Initializes the carousel: sets the first background image,
+     * runs layout twice (once to measure, once after paint to stabilize),
+     * then reveals the track.
+     */
+    function initialize() {
+        var slides = getAllSlides();
+        if (!slides.length) return;
+
+        /* ── Build SEO alt/title from dataLayer ── */
+        var dlData = {};
+        if (window.dataLayer) {
+            for (var i = 0; i < window.dataLayer.length; i++) {
+                var entry = window.dataLayer[i];
+                if (entry.projectNameTH) { dlData = entry; break; }
+            }
+        }
+
+        if (dlData.propertyTypeTH && dlData.projectNameTH && dlData.projectNameEN) {
+            var prefix = dlData.propertyTypeTH + ' ' + dlData.projectNameTH + ' (' + dlData.projectNameEN + ') พื้นที่ส่วนกลาง Facility - ';
+            slides.forEach(function (slide) {
+                var facilityTitle = slide.getAttribute('data-facility-title') || '';
+                var altText = prefix + facilityTitle;
+                var img = slide.querySelector('img');
+                if (img) {
+                    img.alt   = altText;
+                    img.title = altText;
+                }
+            });
+        }
+
+        var firstImageUrl = 'url(' + slides[0].getAttribute('data-img') + ')';
+        bgBack.style.backgroundImage  = firstImageUrl;
+        heroImg.style.backgroundImage = firstImageUrl;
+
+        applyLayout();
+        requestAnimationFrame(function () {
+            applyLayout();
+            track.classList.add('is-ready');
+        });
+    }
+
+    if (document.readyState === 'complete') {
+        initialize();
+    } else {
+        window.addEventListener('load', initialize);
+    }
+})();
+
+
+        $(document).ready(function () {
+            // เรียก AJAX
+
+            // get-hot-deal-group [START]
+            window.flashDealActive = false;
+            window.flashTerms = "";
+
+            $.ajax({
+                url: "https://prd-apigateway.sansiri.com/api/get-hot-deal-group?group_id=1&api_type=filter&filter_name=filter",
+                type: "get",
+                dataType: "json",
+                crossDomain: true,
+                async: false,
+                headers: {
+                    token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImFiOTQ4NDk1LThmNDEtNGM1Ni1hNzE3LWI0NTEyNTNiZjRlYyIsImlhdCI6MTczNjkwOTk5MX0.w6Rz7p6mDQMVM88sdGq2fWyCW9feXumR-XfcT5UpXwA",
+                },
+                success: function (res) {
+                    const g = res?.result?.[0];
+                    if (g) {
+                        const now = new Date();
+                        const start = new Date(g.start_date);
+                        const end = new Date(g.end_date);
+                        const withinRange = now >= start && now < end;
+
+                        window.flashDealActive = !!g.is_flashdeal && withinRange;
+                        // กัน HTML/แท็กเผื่ออนาคต
+                        window.flashTerms = (g.terms || "").replace(/<[^>]*>/g, "").trim();
+                    }
+                },
+                error: function (e) {
+                    // ถ้าดึงไม่ได้ ให้ปล่อยเป็น false/ว่าง -> ไม่แสดง TOP UP
+                    console.warn("get-hot-deal-group error", e);
+                }
+            });
+            // get-hot-deal-group [END]
+
+            // แสดง/ซ่อนส่วนของ Flash Deal ตามสถานะแคมเปญ
+            if (window.flashDealActive) {
+                $(".flashdeal-only").removeClass("d-none");
+                $(".flashdeal-hide").remove();
+            } else {
+                $(".flashdeal-only").remove();
+            }
+
+            // ถ้ากล่องโปรโมชันไม่เหลืออะไรนอกจากหัวข้อ -> เอาออกทั้งกล่อง
+            $(".promotion-unit").each(function () {
+                if ($(this).children().not("h4").length === 0) {
+                    $(this).remove();
+                }
+            });
+
+            // เรียก Slick Carousel (การ์ดยูนิต render มาจากฝั่ง server แล้ว)
+            $("#unitRows").slick({
+                arrows: true,
+                dots: true,
+                infinite: false,
+                speed: 300,
+                slidesToShow: 4,
+                slidesToScroll: 3,
+                adaptiveHeight: true,
+                autoplay: true,
+                autoplaySpeed: 5000,
+                prevArrow: '<button class="btn-hotdeal-slick btn-hotdeal-slick-l btn-slide"><i class="icon-new icon-new-control-prev"></i></button>',
+                nextArrow: '<button class="btn-hotdeal-slick btn-hotdeal-slick-r btn-slide"><i class="icon-new icon-new-control-next"></i></button>',
+                responsive: [
+                    {
+                        breakpoint: 1400,
+                        settings: {
+                            slidesToShow: 3,
+                            slidesToScroll: 1,
+                            infinite: true,
+                            centerMode: true,
+                            arrows: false
+                        }
+                    },
+                    {
+                        breakpoint: 992,
+                        settings: {
+                            slidesToShow: 2,
+                            slidesToScroll: 2,
+                            arrows: false
+                        }
+                    },
+                    {
+                        breakpoint: 768,
+                        settings: {
+                            centerMode: true,
+                            slidesToShow: 1,
+                            arrows: false
+                        }
+                    }
+                ],
+            });
+        });
+
+
+
+        function equalCardHeight() {
+            let maxHeight = 0;
+
+            // รีเซ็ตความสูงก่อน เผื่อเคยตั้งค่าไว้
+            $(".card-unit").css("height", "auto");
+
+            // loop หา card ที่สูงที่สุด
+            $(".card-unit").each(function () {
+                let h = $(this).outerHeight();
+                if (h > maxHeight) {
+                    maxHeight = h;
+                }
+            });
+
+            // ตั้งความสูงทุก card = สูงสุด
+            $(".card-unit").css("height", maxHeight + "px");
+        }
+
+        // เรียกใช้ตอน DOM พร้อม
+        $(document).ready(function () {
+            equalCardHeight();
+
+            // เวลาย่อ/ขยายหน้าจอให้ปรับใหม่
+            $(window).on("resize", function () {
+                equalCardHeight();
+            });
+
+            updateUnitFormVisibility();
+        });
+
+        // helper: สร้าง item ในลิสต์ "ยูนิตที่คุณสนใจ"
+        function buildSelectedItemHTML(data) {
+            const { id, name, unitNo, detail, priceText, promoOn, flashTxt } = data;
+
+            const flashHtml = (window.flashDealActive && flashTxt)
+                ? ` <span class="font-semibold">, TOP UP ส่วนลด FLASH DEAL รับส่วนลดเพิ่มอีก ${flashTxt} บาท ${window.flashTerms}</span>`
+                : "";
+
+            return `
+                                    <div class="unit-selected-item align-items-start d-flex mb-4" data-unit-id="${id}">
+                                        <button type="button" class="pl-0 unit-remove" data-unit-id="${id}" aria-label="ลบยูนิตนี้">
+                                        <img src="https://resource.sansiri.com/sansiri-com-frontend/assets/img/hotdeal/icon/unselect.svg" class="w-100" alt="">
+                                        </button>
+                                        <div>
+                                        <div>
+                                            <span>${name}</span> - <span>${unitNo}</span> ${detail ? detail : ""}
+                                        </div>
+                                        <div>
+                                            <span class="font-semibold">พิเศษ ${priceText.replace(/\*/g, "").trim()}</span>
+                                            <span class="font-semibold">${promoOn}</span>${flashHtml}
+                                        </div>
+                                        </div>
+                                    </div>
+                                    `;
+        }
+
+
+        // แปลงเลขให้เป็น string สวยๆ ภาษาไทย
+        function toThNumber(val) {
+            const n = Number(val);
+            return Number.isFinite(n) ? n.toLocaleString('th-TH') : String(val ?? '');
+        }
+
+        // ล้างค่าที่ไม่ควรแสดง เช่น NULL / undefined / N/A / -
+        function cleanVal(v) {
+            const s = (v ?? '').toString().trim();
+            if (!s) return '';
+            return (/^(null|undefined|n\/?a|none|-|\(null\))$/i.test(s)) ? '' : s;
+        }
+
+        // สร้าง description จากข้อมูลบนปุ่ม
+        function buildDescriptionFromBtn($btn) {
+            const getData = (key, attrName) =>
+                $btn.data(key) ?? $btn.attr(attrName) ?? '';
+
+            let unitNo = cleanVal(getData('source-id', 'data-source-id'));
+            let direction = cleanVal(getData('direction', 'data-direction'));
+            let keysale = cleanVal(getData('keysale', 'data-keysale'));
+            let dealPrice = cleanVal(getData('deal-price', 'data-deal-price'));
+            let promo = cleanVal(getData('promotion', 'data-promotion'));
+            let promoOn = cleanVal(getData('promotion-ontop', 'data-promotion-ontop'));
+            let flashOn = cleanVal(getData('flashdeal-ontop', 'data-flashdeal-ontop'));
+
+            const $card = $btn.closest('.card-unit');
+            if (!direction || !keysale) {
+                const $spans = $card.find('.text-detail-unit span');
+                direction = direction || cleanVal(($spans.eq(-2).text() || ''));
+                keysale = keysale || cleanVal(($spans.eq(-1).text() || ''));
+            }
+            if (!dealPrice) {
+                const raw = ($card.find('.h-deal-price').text() || '').replace(/[^\d.,-]/g, '');
+                dealPrice = cleanVal(raw);
+            }
+
+            // รวมโปรหลัก
+            const promoParts = [promo, promoOn].filter(Boolean);
+            const promoCombo = promoParts.join(' + ');
+
+            // จัด TOP UP เมื่อ (1) มีค่า flashOn และ (2) แคมเปญยัง active
+            const flashTxt = flashOn ? toThNumber(flashOn) : '';
+            const flashSegment = (window.flashDealActive && flashTxt)
+                ? ` , TOP UP ส่วนลด FLASH DEAL รับส่วนลดเพิ่มอีก ${flashTxt} บาท ${window.flashTerms}`
+                : '';
+
+            const desc =
+                `Website_Unit : ${unitNo} ${direction} ${keysale} พิเศษ ${dealPrice} ล้านบาท` +
+                (promoCombo ? ` ${promoCombo}` : '') +
+                flashSegment;
+
+            return desc.trim();
+        }
+
+
+
+        // รวมทุกยูนิตที่ถูกเลือกอยู่ แล้วใส่ลง hidden input
+        function updateUnitInterestHidden() {
+            const $activeBtns = $('.select-unit-btn-hotdeal.active');
+            const descriptions = $activeBtns.map(function () { return buildDescriptionFromBtn($(this)); }).get();
+
+            // รวมเป็นบรรทัดละหนึ่งยูนิต (จะส่งเข้าแบ็กเอนด์อ่านทีละบรรทัดได้ง่าย)
+            $('#McpDescription').val(descriptions.join('\n'));
+        }
+
+        // helper: ดึงข้อมูลจากการ์ด
+        function extractCardData($card) {
+            const $btn = $card.find(".select-unit-btn-hotdeal");
+            const id = String($btn.data("source-id") ?? "").trim();
+            const name = $card.find(".h-project_fullname").text().trim();
+            const unitNo = $card.find(".h-unit-no").text().trim();
+
+            const $spans = $card.find(".text-detail-unit span");
+            const direction = ($spans.eq(-2).text() || "").trim();
+            const keysale = ($spans.eq(-1).text() || "").trim();
+            const detail = [direction, keysale].filter(Boolean).join(" ");
+
+            const priceText = ($card.find(".h-deal-price").text() || "")
+                .replace("ล้าน", "ล้านบาท")
+                .trim();
+
+            const promoOn = $card.find(".h-unit-promotion").text().trim();
+
+            // ดึง flashdeal_ontop แล้วฟอร์แมตเป็นตัวเลขไทย
+            const rawFlash = $btn.data("flashdeal-ontop") ?? $btn.attr("data-flashdeal-ontop") ?? "";
+            const flashTxt = rawFlash ? toThNumber(rawFlash) : "";
+            
+            
+
+            return { id, name, unitNo, detail, priceText, promoOn, flashTxt };
+        }
+
+
+
+        // ให้แน่ใจว่ามี <ul> สำหรับลิสต์แล้ว
+        function ensureSelectedList() {
+            const $section = $(".section-unit-form");
+            if (!$section.find("div.unit-selected-list").length) {
+                $section.append('<div class="unit-selected-list list-none m-0 p-0"></div>');
+            }
+            return $section.find("div.unit-selected-list");
+        }
+
+        // NEW: ซ่อน/แสดงกล่อง "ยูนิตที่คุณสนใจ"
+        function updateUnitFormVisibility() {
+            const $section = $(".section-unit-form");
+            const hasItems = $section.find(".unit-selected-item").length > 0;
+            // ถ้ามีอย่างน้อย 1 รายการ -> เอา d-none ออก, ไม่งั้นใส่ d-none
+            $section.toggleClass("d-none", !hasItems);
+        }
+
+
+        // คลิกปุ่ม "สนใจยูนิตนี้"
+        $(document).on("click", ".select-unit-btn-hotdeal", function () {
+
+            const $btn = $(this);
+
+            // ถ้าเกิน 3 แล้ว และปุ่มนี้ยังไม่ได้ active → ห้ามเลือก
+            const activeCount = $(".select-unit-btn-hotdeal.active").length;
+            if (activeCount >= 3 && !$btn.hasClass("active")) {
+                return; // กดแล้วไม่ทำงาน
+            }
+
+            const $card = $btn.closest(".card-unit");
+            const $span = $btn.find("span");
+            const list = ensureSelectedList();
+
+            $btn.toggleClass("active");
+            $card.toggleClass("active");
+
+            const id = String($btn.data("source-id"));
+
+            if ($btn.hasClass("active")) {
+                $span.text("กำลังสนใจยูนิตนี้");
+
+                if (!list.find(`.unit-selected-item[data-unit-id="${id}"]`).length) {
+                    const data = extractCardData($card);
+                    list.append(buildSelectedItemHTML(data));
+                }
+            } else {
+                $span.text("สนใจยูนิตนี้");
+                list.find(`.unit-selected-item[data-unit-id="${id}"]`).remove();
+            }
+
+            updateUnitInterestHidden();
+            updateUnitFormVisibility();
+            // อัปเดตสถานะ disable ของปุ่มอื่นๆ
+            updateDisableState();
+            updateRegisterTabBar();
+
+            // ส่งค่าเข้า Salesforce
+            $("#Mcpcontact_source").val("Hot Deal");
+            $("#Purpose").val("p_section");
+            $("#McpLeadSource").val("Website");
+            window.sansiriWebToLead.config.project.contact_source = "Hot Deal";
+        });
+
+        // ลบจากลิสต์ (และยกเลิก active ที่การ์ด/ปุ่ม)
+        $(document).on("click", ".unit-selected-list .unit-remove", function () {
+            const id = String($(this).data("unit-id"));
+            $(this).closest(".unit-selected-item").remove();
+
+            const $btn = $(`.select-unit-btn-hotdeal[data-source-id="${id}"]`);
+            const $card = $btn.closest(".card-unit");
+
+            $btn.removeClass("active").find("span").text("สนใจยูนิตนี้");
+            $card.removeClass("active");
+
+            updateUnitInterestHidden();
+            updateUnitFormVisibility();
+            updateDisableState();
+            updateRegisterTabBar();
+        });
+
+        function updateDisableState() {
+            const activeCount = $(".select-unit-btn-hotdeal.active").length;
+            const $all = $(".select-unit-btn-hotdeal");
+
+            if (activeCount >= 3) {
+                $all.not(".active").addClass("disable").attr("aria-disabled", "true");
+            } else {
+                $all.removeClass("disable").removeAttr("aria-disabled");
+            }
+        }
+
+        // เรียกเมื่อใดก็ตามที่จำนวนที่เลือกมีการเปลี่ยนแปลง
+        function updateRegisterTabBar() {
+            const count = $(".select-unit-btn-hotdeal.active").length;
+
+            // อัปเดตตัวเลขจำนวนยูนิตที่สนใจ
+            $("#projectCountUnit").text(count);
+
+            // ถ้าเลือกครบ 3 ให้โชว์ "(เลือกได้สูงสุด 3 ยูนิต)" ไม่งั้นซ่อน
+            $("#projectCountMax").toggleClass("d-none", count < 3);
+
+            // เรียกฟังก์ชันเช็ค scroll ด้วย
+            updateRegisterTabBarScroll(count);
+
+            if (count == 0) {
+                // ส่งค่าเข้า Salesforce
+                $("#Mcpcontact_source").val("web_project");
+                $("#Purpose").val("ลงทะเบียน");
+                window.sansiriWebToLead.config.project.contact_source = "web_project";
+            }
+        }
+
+        function updateRegisterTabBarScroll(count) {
+            const scrollTop = $(window).scrollTop();
+            const $box = $("#boxContact");
+            const registerOffsetTop = $box.offset()?.top || 0;
+            const registerOffsetBottom = registerOffsetTop + $box.outerHeight(true);
+
+            if (count > 0 && (scrollTop < registerOffsetTop || scrollTop > registerOffsetBottom)) {
+                $(".tab-go-register-unit").addClass("active");
+            } else {
+                $(".tab-go-register-unit").removeClass("active");
+            }
+        }
+
+        $(window).on("scroll", function () {
+            const count = $(".select-unit-btn-hotdeal.active").length;
+            updateRegisterTabBarScroll(count);
+        });
+    
+
+        $(document).on("mouseenter", ".popover-wrapper", function () {
+            const rect = this.getBoundingClientRect();
+            const $content = $(this).find(".popover-content").first();
+
+            const $pop = $('<div class="custom-popover" />').html($content.html());
+            $("body").append($pop);
+
+            $pop.css({
+                position: "absolute",
+                top: rect.top - $pop.outerHeight() - 8 + "px",
+                left: rect.left + rect.width / 2 - $pop.outerWidth() / 2 + "px"
+            });
+        });
+
+        $(document).on("mouseleave", ".popover-wrapper", function () {
+            $(".custom-popover").remove();
+        });
+
+    
+
+      document.addEventListener("DOMContentLoaded", () => {
+        document.querySelectorAll('a[href="#boxReady"]').forEach(el => {
+          el.style.fontFamily = "graphikth-semibold";
+        });
+      });
+    
+
+    (function () {
+    var MAX_VISIBLE = 3;
+    var TEXT_MORE = 'ดูทั้งหมด';
+    var TEXT_LESS = 'แสดงน้อยลง';
+    var initialized = false;
+
+    function getCollapsedHeight(list) {
+        var items = list.querySelectorAll('.list-distance-unit');
+        var height = 0;
+        for (var j = 0; j < MAX_VISIBLE && j < items.length; j++) {
+            height += items[j].offsetHeight + 10;
+        }
+        return height;
+    }
+
+    function handleResize() {
+        var isMobile = window.innerWidth <= 991;
+        var lists = document.querySelectorAll('.poi-route-list');
+
+        lists.forEach(function (list) {
+            var items = list.querySelectorAll('.list-distance-unit');
+            if (items.length <= MAX_VISIBLE) return;
+
+            var btn = list.parentElement.querySelector('.btn-show-more-poi');
+            if (!btn) return;
+
+            if (isMobile) {
+                btn.classList.add('active');
+                if (list.getAttribute('data-expanded') !== 'true') {
+                    list.style.maxHeight = getCollapsedHeight(list) + 'px';
+                }
+                if (!initialized) {
+                    btn.addEventListener('click', function () {
+                        var btnText = btn.querySelector('.btn-poi-text');
+                        var isCollapsed = list.getAttribute('data-expanded') !== 'true';
+                        if (isCollapsed) {
+                            list.style.maxHeight = list.scrollHeight + 'px';
+                            list.setAttribute('data-expanded', 'true');
+                            btn.classList.add('expanded');
+                            if (btnText) btnText.textContent = TEXT_LESS;
+                        } else {
+                            list.style.maxHeight = getCollapsedHeight(list) + 'px';
+                            list.setAttribute('data-expanded', 'false');
+                            btn.classList.remove('expanded');
+                            if (btnText) btnText.textContent = TEXT_MORE;
+                        }
+                    });
+                }
+            } else {
+                // Desktop: reset to full height
+                list.style.maxHeight = '';
+                list.removeAttribute('data-expanded');
+                btn.classList.remove('active');
+                btn.classList.remove('expanded');
+                var btnText = btn.querySelector('.btn-poi-text');
+                if (btnText) btnText.textContent = TEXT_MORE;
+            }
+        });
+
+        initialized = true;
+    }
+
+    var resizeTimer;
+    window.addEventListener('resize', function () {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(handleResize, 150);
+    });
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', handleResize);
+    } else {
+        handleResize();
+    }
+})();
+
+
+            (function () {
+                var el = document.getElementById('nav-tab-6cf8a13fa64d41b097188ff3f60f1bde');
+                if (!el) return;
+
+                // Check overflow and toggle class
+                function checkOverflow() {
+                    if (el.scrollWidth > el.clientWidth) {
+                        el.classList.add('is-overflow');
+                    } else {
+                        el.classList.remove('is-overflow');
+                    }
+                }
+                checkOverflow();
+                window.addEventListener('resize', checkOverflow);
+
+                // Mouse drag scroll
+                var isDown = false, startX, scrollLeft;
+
+                el.addEventListener('mousedown', function (e) {
+                    isDown = true;
+                    el.classList.add('dragging');
+                    startX = e.pageX - el.offsetLeft;
+                    scrollLeft = el.scrollLeft;
+                });
+
+                el.addEventListener('mouseleave', function () {
+                    isDown = false;
+                    el.classList.remove('dragging');
+                });
+
+                el.addEventListener('mouseup', function () {
+                    isDown = false;
+                    el.classList.remove('dragging');
+                });
+
+                el.addEventListener('mousemove', function (e) {
+                    if (!isDown) return;
+                    e.preventDefault();
+                    var x = e.pageX - el.offsetLeft;
+                    var walk = (x - startX) * 1.5;
+                    el.scrollLeft = scrollLeft - walk;
+                });
+            })();
+        
+
+            $(document).ready(function () {
+                $(".ssr-box-imgtxt-custom-7ecd7c34-bffb-4c9f-81ba-0d071763c773 .bt-7ecd7c34-bffb-4c9f-81ba-0d071763c773 a.ssr-bt").addClass("bg-ci1");
+            });
+        
+
+            $(document).ready(function () {
+                $(".ssr-box-imgtxt-custom-7ecd7c34-bffb-4c9f-81ba-0d071763c773 .bt-7ecd7c34-bffb-4c9f-81ba-0d071763c773 a.ssr-bt").addClass("border-ci1");
+            });
+        
+
+   // console.log("data");
+    $(document).ready(function(){
+        $(".ga-project-pr-video").click(function(){
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({
+              event: 'youtube_lightbox_open'
+            });
+        });
+    });
+
+
+   // console.log("data");
+    $(document).ready(function(){
+        $(".ga-project-pr-video").click(function(){
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({
+              event: 'youtube_lightbox_open'
+            });
+        });
+    });
+
+
+    const PropertyTypeEN = dataLayer[0]?.propertyTypeEN.toLowerCase();;
+    console.log(PropertyTypeEN);
+    
+    const mainImg = document.getElementById('mainCardImg');
+    console.log("Main image element:", mainImg)
+        if (mainImg && PropertyTypeEN) {
+        if (PropertyTypeEN === "townhome") {
+            mainImg.src = "https://resource.sansiri.com/sansiri-com-frontend/assets/img/40years/sansiri-everydaylifeisgood-brandcard-townhome.jpg";
+        }else if (PropertyTypeEN === "condominium"){
+            mainImg.src = "https://resource.sansiri.com/sansiri-com-frontend/assets/img/40years/sansiri-everydaylifeisgood-brandcard-condo.jpg";
+        }else{
+             mainImg.src = "https://resource.sansiri.com/sansiri-com-frontend/assets/img/40years/sansiri-everydaylifeisgood-brandcard-singlehouse.jpg";
+        }
+    }
+
+
+    (function () {
+      var ARROW_SVG = '<svg class="bank-dropdown__arrow" width="12" height="8" viewBox="0 0 12 8" fill="none">'
+        + '<path d="M1 1.5L6 6.5L11 1.5" stroke="#666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+        var DEFAULT_VALUES = {
+          loan: Math.round((3.39 > 0 ? 3.39 : 3.5) * 1000000).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+          year: "30",
+          monthlyIncome: "20,000",
+          debt: "0"
+        };
+
+      var TAB_TITLES = {
+        "1": 'คำนวณยอดผ่อนต่อเดือน <br class="d-block d-md-none"/>แบบลดต้น ลดดอก',
+        "2": "คำนวณวงเงินที่สามารถกู้ได้"
+      };
+
+      var VALIDATION_FIELDS = [
+        { id: "txtloan", warningId: "warning-txtloan", msg: "กรุณาระบุวงเงินที่ต้องการกู้" },
+        { id: "txtyear", warningId: "warning-txtyear", msg: "กรุณาระบุจำนวนปี​" },
+        { id: "txtMonthlyIncome", warningId: "warning-txtMonthlyIncome", msg: "กรุณาระบุรายได้ต่อเดือน" }
+      ];
+
+      // ─── Utility ───
+
+      function el(id) { return document.getElementById(id); }
+
+      function getInputValue(id) {
+        return parseFloat(el(id).value.replace(/,/g, ""));
+      }
+
+      function animateCounter(target, end) {
+        var startTime = null;
+        function step(now) {
+          if (!startTime) startTime = now;
+          var p = Math.min((now - startTime) / 1000, 1);
+          var val = Math.ceil(end * p);
+          target.textContent = val <= 0 ? "0" : (val >= 1e9 ? val.toExponential(2) : val.toLocaleString());
+          if (p < 1) requestAnimationFrame(step);
+        }
+        requestAnimationFrame(step);
+      }
+
+      // ─── Input Handlers (ใช้ใน oninput) ───
+
+      window.formatNumberInput = function (input) {
+        var cursor = input.selectionStart;
+        var raw = input.value.replace(/,/g, "");
+        if (!isNaN(raw) && raw !== "") {
+          var parts = raw.split(".");
+          parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+          input.value = parts.join(".");
+          var newCursor = cursor + (input.value.length - raw.length);
+          input.setSelectionRange(newCursor, newCursor);
+        }
+      };
+
+      window.filterNumericInput = function (input) {
+        input.value = input.value.replace(/[^0-9.]/g, "");
+        var parts = input.value.split(".");
+        if (parts.length > 2) input.value = parts[0] + "." + parts[1];
+        if (input.value.length > 1 && input.value.startsWith("0") && input.value[1] !== ".") {
+          input.value = input.value.replace(/^0+/, "");
+        }
+        validateInputFields();
+      };
+
+      window.handleEmptyInput = function (input) {
+        if (input.value.trim() === "") input.value = "0";
+      };
+
+      window.handleZeroInput = function (input) {
+        if (input.value === "0") input.value = "";
+        validateInputFields();
+      };
+
+      // ─── Validation ───
+
+      function validateInputFields() {
+        VALIDATION_FIELDS.forEach(function (f) {
+          var input = el(f.id);
+          var val = input.value.replace(/,/g, "").trim();
+          var warn = el(f.warningId);
+          var span = input.nextElementSibling;
+          var invalid = isNaN(val) || val === "";
+
+          input.classList.toggle("warning-calculator-active", invalid);
+          if (span) span.classList.toggle("warning-calculator-active", invalid);
+          warn.classList.toggle("d-none", !invalid);
+          warn.classList.toggle("d-block", invalid);
+          if (invalid) warn.textContent = f.msg;
+        });
+      }
+      window.validateInputFields = validateInputFields;
+
+      // ─── Bank Dropdown ───
+
+      window.toggleBankDropdown = function () {
+        el("bankDropdown").classList.toggle("open");
+      };
+
+      window.selectBank = function (item) {
+        var mrr = item.getAttribute("data-mrr");
+        var selected = el("bankDropdown").querySelector(".bank-dropdown__selected");
+
+        if (mrr) {
+          var bankName = item.getAttribute("data-bank-name");
+          var img = item.querySelector("img");
+          var imgHtml = img ? '<img src="' + img.src + '" alt="' + bankName + '" />' : '';
+          selected.innerHTML = '<span class="bank-dropdown__text">' + imgHtml
+            + '<span>' + item.querySelector("span").textContent + '</span></span>' + ARROW_SVG;
+          el("txtinterest").value = mrr;
+          el("interestGroup").style.display = "none";
+        } else {
+          selected.innerHTML = '<span class="bank-dropdown__placeholder">-- อัตราดอกเบี้ยกำหนดเอง​ --</span>' + ARROW_SVG;
+          el("interestGroup").style.display = "block";
+          el("txtinterest").value = "";
+          el("txtinterest").focus();
+        }
+
+        el("bankDropdown").classList.remove("open");
+      };
+
+      function selectFirstBank() {
+        var first = document.querySelector(".bank-dropdown__item[data-mrr]:not([data-mrr=''])");
+        if (first) window.selectBank(first);
+      }
+
+      document.addEventListener("click", function (e) {
+        var dd = el("bankDropdown");
+        if (dd && !dd.contains(e.target)) dd.classList.remove("open");
+      });
+
+      // ─── Calculations ───
+
+      function calculateFormCalculator1() {
+        var loan = getInputValue("txtloan");
+        var interest = getInputValue("txtinterest");
+        var year = getInputValue("txtyear");
+
+        if (!isNaN(loan) && !isNaN(interest) && !isNaN(year) && year > 0) {
+          var r = interest / 100 / 12;
+          var n = year * 12;
+          var monthly = (r === 0) ? loan / n : (loan * r) / (1 - Math.pow(1 + r, -n));
+
+          
+
+            el("text1").textContent = Math.ceil(monthly).toLocaleString();
+            el("text2").textContent = Math.ceil(monthly / 0.4).toLocaleString();
+        }
+
+        el("txtinterestDisplay1").textContent = el("txtinterest").value || "0";
+        updateResultBankInfo();
+      }
+      window.calculateFormCalculator1 = calculateFormCalculator1;
+
+      function updateResultBankInfo() {
+        var selected = el("bankDropdown").querySelector(".bank-dropdown__selected");
+        var img = selected.querySelector("img");
+        var text = selected.querySelector(".bank-dropdown__text span:last-child")
+          || selected.querySelector(".bank-dropdown__placeholder");
+        var logo = el("resultBankLogo");
+        var name = el("resultBankName");
+
+        if (img) {
+          logo.src = img.src;
+          logo.alt = img.alt;
+          logo.style.display = "block";
+          name.textContent = (text ? text.textContent : "").split("(")[0].trim();
+        } else {
+          logo.style.display = "none";
+          name.textContent = "อัตราดอกเบี้ยกำหนดเอง​";
+        }
+      }
+
+      function calculateFormCalculator2() {
+        var income = getInputValue("txtMonthlyIncome");
+        var debt = getInputValue("txtDebt");
+        if (isNaN(debt)) debt = 0;
+
+        if (!isNaN(income)) {
+          var ability = income * 0.4 - debt;
+          
+            el("text3").textContent = Math.ceil(ability * 150).toLocaleString();
+            el("text4").textContent = Math.ceil(ability).toLocaleString();
+        }
+      }
+      window.calculateFormCalculator2 = calculateFormCalculator2;
+
+      // ─── Reset ───
+
+      window.resetFormCalculator1 = function () {
+        el("txtloan").value = DEFAULT_VALUES.loan;
+        el("txtyear").value = DEFAULT_VALUES.year;
+        selectFirstBank();
+        calculateFormCalculator1();
+      };
+
+      window.resetFormCalculator2 = function () {
+        el("txtMonthlyIncome").value = DEFAULT_VALUES.monthlyIncome;
+        el("txtDebt").value = DEFAULT_VALUES.debt;
+        calculateFormCalculator2();
+      };
+
+      // ─── Tab Switching ───
+
+      var buttons = document.querySelectorAll("[id^='btnFormCalculator']");
+      var forms = document.querySelectorAll("[id^='FormCalculator']");
+
+      buttons.forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          var num = btn.id.replace("btnFormCalculator", "");
+
+          forms.forEach(function (f) { f.style.display = "none"; });
+          el("FormCalculator" + num).style.display = "flex";
+
+          buttons.forEach(function (b) { b.classList.remove("btnFormCalculator-active"); });
+          btn.classList.add("btnFormCalculator-active");
+
+          el("titleCalculator").innerHTML = TAB_TITLES[num];
+
+          if (typeof window["calculateFormCalculator" + num] === "function") {
+            window["calculateFormCalculator" + num]();
+          }
+        });
+      });
+
+      // ─── Enter Key ───
+
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          validateInputFields();
+          calculateFormCalculator1();
+          calculateFormCalculator2();
+        }
+      });
+
+      // ─── Init ───
+
+      document.addEventListener("DOMContentLoaded", function () {
+        window.resetFormCalculator1();
+        window.resetFormCalculator2();
+      });
+    })();
+
+
+        function toggleFaq(element) {
+            var isActive = element.classList.contains('active');
+            // Close all items
+            var items = element.parentElement.querySelectorAll('.faq-item');
+            items.forEach(function(item) {
+                item.classList.remove('active');
+            });
+            // Toggle clicked item
+            if (!isActive) {
+                element.classList.add('active');
+            }
+        }
+    
+
+
+
+            $(document).ready(function () {
+    
+                $("#sansiri_footer").sansiri_footer({
+                    source: "https://www.sansiri.com/embed/footer",
+                    issubbar: true,
+                    iscalculator: true,
+                    isbuttonTop: true,
+                    isbuttonChats: true,
+                    currentlang: "th",
+                    projectid: 529,
+                    fixsubbar: false
+                });
+    
+                var url = window.location.href;
+    
+                var sharebarfb = "https://www.facebook.com/sharer/sharer.php?u=" + url;
+                var sharebartw = "http://twitter.com/share?text=" + $('meta[name="twitter:title"]').attr("content") + "&url=" + url + "&hashtags=" + $('meta[name="keywords"]').attr("content") + "";
+                var sharebarline = "https://lineit.line.me/share/ui?url=" + url;
+                $(".ssr-icon-facebook a").attr("href", sharebarfb);
+                $(".ssr-icon-twitter a").attr("href", sharebartw);
+                $(".ssr-icon-line a").attr("href", sharebarline);
+            });
+        
+
+        $(document).ready(function() {
+            var lang = "";
+            if (window.location.href.indexOf('/cnt') >= 0) {
+                lang = "zh-hant";
+            } else if (window.location.href.indexOf('/en/') >= 0) {
+                lang = "en";
+            } else {
+                lang = "th";
+            }
+
+            $("html").attr("lang", lang);
+        });
+        
+
+                $(window).on("ready load resize", function () {
+                    if(window.currentLanguage.isTh){
+                        bannericon();
+                    }
+                    $(".campaing-icon").wrap("<a class='ga-project-campaign ssr-campaign-link d-block' href='#' target='_blank'></a>");
+                });
+
+                function bannericon() {
+                    //สำหรับคำนวณเปลี่ยนตำแหน่ง icon ใน mobile
+                    var lastpromotionheight = 0;
+                    var campaigpriority = 0;
+
+
+                    if (true) {
+
+                        if (124 > campaigpriority) {
+                            campaigpriority = 124;
+                            var countslide = 0;
+
+                            function promotiontext() {
+                                $(".ssr-box-inner").each(function () {
+                                    $(this).addClass("ssr-rtm-style");
+                                    $(this).addClass("ssr-campaign-text-color-" + countslide);
+                                    if (countslide == 0) {
+                                        var rtm = '';
+                                        
+                                        if (!false) {
+
+
+
+                                        	rtm = '<h1 class="color-white title-seo">';
+                                        	rtm += 'สิริ เพลส เมกาบางนา';
+                                        	rtm += '</h1>';
+                                        }
+                                        
+                                        if (!false) {
+                                            rtm += '<h2 class="color-white title-seo-2 mb-0">';
+                                            rtm += 'ดีลนี้เริ่ด';
+                                            rtm += '</h2>';
+                                        }
+                                        if (!false) {
+                                            rtm += '<p class="color-white mt-0">';
+                                            rtm += 'แจกแรง แซงทุกดีล สูงสุด 6 แสน<br/>ทาวน์โฮมโซนใหม่ ใกล้เมกาบางนา';
+                                            rtm += '</p>';
+                                        }
+                                        if (!false) {
+                                            rtm += '<h2 class="ssr-text-price color-white price-seo">';
+                                            rtm += 'เริ่ม 3.39 ล้าน';
+                                            rtm += '</h2>';
+                                        }
+                                        if ('0' == "1") {
+                                            if (!true) {
+                                                //console.log("test");
+                                                rtm += '<div class="ssr-box-venture">';
+                                                rtm += '    <h3 class="color-white">Joint venture</h3>';
+                                                rtm += '    <div class="ssr-logo-venture clearfix">';
+                                                rtm += '        <div class="ssr-logo-ventures-black-bts-sansiri"></div>';
+                                                rtm += '    </div>';
+                                                rtm += '</div>';
+                                            } else if (!true) {
+                                                //console.log("test");
+                                                rtm += '<div class="ssr-box-venture">';
+                                                rtm += '    <h3 class="color-white">Joint venture</h3>';
+                                                rtm += '    <div class="ssr-logo-venture clearfix">';
+                                                rtm += '        <div class="ssr-logo-ventures-white-bts-sansiri"></div>';
+                                                rtm += '    </div>';
+                                                rtm += '</div>';
+                                            }
+                                        } else if ('0' == "2") {
+                                            if (!true) {
+                                                rtm += '<div class="ssr-box-venture">';
+                                                rtm += '    <h3 class="color-white">Joint venture</h3>';
+                                                rtm += '    <div class="ssr-logo-venture clearfix">';
+                                                rtm += '        <div class="ssr-logo-ventures-black-tokyu-sansiri"></div>';
+                                                rtm += '    </div>';
+                                                rtm += '</div>';
+                                            } else if (!true) {
+                                                rtm += '<div class="ssr-box-venture">';
+                                                rtm += '    <h3 class="color-white">Joint venture</h3>';
+                                                rtm += '    <div class="ssr-logo-venture clearfix">';
+                                                rtm += '        <div class="ssr-logo-ventures-white-tokyu-sansiri"></div>';
+                                                rtm += '    </div>';
+                                                rtm += '</div>';
+                                            }
+                                        }
+                                        if (!true) {
+                                            rtm += '<a class="ssr-condition-text" href="' + data.campaignlink + '" target="_blank">';
+                                            rtm += '<span>';
+                                            rtm += '*เงื่อนไขโปรโมชัน >';
+                                            rtm += '</span>';
+                                            rtm += '</a>';
+                                        }
+                                        $(this).html(rtm);
+                                        countslide++;
+                                    } else {
+                                        var rtm = '';
+                                        
+                                        if (!false) {
+                                        
+                                        
+                                        
+                                            rtm = '<h2 class="color-white title-seo">';
+                                            rtm += 'สิริ เพลส เมกาบางนา';
+                                            rtm += '</h2>';
+                                        }
+                                        
+                                        if (!false) {
+                                            rtm += '<h2 class="color-white title-seo-2 mb-0">';
+                                            rtm += 'ดีลนี้เริ่ด';
+                                            rtm += '</h2>';
+                                        }
+                                        if (!false) {
+                                            rtm += '<p class="color-white mt-0">';
+                                            rtm += 'แจกแรง แซงทุกดีล สูงสุด 6 แสน<br/>ทาวน์โฮมโซนใหม่ ใกล้เมกาบางนา';
+                                            rtm += '</p>';
+                                        }
+                                        if (!false) {
+                                            rtm += '<h3 class="ssr-text-price color-white price-seo">'
+                                            rtm += 'เริ่ม 3.39 ล้าน'
+                                            rtm += '</h3>'
+                                        }
+                                        if ('0' == "1") {
+                                            if (!true) {
+                                                //console.log("test");
+                                                rtm += '<div class="ssr-box-venture">';
+                                                rtm += '    <h3 class="color-white">Joint venture</h3>';
+                                                rtm += '    <div class="ssr-logo-venture clearfix">';
+                                                rtm += '        <div class="ssr-logo-ventures-black-bts-sansiri"></div>';
+                                                rtm += '    </div>';
+                                                rtm += '</div>';
+                                            } else if (!true) {
+                                                //console.log("test");
+                                                rtm += '<div class="ssr-box-venture">';
+                                                rtm += '    <h3 class="color-white">Joint venture</h3>';
+                                                rtm += '    <div class="ssr-logo-venture clearfix">';
+                                                rtm += '        <div class="ssr-logo-ventures-white-bts-sansiri"></div>';
+                                                rtm += '    </div>';
+                                                rtm += '</div>';
+                                            }
+                                        } else if ('0' == "2") {
+                                            if (!true) {
+                                                rtm += '<div class="ssr-box-venture">';
+                                                rtm += '    <h3 class="color-white">Joint venture</h3>';
+                                                rtm += '    <div class="ssr-logo-venture clearfix">';
+                                                rtm += '        <div class="ssr-logo-ventures-black-tokyu-sansiri"></div>';
+                                                rtm += '    </div>';
+                                                rtm += '</div>';
+                                            } else if (!true) {
+                                                rtm += '<div class="ssr-box-venture">';
+                                                rtm += '    <h3 class="color-white">Joint venture</h3>';
+                                                rtm += '    <div class="ssr-logo-venture clearfix">';
+                                                rtm += '        <div class="ssr-logo-ventures-white-tokyu-sansiri"></div>';
+                                                rtm += '    </div>';
+                                                rtm += '</div>';
+                                            }
+                                        }
+                                        if (!true) {
+                                            rtm += '<a class="ssr-condition-text" href="' + data.campaignlink + '" target="_blank">';
+                                            rtm += '<span>';
+                                            rtm += '*เงื่อนไขโปรโมชัน >';
+                                            rtm += '</span>';
+                                            rtm += '</a>';
+                                        }
+                                        $(this).html(rtm);
+                                    }
+                                });
+                            }
+                            if (!true) {
+                                $(".ssr-campaign-link").attr("href", '');
+                            }
+                            else {
+                                $(".ssr-campaign-link").css({ "pointer-events": "none" });
+                            }                              
+                            var rtm4srt = "background:unset!important";
+                            var rtm4srt = "background:url('https://assets.sansiri.com/o77site/webcampaign-source/sansiri-rtmq3-promotion-pl-2026-campaign-project-icon.png')!important;";
+                            rtm4srt += "position: absolute!important;";
+                            rtm4srt += "top: 20% !important;";
+                            rtm4srt += "background-repeat:no-repeat!important;";
+                            rtm4srt += "left: 51% !important;";
+                            rtm4srt += "background-position:bottom right!important;";
+                            rtm4srt += "background-size:100% auto!important;";
+                            rtm4srt += "z-index:10!important;";
+                            rtm4srt += "width:8% !important;";
+                            rtm4srt += "transform:translate(-50%, -50%)";
+                            $(".campaing-icon").attr('style', rtm4srt);
+                            promotiontext();
+
+                            if (window.matchMedia("(max-width: 991px)").matches) {
+                                setTimeout(function () {
+                                    // Change icon location
+                                    $(".ssr-box-project-hero").each(function () {
+                                        promotionheight = $(this).height();
+                                        if (lastpromotionheight < promotionheight) {
+                                            lastpromotionheight = promotionheight;
+                                            lastpromotionheight2 = promotionheight - 1.5;
+                                        }
+                                    });
+                                    $(".ssr-box-project-hero").css({ "height": lastpromotionheight + "px" })
+                                    //around ipad device
+                                    if (window.matchMedia("(min-width: 500px) and (max-width: 991px)").matches) {
+                                        var bannerheight = '25%';
+                                        var bannerwidth = '20%';
+
+                                        $(".campaing-icon").css({ "transform": "translate(-50%, 0px)", "top": "unset" });
+                                    }
+                                    // mobile device
+                                    else {
+                                        var bannerheight = '20%';
+                                        var bannerwidth = '40%';
+
+                                        $(".campaing-icon").css({ "transform": "translate(-50%, 0px)", "top": "unset" });
+                                    }
+                                    $(".campaing-icon").css({ "bottom": lastpromotionheight2 + "px", "height": bannerheight, "width": bannerwidth });
+                                }, 500);
+                            }
+                            // desktop device
+                            else {
+                                $(".ssr-box-project-hero").css({ "height": "100%" });
+                                $(".ssr-box-project-hero.bottom-banner").css({ "height": "unset" });
+                                $(".campaing-icon").css({ "top": '20%', "left": '51%', "height": '20%' });
+                            }
+                        }
+                    }
+                }
+               
+            
+
+(function () {
+    var stickyBar = document.getElementById('stickyBar');
+    var heroBanner = document.getElementById('HeroBanner');
+    var boxContact = document.getElementById('boxContact');
+
+    var visibleSections = new Set();
+
+    var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+                visibleSections.add(entry.target);
+            } else {
+                visibleSections.delete(entry.target);
+            }
+        });
+
+        if (visibleSections.size > 0) {
+            stickyBar.classList.add('sticky-hidden');
+        } else {
+            stickyBar.classList.remove('sticky-hidden');
+            stickyBar.style.animation = 'none';
+            stickyBar.offsetHeight;
+            stickyBar.style.animation = '';
+        }
+    }, { threshold: 0 });
+
+    if (stickyBar && heroBanner) observer.observe(heroBanner);
+    if (stickyBar && boxContact) observer.observe(boxContact);
+})();
+    
+    // document.addEventListener('DOMContentLoaded', function () {
+    //     var aichatWrap = document.getElementById('aiChatWrap');
+    //     if (!aichatWrap) return;
+    
+    //     fetch('https://www.sansiri.com/services/api/get-ai-chatbot')
+    //         .then(function (res) { return res.text(); })
+    //         .then(function (html) {
+    //             var temp = document.createElement('div');
+    //             temp.innerHTML = html;
+    
+    //             var scriptContents = [];
+    //             var scriptEls = temp.querySelectorAll('script');
+    //             for (var i = 0; i < scriptEls.length; i++) {
+    //                 scriptContents.push(scriptEls[i].textContent);
+    //                 scriptEls[i].parentNode.removeChild(scriptEls[i]);
+    //             }
+    
+    //             while (temp.firstChild) {
+    //                 document.body.appendChild(temp.firstChild);
+    //             }
+    
+    //             for (var i = 0; i < scriptContents.length; i++) {
+    //                 var el = document.createElement('script');
+    //                 el.textContent = '(function(){' + scriptContents[i] + '})();';
+    //                 document.body.appendChild(el);
+    //             }
+    //         })
+    //         .catch(function (err) {
+    //             console.error('AI Chatbot load error:', err);
+    //         });
+    // });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        $(document).ready(function () {
+            $('img').lazy();
+            
+            // Campaign Banner Slot 2 [START]
+            var currentLanguage = "th-TH";
+            
+            if(currentLanguage == "th-TH"){
+                var checkOwl = setInterval(function() {
+                    if ($('#boxVisual .owl-carousel').length > 0) {
+                        clearInterval(checkOwl);
+                        getCampaignByProject(529);
+                    }
+                }, 100);
+            }
+            // Campaign Banner Slot 2 [END]
+        });
+    
+
+        (function() {
+            var stickyVdoLoaded = false;
+            function loadStickyVdo() {
+                if (stickyVdoLoaded) return;
+                if (window.scrollY < 200 && document.documentElement.scrollTop < 0) return;
+                stickyVdoLoaded = true;
+                window.removeEventListener('scroll', loadStickyVdo);
+                fetch('https://www.sansiri.com/services/api/get-social-vdo-sticky?projectId=529')
+                .then(function(res) { return res.text(); })
+                .then(function(html) {
+                    if (html && html.trim() !== '') {
+                        var container = document.createElement('div');
+                        container.innerHTML = html;
+                        var children = container.childNodes;
+                        while (children.length > 0) {
+                            var node = children[0];
+                            if (node.nodeName === 'SCRIPT') {
+                                var script = document.createElement('script');
+                                script.textContent = node.textContent;
+                                document.body.appendChild(script);
+                                container.removeChild(node);
+                            } else {
+                                document.body.appendChild(node);
+                            }
+                        }
+                    }
+                })
+                .catch(function(err) {
+                    console.error('SocialVdoSticky error:', err);
+                });
+            }
+            window.addEventListener('scroll', loadStickyVdo, { passive: true });
+        })();
+    
+    
+        (function () {
+            function isInViewport(el) {
+                if (!el) return false;
+                var rect = el.getBoundingClientRect();
+                return rect.top < window.innerHeight && rect.bottom > 0;
+            }
+    
+            function checkVisibility() {
+                var stickyVdo = document.getElementById('stickyVdoWrapper');
+                if (!stickyVdo) return;
+                var heroBanner = document.getElementById('boxVisual');
+                var boxContact = document.getElementById('boxContact');
+                var shouldHide = isInViewport(heroBanner) || isInViewport(boxContact);
+    
+                if (shouldHide) {
+                    stickyVdo.classList.remove('is-visible');
+                } else {
+                    stickyVdo.classList.add('is-visible');
+                }
+            }
+    
+            window.addEventListener('scroll', checkVisibility);
+            checkVisibility();
+        })();
+    

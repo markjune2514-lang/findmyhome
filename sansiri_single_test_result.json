@@ -1,0 +1,55 @@
+{
+  "id": "sansiri_529",
+  "name": "สิริ เพลส เมกาบางนา",
+  "developer": "แสนสิริ",
+  "type": "ทาวน์โฮม",
+  "price": 3.39,
+  "status": "ฉบับร่าง",
+  "province": "กรุงเทพมหานคร",
+  "location_lat": 13.6392711,
+  "location_lng": 100.6625753,
+  "image": "https://o77site.s3.ap-southeast-1.amazonaws.com/webproject-source/townhome/siri-place-mega-bangna/img/share/siri-place-megabangna-townhome-share-project-1200x630.jpg,https://s3.ap-southeast-1.amazonaws.com/o77site/webproject-source/townhome/siri-place-mega-bangna/img/innovation/siri-place-mega-bangna-townhome-innovation.webp,https://s3.ap-southeast-1.amazonaws.com/o77site/webproject-source/townhome/siri-place-mega-bangna/img/innovation/siri-place-mega-bangna-townhome-innovation-uv-shield.webp,https://s3.ap-southeast-1.amazonaws.com/o77site/webproject-source/townhome/siri-place-mega-bangna/img/innovation/siri-place-mega-bangna-townhome-innovation-tinted-glass.webp,https://s3.ap-southeast-1.amazonaws.com/o77site/webproject-source/townhome/siri-place-mega-bangna/img/innovation/siri-place-mega-bangna-townhome-innovation-wifi.webp,https://s3.ap-southeast-1.amazonaws.com/o77site/webproject-source/townhome/siri-place-mega-bangna/img/innovation/siri-place-mega-bangna-townhome-innovation-skylight.webp,https://s3.ap-southeast-1.amazonaws.com/o77site/webproject-source/townhome/siri-place-mega-bangna/img/factsheet/siri-place-mega-bangna-townhome-factsheet-cover.webp,https://assets.sansiri.com/o77site/webproject-source/townhome/siri-place-mega-bangna/img/facility/sansiri-townhome-siri-place-megabangna-1-facility.webp,https://assets.sansiri.com/o77site/webproject-source/townhome/siri-place-mega-bangna/img/facility/sansiri-townhome-siri-place-megabangna-2-swimming-pool.webp,https://assets.sansiri.com/o77site/webproject-source/townhome/siri-place-mega-bangna/img/facility/sansiri-townhome-siri-place-megabangna-3-fitness-room.webp",
+  "project_highlights": "ทาวน์โฮมใหม่ ใกล้รถไฟฟ้า และ ห้างชั้นนำ ออกแบบสวยสไตล์ปารีส ลงทะเบียนรอบ VIP เพื่อรับส่วนลดเพิ่ม 20,000 บาท*",
+  "total_land_area": "",
+  "total_units": null,
+  "unit_types": [
+    {
+      "name": "UV SHIELD",
+      "type": "ทาวน์โฮม",
+      "size": "99",
+      "bedrooms": "2",
+      "bathrooms": "3",
+      "parking": "",
+      "price": "3.39",
+      "planImages": [
+        "https://s3.ap-southeast-1.amazonaws.com/o77site/webproject-source/townhome/siri-place-mega-bangna/img/housetype/siri-place-pattanakarn-townhome-floorplan-montmarte-99-1.webp",
+        "https://s3.ap-southeast-1.amazonaws.com/o77site/webproject-source/townhome/siri-place-mega-bangna/img/housetype/siri-place-pattanakarn-townhome-floorplan-montmarte-99-2.webp"
+      ],
+      "roomImages": []
+    },
+    {
+      "name": "LOUVRE (ลูฟวร์)",
+      "type": "ทาวน์โฮม",
+      "size": "111",
+      "bedrooms": "3",
+      "bathrooms": "3",
+      "parking": "",
+      "price": "3.39",
+      "planImages": [
+        "https://s3.ap-southeast-1.amazonaws.com/o77site/webproject-source/townhome/siri-place-mega-bangna/img/housetype/siri-place-mega-bangna-townhome-floorplan-louvre-111-01.webp",
+        "https://s3.ap-southeast-1.amazonaws.com/o77site/webproject-source/townhome/siri-place-mega-bangna/img/housetype/siri-place-mega-bangna-townhome-floorplan-louvre-111-02.webp"
+      ],
+      "roomImages": []
+    }
+  ],
+  "facilities": [
+    "Garden​",
+    "Swimming Pool",
+    "Fitness Room",
+    "Relaxing Area",
+    "Parisian Garden",
+    "Education Playground",
+    "Lake"
+  ],
+  "listing_type": "ซื้อ"
+}
