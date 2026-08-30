@@ -562,6 +562,52 @@ export default function PropertyDetail({ previewData }) {
                       </div>
                     </div>
                   )}
+                  
+                  {/* ภาพบรรยากาศห้องตัวอย่างและโครงการ (Gallery & Room Atmosphere) */}
+                  {allImages && allImages.length > 0 && (
+                    <div className="facilities-card mt-6">
+                      <div className="flex items-center justify-between mb-4 border-b border-gray-100 pb-3">
+                        <h3 className="facilities-card-title m-0 flex items-center gap-2">
+                          <ImageIcon color="var(--primary)" size={22} /> ภาพบรรยากาศห้องตัวอย่างและโครงการ
+                        </h3>
+                        <span className="text-xs text-gray-500 font-bold bg-neutral-100 px-2.5 py-1 rounded-full">
+                          ทั้งหมด {allImages.length} รูป
+                        </span>
+                      </div>
+
+                      {/* Gallery Grid */}
+                      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                        {allImages.slice(0, 12).map((img, i) => (
+                          <div 
+                            key={i} 
+                            className="relative rounded-xl overflow-hidden border border-gray-200 group cursor-pointer bg-gray-50 aspect-[4/3] shadow-sm hover:shadow-md transition-all flex items-center justify-center"
+                            onClick={() => { setCurrentIndex(i); setIsLightboxOpen(true); }}
+                          >
+                            <img 
+                              src={img} 
+                              alt={`gallery-${i}`} 
+                              className="w-full h-full object-cover group-hover:scale-105 transition-all duration-300" 
+                              loading="lazy"
+                            />
+                            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-all flex items-center justify-center text-white font-bold text-xs gap-1">
+                              <ZoomIn size={14} /> ขยายภาพ
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+
+                      {allImages.length > 12 && (
+                        <div className="mt-4 text-center">
+                          <button 
+                            onClick={() => setIsLightboxOpen(true)}
+                            className="px-5 py-2.5 bg-neutral-100 hover:bg-primary hover:text-white text-gray-700 text-xs font-bold rounded-xl transition-all inline-flex items-center gap-1.5 shadow-sm border border-gray-200"
+                          >
+                            <ImageIcon size={14} /> ดูรูปภาพบรรยากาศทั้งหมด ({allImages.length} รูป)
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  )}
                 </div>
               </div>
             </>
