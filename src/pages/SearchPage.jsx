@@ -634,13 +634,14 @@ export default function SearchPage() {
             <label>ทำเล (จังหวัด / เขต)</label>
             <div className="flex gap-2" style={{ display: 'flex', gap: '0.5rem' }}>
               <select className="select-input flex-1" value={selectedProvince} onChange={(e) => { setSelectedProvince(e.target.value); setSelectedDistrict(''); }}>
+                <option value="">ทุกจังหวัด (ทั่วประเทศ)</option>
                 {Object.keys(provincesAndDistricts).map(prov => (
                   <option key={prov} value={prov}>{prov}</option>
                 ))}
               </select>
-              <select className="select-input flex-1" value={selectedDistrict} onChange={(e) => setSelectedDistrict(e.target.value)}>
+              <select className="select-input flex-1" value={selectedDistrict} onChange={(e) => setSelectedDistrict(e.target.value)} disabled={!selectedProvince}>
                 <option value="">ทุกเขต/อำเภอ</option>
-                {provincesAndDistricts[selectedProvince]?.map(d => (
+                {selectedProvince && provincesAndDistricts[selectedProvince]?.map(d => (
                   <option key={d} value={d}>{d}</option>
                 ))}
               </select>
@@ -905,7 +906,12 @@ export default function SearchPage() {
               const isCompared = compareList.some(item => item.id === prop.id);
               return (
                 <Link to={`/property/${prop.id}`} key={prop.id} className="prop-card-small" style={{ position: 'relative' }}>
-                  <img src={prop.image ? (Array.isArray(prop.image) ? prop.image[0] : (typeof prop.image === 'string' ? prop.image.split(',')[0] : '')) : ''} alt={prop.name} />
+                  <img 
+                    src={prop.image ? (Array.isArray(prop.image) ? prop.image[0] : (typeof prop.image === 'string' ? prop.image.split(',')[0] : '')) : ''} 
+                    alt={prop.name} 
+                    loading="lazy"
+                    decoding="async"
+                  />
                   <div className="prop-card-info" style={{ paddingRight: '30px' }}>
                     <h4 className="flex items-center gap-1">
                       {prop.package_tier === 'super' && <Crown size={14} fill="#e11d48" color="#e11d48" title="Super Exclusive" />}

@@ -1,91 +1,173 @@
-import React, { createContext, useState, useContext, useEffect } from 'react';
+import React, { createContext, useState, useContext, useEffect, useRef } from 'react';
 import { supabase } from './supabaseClient';
 
 const PropertiesContext = createContext();
 
 export const useProperties = () => useContext(PropertiesContext);
 
+const CACHE_KEY = 'fmh_properties_summary_cache';
+const CACHE_TIME_KEY = 'fmh_properties_summary_time';
+const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes
+
+// Lightweight columns for list/search/map views (excludes heavy unit_types, categorized_landmarks, facilities)
+const SUMMARY_FIELDS = `
+  id, name, developer, price, price_to, price_sqm, bedrooms, size,
+  type, project_type, status, location_lat, location_lng, station,
+  distance_to_station, rating, reviews, image, logo, floors, total_units,
+  project_parking, total_land_area, facility_type, province, district,
+  transit_system, transit_line, room_type, living_format, listing_type,
+  package_tier, rank_score, created_at
+`.replace(/\s+/g, ' ').trim();
+
 export const PropertiesProvider = ({ children }) => {
-  const [properties, setProperties] = useState([]);
-  const [loading, setLoading] = useState(true);
+  // Try initializing from session cache for instant render
+  const [properties, setProperties] = useState(() => {
+    try {
+      const cached = sessionStorage.getItem(CACHE_KEY);
+      const cachedTime = sessionStorage.getItem(CACHE_TIME_KEY);
+      if (cached && cachedTime && (Date.now() - parseInt(cachedTime, 10) < CACHE_TTL_MS)) {
+        return JSON.parse(cached);
+      }
+    } catch (e) {}
+    return [];
+  });
+
+  const [loading, setLoading] = useState(() => properties.length === 0);
   const [heroImage, setHeroImage] = useState(() => localStorage.getItem('heroImage') || 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=2000&q=80');
+
+  // In-memory cache for full property details
+  const fullPropertiesCacheRef = useRef({});
 
   useEffect(() => {
     localStorage.setItem('heroImage', heroImage);
   }, [heroImage]);
 
-  const fetchProperties = async () => {
-    setLoading(true);
-    const { data, error } = await supabase
-      .from('properties')
-      .select('*')
-      .order('created_at', { ascending: false });
-      
-    if (error) {
-      console.error("Error fetching properties:", error);
-    } else {
-      const formattedData = (data || []).map(item => {
-        let imageStr = '';
-        if (Array.isArray(item.image)) {
-          imageStr = item.image.filter(Boolean).join(',');
-        } else if (typeof item.image === 'string') {
-          imageStr = item.image;
-        } else if (item.image) {
-          imageStr = String(item.image);
-        }
-
-        const toArray = (val) => {
-          if (!val) return [];
-          if (Array.isArray(val)) return val;
-          if (typeof val === 'string') return val.split(',').map(s => s.trim()).filter(Boolean);
-          return [val];
-        };
-
-        const rawPrice = item.price !== null && item.price !== undefined && item.price !== '' ? parseFloat(item.price) : null;
-        let normalizedPrice = rawPrice;
-        if (item.listing_type !== 'เช่า' && rawPrice !== null && !isNaN(rawPrice) && rawPrice >= 10000) {
-          normalizedPrice = parseFloat((rawPrice / 1000000).toFixed(2));
-        }
-
-        return {
-          ...item,
-          price: normalizedPrice,
-          image: imageStr,
-          location: { 
-            lat: typeof item.location_lat === 'number' ? item.location_lat : (parseFloat(item.location_lat) || 13.7563), 
-            lng: typeof item.location_lng === 'number' ? item.location_lng : (parseFloat(item.location_lng) || 100.5018) 
-          },
-          projectType: item.project_type || '',
-          priceSqm: item.price_sqm,
-          priceTo: item.price_to,
-          totalUnits: item.total_units,
-          unitTypes: Array.isArray(item.unit_types) ? item.unit_types : [],
-          projectParking: item.project_parking,
-          totalLandArea: item.total_land_area,
-          facilityType: item.facility_type,
-          distanceToStation: item.distance_to_station || '',
-          categorizedLandmarks: item.categorized_landmarks || { transit: [], malls: [], hospitals: [], schools: [] },
-          transitSystem: item.transit_system || '',
-          transitLine: item.transit_line || '',
-          roomType: item.room_type || '',
-          livingFormat: item.living_format || '',
-          special: toArray(item.special),
-          facilities: toArray(item.facilities),
-          healthFacilities: toArray(item.health_facilities),
-          services: toArray(item.services),
-          security: toArray(item.security),
-          transport: toArray(item.transport),
-          promotions: toArray(item.promotions),
-          building_details: Array.isArray(item.building_details) ? item.building_details : [],
-          fullyFurnished: !!item.fully_furnished,
-          listingType: item.listing_type || 'ซื้อ',
-          projectHighlights: item.project_highlights,
-          package_tier: item.package_tier || 'standard'
-        };
-      });
-      setProperties(formattedData);
+  // Format a raw Supabase property row
+  const formatProperty = (item, isFull = false) => {
+    let imageStr = '';
+    if (Array.isArray(item.image)) {
+      imageStr = item.image.filter(Boolean).join(',');
+    } else if (typeof item.image === 'string') {
+      imageStr = item.image;
+    } else if (item.image) {
+      imageStr = String(item.image);
     }
-    setLoading(false);
+
+    const toArray = (val) => {
+      if (!val) return [];
+      if (Array.isArray(val)) return val;
+      if (typeof val === 'string') return val.split(',').map(s => s.trim()).filter(Boolean);
+      return [val];
+    };
+
+    const rawPrice = item.price !== null && item.price !== undefined && item.price !== '' ? parseFloat(item.price) : null;
+    let normalizedPrice = rawPrice;
+    if (item.listing_type !== 'เช่า' && rawPrice !== null && !isNaN(rawPrice) && rawPrice >= 10000) {
+      normalizedPrice = parseFloat((rawPrice / 1000000).toFixed(2));
+    }
+
+    return {
+      ...item,
+      price: normalizedPrice,
+      image: imageStr,
+      location: { 
+        lat: typeof item.location_lat === 'number' ? item.location_lat : (parseFloat(item.location_lat) || 13.7563), 
+        lng: typeof item.location_lng === 'number' ? item.location_lng : (parseFloat(item.location_lng) || 100.5018) 
+      },
+      projectType: item.project_type || '',
+      priceSqm: item.price_sqm,
+      priceTo: item.price_to,
+      totalUnits: item.total_units,
+      unitTypes: Array.isArray(item.unit_types) ? item.unit_types : [],
+      projectParking: item.project_parking,
+      totalLandArea: item.total_land_area,
+      facilityType: item.facility_type,
+      distanceToStation: item.distance_to_station || '',
+      categorizedLandmarks: item.categorized_landmarks || { transit: [], malls: [], hospitals: [], schools: [] },
+      transitSystem: item.transit_system || '',
+      transitLine: item.transit_line || '',
+      roomType: item.room_type || '',
+      livingFormat: item.living_format || '',
+      special: toArray(item.special),
+      facilities: toArray(item.facilities),
+      healthFacilities: toArray(item.health_facilities),
+      services: toArray(item.services),
+      security: toArray(item.security),
+      transport: toArray(item.transport),
+      promotions: toArray(item.promotions),
+      building_details: Array.isArray(item.building_details) ? item.building_details : (item.building_details ? [item.building_details] : []),
+      fullyFurnished: !!item.fully_furnished,
+      listingType: item.listing_type || 'ซื้อ',
+      projectHighlights: item.project_highlights,
+      package_tier: item.package_tier || 'standard',
+      isFullyLoaded: isFull
+    };
+  };
+
+  // Fetch lightweight summary of properties for listing/search/map (Huge bandwidth savings!)
+  const fetchProperties = async (forceRefresh = false) => {
+    if (properties.length === 0 || forceRefresh) {
+      setLoading(true);
+    }
+
+    try {
+      const { data, error } = await supabase
+        .from('properties')
+        .select(SUMMARY_FIELDS)
+        .order('created_at', { ascending: false });
+        
+      if (error) {
+        console.error("Error fetching properties summary:", error);
+      } else {
+        const formattedData = (data || []).map(item => formatProperty(item, false));
+        setProperties(formattedData);
+        
+        // Save to sessionStorage
+        try {
+          sessionStorage.setItem(CACHE_KEY, JSON.stringify(formattedData));
+          sessionStorage.setItem(CACHE_TIME_KEY, String(Date.now()));
+        } catch (e) {}
+      }
+    } catch (err) {
+      console.error("Unexpected error in fetchProperties:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Fetch full details of a single property on-demand with memory caching
+  const fetchPropertyById = async (id) => {
+    if (!id) return null;
+    
+    // 1. Check in-memory cache
+    if (fullPropertiesCacheRef.current[id]) {
+      return fullPropertiesCacheRef.current[id];
+    }
+
+    try {
+      // 2. Fetch full single row from Supabase
+      const { data, error } = await supabase
+        .from('properties')
+        .select('*')
+        .eq('id', id)
+        .single();
+
+      if (error || !data) {
+        console.error(`Error fetching full details for property ${id}:`, error);
+        // Fallback to summary property if available
+        return properties.find(p => p.id === id) || null;
+      }
+
+      const fullProperty = formatProperty(data, true);
+      
+      // Store in memory cache
+      fullPropertiesCacheRef.current[id] = fullProperty;
+      
+      return fullProperty;
+    } catch (err) {
+      console.error(`Unexpected error fetching property ${id}:`, err);
+      return properties.find(p => p.id === id) || null;
+    }
   };
 
   useEffect(() => {
@@ -184,7 +266,9 @@ export const PropertiesProvider = ({ children }) => {
       return null;
     }
     
-    await fetchProperties();
+    // Invalidate cache
+    sessionStorage.removeItem(CACHE_KEY);
+    await fetchProperties(true);
     return id; 
   };
 
@@ -223,10 +307,12 @@ export const PropertiesProvider = ({ children }) => {
       return { success: false, message: error.message || JSON.stringify(error) };
     }
     
-    await fetchProperties();
+    // Invalidate caches
+    delete fullPropertiesCacheRef.current[id];
+    sessionStorage.removeItem(CACHE_KEY);
+    await fetchProperties(true);
     return { success: true };
   };
-
 
   const deleteProperty = async (id) => {
     const { error } = await supabase
@@ -239,12 +325,26 @@ export const PropertiesProvider = ({ children }) => {
       return false;
     }
     
-    await fetchProperties();
+    // Invalidate caches
+    delete fullPropertiesCacheRef.current[id];
+    sessionStorage.removeItem(CACHE_KEY);
+    await fetchProperties(true);
     return true;
   };
 
   return (
-    <PropertiesContext.Provider value={{ properties, addProperty, updateProperty, deleteProperty, fetchProperties, loading, uploadImage, heroImage, setHeroImage }}>
+    <PropertiesContext.Provider value={{ 
+      properties, 
+      addProperty, 
+      updateProperty, 
+      deleteProperty, 
+      fetchProperties, 
+      fetchPropertyById,
+      loading, 
+      uploadImage, 
+      heroImage, 
+      setHeroImage 
+    }}>
       {children}
     </PropertiesContext.Provider>
   );

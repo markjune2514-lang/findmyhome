@@ -4,7 +4,7 @@ import { useProperties } from '../PropertiesContext';
 import { supabase } from '../supabaseClient';
 import {
   Plus, Building2, Home as HomeIcon, LayoutList, Edit, Trash2,
-  Layers, Search, X, Save, ChevronDown, ChevronUp, TrendingUp, Eye, Copy, Send, Star, Crown, CheckCircle2, FileEdit, ThumbsUp
+  Layers, Search, X, Save, ChevronDown, ChevronUp, TrendingUp, Eye, EyeOff, Copy, Send, Star, Crown, CheckCircle2, FileEdit, ThumbsUp
 } from 'lucide-react';
 
 // ── Unit Types Manager Modal ────────────────────────────────────────────────
@@ -208,13 +208,41 @@ export default function AdminDashboard() {
   };
 
   const handlePublish = async (prop) => {
-    if (window.confirm(`คุณต้องการเผยแพร่โครงการ "${prop.name}" ใช่หรือไม่?\n(สถานะจะเปลี่ยนเป็น "เปิด Presale" และแสดงให้ผู้ใช้งานเห็น)`)) {
+    if (window.confirm(`คุณต้องการเผยแพร่โครงการ "${prop.name}" ใช่หรือไม่?\n(สถานะจะเปลี่ยนเป็น "เปิด Presale" และแสดงให้ผู้ใช้งานเห็นในหน้าเว็บ)`)) {
       const result = await updateProperty(prop.id, { ...prop, status: 'เปิด Presale' });
       if (result === true || result?.success) {
         alert('เผยแพร่โครงการเรียบร้อยแล้ว!');
         if (fetchProperties) fetchProperties();
       } else {
         alert('เกิดข้อผิดพลาดในการเผยแพร่โครงการ');
+      }
+    }
+  };
+
+  const handleUnpublish = async (prop) => {
+    if (window.confirm(`คุณต้องการยกเลิกการเผยแพร่ (Unpublish) โครงการ "${prop.name}" ใช่หรือไม่?\n\n📌 โครงการจะถูกเปลี่ยนเป็นสถานะ "ฉบับร่าง" และซ่อนจากหน้าเว็บสำหรับผู้ใช้งานทั่วไปทันที`)) {
+      const result = await updateProperty(prop.id, { ...prop, status: 'ฉบับร่าง' });
+      if (result === true || result?.success) {
+        alert(`ยกเลิกการเผยแพร่ "${prop.name}" เรียบร้อยแล้ว (ซ่อนเป็นฉบับร่าง)`);
+        if (fetchProperties) fetchProperties();
+      } else {
+        alert('เกิดข้อผิดพลาดในการยกเลิกการเผยแพร่โครงการ');
+      }
+    }
+  };
+
+  const handleQuickStatusChange = async (prop, newStatus) => {
+    if (prop.status === newStatus) return;
+    const confirmMsg = newStatus === 'ฉบับร่าง' 
+      ? `คุณต้องการเปลี่ยนสถานะของ "${prop.name}" เป็น "ฉบับร่าง" (Unpublish / ซ่อนจากหน้าเว็บ) ใช่หรือไม่?`
+      : `คุณต้องการเปลี่ยนสถานะของ "${prop.name}" เป็น "${newStatus}" ใช่หรือไม่?`;
+      
+    if (window.confirm(confirmMsg)) {
+      const result = await updateProperty(prop.id, { ...prop, status: newStatus });
+      if (result === true || result?.success) {
+        if (fetchProperties) fetchProperties();
+      } else {
+        alert('เกิดข้อผิดพลาดในการเปลี่ยนสถานะ');
       }
     }
   };
@@ -608,7 +636,27 @@ export default function AdminDashboard() {
                     <td style={{ padding: '0.75rem 1rem', color: '#64748b', fontSize: '0.8rem', whiteSpace: 'nowrap' }}>{prop.province}</td>
                     {/* Status */}
                     <td style={{ padding: '0.75rem 1rem' }}>
-                      <span style={{ padding: '0.2rem 0.7rem', borderRadius: '2rem', fontSize: '0.68rem', fontWeight: 700, ...statusStyle(prop.status), whiteSpace: 'nowrap' }}>{prop.status || '-'}</span>
+                      <select
+                        value={prop.status || 'พร้อมอยู่'}
+                        onChange={(e) => handleQuickStatusChange(prop, e.target.value)}
+                        style={{
+                          padding: '0.25rem 0.6rem',
+                          borderRadius: '2rem',
+                          fontSize: '0.68rem',
+                          fontWeight: 700,
+                          border: 'none',
+                          cursor: 'pointer',
+                          outline: 'none',
+                          ...statusStyle(prop.status),
+                          whiteSpace: 'nowrap'
+                        }}
+                        title="คลิกเพื่อเปลี่ยนสถานะโครงการอย่างรวดเร็ว"
+                      >
+                        <option value="พร้อมอยู่">พร้อมอยู่</option>
+                        <option value="เปิด Presale">เปิด Presale</option>
+                        <option value="กำลังก่อสร้าง">กำลังก่อสร้าง</option>
+                        <option value="ฉบับร่าง">ฉบับร่าง (Unpublished)</option>
+                      </select>
                     </td>
                     {/* Unit Types Button */}
                     <td style={{ padding: '0.75rem 1rem' }}>
@@ -623,8 +671,22 @@ export default function AdminDashboard() {
                     {/* Actions */}
                     <td style={{ padding: '0.75rem 1rem' }}>
                       <div style={{ display: 'flex', gap: '0.375rem', alignItems: 'center' }}>
-                        {prop.status === 'ฉบับร่าง' && (
-                          <button onClick={() => handlePublish(prop)} title="เผยแพร่ (Publish)" style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', padding: '0.35rem 0.75rem', borderRadius: '0.5rem', background: '#4f46e5', color: '#fff', textDecoration: 'none', border: 'none', cursor: 'pointer', fontSize: '0.72rem', fontWeight: 700, whiteSpace: 'nowrap' }}><Send size={12} /> เผยแพร่</button>
+                        {prop.status === 'ฉบับร่าง' ? (
+                          <button 
+                            onClick={() => handlePublish(prop)} 
+                            title="เผยแพร่ (Publish ให้ผู้ใช้เห็นบนหน้าเว็บ)" 
+                            style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', padding: '0.35rem 0.65rem', borderRadius: '0.5rem', background: '#10b981', color: '#fff', border: 'none', cursor: 'pointer', fontSize: '0.72rem', fontWeight: 700, whiteSpace: 'nowrap', boxShadow: '0 2px 6px rgba(16,185,129,0.2)' }}
+                          >
+                            <Send size={12} /> เผยแพร่
+                          </button>
+                        ) : (
+                          <button 
+                            onClick={() => handleUnpublish(prop)} 
+                            title="ยกเลิกเผยแพร่ (Unpublish / ซ่อนเป็นฉบับร่างเนื่องจากข้อมูลยังไม่ครบ)" 
+                            style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', padding: '0.35rem 0.65rem', borderRadius: '0.5rem', background: '#fff1f2', color: '#e11d48', border: '1px solid #fecdd3', cursor: 'pointer', fontSize: '0.72rem', fontWeight: 700, whiteSpace: 'nowrap' }}
+                          >
+                            <EyeOff size={12} /> Unpublish
+                          </button>
                         )}
                         <select 
                           value={prop.package_tier || 'standard'} 

@@ -74,7 +74,15 @@ export default function ProjectsPage() {
     });
   };
 
+  const [visibleCount, setVisibleCount] = useState(12);
+
+  // Reset pagination when category or sort changes
+  React.useEffect(() => {
+    setVisibleCount(12);
+  }, [activeCategory, sortBy]);
+
   const filteredProperties = getFilteredProperties();
+  const displayedProperties = filteredProperties.slice(0, visibleCount);
 
   return (
     <div className="projects-page">
@@ -145,11 +153,16 @@ export default function ProjectsPage() {
 
         {/* Projects Grid/List */}
         <div className={viewMode === 'grid' ? 'projects-grid' : 'property-list'}>
-          {filteredProperties.map(prop => (
+          {displayedProperties.map(prop => (
             viewMode === 'grid' ? (
               <Link to={`/property/${prop.id}`} key={prop.id} className="project-card-large">
                 <div className="project-img-wrapper">
-                  <img src={prop.image ? (Array.isArray(prop.image) ? prop.image[0] : (typeof prop.image === 'string' ? prop.image.split(',')[0] : '')) : ''} alt={prop.name} />
+                  <img 
+                    src={prop.image ? (Array.isArray(prop.image) ? prop.image[0] : (typeof prop.image === 'string' ? prop.image.split(',')[0] : '')) : ''} 
+                    alt={prop.name} 
+                    loading="lazy"
+                    decoding="async"
+                  />
                   <button 
                     onClick={(e) => { e.preventDefault(); toggleFavorite(prop.id); }}
                     className={`absolute top-3 right-3 w-8 h-8 rounded-full flex items-center justify-center shadow-sm transition-transform z-10 border-none cursor-pointer ${isFavorite(prop.id) ? 'bg-white/90 text-rose-500 hover:scale-110' : 'bg-black/30 text-white hover:bg-white/90 hover:text-rose-500'}`}
@@ -199,7 +212,12 @@ export default function ProjectsPage() {
               </Link>
             ) : (
               <Link to={`/property/${prop.id}`} key={prop.id} className="prop-card-small" style={{ position: 'relative' }}>
-                <img src={prop.image ? (Array.isArray(prop.image) ? prop.image[0] : (typeof prop.image === 'string' ? prop.image.split(',')[0] : '')) : ''} alt={prop.name} />
+                <img 
+                  src={prop.image ? (Array.isArray(prop.image) ? prop.image[0] : (typeof prop.image === 'string' ? prop.image.split(',')[0] : '')) : ''} 
+                  alt={prop.name} 
+                  loading="lazy"
+                  decoding="async"
+                />
                 <div className="prop-card-info" style={{ paddingRight: '30px', flex: 1 }}>
                   <h4 className="flex items-center gap-1">
                     {prop.package_tier === 'super' && <Crown size={14} fill="#e11d48" color="#e11d48" title="Super Exclusive" />}
@@ -231,6 +249,18 @@ export default function ProjectsPage() {
             </div>
           )}
         </div>
+
+        {/* Load More Pagination Button */}
+        {visibleCount < filteredProperties.length && (
+          <div className="flex justify-center mt-8 mb-6">
+            <button
+              onClick={() => setVisibleCount(prev => prev + 12)}
+              className="px-8 py-3 bg-white border-2 border-[var(--primary)] text-[var(--primary)] hover:bg-[var(--primary)] hover:text-white rounded-full font-semibold transition-all duration-200 shadow-sm hover:shadow-md cursor-pointer"
+            >
+              โหลดโครงการเพิ่มเติม ({visibleCount} จาก {filteredProperties.length})
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

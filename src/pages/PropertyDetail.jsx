@@ -13,11 +13,34 @@ import './PropertyDetail.css';
 
 export default function PropertyDetail({ previewData }) {
   const { id } = useParams();
-  const { properties, loading } = useProperties();
+  const { properties, loading: globalLoading, fetchPropertyById } = useProperties();
   const { addToCompare } = useCompare();
   const { isFavorite, toggleFavorite } = useFavorites();
 
-  const prop = previewData || properties.find(p => p.id === id) || null;
+  const [fullProp, setFullProp] = useState(null);
+  const [detailLoading, setDetailLoading] = useState(false);
+
+  // Use previewData if provided, or fullProp if loaded, or summary fallback
+  const summaryProp = properties.find(p => p.id === id) || null;
+  const prop = previewData || fullProp || summaryProp;
+
+  // On-demand fetch of heavy property details (unit_types, landmarks, facilities)
+  React.useEffect(() => {
+    if (previewData || !id) return;
+    
+    let isMounted = true;
+    if (!fullProp || fullProp.id !== id) {
+      setDetailLoading(true);
+      fetchPropertyById(id).then(data => {
+        if (isMounted && data) {
+          setFullProp(data);
+        }
+      }).finally(() => {
+        if (isMounted) setDetailLoading(false);
+      });
+    }
+    return () => { isMounted = false; };
+  }, [id, previewData, fetchPropertyById]);
   
   const [activeTab, setActiveTab] = useState('overview'); // 'overview' or unit index '0', '1', '2'
   const [currentIndex, setCurrentIndex] = useState(0);
