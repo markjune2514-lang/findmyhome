@@ -5,19 +5,9 @@ const PropertiesContext = createContext();
 
 export const useProperties = () => useContext(PropertiesContext);
 
-const CACHE_KEY = 'fmh_properties_summary_cache';
-const CACHE_TIME_KEY = 'fmh_properties_summary_time';
+const CACHE_KEY = 'fmh_properties_full_v3_cache';
+const CACHE_TIME_KEY = 'fmh_properties_full_v3_time';
 const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes
-
-// Lightweight columns for list/search/map views (excludes heavy unit_types, categorized_landmarks, facilities)
-const SUMMARY_FIELDS = `
-  id, name, developer, price, price_to, price_sqm, bedrooms, size,
-  type, project_type, status, location_lat, location_lng, station,
-  distance_to_station, rating, reviews, image, logo, floors, total_units,
-  project_parking, total_land_area, facility_type, province, district,
-  transit_system, transit_line, room_type, living_format, listing_type,
-  package_tier, rank_score, created_at
-`.replace(/\s+/g, ' ').trim();
 
 export const PropertiesProvider = ({ children }) => {
   // Try initializing from session cache for instant render
@@ -104,7 +94,7 @@ export const PropertiesProvider = ({ children }) => {
     };
   };
 
-  // Fetch lightweight summary of properties for listing/search/map (Huge bandwidth savings!)
+  // Fetch all properties with full unit types, landmarks, and details
   const fetchProperties = async (forceRefresh = false) => {
     if (properties.length === 0 || forceRefresh) {
       setLoading(true);
@@ -113,13 +103,13 @@ export const PropertiesProvider = ({ children }) => {
     try {
       const { data, error } = await supabase
         .from('properties')
-        .select(SUMMARY_FIELDS)
+        .select('*')
         .order('created_at', { ascending: false });
         
       if (error) {
-        console.error("Error fetching properties summary:", error);
+        console.error("Error fetching properties:", error);
       } else {
-        const formattedData = (data || []).map(item => formatProperty(item, false));
+        const formattedData = (data || []).map(item => formatProperty(item, true));
         setProperties(formattedData);
         
         // Save to sessionStorage
