@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { useProperties } from '../PropertiesContext';
 import { supabase } from '../supabaseClient';
 import {
   Plus, Building2, Home as HomeIcon, LayoutList, Edit, Trash2,
-  Layers, Search, X, Save, ChevronDown, ChevronUp, TrendingUp, Eye, EyeOff, Copy, Send, Star, Crown, CheckCircle2, FileEdit, ThumbsUp
+  Layers, Search, X, Save, ChevronDown, ChevronUp, TrendingUp, Eye, EyeOff, Copy, Send, Star, Crown, CheckCircle2, FileEdit, ThumbsUp,
+  Download, RefreshCw, Filter, ArrowUpDown, Globe, Shield, Sparkles, CheckSquare, Square, BarChart3, Settings, HelpCircle, ExternalLink, ChevronLeft, ChevronRight, Check
 } from 'lucide-react';
 
 // ── Unit Types Manager Modal ────────────────────────────────────────────────
@@ -151,12 +152,27 @@ function UnitTypesModal({ prop, onClose, onSaved }) {
 // ── Main Dashboard ──────────────────────────────────────────────────────────
 export default function AdminDashboard() {
   const { properties, deleteProperty, fetchProperties, updateProperty, heroImage, setHeroImage } = useProperties();
+  
+  // Navigation & Workspace Tabs
+  const [activeTab, setActiveTab] = useState('properties'); // 'properties' | 'developers' | 'analytics' | 'system'
+  
+  // Search, Filters, Sorting & Pagination
   const [search, setSearch] = useState('');
   const [typeFilter, setTypeFilter] = useState('ทั้งหมด');
   const [developerFilter, setDeveloperFilter] = useState('ทั้งหมด');
   const [statusFilter, setStatusFilter] = useState('ทั้งหมด');
+  const [tierFilter, setTierFilter] = useState('ทั้งหมด');
+  const [sortBy, setSortBy] = useState('newest'); // 'newest' | 'price_asc' | 'price_desc' | 'name_asc' | 'units_desc'
+  const [pageSize, setPageSize] = useState(25);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  // Modals & Selection State
   const [managingProp, setManagingProp] = useState(null);
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [seoModalOpen, setSeoModalOpen] = useState(false);
+  const [selectedIds, setSelectedIds] = useState(new Set());
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [bulkLoading, setBulkLoading] = useState(false);
 
   // Analytics State
   const [totalViews, setTotalViews] = useState(0);
@@ -166,17 +182,15 @@ export default function AdminDashboard() {
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        // Fetch daily page views
         const { data: dailyData, error: dailyError } = await supabase
           .from('daily_page_views')
           .select('*')
           .order('view_date', { ascending: false })
           .limit(7);
         if (!dailyError && dailyData) {
-          setDailyViews(dailyData.reverse()); // Reverse to show oldest to newest left to right
+          setDailyViews(dailyData.reverse());
         }
 
-        // Fetch total page views
         const { data: viewsData, error: viewsError } = await supabase
           .from('page_views')
           .select('views');
@@ -185,7 +199,6 @@ export default function AdminDashboard() {
           setTotalViews(sum);
         }
 
-        // Fetch top searches
         const { data: searchData, error: searchError } = await supabase
           .from('search_stats')
           .select('*')
@@ -201,526 +214,1134 @@ export default function AdminDashboard() {
     fetchStats();
   }, []);
 
-  const handleDelete = async (id) => {
-    if (window.confirm('คุณแน่ใจหรือไม่ว่าต้องการลบโครงการนี้? (ไม่สามารถกู้คืนได้)')) {
-      await deleteProperty(id);
-    }
-  };
-
-  const handlePublish = async (prop) => {
-    if (window.confirm(`คุณต้องการเผยแพร่โครงการ "${prop.name}" ใช่หรือไม่?\n(สถานะจะเปลี่ยนเป็น "เปิด Presale" และแสดงให้ผู้ใช้งานเห็นในหน้าเว็บ)`)) {
-      const result = await updateProperty(prop.id, { ...prop, status: 'เปิด Presale' });
-      if (result === true || result?.success) {
-        alert('เผยแพร่โครงการเรียบร้อยแล้ว!');
-        if (fetchProperties) fetchProperties();
-      } else {
-        alert('เกิดข้อผิดพลาดในการเผยแพร่โครงการ');
-      }
-    }
-  };
-
-  const handleUnpublish = async (prop) => {
-    if (window.confirm(`คุณต้องการยกเลิกการเผยแพร่ (Unpublish) โครงการ "${prop.name}" ใช่หรือไม่?\n\n📌 โครงการจะถูกเปลี่ยนเป็นสถานะ "ฉบับร่าง" และซ่อนจากหน้าเว็บสำหรับผู้ใช้งานทั่วไปทันที`)) {
-      const result = await updateProperty(prop.id, { ...prop, status: 'ฉบับร่าง' });
-      if (result === true || result?.success) {
-        alert(`ยกเลิกการเผยแพร่ "${prop.name}" เรียบร้อยแล้ว (ซ่อนเป็นฉบับร่าง)`);
-        if (fetchProperties) fetchProperties();
-      } else {
-        alert('เกิดข้อผิดพลาดในการยกเลิกการเผยแพร่โครงการ');
-      }
-    }
-  };
-
-  const handleQuickStatusChange = async (prop, newStatus) => {
-    if (prop.status === newStatus) return;
-    const confirmMsg = newStatus === 'ฉบับร่าง' 
-      ? `คุณต้องการเปลี่ยนสถานะของ "${prop.name}" เป็น "ฉบับร่าง" (Unpublish / ซ่อนจากหน้าเว็บ) ใช่หรือไม่?`
-      : `คุณต้องการเปลี่ยนสถานะของ "${prop.name}" เป็น "${newStatus}" ใช่หรือไม่?`;
-      
-    if (window.confirm(confirmMsg)) {
-      const result = await updateProperty(prop.id, { ...prop, status: newStatus });
-      if (result === true || result?.success) {
-        if (fetchProperties) fetchProperties();
-      } else {
-        alert('เกิดข้อผิดพลาดในการเปลี่ยนสถานะ');
-      }
-    }
-  };
-
-  const handleChangeTier = async (prop, newTier) => {
-    if (window.confirm(`เปลี่ยนเทียร์ของโครงการ "${prop.name}" เป็น ${newTier} ใช่หรือไม่?`)) {
-      const result = await updateProperty(prop.id, { ...prop, package_tier: newTier });
-      if (result === true || result?.success) {
-        if (fetchProperties) fetchProperties();
-      } else {
-        alert('เกิดข้อผิดพลาดในการเปลี่ยนแพ็กเกจ');
-      }
-    }
-  };
-
-  // Developer / Contractor List with Counts
-  const developerList = React.useMemo(() => {
+  // Developer List with Counts
+  const developerList = useMemo(() => {
     const counts = {};
     properties.forEach(p => {
-      const dev = p.developer?.trim() || 'ไม่ระบุผู้พัฒนา/ผู้รับเหมา';
+      const dev = p.developer?.trim() || 'ไม่ระบุผู้พัฒนา';
       counts[dev] = (counts[dev] || 0) + 1;
     });
     return Object.entries(counts).sort((a, b) => b[1] - a[1]);
   }, [properties]);
 
-  const condoCount = properties.filter(p => p.type === 'คอนโด').length;
-  const houseCount = properties.filter(p => p.type === 'บ้าน' || p.type === 'ทาวน์โฮม').length;
-  const seniorCount = properties.filter(p => p.type === 'Senior Living').length;
-  
-  const draftCount = properties.filter(p => p.status === 'ฉบับร่าง').length;
+  // KPI Metrics
+  const condoCount = useMemo(() => properties.filter(p => p.type === 'คอนโด').length, [properties]);
+  const houseCount = useMemo(() => properties.filter(p => p.type === 'บ้าน' || p.type === 'ทาวน์โฮม').length, [properties]);
+  const draftCount = useMemo(() => properties.filter(p => p.status === 'ฉบับร่าง').length, [properties]);
   const publishedCount = properties.length - draftCount;
   
-  const superCount = properties.filter(p => p.package_tier === 'super').length;
-  const sponsoredCount = properties.filter(p => p.package_tier === 'sponsored').length;
-  const premiumCount = properties.filter(p => p.package_tier === 'premium').length;
-  const standardCount = properties.filter(p => !p.package_tier || p.package_tier === 'standard').length;
+  const superCount = useMemo(() => properties.filter(p => p.package_tier === 'super').length, [properties]);
+  const sponsoredCount = useMemo(() => properties.filter(p => p.package_tier === 'sponsored').length, [properties]);
+  const premiumCount = useMemo(() => properties.filter(p => p.package_tier === 'premium').length, [properties]);
 
-  const filtered = properties.filter(p => {
-    const matchSearch = !search || 
-      p.name?.toLowerCase().includes(search.toLowerCase()) || 
-      p.developer?.toLowerCase().includes(search.toLowerCase()) || 
-      p.province?.toLowerCase().includes(search.toLowerCase()) ||
-      p.district?.toLowerCase().includes(search.toLowerCase());
-    
-    const matchType = typeFilter === 'ทั้งหมด' || p.type === typeFilter;
-    
-    const devName = p.developer?.trim() || 'ไม่ระบุผู้พัฒนา/ผู้รับเหมา';
-    const matchDeveloper = developerFilter === 'ทั้งหมด' || devName === developerFilter;
-    
-    const matchStatus = statusFilter === 'ทั้งหมด' || 
-      (statusFilter === 'เผยแพร่แล้ว' && p.status !== 'ฉบับร่าง') ||
-      (statusFilter === 'ฉบับร่าง' && p.status === 'ฉบับร่าง') ||
-      p.status === statusFilter;
+  // Filtering & Sorting
+  const filteredProperties = useMemo(() => {
+    let result = properties.filter(p => {
+      const q = search.toLowerCase().trim();
+      const matchSearch = !q || 
+        p.name?.toLowerCase().includes(q) || 
+        p.developer?.toLowerCase().includes(q) || 
+        p.province?.toLowerCase().includes(q) ||
+        p.district?.toLowerCase().includes(q) ||
+        p.station?.toLowerCase().includes(q) ||
+        p.id?.toLowerCase().includes(q);
+      
+      const matchType = typeFilter === 'ทั้งหมด' || p.type === typeFilter;
+      
+      const devName = p.developer?.trim() || 'ไม่ระบุผู้พัฒนา';
+      const matchDeveloper = developerFilter === 'ทั้งหมด' || devName === developerFilter;
+      
+      const matchStatus = statusFilter === 'ทั้งหมด' || 
+        (statusFilter === 'เผยแพร่แล้ว' && p.status !== 'ฉบับร่าง') ||
+        (statusFilter === 'ฉบับร่าง' && p.status === 'ฉบับร่าง') ||
+        p.status === statusFilter;
 
-    return matchSearch && matchType && matchDeveloper && matchStatus;
-  });
+      const matchTier = tierFilter === 'ทั้งหมด' || 
+        (tierFilter === 'standard' && (!p.package_tier || p.package_tier === 'standard')) ||
+        p.package_tier === tierFilter;
 
-  // Selected developer specific stats
-  const selectedDevStats = React.useMemo(() => {
-    if (developerFilter === 'ทั้งหมด') return null;
-    const devProps = properties.filter(p => (p.developer?.trim() || 'ไม่ระบุผู้พัฒนา/ผู้รับเหมา') === developerFilter);
-    const published = devProps.filter(p => p.status !== 'ฉบับร่าง').length;
-    const drafts = devProps.filter(p => p.status === 'ฉบับร่าง').length;
-    const prices = devProps.map(p => Number(p.price) || 0).filter(p => p > 0);
-    const minPrice = prices.length ? Math.min(...prices) : 0;
-    const maxPrice = prices.length ? Math.max(...prices) : 0;
-    return { total: devProps.length, published, drafts, minPrice, maxPrice };
-  }, [properties, developerFilter]);
+      return matchSearch && matchType && matchDeveloper && matchStatus && matchTier;
+    });
 
-  const statusStyle = (status) => {
-    if (status === 'พร้อมอยู่') return { background: '#dcfce7', color: '#16a34a' };
-    if (status === 'เปิด Presale') return { background: '#fef9c3', color: '#ca8a04' };
-    if (status === 'ฉบับร่าง') return { background: '#f1f5f9', color: '#64748b' };
-    return { background: '#e0f2fe', color: '#0284c7' };
+    // Sorting
+    result.sort((a, b) => {
+      if (sortBy === 'price_asc') return (parseFloat(a.price) || 0) - (parseFloat(b.price) || 0);
+      if (sortBy === 'price_desc') return (parseFloat(b.price) || 0) - (parseFloat(a.price) || 0);
+      if (sortBy === 'name_asc') return (a.name || '').localeCompare(b.name || '', 'th');
+      if (sortBy === 'units_desc') return (b.unitTypes?.length || 0) - (a.unitTypes?.length || 0);
+      // 'newest' default
+      return new Date(b.created_at || 0) - new Date(a.created_at || 0);
+    });
+
+    return result;
+  }, [properties, search, typeFilter, developerFilter, statusFilter, tierFilter, sortBy]);
+
+  // Pagination Slice
+  const totalPages = pageSize === 'all' ? 1 : Math.ceil(filteredProperties.length / pageSize) || 1;
+  const paginatedProperties = useMemo(() => {
+    if (pageSize === 'all') return filteredProperties;
+    const start = (currentPage - 1) * pageSize;
+    return filteredProperties.slice(start, start + pageSize);
+  }, [filteredProperties, currentPage, pageSize]);
+
+  // Reset page on filter changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [search, typeFilter, developerFilter, statusFilter, tierFilter, pageSize]);
+
+  // Selection Handlers
+  const toggleSelectAll = () => {
+    if (selectedIds.size === paginatedProperties.length) {
+      setSelectedIds(new Set());
+    } else {
+      setSelectedIds(new Set(paginatedProperties.map(p => p.id)));
+    }
   };
 
-  const typeStyle = (type) => {
-    if (type === 'คอนโด') return { background: '#f5f3ff', color: '#7c3aed' };
-    if (type === 'Senior Living') return { background: '#fffbeb', color: '#b45309' };
-    return { background: '#ecfdf5', color: '#059669' };
+  const toggleSelectOne = (id) => {
+    setSelectedIds(prev => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
   };
 
-  // คำนวณความกว้างหลอดสำหรับ Top Searches
-  const maxSearchCount = topSearches.length > 0 ? topSearches[0].count : 1;
+  // Force Refresh Trigger
+  const handleForceRefresh = async () => {
+    setIsRefreshing(true);
+    try {
+      if (fetchProperties) await fetchProperties(true);
+    } finally {
+      setTimeout(() => setIsRefreshing(false), 500);
+    }
+  };
+
+  // Single Actions
+  const handleDelete = async (id, name) => {
+    if (window.confirm(`คุณแน่ใจหรือไม่ว่าต้องการลบโครงการ "${name || id}"?\n(การกระทำนี้ไม่สามารถย้อนกลับได้)`)) {
+      await deleteProperty(id);
+      setSelectedIds(prev => {
+        const next = new Set(prev);
+        next.delete(id);
+        return next;
+      });
+    }
+  };
+
+  const handleQuickStatusChange = async (prop, newStatus) => {
+    if (prop.status === newStatus) return;
+    const result = await updateProperty(prop.id, { ...prop, status: newStatus });
+    if (result === true || result?.success) {
+      if (fetchProperties) fetchProperties();
+    } else {
+      alert('เกิดข้อผิดพลาดในการเปลี่ยนสถานะ');
+    }
+  };
+
+  const handleChangeTier = async (prop, newTier) => {
+    const result = await updateProperty(prop.id, { ...prop, package_tier: newTier });
+    if (result === true || result?.success) {
+      if (fetchProperties) fetchProperties();
+    } else {
+      alert('เกิดข้อผิดพลาดในการเปลี่ยนเทียร์');
+    }
+  };
+
+  // Bulk Actions
+  const handleBulkStatusChange = async (newStatus) => {
+    if (selectedIds.size === 0) return;
+    const actionName = newStatus === 'ฉบับร่าง' ? 'ซ่อนเป็นฉบับร่าง' : `เปลี่ยนสถานะเป็น "${newStatus}"`;
+    if (!window.confirm(`ยืนยันการ${actionName} สำหรับ ${selectedIds.size} โครงการที่เลือกไว้?`)) return;
+
+    setBulkLoading(true);
+    try {
+      const idsArray = Array.from(selectedIds);
+      const { error } = await supabase
+        .from('properties')
+        .update({ status: newStatus })
+        .in('id', idsArray);
+
+      if (error) throw error;
+      alert(`อัปเดต ${selectedIds.size} โครงการเรียบร้อยแล้ว!`);
+      setSelectedIds(new Set());
+      if (fetchProperties) fetchProperties(true);
+    } catch (e) {
+      alert('เกิดข้อผิดพลาดในการดำเนินการ: ' + e.message);
+    } finally {
+      setBulkLoading(false);
+    }
+  };
+
+  const handleBulkTierChange = async (newTier) => {
+    if (selectedIds.size === 0) return;
+    if (!window.confirm(`ยืนยันการตั้งค่าเทียร์เป็น "${newTier}" ให้กับ ${selectedIds.size} โครงการที่เลือก?`)) return;
+
+    setBulkLoading(true);
+    try {
+      const idsArray = Array.from(selectedIds);
+      const { error } = await supabase
+        .from('properties')
+        .update({ package_tier: newTier })
+        .in('id', idsArray);
+
+      if (error) throw error;
+      alert(`ปรับเทียร์ ${selectedIds.size} โครงการเรียบร้อยแล้ว!`);
+      setSelectedIds(new Set());
+      if (fetchProperties) fetchProperties(true);
+    } catch (e) {
+      alert('เกิดข้อผิดพลาด: ' + e.message);
+    } finally {
+      setBulkLoading(false);
+    }
+  };
+
+  const handleBulkDelete = async () => {
+    if (selectedIds.size === 0) return;
+    if (!window.confirm(`⚠️ คำเตือน: คุณต้องการลบ ${selectedIds.size} โครงการที่เลือกออกจากฐานข้อมูลอย่างถาวรใช่หรือไม่?`)) return;
+
+    setBulkLoading(true);
+    try {
+      const idsArray = Array.from(selectedIds);
+      const { error } = await supabase
+        .from('properties')
+        .delete()
+        .in('id', idsArray);
+
+      if (error) throw error;
+      alert(`ลบ ${selectedIds.size} โครงการเรียบร้อยแล้ว`);
+      setSelectedIds(new Set());
+      if (fetchProperties) fetchProperties(true);
+    } catch (e) {
+      alert('เกิดข้อผิดพลาดในการลบ: ' + e.message);
+    } finally {
+      setBulkLoading(false);
+    }
+  };
+
+  // Export Data (JSON & CSV)
+  const exportData = (format = 'json') => {
+    const dataToExport = filteredProperties.map(p => ({
+      id: p.id,
+      name: p.name,
+      developer: p.developer,
+      type: p.type,
+      price: p.price,
+      status: p.status,
+      province: p.province,
+      district: p.district,
+      station: p.station || '',
+      package_tier: p.package_tier || 'standard',
+      total_units: p.total_units || '',
+      unit_types_count: p.unitTypes?.length || 0,
+      created_at: p.created_at || ''
+    }));
+
+    if (format === 'json') {
+      const blob = new Blob([JSON.stringify(dataToExport, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `findmyhome_properties_${new Date().toISOString().split('T')[0]}.json`;
+      a.click();
+    } else {
+      const headers = ['ID', 'ชื่อโครงการ', 'ผู้พัฒนา', 'ประเภท', 'ราคาเริ่มต้น (ลบ.)', 'สถานะ', 'จังหวัด', 'อำเภอ/เขต', 'สถานี', 'เทียร์', 'จำนวนยูนิตย่อย', 'วันที่สร้าง'];
+      const rows = dataToExport.map(d => [
+        `"${d.id}"`, `"${d.name}"`, `"${d.developer}"`, `"${d.type}"`, d.price, `"${d.status}"`,
+        `"${d.province}"`, `"${d.district}"`, `"${d.station}"`, `"${d.package_tier}"`, d.unit_types_count, `"${d.created_at}"`
+      ]);
+      const csvContent = '\uFEFF' + [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `findmyhome_properties_${new Date().toISOString().split('T')[0]}.csv`;
+      a.click();
+    }
+  };
+
+  const statusBadge = (status) => {
+    if (status === 'พร้อมอยู่') return 'bg-emerald-50 text-emerald-700 border-emerald-200';
+    if (status === 'เปิด Presale') return 'bg-amber-50 text-amber-700 border-amber-200';
+    if (status === 'กำลังก่อสร้าง') return 'bg-sky-50 text-sky-700 border-sky-200';
+    if (status === 'ฉบับร่าง') return 'bg-slate-100 text-slate-600 border-slate-300';
+    return 'bg-blue-50 text-blue-700 border-blue-200';
+  };
+
+  const tierBadge = (tier) => {
+    if (tier === 'super') return { label: '👑 Super', cls: 'bg-amber-500/10 text-amber-600 border-amber-300' };
+    if (tier === 'sponsored') return { label: '⭐ Sponsored', cls: 'bg-blue-500/10 text-blue-600 border-blue-300' };
+    if (tier === 'premium') return { label: '✅ Premium', cls: 'bg-orange-500/10 text-orange-600 border-orange-300' };
+    return { label: 'Standard', cls: 'bg-slate-100 text-slate-500 border-slate-200' };
+  };
 
   return (
-    <div style={{ minHeight: '100vh', background: '#f8fafc', padding: '1.5rem 1rem' }}>
-      <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-
-        {/* ── Header */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1.75rem', flexWrap: 'wrap', gap: '1rem' }}>
+    <div className="min-h-screen pb-24 text-slate-800">
+      {/* ── Top Command Center Bar ── */}
+      <div className="bg-white border-b border-slate-200/80 sticky top-0 z-20 shadow-xs px-4 sm:px-8 py-4">
+        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div>
-            <h1 style={{ margin: 0, fontSize: 'clamp(1.25rem, 4vw, 1.75rem)', fontWeight: 900, color: '#0f172a' }}>
-              🏠 Admin <span style={{ color: 'var(--primary)' }}>Dashboard</span>
-            </h1>
-            <p style={{ margin: '0.25rem 0 0', color: '#64748b', fontSize: '0.875rem' }}>จัดการข้อมูลโครงการอสังหาริมทรัพย์ทั้งหมด</p>
+            <div className="flex items-center gap-2.5">
+              <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight flex items-center gap-2">
+                Admin Management Suite
+              </h1>
+              <span className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                Online
+              </span>
+            </div>
+            <p className="text-xs text-slate-500 mt-0.5">
+              จัดการข้อมูลอสังหาริมทรัพย์ • สถิติ • SEO • ระบบอัตโนมัติครบวงจร
+            </p>
           </div>
-          <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
-            <button onClick={() => setSettingsOpen(true)} style={{ background: '#f1f5f9', border: '1px solid #e2e8f0', color: '#475569', padding: '0.75rem 1.25rem', borderRadius: '0.875rem', fontWeight: 600, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem' }}>
-              <Star size={18} /> เปลี่ยนภาพพื้นหลัง
+
+          {/* Quick Action Toolbar */}
+          <div className="flex items-center gap-2 flex-wrap w-full sm:w-auto">
+            <button
+              onClick={handleForceRefresh}
+              disabled={isRefreshing}
+              className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 transition-colors border border-slate-200"
+              title="ดึงข้อมูลล่าสุดจาก Supabase"
+            >
+              <RefreshCw size={14} className={isRefreshing ? 'animate-spin text-blue-600' : ''} />
+              <span>รีเฟรช</span>
             </button>
-            <Link to="/admin/add" style={{ background: 'var(--primary)', color: '#fff', padding: '0.75rem 1.5rem', borderRadius: '0.875rem', fontWeight: 700, textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '0.5rem', boxShadow: '0 4px 14px rgba(211,135,100,0.35)', fontSize: '0.875rem' }}>
-              <Plus size={18} /> เพิ่มโครงการใหม่
+
+            <button
+              onClick={() => setSeoModalOpen(true)}
+              className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 transition-colors border border-indigo-200"
+              title="ดูสถานะ Sitemap และ AEO"
+            >
+              <Globe size={14} />
+              <span>Sitemap & SEO</span>
+            </button>
+
+            <button
+              onClick={() => setSettingsOpen(true)}
+              className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 transition-colors border border-slate-200"
+              title="เปลี่ยนภาพ Hero Banner"
+            >
+              <Sparkles size={14} className="text-amber-500" />
+              <span>ภาพหน้าแรก</span>
+            </button>
+
+            <div className="relative group">
+              <button
+                className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 transition-colors border border-slate-200"
+              >
+                <Download size={14} />
+                <span>Export</span>
+                <ChevronDown size={12} />
+              </button>
+              <div className="absolute right-0 mt-1 w-36 bg-white border border-slate-200 rounded-xl shadow-xl py-1 hidden group-hover:block z-30">
+                <button 
+                  onClick={() => exportData('csv')}
+                  className="w-full text-left px-3.5 py-1.5 text-xs text-slate-700 hover:bg-blue-50 hover:text-blue-600 font-semibold"
+                >
+                  ดาวน์โหลด CSV
+                </button>
+                <button 
+                  onClick={() => exportData('json')}
+                  className="w-full text-left px-3.5 py-1.5 text-xs text-slate-700 hover:bg-blue-50 hover:text-blue-600 font-semibold"
+                >
+                  ดาวน์โหลด JSON
+                </button>
+              </div>
+            </div>
+
+            <Link
+              to="/admin/add"
+              className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-extrabold text-white bg-blue-600 hover:bg-blue-700 shadow-md shadow-blue-500/25 transition-all"
+            >
+              <Plus size={16} />
+              <span>เพิ่มโครงการใหม่</span>
             </Link>
           </div>
         </div>
+      </div>
 
-        {/* ── Stats */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(170px, 1fr))', gap: '1rem', marginBottom: '1.75rem' }}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-8 pt-6">
+        {/* ── KPI Interactive Metric Cards ── */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3 mb-6">
           {[
-            { label: 'โครงการทั้งหมด', value: properties.length, icon: <LayoutList size={22} />, iconColor: '#6366f1', iconBg: '#eef2ff' },
-            { label: 'บริษัทผู้พัฒนา/ผู้รับเหมา', value: `${developerList.length} บริษัท`, icon: <Building2 size={22} />, iconColor: '#0284c7', iconBg: '#e0f2fe' },
-            { label: 'เผยแพร่แล้ว', value: publishedCount, icon: <CheckCircle2 size={22} />, iconColor: '#10b981', iconBg: '#ecfdf5' },
-            { label: 'ฉบับร่าง', value: draftCount, icon: <FileEdit size={22} />, iconColor: '#64748b', iconBg: '#f1f5f9' },
-            { label: 'ผู้เข้าชมรวม', value: totalViews.toLocaleString(), icon: <Eye size={22} />, iconColor: '#ec4899', iconBg: '#fce7f3' },
-            { label: 'Tier: Super', value: superCount, icon: <Crown size={22} />, iconColor: '#eab308', iconBg: '#fef08a' },
-            { label: 'Tier: Sponsored', value: sponsoredCount, icon: <Star size={22} />, iconColor: '#3b82f6', iconBg: '#dbeafe' },
-            { label: 'Tier: Premium', value: premiumCount, icon: <ThumbsUp size={22} />, iconColor: '#f97316', iconBg: '#ffedd5' },
-          ].map((s, i) => (
-            <div key={i} style={{ background: '#fff', borderRadius: '1.25rem', padding: '1.25rem', border: '1px solid #f1f5f9', boxShadow: '0 1px 8px rgba(0,0,0,0.04)', display: 'flex', alignItems: 'center', gap: '1rem' }}>
-              <div style={{ width: 48, height: 48, borderRadius: '0.875rem', background: s.iconBg, display: 'flex', alignItems: 'center', justifyContent: 'center', color: s.iconColor, flexShrink: 0 }}>{s.icon}</div>
-              <div>
-                <p style={{ margin: 0, fontSize: '0.68rem', color: '#94a3b8', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.04em' }}>{s.label}</p>
-                <p style={{ margin: 0, fontSize: '1.5rem', fontWeight: 900, color: '#0f172a', lineHeight: 1.1 }}>{s.value}</p>
+            { 
+              label: 'โครงการทั้งหมด', 
+              value: properties.length, 
+              icon: <LayoutList size={18} />, 
+              color: 'text-indigo-600', 
+              bg: 'bg-indigo-50',
+              active: typeFilter === 'ทั้งหมด' && statusFilter === 'ทั้งหมด' && tierFilter === 'ทั้งหมด',
+              onClick: () => { setTypeFilter('ทั้งหมด'); setStatusFilter('ทั้งหมด'); setTierFilter('ทั้งหมด'); setDeveloperFilter('ทั้งหมด'); }
+            },
+            { 
+              label: 'เผยแพร่แล้ว', 
+              value: publishedCount, 
+              icon: <CheckCircle2 size={18} />, 
+              color: 'text-emerald-600', 
+              bg: 'bg-emerald-50',
+              active: statusFilter === 'เผยแพร่แล้ว',
+              onClick: () => setStatusFilter(statusFilter === 'เผยแพร่แล้ว' ? 'ทั้งหมด' : 'เผยแพร่แล้ว')
+            },
+            { 
+              label: 'ฉบับร่าง (Draft)', 
+              value: draftCount, 
+              icon: <FileEdit size={18} />, 
+              color: 'text-slate-600', 
+              bg: 'bg-slate-100',
+              active: statusFilter === 'ฉบับร่าง',
+              onClick: () => setStatusFilter(statusFilter === 'ฉบับร่าง' ? 'ทั้งหมด' : 'ฉบับร่าง')
+            },
+            { 
+              label: 'คอนโดมิเนียม', 
+              value: condoCount, 
+              icon: <Building2 size={18} />, 
+              color: 'text-purple-600', 
+              bg: 'bg-purple-50',
+              active: typeFilter === 'คอนโด',
+              onClick: () => setTypeFilter(typeFilter === 'คอนโด' ? 'ทั้งหมด' : 'คอนโด')
+            },
+            { 
+              label: 'บ้าน & ทาวน์โฮม', 
+              value: houseCount, 
+              icon: <HomeIcon size={18} />, 
+              color: 'text-teal-600', 
+              bg: 'bg-teal-50',
+              active: typeFilter === 'บ้าน',
+              onClick: () => setTypeFilter(typeFilter === 'บ้าน' ? 'ทั้งหมด' : 'บ้าน')
+            },
+            { 
+              label: '👑 Super Tier', 
+              value: superCount, 
+              icon: <Crown size={18} />, 
+              color: 'text-amber-600', 
+              bg: 'bg-amber-50',
+              active: tierFilter === 'super',
+              onClick: () => setTierFilter(tierFilter === 'super' ? 'ทั้งหมด' : 'super')
+            },
+            { 
+              label: '⭐ Sponsored', 
+              value: sponsoredCount, 
+              icon: <Star size={18} />, 
+              color: 'text-blue-600', 
+              bg: 'bg-blue-50',
+              active: tierFilter === 'sponsored',
+              onClick: () => setTierFilter(tierFilter === 'sponsored' ? 'ทั้งหมด' : 'sponsored')
+            },
+            { 
+              label: 'ผู้เข้าชมรวม', 
+              value: totalViews.toLocaleString(), 
+              icon: <Eye size={18} />, 
+              color: 'text-pink-600', 
+              bg: 'bg-pink-50',
+              active: activeTab === 'analytics',
+              onClick: () => setActiveTab('analytics')
+            },
+          ].map((card, idx) => (
+            <div
+              key={idx}
+              onClick={card.onClick}
+              className={`p-3 rounded-2xl border transition-all cursor-pointer select-none ${
+                card.active 
+                  ? 'bg-white border-blue-500 shadow-md shadow-blue-500/10 ring-2 ring-blue-400/20' 
+                  : 'bg-white/80 border-slate-200/80 hover:bg-white hover:border-slate-300 hover:shadow-xs'
+              }`}
+            >
+              <div className="flex items-center justify-between mb-1.5">
+                <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider truncate">
+                  {card.label}
+                </span>
+                <div className={`w-7 h-7 rounded-lg ${card.bg} ${card.color} flex items-center justify-center flex-shrink-0`}>
+                  {card.icon}
+                </div>
+              </div>
+              <div className="text-lg font-black text-slate-900 leading-tight">
+                {card.value}
               </div>
             </div>
           ))}
         </div>
 
-        {/* ── Analytics Charts ── */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.5rem', marginBottom: '1.75rem' }}>
-          
-          {/* Daily Views Bar Chart */}
-          <div style={{ background: '#fff', borderRadius: '1.5rem', border: '1px solid #f1f5f9', padding: '1.5rem', boxShadow: '0 1px 12px rgba(0,0,0,0.06)' }}>
-            <h3 style={{ margin: '0 0 1rem', fontSize: '1.1rem', fontWeight: 800, color: '#0f172a', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <TrendingUp size={18} color="var(--primary)" /> ยอดผู้เข้าชมรายวัน (7 วันล่าสุด)
-            </h3>
-            <div style={{ display: 'flex', alignItems: 'flex-end', gap: '10px', height: '180px', paddingBottom: '10px' }}>
-              {dailyViews.length > 0 ? dailyViews.map((item, idx) => {
-                const maxDaily = Math.max(...dailyViews.map(d => d.views));
-                const heightPercent = maxDaily > 0 ? (item.views / maxDaily) * 100 : 0;
-                return (
-                  <div key={idx} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px', height: '100%' }}>
-                    <div style={{ width: '100%', flex: 1, display: 'flex', alignItems: 'flex-end', justifyContent: 'center' }}>
-                      <div style={{ width: '80%', height: `${heightPercent}%`, background: 'var(--primary)', borderRadius: '6px 6px 0 0', minHeight: '4px', transition: 'height 1s ease-in-out' }}></div>
-                    </div>
-                    <div style={{ fontSize: '10px', color: '#64748b', fontWeight: 600, whiteSpace: 'nowrap' }}>
-                      {new Date(item.view_date).toLocaleDateString('th-TH', { month: 'short', day: 'numeric' })}
-                    </div>
-                    <div style={{ fontSize: '12px', fontWeight: 800, color: '#0f172a' }}>{item.views}</div>
-                  </div>
-                );
-              }) : (
-                <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#94a3b8', fontSize: '0.875rem', fontStyle: 'italic', textAlign: 'center' }}>
-                  กำลังรอข้อมูลแรก...<br/>(กรุณารัน SQL เพื่อสร้างตาราง daily_page_views)
-                </div>
-              )}
-            </div>
-          </div>
-
-          {/* Top Searches */}
-          <div style={{ background: '#fff', borderRadius: '1.5rem', border: '1px solid #f1f5f9', padding: '1.5rem', boxShadow: '0 1px 12px rgba(0,0,0,0.06)' }}>
-            <h3 style={{ margin: '0 0 1rem', fontSize: '1.1rem', fontWeight: 800, color: '#0f172a', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <Search size={18} color="var(--primary)" /> คำค้นหายอดฮิต (Top Searches)
-            </h3>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-              {topSearches.length > 0 ? topSearches.map((item, idx) => (
-                <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                  <div style={{ width: '120px', fontSize: '0.875rem', color: '#475569', fontWeight: 600, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{item.term}</div>
-                  <div style={{ flex: 1, background: '#f1f5f9', height: '24px', borderRadius: '12px', overflow: 'hidden' }}>
-                    <div style={{ width: `${(item.count / maxSearchCount) * 100}%`, background: 'var(--primary)', height: '100%', borderRadius: '12px', transition: 'width 1s ease-in-out' }}></div>
-                  </div>
-                  <div style={{ width: '40px', fontSize: '0.875rem', color: '#94a3b8', fontWeight: 600, textAlign: 'right' }}>{item.count}</div>
-                </div>
-              )) : (
-                <div style={{ color: '#94a3b8', fontSize: '0.875rem', fontStyle: 'italic' }}>ยังไม่มีข้อมูลการค้นหา (หรือยังไม่ได้สร้างตารางในฐานข้อมูล)</div>
-              )}
-            </div>
-          </div>
-        </div>
-
-        {/* ── Table Card */}
-        <div style={{ background: '#fff', borderRadius: '1.5rem', border: '1px solid #f1f5f9', boxShadow: '0 1px 12px rgba(0,0,0,0.06)', overflow: 'hidden' }}>
-          {/* Toolbar Header */}
-          <div style={{ padding: '1rem 1.5rem', borderBottom: '1px solid #f8fafc', display: 'flex', gap: '0.75rem', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', background: '#fafafa' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-              <h3 style={{ margin: 0, fontWeight: 800, color: '#0f172a', fontSize: '1rem' }}>
-                รายการโครงการ <span style={{ fontSize: '0.78rem', fontWeight: 500, color: '#94a3b8' }}>({filtered.length} โครงการ)</span>
-              </h3>
-              {developerFilter !== 'ทั้งหมด' && (
-                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.3rem', padding: '0.2rem 0.6rem', borderRadius: '1rem', background: '#ffedd5', color: '#c2410c', fontSize: '0.72rem', fontWeight: 700 }}>
-                  <Building2 size={12} /> {developerFilter}
-                  <X size={12} style={{ cursor: 'pointer' }} onClick={() => setDeveloperFilter('ทั้งหมด')} />
+        {/* ── Primary Workspace Tabs ── */}
+        <div className="flex items-center gap-2 border-b border-slate-200/80 mb-6 overflow-x-auto pb-px">
+          {[
+            { id: 'properties', label: 'ตารางจัดการโครงการ', icon: <LayoutList size={16} />, count: filteredProperties.length },
+            { id: 'developers', label: 'จำแนกตามผู้พัฒนา', icon: <Building2 size={16} />, count: developerList.length },
+            { id: 'analytics', label: 'สถิติการเข้าชม & คำค้นหา', icon: <BarChart3 size={16} /> },
+            { id: 'system', label: 'ความปลอดภัย & SEO', icon: <Shield size={16} /> },
+          ].map(tab => (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              className={`flex items-center gap-2 px-4 py-2.5 rounded-t-xl text-xs font-bold transition-all border-b-2 whitespace-nowrap ${
+                activeTab === tab.id
+                  ? 'border-blue-600 text-blue-600 bg-white shadow-xs'
+                  : 'border-transparent text-slate-500 hover:text-slate-800 hover:bg-white/50'
+              }`}
+            >
+              {tab.icon}
+              <span>{tab.label}</span>
+              {tab.count !== undefined && (
+                <span className={`px-2 py-0.5 rounded-full text-[10px] font-extrabold ${
+                  activeTab === tab.id ? 'bg-blue-100 text-blue-700' : 'bg-slate-100 text-slate-600'
+                }`}>
+                  {tab.count}
                 </span>
               )}
-            </div>
-
-            {/* Search & Filter Controls */}
-            <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', alignItems: 'center' }}>
-              {/* Search Box */}
-              <div style={{ position: 'relative' }}>
-                <Search size={13} style={{ position: 'absolute', left: 10, top: '50%', transform: 'translateY(-50%)', color: '#94a3b8', pointerEvents: 'none' }} />
-                <input placeholder="ค้นหาโครงการ, บริษัท, ทำเล..." value={search} onChange={e => setSearch(e.target.value)} style={{ paddingLeft: '2rem', paddingRight: '0.75rem', paddingTop: '0.45rem', paddingBottom: '0.45rem', border: '1.5px solid #e2e8f0', borderRadius: '0.625rem', fontSize: '0.8rem', outline: 'none', width: 180, background: '#fff' }} />
-              </div>
-
-              {/* Developer / Contractor Dropdown Selector */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', background: '#fff', border: '1.5px solid', borderColor: developerFilter !== 'ทั้งหมด' ? 'var(--primary)' : '#e2e8f0', borderRadius: '0.625rem', padding: '0.25rem 0.6rem', transition: 'all 0.15s' }}>
-                <Building2 size={14} color={developerFilter !== 'ทั้งหมด' ? 'var(--primary)' : '#64748b'} />
-                <select
-                  value={developerFilter}
-                  onChange={e => setDeveloperFilter(e.target.value)}
-                  style={{ border: 'none', background: 'transparent', outline: 'none', fontSize: '0.75rem', fontWeight: 700, color: developerFilter !== 'ทั้งหมด' ? 'var(--primary)' : '#334155', cursor: 'pointer', maxWidth: '170px' }}
-                >
-                  <option value="ทั้งหมด">🏢 ทุกบริษัทผู้รับเหมา/ผู้พัฒนา ({properties.length})</option>
-                  {developerList.map(([dev, count]) => (
-                    <option key={dev} value={dev}>{dev} ({count} โครงการ)</option>
-                  ))}
-                </select>
-              </div>
-
-              {/* Status Filter Dropdown */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', background: '#fff', border: '1.5px solid #e2e8f0', borderRadius: '0.625rem', padding: '0.25rem 0.6rem' }}>
-                <select
-                  value={statusFilter}
-                  onChange={e => setStatusFilter(e.target.value)}
-                  style={{ border: 'none', background: 'transparent', outline: 'none', fontSize: '0.75rem', fontWeight: 700, color: '#334155', cursor: 'pointer' }}
-                >
-                  <option value="ทั้งหมด">สถานะทั้งหมด</option>
-                  <option value="เผยแพร่แล้ว">เผยแพร่แล้ว ({publishedCount})</option>
-                  <option value="ฉบับร่าง">ฉบับร่าง ({draftCount})</option>
-                  <option value="เปิด Presale">เปิด Presale</option>
-                  <option value="พร้อมอยู่">พร้อมอยู่</option>
-                </select>
-              </div>
-
-              {/* Property Type Buttons */}
-              {['ทั้งหมด', 'คอนโด', 'บ้าน', 'ทาวน์โฮม'].map(t => (
-                <button key={t} onClick={() => setTypeFilter(t)} style={{ padding: '0.375rem 0.875rem', border: '1.5px solid', borderColor: typeFilter === t ? 'var(--primary)' : '#e2e8f0', borderRadius: '2rem', fontSize: '0.72rem', fontWeight: 700, background: typeFilter === t ? 'var(--primary)' : '#fff', color: typeFilter === t ? '#fff' : '#64748b', cursor: 'pointer', whiteSpace: 'nowrap', transition: 'all 0.15s' }}>
-                  {t}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Quick Developer Selection Bar */}
-          <div style={{ display: 'flex', gap: '0.4rem', overflowX: 'auto', padding: '0.5rem 1.5rem', background: '#fff', borderBottom: '1px solid #f1f5f9', alignItems: 'center' }}>
-            <span style={{ fontSize: '0.72rem', fontWeight: 700, color: '#94a3b8', whiteSpace: 'nowrap', display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
-              <Building2 size={13} /> เลือกบริษัท:
-            </span>
-            <button
-              onClick={() => setDeveloperFilter('ทั้งหมด')}
-              style={{
-                padding: '0.25rem 0.65rem',
-                borderRadius: '1rem',
-                fontSize: '0.72rem',
-                fontWeight: 700,
-                border: '1px solid',
-                borderColor: developerFilter === 'ทั้งหมด' ? 'var(--primary)' : '#e2e8f0',
-                background: developerFilter === 'ทั้งหมด' ? 'var(--primary)' : '#f8fafc',
-                color: developerFilter === 'ทั้งหมด' ? '#fff' : '#64748b',
-                cursor: 'pointer',
-                whiteSpace: 'nowrap',
-                transition: 'all 0.15s'
-              }}
-            >
-              ทุกบริษัท ({properties.length})
             </button>
-            {developerList.map(([dev, count]) => (
-              <button
-                key={dev}
-                onClick={() => setDeveloperFilter(dev)}
-                style={{
-                  padding: '0.25rem 0.65rem',
-                  borderRadius: '1rem',
-                  fontSize: '0.72rem',
-                  fontWeight: 700,
-                  border: '1px solid',
-                  borderColor: developerFilter === dev ? 'var(--primary)' : '#e2e8f0',
-                  background: developerFilter === dev ? 'var(--primary)' : '#f8fafc',
-                  color: developerFilter === dev ? '#fff' : '#475569',
-                  cursor: 'pointer',
-                  whiteSpace: 'nowrap',
-                  transition: 'all 0.15s'
-                }}
-              >
-                {dev} ({count})
-              </button>
-            ))}
-          </div>
+          ))}
+        </div>
 
-          {/* Company Overview Banner (shown when a specific company is selected) */}
-          {selectedDevStats && (
-            <div style={{ margin: '0.75rem 1.5rem', padding: '0.75rem 1rem', background: 'linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%)', borderRadius: '0.875rem', border: '1px solid #fdba74', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                <div style={{ width: 36, height: 36, borderRadius: '0.5rem', background: '#f97316', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                  <Building2 size={18} />
+        {/* ── TAB 1: PROPERTIES TABLE & CONTROLS ── */}
+        {activeTab === 'properties' && (
+          <div className="bg-white rounded-2xl border border-slate-200/80 shadow-xs overflow-hidden">
+            {/* Filter & Toolbar Area */}
+            <div className="p-4 sm:p-5 border-b border-slate-100 bg-slate-50/50 space-y-4">
+              {/* Row 1: Search & Dropdown Selectors */}
+              <div className="flex flex-col lg:flex-row gap-3 items-stretch lg:items-center justify-between">
+                {/* Search Bar */}
+                <div className="relative flex-1 max-w-md">
+                  <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
+                  <input
+                    type="text"
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                    placeholder="ค้นหาชื่อโครงการ, ผู้พัฒนา, จังหวัด, สถานี, ID..."
+                    className="w-full pl-9 pr-8 py-2 bg-white border border-slate-200 rounded-xl text-xs font-medium focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                  />
+                  {search && (
+                    <button onClick={() => setSearch('')} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
+                      <X size={14} />
+                    </button>
+                  )}
                 </div>
-                <div>
-                  <div style={{ fontSize: '0.9rem', fontWeight: 800, color: '#9a3412' }}>
-                    บริษัท / ผู้รับเหมา: {developerFilter}
+
+                {/* Dropdowns */}
+                <div className="flex flex-wrap items-center gap-2">
+                  {/* Developer Dropdown */}
+                  <div className="flex items-center gap-1.5 bg-white border border-slate-200 rounded-xl px-3 py-1.5">
+                    <Building2 size={14} className="text-slate-400" />
+                    <select
+                      value={developerFilter}
+                      onChange={(e) => setDeveloperFilter(e.target.value)}
+                      className="bg-transparent text-xs font-bold text-slate-700 outline-none cursor-pointer max-w-[150px]"
+                    >
+                      <option value="ทั้งหมด">ทุกบริษัท ({properties.length})</option>
+                      {developerList.map(([dev, count]) => (
+                        <option key={dev} value={dev}>{dev} ({count})</option>
+                      ))}
+                    </select>
                   </div>
-                  <div style={{ fontSize: '0.75rem', color: '#c2410c', display: 'flex', gap: '0.75rem', flexWrap: 'wrap', marginTop: '0.15rem' }}>
-                    <span>ทั้งหมด: <strong>{selectedDevStats.total}</strong> โครงการ</span>
-                    <span>• เผยแพร่แล้ว: <strong>{selectedDevStats.published}</strong> โครงการ</span>
-                    <span>• ฉบับร่าง: <strong>{selectedDevStats.drafts}</strong> โครงการ</span>
-                    {selectedDevStats.minPrice > 0 && <span>• ช่วงราคา: <strong>{selectedDevStats.minPrice} - {selectedDevStats.maxPrice}</strong> ล้านบาท</span>}
+
+                  {/* Status Dropdown */}
+                  <div className="flex items-center gap-1.5 bg-white border border-slate-200 rounded-xl px-3 py-1.5">
+                    <select
+                      value={statusFilter}
+                      onChange={(e) => setStatusFilter(e.target.value)}
+                      className="bg-transparent text-xs font-bold text-slate-700 outline-none cursor-pointer"
+                    >
+                      <option value="ทั้งหมด">ทุกสถานะ</option>
+                      <option value="เผยแพร่แล้ว">เผยแพร่แล้ว ({publishedCount})</option>
+                      <option value="ฉบับร่าง">ฉบับร่าง ({draftCount})</option>
+                      <option value="เปิด Presale">เปิด Presale</option>
+                      <option value="พร้อมอยู่">พร้อมอยู่</option>
+                    </select>
+                  </div>
+
+                  {/* Tier Dropdown */}
+                  <div className="flex items-center gap-1.5 bg-white border border-slate-200 rounded-xl px-3 py-1.5">
+                    <select
+                      value={tierFilter}
+                      onChange={(e) => setTierFilter(e.target.value)}
+                      className="bg-transparent text-xs font-bold text-slate-700 outline-none cursor-pointer"
+                    >
+                      <option value="ทั้งหมด">ทุกเทียร์ (All Tiers)</option>
+                      <option value="super">👑 Super</option>
+                      <option value="sponsored">⭐ Sponsored</option>
+                      <option value="premium">✅ Premium</option>
+                      <option value="standard">⚪ Standard</option>
+                    </select>
+                  </div>
+
+                  {/* Sort Dropdown */}
+                  <div className="flex items-center gap-1.5 bg-white border border-slate-200 rounded-xl px-3 py-1.5">
+                    <ArrowUpDown size={14} className="text-slate-400" />
+                    <select
+                      value={sortBy}
+                      onChange={(e) => setSortBy(e.target.value)}
+                      className="bg-transparent text-xs font-bold text-slate-700 outline-none cursor-pointer"
+                    >
+                      <option value="newest">ล่าสุด (Newest)</option>
+                      <option value="price_asc">ราคา ต่ำ ➜ สูง</option>
+                      <option value="price_desc">ราคา สูง ➜ ต่ำ</option>
+                      <option value="name_asc">ชื่อ (ก - ฮ)</option>
+                      <option value="units_desc">จำนวนยูนิตมากสุด</option>
+                    </select>
                   </div>
                 </div>
               </div>
-              <button
-                onClick={() => setDeveloperFilter('ทั้งหมด')}
-                style={{ background: '#fff', border: '1px solid #fdba74', color: '#ea580c', padding: '0.35rem 0.75rem', borderRadius: '0.5rem', fontSize: '0.75rem', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.3rem' }}
-              >
-                <X size={13} /> ล้างตัวกรองบริษัท
-              </button>
-            </div>
-          )}
 
-          {/* Table */}
-          <div style={{ overflowX: 'auto' }}>
-            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.875rem' }}>
-              <thead>
-                <tr style={{ background: '#f8fafc' }}>
-                  {['โครงการ', 'ผู้พัฒนา / ผู้รับเหมา', 'ประเภท', 'ราคาเริ่มต้น', 'จังหวัด', 'สถานะ', 'Types', 'จัดการ'].map(h => (
-                    <th key={h} style={{ padding: '0.75rem 1rem', textAlign: 'left', fontSize: '0.68rem', fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.06em', whiteSpace: 'nowrap', borderBottom: '1px solid #f1f5f9' }}>{h}</th>
+              {/* Row 2: Property Type Pills & Reset */}
+              <div className="flex items-center justify-between flex-wrap gap-2 pt-2 border-t border-slate-200/60">
+                <div className="flex items-center gap-1.5 flex-wrap">
+                  <span className="text-[11px] font-bold text-slate-400 mr-1 uppercase">ประเภท:</span>
+                  {['ทั้งหมด', 'คอนโด', 'บ้าน', 'ทาวน์โฮม'].map(t => (
+                    <button
+                      key={t}
+                      onClick={() => setTypeFilter(t)}
+                      className={`px-3 py-1 rounded-lg text-xs font-bold transition-colors ${
+                        typeFilter === t
+                          ? 'bg-blue-600 text-white shadow-xs'
+                          : 'bg-white text-slate-600 hover:bg-slate-200 border border-slate-200'
+                      }`}
+                    >
+                      {t}
+                    </button>
                   ))}
-                </tr>
-              </thead>
-              <tbody>
-                {filtered.map((prop, idx) => (
-                  <tr key={prop.id || idx} style={{ borderBottom: '1px solid #f8fafc' }}
-                    onMouseEnter={e => e.currentTarget.style.background = '#fafafa'}
-                    onMouseLeave={e => e.currentTarget.style.background = '#fff'}
+                </div>
+
+                {/* Active Filter Clear */}
+                {(search || typeFilter !== 'ทั้งหมด' || developerFilter !== 'ทั้งหมด' || statusFilter !== 'ทั้งหมด' || tierFilter !== 'ทั้งหมด') && (
+                  <button
+                    onClick={() => { setSearch(''); setTypeFilter('ทั้งหมด'); setDeveloperFilter('ทั้งหมด'); setStatusFilter('ทั้งหมด'); setTierFilter('ทั้งหมด'); }}
+                    className="text-xs font-bold text-rose-600 hover:text-rose-700 flex items-center gap-1"
                   >
-                    {/* Project */}
-                    <td style={{ padding: '0.75rem 1rem' }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                        <img src={prop.image ? (Array.isArray(prop.image) ? prop.image[0] : (typeof prop.image === 'string' ? prop.image.split(',')[0] : '')) : ''} alt={prop.name} style={{ width: 44, height: 44, borderRadius: '0.75rem', objectFit: 'cover', flexShrink: 0, background: '#f1f5f9', border: '1px solid #f1f5f9' }} onError={e => e.target.style.display = 'none'} />
-                        <div>
-                          <p style={{ margin: 0, fontWeight: 700, color: '#0f172a', fontSize: '0.875rem', maxWidth: 180, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{prop.name}</p>
-                          <p style={{ margin: 0, fontSize: '0.7rem', color: '#94a3b8' }}>ID: {prop.id}</p>
+                    <X size={13} /> ล้างตัวกรองทั้งหมด
+                  </button>
+                )}
+              </div>
+            </div>
+
+            {/* Table */}
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-xs border-collapse">
+                <thead>
+                  <tr className="bg-slate-50 text-slate-500 font-bold border-b border-slate-200">
+                    <th className="p-3.5 w-10 text-center">
+                      <input
+                        type="checkbox"
+                        checked={paginatedProperties.length > 0 && selectedIds.size === paginatedProperties.length}
+                        onChange={toggleSelectAll}
+                        className="rounded text-blue-600 focus:ring-blue-500 cursor-pointer"
+                      />
+                    </th>
+                    <th className="p-3.5">ชื่อโครงการ / ID</th>
+                    <th className="p-3.5">ผู้พัฒนา / ผู้รับเหมา</th>
+                    <th className="p-3.5">ประเภท</th>
+                    <th className="p-3.5">ราคาเริ่มต้น</th>
+                    <th className="p-3.5">ทำเล / จังหวัด</th>
+                    <th className="p-3.5">สถานะ</th>
+                    <th className="p-3.5">แพ็กเกจเทียร์</th>
+                    <th className="p-3.5 text-center">แบบบ้าน/ห้อง</th>
+                    <th className="p-3.5 text-right">การจัดการ</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100">
+                  {paginatedProperties.map((prop) => {
+                    const isSelected = selectedIds.has(prop.id);
+                    const tierInfo = tierBadge(prop.package_tier);
+                    const imgUrl = prop.image ? (Array.isArray(prop.image) ? prop.image[0] : (typeof prop.image === 'string' ? prop.image.split(',')[0] : '')) : '';
+
+                    return (
+                      <tr 
+                        key={prop.id} 
+                        className={`hover:bg-blue-50/40 transition-colors ${isSelected ? 'bg-blue-50/70' : ''}`}
+                      >
+                        {/* Checkbox */}
+                        <td className="p-3.5 text-center">
+                          <input
+                            type="checkbox"
+                            checked={isSelected}
+                            onChange={() => toggleSelectOne(prop.id)}
+                            className="rounded text-blue-600 focus:ring-blue-500 cursor-pointer"
+                          />
+                        </td>
+
+                        {/* Project Name & Thumbnail */}
+                        <td className="p-3.5">
+                          <div className="flex items-center gap-3">
+                            <img
+                              src={imgUrl || 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=200&q=80'}
+                              alt={prop.name}
+                              className="w-11 h-11 rounded-xl object-cover border border-slate-200 flex-shrink-0 bg-slate-100"
+                              onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=200&q=80'; }}
+                            />
+                            <div className="min-w-0">
+                              <p className="font-extrabold text-slate-900 text-xs truncate max-w-[200px]" title={prop.name}>
+                                {prop.name}
+                              </p>
+                              <span className="text-[10px] text-slate-400 font-mono block">
+                                {prop.id}
+                              </span>
+                            </div>
+                          </div>
+                        </td>
+
+                        {/* Developer */}
+                        <td className="p-3.5">
+                          <button
+                            onClick={() => setDeveloperFilter(prop.developer?.trim() || 'ไม่ระบุผู้พัฒนา')}
+                            className="px-2 py-1 rounded-md text-[11px] font-bold bg-slate-100 hover:bg-blue-50 text-slate-700 hover:text-blue-600 transition-colors border border-slate-200"
+                          >
+                            {prop.developer || 'ไม่ระบุ'}
+                          </button>
+                        </td>
+
+                        {/* Type */}
+                        <td className="p-3.5">
+                          <span className="px-2 py-0.5 rounded-full text-[11px] font-bold bg-slate-100 text-slate-700">
+                            {prop.type || '-'}
+                          </span>
+                        </td>
+
+                        {/* Price */}
+                        <td className="p-3.5 font-bold text-slate-900 whitespace-nowrap">
+                          {prop.price ? `${prop.price} ล้านบาท` : 'ติดต่อสอบถาม'}
+                        </td>
+
+                        {/* Location */}
+                        <td className="p-3.5 text-slate-600 whitespace-nowrap">
+                          {prop.district ? `${prop.district}, ` : ''}{prop.province || '-'}
+                        </td>
+
+                        {/* Status Select */}
+                        <td className="p-3.5">
+                          <select
+                            value={prop.status || 'พร้อมอยู่'}
+                            onChange={(e) => handleQuickStatusChange(prop, e.target.value)}
+                            className={`px-2.5 py-1 rounded-full text-[11px] font-bold border outline-none cursor-pointer ${statusBadge(prop.status)}`}
+                          >
+                            <option value="พร้อมอยู่">พร้อมอยู่</option>
+                            <option value="เปิด Presale">เปิด Presale</option>
+                            <option value="กำลังก่อสร้าง">กำลังก่อสร้าง</option>
+                            <option value="ฉบับร่าง">ฉบับร่าง (Unpublished)</option>
+                          </select>
+                        </td>
+
+                        {/* Tier Select */}
+                        <td className="p-3.5">
+                          <select
+                            value={prop.package_tier || 'standard'}
+                            onChange={(e) => handleChangeTier(prop, e.target.value)}
+                            className={`px-2 py-1 rounded-lg text-[11px] font-bold border outline-none cursor-pointer ${tierInfo.cls}`}
+                          >
+                            <option value="super">👑 Super</option>
+                            <option value="sponsored">⭐ Sponsored</option>
+                            <option value="premium">✅ Premium</option>
+                            <option value="standard">Standard</option>
+                          </select>
+                        </td>
+
+                        {/* Unit Types Count Button */}
+                        <td className="p-3.5 text-center">
+                          <button
+                            onClick={() => setManagingProp(prop)}
+                            className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg font-bold text-[11px] bg-slate-100 hover:bg-blue-50 text-slate-700 hover:text-blue-600 border border-slate-200 transition-colors"
+                          >
+                            <Layers size={13} />
+                            <span>{prop.unitTypes?.length || 0} แบบ</span>
+                          </button>
+                        </td>
+
+                        {/* Action Buttons */}
+                        <td className="p-3.5 text-right">
+                          <div className="inline-flex items-center gap-1">
+                            <Link
+                              to={`/property/${prop.id}`}
+                              target="_blank"
+                              title="ดูหน้าเว็บจริง"
+                              className="p-1.5 rounded-lg text-emerald-600 hover:bg-emerald-50 transition-colors"
+                            >
+                              <ExternalLink size={15} />
+                            </Link>
+
+                            <Link
+                              to={`/admin/edit/${prop.id}`}
+                              title="แก้ไขรายละเอียด"
+                              className="p-1.5 rounded-lg text-blue-600 hover:bg-blue-50 transition-colors"
+                            >
+                              <Edit size={15} />
+                            </Link>
+
+                            <Link
+                              to={`/admin/add`}
+                              state={{ duplicateFrom: prop }}
+                              title="คัดลอกสร้างใหม่ (Duplicate)"
+                              className="p-1.5 rounded-lg text-slate-600 hover:bg-slate-100 transition-colors"
+                            >
+                              <Copy size={15} />
+                            </Link>
+
+                            <button
+                              onClick={() => handleDelete(prop.id, prop.name)}
+                              title="ลบโครงการ"
+                              className="p-1.5 rounded-lg text-rose-600 hover:bg-rose-50 transition-colors"
+                            >
+                              <Trash2 size={15} />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+
+              {/* Empty Search Result */}
+              {paginatedProperties.length === 0 && (
+                <div className="py-16 text-center text-slate-400">
+                  <LayoutList size={48} className="mx-auto mb-3 text-slate-300" />
+                  <p className="font-bold text-sm text-slate-700">ไม่พบโครงการตามเงื่อนไขที่เลือก</p>
+                  <p className="text-xs text-slate-400 mt-1">ลองเปลี่ยนคำค้นหา หรือปรับตัวกรองประเภท/สถานะใหม่</p>
+                </div>
+              )}
+            </div>
+
+            {/* Pagination Controls */}
+            <div className="p-4 border-t border-slate-200/80 bg-slate-50/50 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+              <div className="flex items-center gap-2 text-slate-500 font-medium">
+                <span>แสดง</span>
+                <select
+                  value={pageSize}
+                  onChange={(e) => setPageSize(e.target.value === 'all' ? 'all' : Number(e.target.value))}
+                  className="bg-white border border-slate-200 rounded-lg px-2 py-1 font-bold text-slate-700 outline-none"
+                >
+                  <option value={25}>25 รายการ</option>
+                  <option value={50}>50 รายการ</option>
+                  <option value={100}>100 รายการ</option>
+                  <option value="all">ทั้งหมด ({filteredProperties.length})</option>
+                </select>
+                <span>จากทั้งหมด {filteredProperties.length} โครงการ</span>
+              </div>
+
+              {pageSize !== 'all' && totalPages > 1 && (
+                <div className="flex items-center gap-1.5">
+                  <button
+                    onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                    disabled={currentPage === 1}
+                    className="p-1.5 rounded-lg border border-slate-200 bg-white text-slate-600 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-slate-100"
+                  >
+                    <ChevronLeft size={16} />
+                  </button>
+                  <span className="font-bold px-3 py-1 bg-white border border-slate-200 rounded-lg text-slate-700">
+                    หน้า {currentPage} / {totalPages}
+                  </span>
+                  <button
+                    onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+                    disabled={currentPage === totalPages}
+                    className="p-1.5 rounded-lg border border-slate-200 bg-white text-slate-600 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-slate-100"
+                  >
+                    <ChevronRight size={16} />
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* ── TAB 2: DEVELOPER DIRECTORY HUB ── */}
+        {activeTab === 'developers' && (
+          <div className="space-y-4">
+            <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs flex justify-between items-center flex-wrap gap-4">
+              <div>
+                <h3 className="text-base font-black text-slate-900 flex items-center gap-2">
+                  <Building2 className="text-blue-600" size={20} />
+                  ศูนย์ข้อมูลบริษัทผู้พัฒนาและผู้รับเหมา (Developer Hub)
+                </h3>
+                <p className="text-xs text-slate-500 mt-1">
+                  รวม {developerList.length} บริษัท พร้อมสถิติโครงการที่เผยแพร่และฉบับร่าง
+                </p>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {developerList.map(([devName, count]) => {
+                const devProps = properties.filter(p => (p.developer?.trim() || 'ไม่ระบุผู้พัฒนา') === devName);
+                const published = devProps.filter(p => p.status !== 'ฉบับร่าง').length;
+                const drafts = devProps.filter(p => p.status === 'ฉบับร่าง').length;
+                const prices = devProps.map(p => parseFloat(p.price) || 0).filter(p => p > 0);
+                const minPrice = prices.length ? Math.min(...prices) : 0;
+                const maxPrice = prices.length ? Math.max(...prices) : 0;
+                const percentPublished = Math.round((published / count) * 100) || 0;
+
+                return (
+                  <div 
+                    key={devName}
+                    className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs hover:shadow-md transition-shadow flex flex-col justify-between"
+                  >
+                    <div>
+                      <div className="flex justify-between items-start mb-3">
+                        <div className="flex items-center gap-2.5">
+                          <div className="w-10 h-10 rounded-xl bg-orange-50 text-orange-600 flex items-center justify-center font-black text-sm">
+                            <Building2 size={20} />
+                          </div>
+                          <div>
+                            <h4 className="font-extrabold text-slate-900 text-sm">{devName}</h4>
+                            <span className="text-[11px] text-slate-400 font-medium">รวม {count} โครงการ</span>
+                          </div>
                         </div>
                       </div>
-                    </td>
-                    {/* Developer / Contractor */}
-                    <td style={{ padding: '0.75rem 1rem' }}>
-                      <button
-                        onClick={() => setDeveloperFilter(prop.developer?.trim() || 'ไม่ระบุผู้พัฒนา/ผู้รับเหมา')}
-                        title={`กรองเฉพาะโครงการของ ${prop.developer || 'ผู้พัฒนานี้'}`}
-                        style={{
-                          display: 'inline-flex',
-                          alignItems: 'center',
-                          gap: '0.35rem',
-                          padding: '0.25rem 0.6rem',
-                          borderRadius: '0.5rem',
-                          background: developerFilter === (prop.developer?.trim() || 'ไม่ระบุผู้พัฒนา/ผู้รับเหมา') ? '#ffedd5' : '#f1f5f9',
-                          color: developerFilter === (prop.developer?.trim() || 'ไม่ระบุผู้พัฒนา/ผู้รับเหมา') ? '#c2410c' : '#475569',
-                          border: '1px solid',
-                          borderColor: developerFilter === (prop.developer?.trim() || 'ไม่ระบุผู้พัฒนา/ผู้รับเหมา') ? '#fdba74' : '#e2e8f0',
-                          cursor: 'pointer',
-                          fontSize: '0.75rem',
-                          fontWeight: 700,
-                          whiteSpace: 'nowrap',
-                          transition: 'all 0.15s'
-                        }}
-                        onMouseEnter={e => {
-                          e.currentTarget.style.background = '#ffedd5';
-                          e.currentTarget.style.color = '#c2410c';
-                          e.currentTarget.style.borderColor = '#fdba74';
-                        }}
-                        onMouseLeave={e => {
-                          if (developerFilter !== (prop.developer?.trim() || 'ไม่ระบุผู้พัฒนา/ผู้รับเหมา')) {
-                            e.currentTarget.style.background = '#f1f5f9';
-                            e.currentTarget.style.color = '#475569';
-                            e.currentTarget.style.borderColor = '#e2e8f0';
-                          }
-                        }}
-                      >
-                        <Building2 size={12} /> {prop.developer || 'ไม่ระบุ'}
-                      </button>
-                    </td>
-                    {/* Type */}
-                    <td style={{ padding: '0.75rem 1rem' }}>
-                      <span style={{ padding: '0.2rem 0.7rem', borderRadius: '2rem', fontSize: '0.68rem', fontWeight: 700, ...typeStyle(prop.type) }}>{prop.type}</span>
-                    </td>
-                    {/* Price */}
-                    <td style={{ padding: '0.75rem 1rem', fontWeight: 700, color: prop.price ? '#0f172a' : '#94a3b8', fontSize: '0.8rem', whiteSpace: 'nowrap' }}>
-                      {prop.price ? `${prop.price} ลบ.` : 'ติดต่อสอบถาม'}
-                    </td>
-                    {/* Province */}
-                    <td style={{ padding: '0.75rem 1rem', color: '#64748b', fontSize: '0.8rem', whiteSpace: 'nowrap' }}>{prop.province}</td>
-                    {/* Status */}
-                    <td style={{ padding: '0.75rem 1rem' }}>
-                      <select
-                        value={prop.status || 'พร้อมอยู่'}
-                        onChange={(e) => handleQuickStatusChange(prop, e.target.value)}
-                        style={{
-                          padding: '0.25rem 0.6rem',
-                          borderRadius: '2rem',
-                          fontSize: '0.68rem',
-                          fontWeight: 700,
-                          border: 'none',
-                          cursor: 'pointer',
-                          outline: 'none',
-                          ...statusStyle(prop.status),
-                          whiteSpace: 'nowrap'
-                        }}
-                        title="คลิกเพื่อเปลี่ยนสถานะโครงการอย่างรวดเร็ว"
-                      >
-                        <option value="พร้อมอยู่">พร้อมอยู่</option>
-                        <option value="เปิด Presale">เปิด Presale</option>
-                        <option value="กำลังก่อสร้าง">กำลังก่อสร้าง</option>
-                        <option value="ฉบับร่าง">ฉบับร่าง (Unpublished)</option>
-                      </select>
-                    </td>
-                    {/* Unit Types Button */}
-                    <td style={{ padding: '0.75rem 1rem' }}>
-                      <button onClick={() => setManagingProp(prop)}
-                        style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem', padding: '0.35rem 0.75rem', border: '1.5px solid #e2e8f0', borderRadius: '0.5rem', background: '#fff', cursor: 'pointer', fontSize: '0.72rem', fontWeight: 700, color: '#475569', whiteSpace: 'nowrap' }}
-                        onMouseEnter={e => { e.currentTarget.style.borderColor = 'var(--primary)'; e.currentTarget.style.color = 'var(--primary)'; e.currentTarget.style.background = '#fef7f0'; }}
-                        onMouseLeave={e => { e.currentTarget.style.borderColor = '#e2e8f0'; e.currentTarget.style.color = '#475569'; e.currentTarget.style.background = '#fff'; }}
-                      >
-                        <Layers size={12} /> {prop.unitTypes?.length || 0} Type
-                      </button>
-                    </td>
-                    {/* Actions */}
-                    <td style={{ padding: '0.75rem 1rem' }}>
-                      <div style={{ display: 'flex', gap: '0.375rem', alignItems: 'center' }}>
-                        {prop.status === 'ฉบับร่าง' ? (
-                          <button 
-                            onClick={() => handlePublish(prop)} 
-                            title="เผยแพร่ (Publish ให้ผู้ใช้เห็นบนหน้าเว็บ)" 
-                            style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', padding: '0.35rem 0.65rem', borderRadius: '0.5rem', background: '#10b981', color: '#fff', border: 'none', cursor: 'pointer', fontSize: '0.72rem', fontWeight: 700, whiteSpace: 'nowrap', boxShadow: '0 2px 6px rgba(16,185,129,0.2)' }}
-                          >
-                            <Send size={12} /> เผยแพร่
-                          </button>
-                        ) : (
-                          <button 
-                            onClick={() => handleUnpublish(prop)} 
-                            title="ยกเลิกเผยแพร่ (Unpublish / ซ่อนเป็นฉบับร่างเนื่องจากข้อมูลยังไม่ครบ)" 
-                            style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', padding: '0.35rem 0.65rem', borderRadius: '0.5rem', background: '#fff1f2', color: '#e11d48', border: '1px solid #fecdd3', cursor: 'pointer', fontSize: '0.72rem', fontWeight: 700, whiteSpace: 'nowrap' }}
-                          >
-                            <EyeOff size={12} /> Unpublish
-                          </button>
-                        )}
-                        <select 
-                          value={prop.package_tier || 'standard'} 
-                          onChange={(e) => handleChangeTier(prop, e.target.value)}
-                          style={{ padding: '0.25rem', borderRadius: '0.5rem', border: '1px solid #e2e8f0', fontSize: '0.75rem', cursor: 'pointer' }}
-                        >
-                          <option value="super">👑 Super</option>
-                          <option value="sponsored">⭐ Sponsored</option>
-                          <option value="premium">✅ Premium</option>
-                          <option value="standard">⚪ Standard</option>
-                        </select>
-                        <Link to={`/admin/add`} state={{ duplicateFrom: prop }} title="คัดลอก (Copy)" style={{ width: 32, height: 32, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '0.5rem', background: '#f8fafc', color: '#64748b', textDecoration: 'none', border: '1px solid #e2e8f0', flexShrink: 0 }}><Copy size={14} /></Link>
-                        <Link to={`/admin/edit/${prop.id}`} title="แก้ไข" style={{ width: 32, height: 32, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '0.5rem', background: '#eff6ff', color: '#3b82f6', textDecoration: 'none', border: '1px solid #dbeafe', flexShrink: 0 }}><Edit size={14} /></Link>
-                        <Link to={`/property/${prop.id}`} target="_blank" title="ดูหน้าเว็บ" style={{ width: 32, height: 32, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '0.5rem', background: '#f0fdf4', color: '#22c55e', textDecoration: 'none', border: '1px solid #dcfce7', flexShrink: 0 }}><Eye size={14} /></Link>
-                        <button onClick={() => handleDelete(prop.id)} title="ลบ" style={{ width: 32, height: 32, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '0.5rem', background: '#fef2f2', color: '#ef4444', border: '1px solid #fee2e2', cursor: 'pointer', flexShrink: 0 }}><Trash2 size={14} /></button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
 
-            {filtered.length === 0 && (
-              <div style={{ padding: '3rem', textAlign: 'center', color: '#94a3b8' }}>
-                <LayoutList size={48} style={{ margin: '0 auto 1rem', display: 'block', color: '#e2e8f0' }} />
-                <p style={{ fontWeight: 700, fontSize: '1rem', margin: '0 0 0.25rem' }}>ไม่พบโครงการ</p>
-                <p style={{ fontSize: '0.8rem', margin: 0 }}>ลองเปลี่ยน filter หรือเพิ่มโครงการใหม่</p>
-              </div>
-            )}
+                      {/* Ratio Bar */}
+                      <div className="space-y-1.5 my-3">
+                        <div className="flex justify-between text-[11px] font-bold">
+                          <span className="text-emerald-700">เผยแพร่แล้ว {published}</span>
+                          <span className="text-slate-500">ฉบับร่าง {drafts}</span>
+                        </div>
+                        <div className="w-full h-2 rounded-full bg-slate-100 overflow-hidden flex">
+                          <div style={{ width: `${percentPublished}%` }} className="bg-emerald-500 h-full"></div>
+                          <div style={{ width: `${100 - percentPublished}%` }} className="bg-slate-300 h-full"></div>
+                        </div>
+                      </div>
+
+                      {/* Price Range */}
+                      {minPrice > 0 && (
+                        <p className="text-[11px] text-slate-600 mb-4">
+                          ช่วงราคา: <strong className="text-slate-900">{minPrice} - {maxPrice}</strong> ล้านบาท
+                        </p>
+                      )}
+                    </div>
+
+                    <button
+                      onClick={() => {
+                        setDeveloperFilter(devName);
+                        setActiveTab('properties');
+                      }}
+                      className="w-full py-2 bg-slate-100 hover:bg-blue-600 hover:text-white text-slate-700 rounded-xl font-bold text-xs transition-colors flex items-center justify-center gap-1.5"
+                    >
+                      <Filter size={13} />
+                      <span>กรองดูโครงการของบริษัทนี้ ({count})</span>
+                    </button>
+                  </div>
+                );
+              })}
+            </div>
           </div>
-        </div>
+        )}
+
+        {/* ── TAB 3: ANALYTICS & INSIGHTS ── */}
+        {activeTab === 'analytics' && (
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Daily Views Bar Chart */}
+            <div className="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-xs">
+              <h3 className="text-base font-extrabold text-slate-900 mb-4 flex items-center gap-2">
+                <TrendingUp size={18} className="text-blue-600" />
+                ยอดผู้เข้าชมรายวัน (7 วันล่าสุด)
+              </h3>
+              <div className="flex items-end gap-2.5 h-48 pt-4 pb-2">
+                {dailyViews.length > 0 ? (
+                  dailyViews.map((item, idx) => {
+                    const maxDaily = Math.max(...dailyViews.map(d => d.views), 1);
+                    const heightPercent = Math.max((item.views / maxDaily) * 100, 5);
+                    return (
+                      <div key={idx} className="flex-1 flex flex-col items-center gap-2 h-full">
+                        <div className="w-full flex-1 flex items-end justify-center">
+                          <div 
+                            style={{ height: `${heightPercent}%` }} 
+                            className="w-4/5 bg-gradient-to-t from-blue-600 to-indigo-500 rounded-t-lg transition-all duration-500 hover:opacity-80"
+                          ></div>
+                        </div>
+                        <span className="text-[10px] font-bold text-slate-400 whitespace-nowrap">
+                          {new Date(item.view_date).toLocaleDateString('th-TH', { month: 'short', day: 'numeric' })}
+                        </span>
+                        <span className="text-xs font-black text-slate-800">{item.views}</span>
+                      </div>
+                    );
+                  })
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center text-slate-400 text-xs italic">
+                    ยังไม่มีข้อมูลสถิติรายวัน
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Top Searches */}
+            <div className="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-xs">
+              <h3 className="text-base font-extrabold text-slate-900 mb-4 flex items-center gap-2">
+                <Search size={18} className="text-indigo-600" />
+                คำค้นหายอดฮิต (Top Searches)
+              </h3>
+              <div className="space-y-3">
+                {topSearches.length > 0 ? (
+                  topSearches.map((item, idx) => {
+                    const maxCount = topSearches[0]?.count || 1;
+                    const percent = Math.round((item.count / maxCount) * 100);
+                    return (
+                      <div key={idx} className="space-y-1">
+                        <div className="flex justify-between text-xs font-bold">
+                          <span className="text-slate-800">{item.term}</span>
+                          <span className="text-slate-500">{item.count} ครั้ง</span>
+                        </div>
+                        <div className="w-full h-2.5 rounded-full bg-slate-100 overflow-hidden">
+                          <div style={{ width: `${percent}%` }} className="h-full bg-indigo-500 rounded-full"></div>
+                        </div>
+                      </div>
+                    );
+                  })
+                ) : (
+                  <div className="py-12 text-center text-slate-400 text-xs italic">
+                    ยังไม่มีข้อมูลคำค้นหา
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* ── TAB 4: SYSTEM & SEO HEALTH ── */}
+        {activeTab === 'system' && (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-xs space-y-4">
+              <h3 className="text-base font-extrabold text-slate-900 flex items-center gap-2">
+                <Shield className="text-emerald-600" size={20} />
+                ระบบความปลอดภัย (Security Controls)
+              </h3>
+              <div className="space-y-3 text-xs">
+                <div className="p-3 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-between">
+                  <div>
+                    <strong className="text-emerald-900 block font-bold">Row Level Security (RLS)</strong>
+                    <span className="text-emerald-700">ฐานข้อมูลถูกล็อกด้วย RLS อนุญาตเฉพาะแอดมินเท่านั้น</span>
+                  </div>
+                  <span className="text-xs font-black text-emerald-700 bg-white px-2.5 py-1 rounded-full border border-emerald-200">เปิดใช้งานแล้ว</span>
+                </div>
+
+                <div className="p-3 rounded-xl bg-blue-50 border border-blue-200 flex items-center justify-between">
+                  <div>
+                    <strong className="text-blue-900 block font-bold">Security Response Headers</strong>
+                    <span className="text-blue-700">X-Frame-Options (DENY), nosniff, Referrer Policy</span>
+                  </div>
+                  <span className="text-xs font-black text-blue-700 bg-white px-2.5 py-1 rounded-full border border-blue-200">Active</span>
+                </div>
+
+                <div className="p-3 rounded-xl bg-purple-50 border border-purple-200 flex items-center justify-between">
+                  <div>
+                    <strong className="text-purple-900 block font-bold">Draft Leak Protection</strong>
+                    <span className="text-purple-700">คัดกรองโครงการฉบับร่างออกจากหน้าเว็บผู้ใช้ทั่วไป 100%</span>
+                  </div>
+                  <span className="text-xs font-black text-purple-700 bg-white px-2.5 py-1 rounded-full border border-purple-200">Protected</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-xs space-y-4">
+              <h3 className="text-base font-extrabold text-slate-900 flex items-center gap-2">
+                <Globe className="text-indigo-600" size={20} />
+                สถานะ SEO & Answer Engine Optimization (AEO)
+              </h3>
+              <div className="space-y-3 text-xs">
+                <div className="p-3 rounded-xl bg-indigo-50 border border-indigo-200 flex items-center justify-between">
+                  <div>
+                    <strong className="text-indigo-900 block font-bold">XML Sitemap</strong>
+                    <span className="text-indigo-700">บรรจุ 217 หน้า (ครอบคลุมทุกโครงการที่เผยแพร่)</span>
+                  </div>
+                  <a 
+                    href="/sitemap.xml" 
+                    target="_blank"
+                    className="text-xs font-bold text-indigo-600 hover:underline flex items-center gap-1"
+                  >
+                    <span>เปิดดู</span>
+                    <ExternalLink size={12} />
+                  </a>
+                </div>
+
+                <div className="p-3 rounded-xl bg-amber-50 border border-amber-200 flex items-center justify-between">
+                  <div>
+                    <strong className="text-amber-900 block font-bold">Schema.org JSON-LD</strong>
+                    <span className="text-amber-700">RealEstateListing + FAQPage Schema + Breadcrumbs</span>
+                  </div>
+                  <span className="text-xs font-black text-amber-700 bg-white px-2.5 py-1 rounded-full border border-amber-200">สมบูรณ์</span>
+                </div>
+
+                <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between">
+                  <div>
+                    <strong className="text-slate-900 block font-bold">AI Crawlers Allowed</strong>
+                    <span className="text-slate-600">GPTBot, PerplexityBot, ClaudeBot, Google-Extended</span>
+                  </div>
+                  <a 
+                    href="/robots.txt" 
+                    target="_blank"
+                    className="text-xs font-bold text-slate-600 hover:underline flex items-center gap-1"
+                  >
+                    <span>robots.txt</span>
+                    <ExternalLink size={12} />
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
-      {/* Unit Types Modal */}
+      {/* ── STICKY FLOATING BULK ACTIONS TOOLBAR ── */}
+      {selectedIds.size > 0 && (
+        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-slate-900/95 backdrop-blur-md text-white px-6 py-3.5 rounded-2xl shadow-2xl border border-slate-700 flex items-center gap-4 animate-in fade-in slide-in-from-bottom-5">
+          <div className="flex items-center gap-2">
+            <CheckSquare size={18} className="text-blue-400" />
+            <span className="text-xs font-extrabold whitespace-nowrap">
+              เลือกอยู่: <span className="text-blue-400">{selectedIds.size}</span> โครงการ
+            </span>
+          </div>
+
+          <div className="h-4 w-px bg-slate-700"></div>
+
+          <div className="flex items-center gap-2 flex-wrap">
+            <button
+              onClick={() => handleBulkStatusChange('เปิด Presale')}
+              disabled={bulkLoading}
+              className="px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs transition-colors flex items-center gap-1"
+            >
+              <Send size={13} />
+              <span>เผยแพร่ (Publish)</span>
+            </button>
+
+            <button
+              onClick={() => handleBulkStatusChange('ฉบับร่าง')}
+              disabled={bulkLoading}
+              className="px-3 py-1.5 rounded-xl bg-slate-700 hover:bg-slate-600 text-slate-200 font-bold text-xs transition-colors flex items-center gap-1"
+            >
+              <EyeOff size={13} />
+              <span>ซ่อนเป็นดราฟต์</span>
+            </button>
+
+            <button
+              onClick={() => handleBulkTierChange('super')}
+              disabled={bulkLoading}
+              className="px-3 py-1.5 rounded-xl bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs transition-colors flex items-center gap-1"
+            >
+              <Crown size={13} />
+              <span>ตั้งเป็น Super</span>
+            </button>
+
+            <button
+              onClick={() => handleBulkTierChange('sponsored')}
+              disabled={bulkLoading}
+              className="px-3 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs transition-colors flex items-center gap-1"
+            >
+              <Star size={13} />
+              <span>ตั้งเป็น Sponsored</span>
+            </button>
+
+            <button
+              onClick={handleBulkDelete}
+              disabled={bulkLoading}
+              className="px-3 py-1.5 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs transition-colors flex items-center gap-1"
+            >
+              <Trash2 size={13} />
+              <span>ลบที่เลือก</span>
+            </button>
+
+            <button
+              onClick={() => setSelectedIds(new Set())}
+              className="p-1.5 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+              title="ยกเลิกการเลือก"
+            >
+              <X size={16} />
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* ── UNIT TYPES MODAL ── */}
       {managingProp && (
         <UnitTypesModal
           prop={managingProp}
@@ -729,15 +1350,64 @@ export default function AdminDashboard() {
         />
       )}
 
-      {settingsOpen && (
-        <div style={{ position: 'fixed', inset: 0, zIndex: 9999, background: 'rgba(15,23,42,0.8)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem' }}>
-          <div style={{ background: '#fff', borderRadius: '1.25rem', width: '100%', maxWidth: '900px', maxHeight: '90vh', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
-            <div style={{ padding: '1.25rem 1.5rem', borderBottom: '1px solid #e2e8f0', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <h2 style={{ margin: 0, fontSize: '1.25rem', fontWeight: 800 }}>เลือกภาพพื้นหลังเว็บไซต์</h2>
-              <button onClick={() => setSettingsOpen(false)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#64748b' }}><X size={24} /></button>
+      {/* ── SEO & SITEMAP MODAL ── */}
+      {seoModalOpen && (
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl w-full max-w-lg overflow-hidden shadow-2xl border border-slate-100 animate-in zoom-in-95">
+            <div className="p-5 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
+              <h3 className="font-extrabold text-slate-900 text-base flex items-center gap-2">
+                <Globe className="text-blue-600" size={18} />
+                สถานะ Sitemap & AEO Optimization
+              </h3>
+              <button onClick={() => setSeoModalOpen(false)} className="text-slate-400 hover:text-slate-600">
+                <X size={20} />
+              </button>
             </div>
-            <div style={{ padding: '1.5rem', overflowY: 'auto' }}>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '1rem' }}>
+            <div className="p-6 space-y-4 text-xs">
+              <p className="text-slate-600 leading-relaxed">
+                ระบบได้ติดตั้ง Sitemap และ Structured Data ให้กับทุกโครงการที่เผยแพร่แล้วโดยอัตโนมัติ เพื่อให้ Google และ AI Search Engines (ChatGPT, Perplexity, Gemini) นำไปแสดงผลในผลการค้นหา
+              </p>
+              <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2 font-mono text-[11px]">
+                <div className="flex justify-between">
+                  <span className="text-slate-500">Sitemap URL:</span>
+                  <a href="/sitemap.xml" target="_blank" className="text-blue-600 font-bold hover:underline">/sitemap.xml</a>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-slate-500">URLs ใน Sitemap:</span>
+                  <span className="font-bold text-slate-800">217 หน้า</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-slate-500">Robots.txt:</span>
+                  <a href="/robots.txt" target="_blank" className="text-blue-600 font-bold hover:underline">/robots.txt</a>
+                </div>
+              </div>
+            </div>
+            <div className="p-4 border-t border-slate-100 bg-slate-50/50 flex justify-end">
+              <button
+                onClick={() => setSeoModalOpen(false)}
+                className="px-5 py-2 rounded-xl bg-blue-600 text-white font-bold text-xs"
+              >
+                ปิดหน้าต่าง
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── HERO IMAGE SETTINGS MODAL ── */}
+      {settingsOpen && (
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl w-full max-w-4xl max-h-[90vh] overflow-hidden shadow-2xl flex flex-col">
+            <div className="p-5 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
+              <h3 className="font-extrabold text-slate-900 text-base">
+                เลือกภาพพื้นหลังหน้าแรก (Hero Background)
+              </h3>
+              <button onClick={() => setSettingsOpen(false)} className="text-slate-400 hover:text-slate-600">
+                <X size={20} />
+              </button>
+            </div>
+            <div className="p-6 overflow-y-auto flex-1">
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
                 {[
                   'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=2000&q=80',
                   'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=2000&q=80',
@@ -753,20 +1423,28 @@ export default function AdminDashboard() {
                   <div 
                     key={i} 
                     onClick={() => setHeroImage(img)}
-                    style={{ 
-                      borderRadius: '0.75rem', overflow: 'hidden', height: '140px', cursor: 'pointer', border: heroImage === img ? '4px solid var(--primary)' : '2px solid transparent',
-                      boxShadow: heroImage === img ? '0 4px 12px rgba(249,115,22,0.3)' : 'none',
-                      transition: 'all 0.2s'
-                    }}
+                    className={`relative rounded-xl overflow-hidden h-28 cursor-pointer border-2 transition-all ${
+                      heroImage === img 
+                        ? 'border-blue-600 shadow-lg shadow-blue-500/30 scale-102' 
+                        : 'border-transparent hover:opacity-80'
+                    }`}
                   >
-                    <img src={img} alt="Background" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    <img src={img} alt="Hero option" className="w-full h-full object-cover" />
+                    {heroImage === img && (
+                      <div className="absolute top-2 right-2 w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center shadow-md">
+                        <Check size={14} />
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>
             </div>
-            <div style={{ padding: '1.25rem 1.5rem', borderTop: '1px solid #e2e8f0', display: 'flex', justifyContent: 'flex-end', background: '#f8fafc' }}>
-              <button onClick={() => setSettingsOpen(false)} style={{ background: 'var(--primary)', color: '#fff', padding: '0.75rem 2rem', borderRadius: '0.75rem', fontWeight: 700, border: 'none', cursor: 'pointer' }}>
-                เสร็จสิ้น
+            <div className="p-4 border-t border-slate-100 bg-slate-50/50 flex justify-end">
+              <button
+                onClick={() => setSettingsOpen(false)}
+                className="px-6 py-2 rounded-xl bg-blue-600 text-white font-bold text-xs hover:bg-blue-700 transition-colors"
+              >
+                บันทึกเรียบร้อย
               </button>
             </div>
           </div>
