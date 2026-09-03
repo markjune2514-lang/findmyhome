@@ -41,7 +41,7 @@ export default function AddPropertyPage() {
     landSize: '',
     floors: '',
     totalUnits: '',
-    status: 'กำลังก่อสร้าง',
+    status: 'ฉบับร่าง',
     image: '',
     logo: '',
     rating: '5.0',
