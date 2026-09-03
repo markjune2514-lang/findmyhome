@@ -865,25 +865,26 @@ export default function AdminDashboard() {
                                 <Link
                                   to={`/property/${prop.id}`}
                                   target="_blank"
-                                  className="font-extrabold text-slate-900 text-xs hover:text-blue-600 transition-colors"
+                                  className="font-bold text-slate-900 text-sm hover:text-blue-600 transition-colors no-underline"
                                   title={prop.name}
                                 >
                                   {prop.name}
                                 </Link>
-                                <span className="px-1.5 py-0.2 rounded text-[10px] font-bold bg-slate-100 text-slate-600 border border-slate-200">
+                                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold bg-slate-100 text-slate-600 border border-slate-200/80">
                                   {prop.type || '-'}
                                 </span>
                               </div>
-                              <div className="flex items-center gap-1.5 mt-0.5 text-[11px] text-slate-500 flex-wrap">
+                              <div className="flex items-center gap-2 mt-1 text-[11px] text-slate-500 flex-wrap">
                                 <button
+                                  type="button"
                                   onClick={() => setDeveloperFilter(prop.developer?.trim() || 'ไม่ระบุผู้พัฒนา')}
-                                  className="font-bold text-blue-600 hover:underline"
+                                  className="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-semibold bg-blue-50 text-blue-700 hover:bg-blue-100 transition-colors border border-blue-200/60 cursor-pointer"
                                 >
                                   {prop.developer || 'ไม่ระบุผู้พัฒนา'}
                                 </button>
-                                <span>•</span>
+                                <span className="text-slate-300">•</span>
                                 <span>{prop.district ? `${prop.district}, ` : ''}{prop.province || '-'}</span>
-                                <span>•</span>
+                                <span className="text-slate-300">•</span>
                                 <span className="font-mono text-[10px] text-slate-400">{prop.id}</span>
                               </div>
                             </div>
