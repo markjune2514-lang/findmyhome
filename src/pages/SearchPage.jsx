@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMap, useMapEvents, LayersControl, ZoomControl } from 'react-leaflet';
 import { Search, SlidersHorizontal, Heart, Map as MapIcon, Star, X, ChevronDown, Plus, Check, PenTool, MapPin, LayoutGrid, List, Crown, CheckCircle2, Building2 } from 'lucide-react';
 import { provincesAndDistricts, transitData } from '../data/locations';
@@ -148,7 +148,29 @@ export default function SearchPage() {
   
   // Location Filter State
   const [selectedProvince, setSelectedProvince] = useState(() => sessionStorage.getItem('search_province') || 'กรุงเทพมหานคร');
-  const [selectedDistrict, setSelectedDistrict] = useState(() => sessionStorage.getItem('search_district') || '');
+  const [selectedDistricts, setSelectedDistricts] = useState(() => {
+    try {
+      const saved = sessionStorage.getItem('search_districts');
+      if (saved) return JSON.parse(saved);
+      const oldSingle = sessionStorage.getItem('search_district');
+      return oldSingle && oldSingle !== 'ทุกเขต/อำเภอ' ? [oldSingle] : [];
+    } catch {
+      return [];
+    }
+  });
+  const [isDistrictDropdownOpen, setIsDistrictDropdownOpen] = useState(false);
+  const [districtSearchQuery, setDistrictSearchQuery] = useState('');
+  const districtDropdownRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (districtDropdownRef.current && !districtDropdownRef.current.contains(e.target)) {
+        setIsDistrictDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   // Transit Filter State
   const [transitSystem, setTransitSystem] = useState('');
@@ -180,8 +202,8 @@ export default function SearchPage() {
     sessionStorage.setItem('search_activeTab', activeTab);
     sessionStorage.setItem('search_propertyType', activePropertyType);
     sessionStorage.setItem('search_province', selectedProvince);
-    sessionStorage.setItem('search_district', selectedDistrict);
-  }, [activeTab, activePropertyType, selectedProvince, selectedDistrict]);
+    sessionStorage.setItem('search_districts', JSON.stringify(selectedDistricts));
+  }, [activeTab, activePropertyType, selectedProvince, selectedDistricts]);
 
   // Advanced Filter State
   const [showAdvanced, setShowAdvanced] = useState(false);
@@ -215,19 +237,19 @@ export default function SearchPage() {
 
   useEffect(() => {
     setVisibleCount(20);
-  }, [filters, searchQuery, activePropertyType, polygonFilter]);
+  }, [filters, searchQuery, activePropertyType, polygonFilter, selectedDistricts]);
 
   // Save state to sessionStorage
   useEffect(() => {
     sessionStorage.setItem('search_activeTab', activeTab);
     sessionStorage.setItem('search_province', selectedProvince);
-    sessionStorage.setItem('search_district', selectedDistrict);
+    sessionStorage.setItem('search_districts', JSON.stringify(selectedDistricts));
     sessionStorage.setItem('search_query', searchQuery);
     sessionStorage.setItem('search_propertyType', activePropertyType);
     sessionStorage.setItem('search_filters', JSON.stringify(filters));
     sessionStorage.setItem('search_sortBy', sortBy);
     sessionStorage.setItem('search_viewMode', viewMode);
-  }, [activeTab, selectedProvince, selectedDistrict, searchQuery, activePropertyType, filters, sortBy, viewMode]);
+  }, [activeTab, selectedProvince, selectedDistricts, searchQuery, activePropertyType, filters, sortBy, viewMode]);
 
   const toggleFilter = (category, value) => {
     setFilters(prev => {
@@ -326,8 +348,16 @@ export default function SearchPage() {
     if (selectedProvince && prop.province !== selectedProvince) {
       return false;
     }
-    if (selectedDistrict && selectedDistrict !== 'ทุกเขต/อำเภอ' && prop.district !== selectedDistrict) {
-      return false;
+    if (selectedDistricts && selectedDistricts.length > 0) {
+      const propDist = prop.district?.trim() || '';
+      const matchesAnyDistrict = selectedDistricts.some(d => {
+        const cleanD = d.replace(/^(เขต|อำเภอ)/, '').trim();
+        const cleanProp = propDist.replace(/^(เขต|อำเภอ)/, '').trim();
+        return propDist === d || cleanProp === cleanD || (propDist && propDist.includes(cleanD));
+      });
+      if (!matchesAnyDistrict) {
+        return false;
+      }
     }
 
     // Transit
@@ -415,7 +445,7 @@ export default function SearchPage() {
     setActiveTab('buy');
     setActivePropertyType('condo');
     setSelectedProvince('กรุงเทพมหานคร');
-    setSelectedDistrict('');
+    setSelectedDistricts([]);
     setTransitSystem('');
     setTransitLine('');
     setTransitStation('');
@@ -650,21 +680,192 @@ export default function SearchPage() {
           </div>
 
           <div className="filter-group">
-            <label>ทำเล (จังหวัด / เขต)</label>
+            <div className="flex items-center justify-between mb-1">
+              <label className="m-0">ทำเล (จังหวัด / เขต)</label>
+              {selectedDistricts.length > 0 && (
+                <button
+                  type="button"
+                  onClick={() => setSelectedDistricts([])}
+                  className="text-[11px] font-bold text-rose-600 hover:underline cursor-pointer"
+                >
+                  ล้างเขตที่เลือก ({selectedDistricts.length})
+                </button>
+              )}
+            </div>
+            
             <div className="flex gap-2" style={{ display: 'flex', gap: '0.5rem' }}>
-              <select className="select-input flex-1" value={selectedProvince} onChange={(e) => { setSelectedProvince(e.target.value); setSelectedDistrict(''); }}>
+              {/* Province Select */}
+              <select 
+                className="select-input flex-1" 
+                value={selectedProvince} 
+                onChange={(e) => { 
+                  setSelectedProvince(e.target.value); 
+                  setSelectedDistricts([]); 
+                }}
+              >
                 <option value="">ทุกจังหวัด (ทั่วประเทศ)</option>
                 {Object.keys(provincesAndDistricts).map(prov => (
                   <option key={prov} value={prov}>{prov}</option>
                 ))}
               </select>
-              <select className="select-input flex-1" value={selectedDistrict} onChange={(e) => setSelectedDistrict(e.target.value)} disabled={!selectedProvince}>
-                <option value="">ทุกเขต/อำเภอ</option>
-                {selectedProvince && provincesAndDistricts[selectedProvince]?.map(d => (
-                  <option key={d} value={d}>{d}</option>
-                ))}
-              </select>
+
+              {/* Multi-District Popover Selector */}
+              {(() => {
+                const availableDistricts = selectedProvince ? (provincesAndDistricts[selectedProvince] || []) : [];
+                const filteredDistrictList = availableDistricts.filter(d => 
+                  !districtSearchQuery.trim() || d.toLowerCase().includes(districtSearchQuery.toLowerCase().trim())
+                );
+                const toggleDistrict = (d) => {
+                  if (selectedDistricts.includes(d)) {
+                    setSelectedDistricts(selectedDistricts.filter(item => item !== d));
+                  } else {
+                    setSelectedDistricts([...selectedDistricts, d]);
+                  }
+                };
+
+                return (
+                  <div className="relative flex-1" ref={districtDropdownRef}>
+                    {/* Trigger Button */}
+                    <button
+                      type="button"
+                      disabled={!selectedProvince}
+                      onClick={() => setIsDistrictDropdownOpen(!isDistrictDropdownOpen)}
+                      className="select-input w-full flex items-center justify-between text-left cursor-pointer bg-white disabled:opacity-50 disabled:cursor-not-allowed"
+                      style={{ minHeight: '38px', padding: '0.45rem 0.65rem' }}
+                    >
+                      <div className="flex items-center gap-1.5 truncate flex-1 min-w-0">
+                        <MapPin size={13} className="text-slate-400 shrink-0" />
+                        <span className={`truncate text-xs ${selectedDistricts.length > 0 ? 'font-bold text-blue-700' : 'text-slate-600'}`}>
+                          {selectedDistricts.length === 0
+                            ? 'ทุกเขต/อำเภอ'
+                            : selectedDistricts.length === 1
+                              ? selectedDistricts[0]
+                              : `${selectedDistricts[0]} (+${selectedDistricts.length - 1})`
+                          }
+                        </span>
+                      </div>
+                      
+                      <div className="flex items-center gap-1 shrink-0 ml-1">
+                        {selectedDistricts.length > 0 && (
+                          <span className="px-1.5 py-0.2 rounded-full bg-blue-600 text-white text-[10px] font-bold">
+                            {selectedDistricts.length}
+                          </span>
+                        )}
+                        <ChevronDown size={14} className={`text-slate-400 transition-transform ${isDistrictDropdownOpen ? 'rotate-180' : ''}`} />
+                      </div>
+                    </button>
+
+                    {/* Dropdown Menu */}
+                    {isDistrictDropdownOpen && selectedProvince && (
+                      <div className="absolute top-full left-0 right-0 mt-1.5 bg-white border border-slate-200 rounded-2xl shadow-xl z-50 p-2.5 max-h-80 flex flex-col min-w-[220px] animate-in fade-in zoom-in-95">
+                        {/* District Search Box */}
+                        <div className="relative mb-2 shrink-0">
+                          <Search size={13} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
+                          <input
+                            type="text"
+                            value={districtSearchQuery}
+                            onChange={(e) => setDistrictSearchQuery(e.target.value)}
+                            placeholder="พิมพ์ค้นหาเขต..."
+                            className="w-full pl-7 pr-2 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium focus:outline-none focus:border-blue-500 focus:bg-white"
+                            autoFocus
+                          />
+                        </div>
+
+                        {/* Action Header: Select All / Clear */}
+                        <div className="flex items-center justify-between px-1 py-1 mb-1 text-[11px] border-b border-slate-100 shrink-0">
+                          <span className="font-bold text-slate-500">
+                            {selectedDistricts.length > 0 ? `เลือกแล้ว ${selectedDistricts.length} เขต` : 'เลือกหลายเขตได้'}
+                          </span>
+                          <div className="flex items-center gap-2">
+                            {availableDistricts.length > 0 && (
+                              <button
+                                type="button"
+                                onClick={() => setSelectedDistricts(availableDistricts)}
+                                className="text-blue-600 hover:text-blue-700 font-bold cursor-pointer"
+                              >
+                                เลือกทั้งหมด
+                              </button>
+                            )}
+                            {selectedDistricts.length > 0 && (
+                              <button
+                                type="button"
+                                onClick={() => setSelectedDistricts([])}
+                                className="text-rose-500 hover:text-rose-600 font-bold cursor-pointer"
+                              >
+                                ล้าง
+                              </button>
+                            )}
+                          </div>
+                        </div>
+
+                        {/* Scrollable Checkbox List */}
+                        <div className="overflow-y-auto space-y-1 flex-1 pr-1 max-h-48 custom-scrollbar">
+                          {filteredDistrictList.length > 0 ? (
+                            filteredDistrictList.map((d) => {
+                              const isChecked = selectedDistricts.includes(d);
+                              return (
+                                <label
+                                  key={d}
+                                  onClick={(e) => e.stopPropagation()}
+                                  className={`flex items-center gap-2 px-2.5 py-1.5 rounded-xl cursor-pointer text-xs transition-colors ${
+                                    isChecked ? 'bg-blue-50 text-blue-900 font-bold' : 'hover:bg-slate-50 text-slate-700'
+                                  }`}
+                                >
+                                  <input
+                                    type="checkbox"
+                                    checked={isChecked}
+                                    onChange={() => toggleDistrict(d)}
+                                    className="rounded text-blue-600 focus:ring-blue-500 cursor-pointer"
+                                  />
+                                  <span className="truncate flex-1">{d}</span>
+                                </label>
+                              );
+                            })
+                          ) : (
+                            <div className="text-center py-4 text-xs text-slate-400">
+                              ไม่พบเขตที่ค้นหา
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Done Button */}
+                        <div className="pt-2 mt-1 border-t border-slate-100 flex justify-end shrink-0">
+                          <button
+                            type="button"
+                            onClick={() => setIsDistrictDropdownOpen(false)}
+                            className="px-4 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-xs cursor-pointer"
+                          >
+                            ตกลง ({selectedDistricts.length})
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                );
+              })()}
             </div>
+
+            {/* Selected District Chips */}
+            {selectedDistricts.length > 0 && (
+              <div className="flex flex-wrap gap-1.5 mt-2.5">
+                {selectedDistricts.map(d => (
+                  <span
+                    key={d}
+                    className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-blue-50 text-blue-700 border border-blue-200/90 shadow-2xs"
+                  >
+                    <span>{d}</span>
+                    <button
+                      type="button"
+                      onClick={() => setSelectedDistricts(selectedDistricts.filter(item => item !== d))}
+                      className="hover:text-rose-600 cursor-pointer font-bold ml-0.5 leading-none text-blue-400 hover:scale-110"
+                      title={`ลบ ${d}`}
+                    >
+                      ✕
+                    </button>
+                  </span>
+                ))}
+              </div>
+            )}
           </div>
 
           <div className="filter-group">
