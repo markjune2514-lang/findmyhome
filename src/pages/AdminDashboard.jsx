@@ -5,7 +5,8 @@ import { supabase } from '../supabaseClient';
 import {
   Plus, Building2, Home as HomeIcon, LayoutList, Edit, Trash2,
   Layers, Search, X, Save, ChevronDown, ChevronUp, TrendingUp, Eye, EyeOff, Copy, Send, Star, Crown, CheckCircle2, FileEdit, ThumbsUp,
-  Download, RefreshCw, Filter, ArrowUpDown, Globe, Shield, Sparkles, CheckSquare, Square, BarChart3, Settings, HelpCircle, ExternalLink, ChevronLeft, ChevronRight, Check
+  Download, RefreshCw, Filter, ArrowUpDown, Globe, Shield, Sparkles, CheckSquare, Square, BarChart3, Settings, HelpCircle, ExternalLink, ChevronLeft, ChevronRight, Check,
+  FileText, Edit3, StickyNote
 } from 'lucide-react';
 
 // ── Unit Types Manager Modal ────────────────────────────────────────────────
@@ -174,6 +175,45 @@ export default function AdminDashboard() {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [bulkLoading, setBulkLoading] = useState(false);
 
+  // Admin Project Notes State (Persistent across sessions)
+  const [adminNotes, setAdminNotes] = useState(() => {
+    try {
+      const saved = localStorage.getItem('fmh_admin_project_notes');
+      return saved ? JSON.parse(saved) : {};
+    } catch {
+      return {};
+    }
+  });
+  const [editingNoteId, setEditingNoteId] = useState(null);
+  const [editingNoteText, setEditingNoteText] = useState('');
+  const [savedToastId, setSavedToastId] = useState(null);
+
+  const handleSaveNote = (propId) => {
+    const trimmed = editingNoteText.trim();
+    const updated = { ...adminNotes };
+    if (trimmed) {
+      updated[propId] = trimmed;
+    } else {
+      delete updated[propId];
+    }
+    setAdminNotes(updated);
+    localStorage.setItem('fmh_admin_project_notes', JSON.stringify(updated));
+    setEditingNoteId(null);
+    setEditingNoteText('');
+    setSavedToastId(propId);
+    setTimeout(() => setSavedToastId(null), 2500);
+  };
+
+  const handleStartEditNote = (propId, currentText) => {
+    setEditingNoteId(propId);
+    setEditingNoteText(currentText || '');
+  };
+
+  const handleCancelEditNote = () => {
+    setEditingNoteId(null);
+    setEditingNoteText('');
+  };
+
   // Analytics State
   const [totalViews, setTotalViews] = useState(0);
   const [topSearches, setTopSearches] = useState([]);
@@ -244,7 +284,8 @@ export default function AdminDashboard() {
         p.province?.toLowerCase().includes(q) ||
         p.district?.toLowerCase().includes(q) ||
         p.station?.toLowerCase().includes(q) ||
-        p.id?.toLowerCase().includes(q);
+        p.id?.toLowerCase().includes(q) ||
+        (adminNotes[p.id] && adminNotes[p.id].toLowerCase().includes(q));
       
       const matchType = typeFilter === 'ทั้งหมด' || p.type === typeFilter;
       
@@ -274,7 +315,7 @@ export default function AdminDashboard() {
     });
 
     return result;
-  }, [properties, search, typeFilter, developerFilter, statusFilter, tierFilter, sortBy]);
+  }, [properties, search, typeFilter, developerFilter, statusFilter, tierFilter, sortBy, adminNotes]);
 
   // Pagination Slice
   const totalPages = pageSize === 'all' ? 1 : Math.ceil(filteredProperties.length / pageSize) || 1;
@@ -434,6 +475,7 @@ export default function AdminDashboard() {
       package_tier: p.package_tier || 'standard',
       total_units: p.total_units || '',
       unit_types_count: p.unitTypes?.length || 0,
+      admin_note: adminNotes[p.id] || '',
       created_at: p.created_at || ''
     }));
 
@@ -445,10 +487,10 @@ export default function AdminDashboard() {
       a.download = `findmyhome_properties_${new Date().toISOString().split('T')[0]}.json`;
       a.click();
     } else {
-      const headers = ['ID', 'ชื่อโครงการ', 'ผู้พัฒนา', 'ประเภท', 'ราคาเริ่มต้น (ลบ.)', 'สถานะ', 'จังหวัด', 'อำเภอ/เขต', 'สถานี', 'เทียร์', 'จำนวนยูนิตย่อย', 'วันที่สร้าง'];
+      const headers = ['ID', 'ชื่อโครงการ', 'ผู้พัฒนา', 'ประเภท', 'ราคาเริ่มต้น (ลบ.)', 'สถานะ', 'จังหวัด', 'อำเภอ/เขต', 'สถานี', 'เทียร์', 'จำนวนยูนิตย่อย', 'โน้ตแอดมิน', 'วันที่สร้าง'];
       const rows = dataToExport.map(d => [
         `"${d.id}"`, `"${d.name}"`, `"${d.developer}"`, `"${d.type}"`, d.price, `"${d.status}"`,
-        `"${d.province}"`, `"${d.district}"`, `"${d.station}"`, `"${d.package_tier}"`, d.unit_types_count, `"${d.created_at}"`
+        `"${d.province}"`, `"${d.district}"`, `"${d.station}"`, `"${d.package_tier}"`, d.unit_types_count, `"${(d.admin_note || '').replace(/"/g, '""')}"`, `"${d.created_at}"`
       ]);
       const csvContent = '\uFEFF' + [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
       const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
@@ -824,6 +866,7 @@ export default function AdminDashboard() {
                       />
                     </th>
                     <th className="p-3">โครงการ & ผู้พัฒนา</th>
+                    <th className="p-3 w-56 min-w-[190px]">โน้ตช่วยจำ (Admin Note)</th>
                     <th className="p-3 w-36">ราคา / ยูนิต</th>
                     <th className="p-3 w-36">สถานะ</th>
                     <th className="p-3 w-32">แพ็กเกจเทียร์</th>
@@ -889,6 +932,85 @@ export default function AdminDashboard() {
                               </div>
                             </div>
                           </div>
+                        </td>
+
+                        {/* Admin Note Cell */}
+                        <td className="p-3 align-middle">
+                          {editingNoteId === prop.id ? (
+                            <div className="space-y-1.5 min-w-[180px]" onClick={(e) => e.stopPropagation()}>
+                              <textarea
+                                value={editingNoteText}
+                                onChange={(e) => setEditingNoteText(e.target.value)}
+                                placeholder="พิมพ์บันทึกโน้ตสำหรับแอดมิน..."
+                                rows={2}
+                                className="w-full p-2 bg-white border border-amber-400 focus:ring-2 focus:ring-amber-400/20 rounded-xl text-xs text-slate-800 font-medium focus:outline-none resize-none shadow-sm"
+                                autoFocus
+                                onKeyDown={(e) => {
+                                  if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+                                    handleSaveNote(prop.id);
+                                  } else if (e.key === 'Escape') {
+                                    handleCancelEditNote();
+                                  }
+                                }}
+                              />
+                              <div className="flex items-center justify-between">
+                                <span className="text-[10px] text-slate-400">Ctrl+Enter บันทึก</span>
+                                <div className="flex items-center gap-1">
+                                  <button
+                                    type="button"
+                                    onClick={handleCancelEditNote}
+                                    className="px-2 py-0.5 rounded-md text-[10px] font-bold text-slate-500 hover:bg-slate-100 cursor-pointer"
+                                  >
+                                    ยกเลิก
+                                  </button>
+                                  <button
+                                    type="button"
+                                    onClick={() => handleSaveNote(prop.id)}
+                                    className="flex items-center gap-1 px-2.5 py-0.5 rounded-md text-[10px] font-bold text-white bg-amber-600 hover:bg-amber-700 shadow-2xs cursor-pointer"
+                                  >
+                                    <Check size={11} />
+                                    บันทึก
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          ) : (
+                            <div className="min-w-[150px]">
+                              {adminNotes[prop.id] ? (
+                                <div
+                                  onClick={() => handleStartEditNote(prop.id, adminNotes[prop.id])}
+                                  className="group relative p-2 rounded-xl bg-amber-50/80 hover:bg-amber-100/90 border border-amber-200/90 text-amber-950 cursor-pointer transition-all shadow-2xs text-xs"
+                                  title="คลิกเพื่อแก้ไขโน้ต"
+                                >
+                                  <div className="flex items-start gap-1.5">
+                                    <FileText size={12} className="text-amber-600 shrink-0 mt-0.5" />
+                                    <p className="line-clamp-2 leading-tight break-words font-medium text-[11px] text-slate-800">
+                                      {adminNotes[prop.id]}
+                                    </p>
+                                  </div>
+                                  <div className="hidden group-hover:flex items-center gap-0.5 absolute top-1 right-1 bg-white/95 px-1 py-0.2 rounded border border-amber-200 shadow-xs text-[9px] text-amber-700 font-bold">
+                                    <Edit3 size={9} />
+                                    <span>แก้ไข</span>
+                                  </div>
+                                </div>
+                              ) : (
+                                <button
+                                  type="button"
+                                  onClick={() => handleStartEditNote(prop.id, '')}
+                                  className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg border border-dashed border-slate-300 hover:border-amber-400 hover:bg-amber-50/60 text-slate-400 hover:text-amber-700 text-[11px] font-semibold transition-all cursor-pointer group"
+                                  title="เพิ่มบันทึกช่วยจำสำหรับแอดมิน"
+                                >
+                                  <Plus size={12} className="text-slate-400 group-hover:text-amber-600" />
+                                  <span>+ โน้ต</span>
+                                </button>
+                              )}
+                              {savedToastId === prop.id && (
+                                <span className="text-[10px] font-bold text-emerald-600 flex items-center gap-0.5 mt-0.5 animate-in fade-in">
+                                  <Check size={10} /> บันทึกแล้ว
+                                </span>
+                              )}
+                            </div>
+                          )}
                         </td>
 
                         {/* Price & Unit Types */}
