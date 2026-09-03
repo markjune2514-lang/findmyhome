@@ -62,6 +62,8 @@ a {
 
 input, select, textarea {
   font-family: inherit;
+  border-width: 0;
+  outline: none;
 }
 
 /* Typography styles */

@@ -63,7 +63,20 @@ export const POPULAR_THAI_PLACES = [
   { name: 'จัสมิน อินเตอร์เนชั่นแนล ทาวเวอร์ แจ้งวัฒนะ', secondary: 'ถนนแจ้งวัฒนะ ต.ปากเกร็ด อ.ปากเกร็ด นนทบุรี', lat: 13.9052, lng: 100.5183, type: 'office', icon: '🏢', tags: ['jasmine chaengwattana', 'จัสมิน แจ้งวัฒนะ'] },
 
   // Thonburi & Iconsiam
-  { name: 'ไอคอนสยาม (ICONSIAM)', secondary: 'ถนนเจริญนคร แขวงคลองต้นไทร เขตคลองสาน กรุงเทพฯ (ติดรถไฟฟ้าสายสีทอง)', lat: 13.7267, lng: 100.5108, type: 'mall', icon: '🛍️', tags: ['iconsiam', 'icon siam', 'ไอคอนสยาม', 'เจริญนคร'] }
+  { name: 'ไอคอนสยาม (ICONSIAM)', secondary: 'ถนนเจริญนคร แขวงคลองต้นไทร เขตคลองสาน กรุงเทพฯ (ติดรถไฟฟ้าสายสีทอง)', lat: 13.7267, lng: 100.5108, type: 'mall', icon: '🛍️', tags: ['iconsiam', 'icon siam', 'ไอคอนสยาม', 'เจริญนคร'] },
+
+  // Don Mueang, Government, Airports & Military
+  { name: 'กองบิน 6 ดอนเมือง (Wing 6 Don Mueang)', secondary: 'กองทัพอากาศ ถนนพหลโยธิน แขวงสนามบิน เขตดอนเมือง กรุงเทพฯ', lat: 13.9168, lng: 100.6075, type: 'military', icon: '✈️', tags: ['กองบิน6', 'กองบิน 6', 'wing 6', 'ดอนเมือง', 'กองทัพอากาศ', 'บน.6', 'บน6'] },
+  { name: 'ท่าอากาศยานดอนเมือง (Don Mueang Airport)', secondary: 'ถนนวิภาวดีรังสิต แขวงสนามบิน เขตดอนเมือง กรุงเทพฯ', lat: 13.9126, lng: 100.6068, type: 'airport', icon: '✈️', tags: ['ดอนเมือง', 'don mueang', 'สนามบินดอนเมือง', 'ท่าอากาศยานดอนเมือง'] },
+  { name: 'ท่าอากาศยานสุวรรณภูมิ (Suvarnabhumi Airport)', secondary: 'ต.หนองปรือ อ.บางพลี จ.สมุทรปราการ', lat: 13.6900, lng: 100.7501, type: 'airport', icon: '✈️', tags: ['สุวรรณภูมิ', 'suvarnabhumi', 'สนามบินสุวรรณภูมิ'] },
+  { name: 'กองทัพอากาศ (Royal Thai Air Force Headquarters)', secondary: 'ถนนพหลโยธิน แขวงคลองถนน เขตสายไหม กรุงเทพฯ', lat: 13.9230, lng: 100.6210, type: 'military', icon: '✈️', tags: ['กองทัพอากาศ', 'rtaf', 'สายไหม'] },
+  { name: 'กองบัญชาการกองทัพไทย (Royal Thai Armed Forces HQ)', secondary: 'ถนนแจ้งวัฒนะ แขวงทุ่งสองห้อง เขตหลักสี่ กรุงเทพฯ', lat: 13.8860, lng: 100.5695, type: 'military', icon: '🏛️', tags: ['กองทัพไทย', 'แจ้งวัฒนะ'] },
+
+  // Major Universities & Hospitals
+  { name: 'จุฬาลงกรณ์มหาวิทยาลัย (Chulalongkorn University)', secondary: 'ถนนพญาไท แขวงวังใหม่ เขตปทุมวัน กรุงเทพฯ', lat: 13.7384, lng: 100.5315, type: 'university', icon: '🏫', tags: ['จุฬา', 'จุฬาลงกรณ์', 'chula', 'สามย่าน'] },
+  { name: 'มหาวิทยาลัยเกษตรศาสตร์ บางเขน (Kasetsart University)', secondary: 'ถนนงามวงศ์วาน แขวงลาดยาว เขตจตุจักร กรุงเทพฯ', lat: 13.8479, lng: 100.5696, type: 'university', icon: '🏫', tags: ['เกษตร', 'เกษตรศาสตร์', 'kasetsart', 'บางเขน'] },
+  { name: 'โรงพยาบาลศิริราช (Siriraj Hospital)', secondary: 'ถนนวังหลัง แขวงศิริราช เขตบางกอกน้อย กรุงเทพฯ', lat: 13.7588, lng: 100.4856, type: 'hospital', icon: '🏥', tags: ['ศิริราช', 'siriraj', 'วังหลัง'] },
+  { name: 'โรงพยาบาลจุฬาลงกรณ์ สภากาชาดไทย', secondary: 'ถนนพระราม 4 แขวงปทุมวัน เขตปทุมวัน กรุงเทพฯ', lat: 13.7319, lng: 100.5367, type: 'hospital', icon: '🏥', tags: ['โรงพยาบาลจุฬา', 'สภากาชาดไทย'] }
 ];
 
 /**

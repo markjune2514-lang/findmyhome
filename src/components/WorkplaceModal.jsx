@@ -3,7 +3,7 @@ import { useWorkplace } from '../WorkplaceContext';
 import { searchPlacesLikeGoogle, POPULAR_THAI_PLACES } from '../utils/placeSearch';
 import { 
   Building2, MapPin, X, Check, Search, Navigation, Trash2, 
-  ArrowRight, Sparkles, Clock, Loader2, Compass, ExternalLink 
+  ArrowRight, Sparkles, Clock, Loader2 
 } from 'lucide-react';
 
 export default function WorkplaceModal() {
@@ -69,7 +69,7 @@ export default function WorkplaceModal() {
       } finally {
         setIsSearching(false);
       }
-    }, 220); // Snappy 220ms debounce for Google-like response
+    }, 200); // 200ms debounce for ultra-responsive typing
 
     return () => clearTimeout(timer);
   }, [searchQuery]);
@@ -104,7 +104,6 @@ export default function WorkplaceModal() {
         let placeName = 'ตำแหน่งปัจจุบันของฉัน';
         let secondary = 'พิกัด GPS';
         try {
-          // Reverse geocode via Nominatim
           const res = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json&accept-language=th`);
           const data = await res.json();
           if (data && data.display_name) {
@@ -137,21 +136,21 @@ export default function WorkplaceModal() {
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4">
-      <div className="bg-white rounded-3xl w-full max-w-xl overflow-hidden shadow-2xl border border-slate-100 flex flex-col max-h-[92vh] animate-in zoom-in-95">
+    <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4">
+      <div className="bg-white rounded-3xl w-full max-w-xl overflow-hidden shadow-2xl border border-[#ede5dd] flex flex-col max-h-[92vh] animate-in zoom-in-95">
         
-        {/* Header */}
-        <div className="p-4 sm:p-5 border-b border-slate-100 flex justify-between items-center bg-slate-50/70">
-          <div className="flex items-center gap-2.5">
-            <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 text-white flex items-center justify-center shadow-md shadow-blue-500/25">
+        {/* Header - Styled to match Find My Home's warm terracotta brand */}
+        <div className="p-4 sm:p-5 border-b border-[#f0e8e0] flex justify-between items-center bg-[#fbf7f4]">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-[#d38764] to-[#b87d4e] text-white flex items-center justify-center shadow-md shadow-[#d38764]/25">
               <Building2 size={20} />
             </div>
             <div>
-              <h3 className="font-extrabold text-slate-900 text-base leading-tight flex items-center gap-1.5">
-                <span>ระบุสถานที่ทำงาน (Workplace)</span>
+              <h3 className="font-extrabold text-[#0e0e0c] text-base leading-tight">
+                ระบุสถานที่ทำงาน (Workplace)
               </h3>
               <p className="text-xs text-slate-500 mt-0.5">
-                ค้นหาและคำนวณเวลาเดินทางจริงแบบ Google Maps
+                ค้นหาตึก, บริษัท, สถานี หรือที่ทำงาน เพื่อคำนวณระยะทางจริง
               </p>
             </div>
           </div>
@@ -168,14 +167,14 @@ export default function WorkplaceModal() {
           
           {/* Active Workplace Indicator (If Set) */}
           {workplace && (
-            <div className="p-3.5 rounded-2xl bg-gradient-to-r from-blue-50 via-indigo-50/60 to-slate-50 border border-blue-200/80 flex items-center justify-between gap-3 shadow-2xs">
+            <div className="p-3.5 rounded-2xl bg-[#fbf7f4] border border-[#f0e2d8] flex items-center justify-between gap-3 shadow-2xs">
               <div className="flex items-center gap-2.5 min-w-0">
-                <div className="w-8 h-8 rounded-xl bg-blue-600 text-white flex items-center justify-center flex-shrink-0 shadow-sm">
+                <div className="w-8 h-8 rounded-xl bg-[#d38764] text-white flex items-center justify-center flex-shrink-0 shadow-xs">
                   <Check size={16} />
                 </div>
                 <div className="min-w-0">
-                  <span className="text-[10px] font-bold text-blue-600 uppercase tracking-wider block">
-                    ที่ทำงานปัจจุบันของคุณ
+                  <span className="text-[10px] font-bold text-[#d38764] uppercase tracking-wider block">
+                    ที่ทำงานที่คุณตั้งค่าไว้
                   </span>
                   <p className="text-xs sm:text-sm font-black text-slate-900 truncate">
                     {workplace.name}
@@ -197,18 +196,11 @@ export default function WorkplaceModal() {
             </div>
           )}
 
-          {/* Google-like Search Bar */}
+          {/* Search Bar - Seamless pill style matching Find My Home */}
           <div className="space-y-2">
             <div className="relative">
-              {/* Google Search Style Container */}
-              <div className="relative flex items-center bg-white border-2 border-blue-500/80 focus-within:border-blue-600 rounded-2xl shadow-md shadow-blue-500/10 transition-all">
-                <div className="pl-3.5 pr-2 text-blue-600 flex items-center justify-center pointer-events-none">
-                  {isSearching ? (
-                    <Loader2 size={18} className="animate-spin text-blue-600" />
-                  ) : (
-                    <Search size={18} />
-                  )}
-                </div>
+              <div className="relative flex items-center bg-[#fbf7f4] hover:bg-white focus-within:bg-white border border-[#e8ded5] focus-within:border-[#d38764] focus-within:ring-2 focus-within:ring-[#d38764]/20 rounded-full transition-all duration-200 px-4 py-2.5 shadow-2xs">
+                <Search size={18} className="text-[#d38764] shrink-0 mr-2.5 transition-colors" />
 
                 <input
                   ref={searchInputRef}
@@ -216,16 +208,21 @@ export default function WorkplaceModal() {
                   value={searchQuery}
                   onFocus={() => setIsInputFocused(true)}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="พิมพ์ชื่อตึก, ออฟฟิศ, บริษัท, สถานีรถไฟฟ้า, ซอย..."
-                  className="w-full py-3 pr-9 text-xs sm:text-sm font-medium bg-transparent text-slate-800 placeholder-slate-400 focus:outline-none"
+                  placeholder="ค้นหาชื่อตึก, บริษัท, สถานที่ทำงาน, กองบิน, รถไฟฟ้า..."
+                  style={{ border: 'none', outline: 'none', background: 'transparent', boxShadow: 'none', padding: 0, margin: 0 }}
+                  className="w-full text-xs sm:text-sm font-medium text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-0 border-none outline-none"
                   autoFocus
                 />
 
-                {searchQuery && (
+                {isSearching && (
+                  <Loader2 size={16} className="animate-spin text-[#d38764] shrink-0 ml-2" />
+                )}
+
+                {searchQuery && !isSearching && (
                   <button
                     type="button"
                     onClick={() => { setSearchQuery(''); setSearchResults([]); searchInputRef.current?.focus(); }}
-                    className="absolute right-3 w-6 h-6 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center text-xs transition-colors cursor-pointer"
+                    className="w-5 h-5 rounded-full bg-slate-200 hover:bg-slate-300 text-slate-600 flex items-center justify-center text-[10px] shrink-0 ml-2 cursor-pointer transition-colors"
                     title="ล้างข้อความ"
                   >
                     ✕
@@ -234,32 +231,32 @@ export default function WorkplaceModal() {
               </div>
             </div>
 
-            {/* Google Places Autocomplete Results Dropdown */}
+            {/* Places Autocomplete Results Dropdown */}
             {searchResults.length > 0 && (
-              <div className="bg-white border border-slate-200 rounded-2xl shadow-xl overflow-hidden divide-y divide-slate-100 animate-in fade-in-50 zoom-in-95">
-                <div className="px-3 py-1.5 bg-slate-50/80 text-[10px] font-bold text-slate-400 uppercase tracking-wider flex items-center justify-between">
+              <div className="bg-white border border-[#ede5dd] rounded-2xl shadow-xl overflow-hidden divide-y divide-[#f5eee8] animate-in fade-in zoom-in-95">
+                <div className="px-3.5 py-2 bg-[#fbf7f4] text-[11px] font-bold text-slate-500 uppercase tracking-wider flex items-center justify-between">
                   <span>ผลการค้นหาสถานที่ ({searchResults.length})</span>
-                  <span className="text-blue-600">คลิกเพื่อเลือก</span>
+                  <span className="text-[#d38764] font-semibold">คลิกเพื่อเลือก</span>
                 </div>
-                <div className="max-h-64 overflow-y-auto divide-y divide-slate-100">
+                <div className="max-h-64 overflow-y-auto divide-y divide-slate-100 custom-scrollbar">
                   {searchResults.map((item) => (
                     <div
                       key={item.id}
                       onClick={() => handleSelectPlace(item)}
-                      className="p-3 hover:bg-blue-50/70 transition-colors cursor-pointer flex items-start gap-3 group"
+                      className="p-3 hover:bg-[#fbf7f4] transition-colors cursor-pointer flex items-start gap-3 group"
                     >
-                      <div className="w-8 h-8 rounded-xl bg-slate-100 group-hover:bg-blue-100 text-base flex items-center justify-center flex-shrink-0 mt-0.5 transition-colors">
+                      <div className="w-8 h-8 rounded-xl bg-slate-100 group-hover:bg-[#f4e4d7] text-base flex items-center justify-center flex-shrink-0 mt-0.5 transition-colors">
                         {item.icon || '📍'}
                       </div>
                       <div className="min-w-0 flex-1">
-                        <p className="text-xs sm:text-sm font-black text-slate-900 group-hover:text-blue-700 transition-colors leading-tight truncate">
+                        <p className="text-xs sm:text-sm font-bold text-slate-900 group-hover:text-[#d38764] transition-colors leading-tight truncate">
                           {item.name}
                         </p>
                         <p className="text-[11px] text-slate-500 truncate mt-0.5">
                           {item.secondary}
                         </p>
                       </div>
-                      <div className="text-slate-300 group-hover:text-blue-600 transition-colors mt-1">
+                      <div className="text-slate-300 group-hover:text-[#d38764] transition-colors mt-1">
                         <ArrowRight size={14} />
                       </div>
                     </div>
@@ -270,19 +267,19 @@ export default function WorkplaceModal() {
 
             {/* No search results hint */}
             {searchQuery.trim().length >= 2 && !isSearching && searchResults.length === 0 && (
-              <div className="p-4 bg-slate-50 rounded-2xl text-center border border-slate-200/80">
-                <p className="text-xs text-slate-600 font-bold">ไม่พบสถานที่ "{searchQuery}"</p>
-                <p className="text-[11px] text-slate-400 mt-0.5">ลองพิมพ์ชื่ออาคารภาษาอังกฤษ หรือชื่อถนน/สถานีรถไฟฟ้าใกล้เคียง</p>
+              <div className="p-4 bg-[#fbf7f4] rounded-2xl text-center border border-[#f0e8e0]">
+                <p className="text-xs text-slate-700 font-bold">ไม่พบสถานที่ "{searchQuery}"</p>
+                <p className="text-[11px] text-slate-400 mt-0.5">ลองพิมพ์ชื่อสถานที่ใกล้เคียง, ถนน, หรือสถานีรถไฟฟ้า</p>
               </div>
             )}
 
-            {/* Recent Searches (Google-style) */}
+            {/* Recent Searches */}
             {!searchQuery && recentSearches.length > 0 && (
-              <div className="p-2.5 bg-slate-50/80 rounded-2xl border border-slate-200/60">
-                <div className="flex items-center justify-between px-1 mb-1.5">
-                  <span className="text-[11px] font-bold text-slate-500 flex items-center gap-1">
-                    <Clock size={12} className="text-slate-400" />
-                    ประวัติการค้นหาล่าสุด
+              <div className="p-3 bg-[#fbf7f4] rounded-2xl border border-[#f0e8e0]">
+                <div className="flex items-center justify-between px-1 mb-2">
+                  <span className="text-[11px] font-bold text-slate-600 flex items-center gap-1.5">
+                    <Clock size={13} className="text-[#d38764]" />
+                    สถานที่ค้นหาล่าสุด
                   </span>
                   <button
                     type="button"
@@ -292,12 +289,12 @@ export default function WorkplaceModal() {
                     ล้างประวัติ
                   </button>
                 </div>
-                <div className="space-y-1">
+                <div className="space-y-1.5">
                   {recentSearches.map((rec, i) => (
                     <div
                       key={i}
                       onClick={() => handleSelectPlace(rec)}
-                      className="p-2 rounded-xl bg-white hover:bg-blue-50 border border-slate-100 hover:border-blue-200 cursor-pointer transition-colors flex items-center justify-between text-xs"
+                      className="p-2.5 rounded-xl bg-white hover:bg-amber-50/40 border border-[#ede5dd] hover:border-[#d38764]/40 cursor-pointer transition-colors flex items-center justify-between text-xs"
                     >
                       <div className="flex items-center gap-2 truncate">
                         <Clock size={13} className="text-slate-400 shrink-0" />
@@ -316,18 +313,18 @@ export default function WorkplaceModal() {
               type="button"
               onClick={handleUseCurrentLocation}
               disabled={geoLoading}
-              className="w-full py-2.5 px-4 rounded-2xl bg-white hover:bg-slate-50 text-slate-700 text-xs font-bold transition-all flex items-center justify-center gap-2 border border-slate-200 shadow-2xs cursor-pointer"
+              className="w-full py-2.5 px-4 rounded-full bg-white hover:bg-[#fbf7f4] text-slate-700 text-xs font-bold transition-all flex items-center justify-center gap-2 border border-[#e8ded5] shadow-2xs cursor-pointer"
             >
-              <Navigation size={14} className={geoLoading ? 'animate-spin text-blue-600' : 'text-blue-600'} />
+              <Navigation size={14} className={geoLoading ? 'animate-spin text-[#d38764]' : 'text-[#d38764]'} />
               <span>{geoLoading ? 'กำลังระบุพิกัด GPS...' : '📍 ใช้ตำแหน่งปัจจุบันของฉัน (GPS)'}</span>
             </button>
           </div>
 
           {/* Quick 1-Click Popular Office Hubs */}
-          <div className="pt-2 border-t border-slate-100">
-            <div className="flex items-center justify-between mb-2">
+          <div className="pt-3 border-t border-[#f0e8e0]">
+            <div className="flex items-center justify-between mb-2.5">
               <h4 className="text-[11px] font-black text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
-                <Sparkles size={13} className="text-amber-500" />
+                <Sparkles size={13} className="text-[#d38764]" />
                 ย่านออฟฟิศยอดนิยม (เลือกใน 1 คลิก)
               </h4>
             </div>
@@ -342,8 +339,8 @@ export default function WorkplaceModal() {
                     onClick={() => handleSelectPlace(preset)}
                     className={`p-2.5 rounded-2xl border text-left transition-all cursor-pointer flex flex-col justify-between ${
                       isSelected
-                        ? 'bg-blue-600 text-white border-blue-600 shadow-md shadow-blue-500/25 scale-102'
-                        : 'bg-white border-slate-200 hover:border-blue-400 hover:bg-blue-50/50 hover:shadow-2xs'
+                        ? 'bg-[#d38764] text-white border-[#d38764] shadow-md shadow-[#d38764]/25 scale-102'
+                        : 'bg-white border-[#ede5dd] hover:border-[#d38764]/60 hover:bg-[#fbf7f4] hover:shadow-2xs'
                     }`}
                   >
                     <div>
@@ -352,7 +349,7 @@ export default function WorkplaceModal() {
                         {preset.name}
                       </p>
                     </div>
-                    <span className={`text-[10px] mt-1.5 font-medium block truncate ${isSelected ? 'text-blue-100' : 'text-slate-400'}`}>
+                    <span className={`text-[10px] mt-1.5 font-medium block truncate ${isSelected ? 'text-amber-100' : 'text-slate-400'}`}>
                       {preset.landmark.split('(')[0]}
                     </span>
                   </button>
@@ -363,13 +360,13 @@ export default function WorkplaceModal() {
         </div>
 
         {/* Footer */}
-        <div className="p-3.5 px-5 border-t border-slate-100 bg-slate-50/70 flex justify-between items-center text-xs">
+        <div className="p-3.5 px-5 border-t border-[#f0e8e0] bg-[#fbf7f4] flex justify-between items-center text-xs">
           <span className="text-slate-400 text-[11px]">
-            ⚡ รองรับพิมพ์ค้นหาชื่อตึก, ถนน, สถานี, หรือบริษัท
+            ⚡ พิมพ์ค้นหาชื่อตึก, ออฟฟิศ, กองบิน, หรือบริษัทได้ทันที
           </span>
           <button
             onClick={() => setIsWorkplaceModalOpen(false)}
-            className="px-5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs cursor-pointer transition-colors"
+            className="px-5 py-1.5 rounded-full bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs cursor-pointer transition-colors"
           >
             ปิดหน้าต่าง
           </button>
