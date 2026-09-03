@@ -12,6 +12,18 @@ export const PropertiesProvider = ({ children }) => {
   const { user } = useAuth() || {};
   const cacheKey = user ? 'fmh_properties_admin_v4_cache' : 'fmh_properties_public_v4_cache';
   const cacheTimeKey = user ? 'fmh_properties_admin_v4_time' : 'fmh_properties_public_v4_time';
+  const CACHE_KEY = cacheKey;
+
+  const clearSessionCaches = () => {
+    try {
+      sessionStorage.removeItem('fmh_properties_admin_v4_cache');
+      sessionStorage.removeItem('fmh_properties_admin_v4_time');
+      sessionStorage.removeItem('fmh_properties_public_v4_cache');
+      sessionStorage.removeItem('fmh_properties_public_v4_time');
+    } catch (e) {
+      console.warn('Failed to clear session cache', e);
+    }
+  };
 
   // Try initializing from session cache for instant render
   const [properties, setProperties] = useState(() => {
@@ -286,7 +298,7 @@ export const PropertiesProvider = ({ children }) => {
     }
     
     // Invalidate cache
-    sessionStorage.removeItem(CACHE_KEY);
+    clearSessionCaches();
     await fetchProperties(true);
     return id; 
   };
@@ -328,7 +340,7 @@ export const PropertiesProvider = ({ children }) => {
     
     // Invalidate caches
     delete fullPropertiesCacheRef.current[id];
-    sessionStorage.removeItem(CACHE_KEY);
+    clearSessionCaches();
     await fetchProperties(true);
     return { success: true };
   };
@@ -346,7 +358,7 @@ export const PropertiesProvider = ({ children }) => {
     
     // Invalidate caches
     delete fullPropertiesCacheRef.current[id];
-    sessionStorage.removeItem(CACHE_KEY);
+    clearSessionCaches();
     await fetchProperties(true);
     return true;
   };
