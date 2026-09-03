@@ -1,20 +1,25 @@
 import React, { createContext, useState, useContext, useEffect, useRef } from 'react';
 import { supabase } from './supabaseClient';
+import { useAuth } from './AuthContext';
 
 const PropertiesContext = createContext();
 
 export const useProperties = () => useContext(PropertiesContext);
 
-const CACHE_KEY = 'fmh_properties_full_v3_cache';
-const CACHE_TIME_KEY = 'fmh_properties_full_v3_time';
 const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes
 
 export const PropertiesProvider = ({ children }) => {
+  const { user } = useAuth() || {};
+  const cacheKey = user ? 'fmh_properties_admin_v4_cache' : 'fmh_properties_public_v4_cache';
+  const cacheTimeKey = user ? 'fmh_properties_admin_v4_time' : 'fmh_properties_public_v4_time';
+
   // Try initializing from session cache for instant render
   const [properties, setProperties] = useState(() => {
     try {
-      const cached = sessionStorage.getItem(CACHE_KEY);
-      const cachedTime = sessionStorage.getItem(CACHE_TIME_KEY);
+      const activeCacheKey = user ? 'fmh_properties_admin_v4_cache' : 'fmh_properties_public_v4_cache';
+      const activeTimeKey = user ? 'fmh_properties_admin_v4_time' : 'fmh_properties_public_v4_time';
+      const cached = sessionStorage.getItem(activeCacheKey);
+      const cachedTime = sessionStorage.getItem(activeTimeKey);
       if (cached && cachedTime && (Date.now() - parseInt(cachedTime, 10) < CACHE_TTL_MS)) {
         return JSON.parse(cached);
       }
@@ -101,10 +106,17 @@ export const PropertiesProvider = ({ children }) => {
     }
 
     try {
-      const { data, error } = await supabase
+      let query = supabase
         .from('properties')
         .select('*')
         .order('created_at', { ascending: false });
+
+      // Security hardening: Public visitors do not fetch unpublished drafts
+      if (!user) {
+        query = query.neq('status', 'ฉบับร่าง');
+      }
+
+      const { data, error } = await query;
         
       if (error) {
         console.error("Error fetching properties:", error);
@@ -112,10 +124,10 @@ export const PropertiesProvider = ({ children }) => {
         const formattedData = (data || []).map(item => formatProperty(item, true));
         setProperties(formattedData);
         
-        // Save to sessionStorage
+        // Save to sessionStorage using active user/public cache key
         try {
-          sessionStorage.setItem(CACHE_KEY, JSON.stringify(formattedData));
-          sessionStorage.setItem(CACHE_TIME_KEY, String(Date.now()));
+          sessionStorage.setItem(cacheKey, JSON.stringify(formattedData));
+          sessionStorage.setItem(cacheTimeKey, String(Date.now()));
         } catch (e) {}
       }
     } catch (err) {
@@ -160,17 +172,34 @@ export const PropertiesProvider = ({ children }) => {
     }
   };
 
+  // Re-fetch when user auth state changes (e.g. login as admin or logout)
   useEffect(() => {
-    fetchProperties();
-  }, []);
+    fetchProperties(true);
+  }, [user]);
 
-  // Function to upload image to Supabase Storage
+  // Function to upload image to Supabase Storage with security validation
   const uploadImage = async (file, pathFolder = 'general') => {
     try {
       if (!file) return null;
+
+      // Security hardening: restrict to valid image MIME types and extensions
+      const allowedExtensions = ['jpg', 'jpeg', 'png', 'webp', 'gif', 'avif'];
+      const fileExt = (file.name.split('.').pop() || '').toLowerCase();
+      if (!allowedExtensions.includes(fileExt) || !file.type.startsWith('image/')) {
+        console.error("Upload rejected: only valid image files (jpg, png, webp, gif) are allowed.");
+        alert("กรุณาอัปโหลดไฟล์รูปภาพที่ถูกต้อง (JPG, PNG, WEBP, GIF เท่านั้น)");
+        return null;
+      }
+
+      // Security hardening: 10MB maximum file size limit
+      const MAX_SIZE_MB = 10;
+      if (file.size > MAX_SIZE_MB * 1024 * 1024) {
+        console.error(`Upload rejected: File size exceeds ${MAX_SIZE_MB}MB limit.`);
+        alert(`ขนาดไฟล์เกินกำหนด (สูงสุดไม่เกิน ${MAX_SIZE_MB}MB)`);
+        return null;
+      }
       
-      // Create a unique file name
-      const fileExt = file.name.split('.').pop();
+      // Create a unique sanitized file name
       const fileName = `${Math.random().toString(36).substring(2, 15)}_${Date.now()}.${fileExt}`;
       const filePath = `${pathFolder}/${fileName}`;
       
