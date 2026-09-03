@@ -19,7 +19,7 @@ export default function AboutPage() {
         </div>
       </div>
 
-      <div className="core-values flex justify-center gap-12 py-12">
+      <div className="core-values flex flex-wrap justify-center gap-6 sm:gap-12 py-8 sm:py-12">
         <div className="value-item text-center">
           <div className="icon-wrapper"><Search size={32} color="var(--primary)" /></div>
           <h4>ค้นหาง่าย</h4>

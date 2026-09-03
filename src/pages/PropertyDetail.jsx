@@ -300,7 +300,7 @@ export default function PropertyDetail({ previewData }) {
       </div>
 
       {/* Modern Premium Tab Bar */}
-      <div className="relative group mb-6">
+      <div className="relative group mb-6 overflow-hidden max-w-full">
         {/* Left Arrow Indicator */}
         {canScrollLeft && (
           <div className="absolute left-0 top-0 bottom-[0.25rem] flex items-center pr-8 bg-gradient-to-r from-white via-white to-transparent z-10 pointer-events-none">

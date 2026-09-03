@@ -1,5 +1,14 @@
+.compare-matrix {
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+  border-radius: var(--radius-xl);
+}
+
 .compare-grid {
   display: flex;
+  width: 100%;
+  max-width: 100%;
   background-color: var(--white);
   border-radius: var(--radius-xl);
   box-shadow: var(--shadow-soft);
