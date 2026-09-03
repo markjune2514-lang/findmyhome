@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { useProperties } from '../PropertiesContext';
 import { useFavorites } from '../FavoritesContext';
+import { useWorkplace } from '../WorkplaceContext';
 import { Link } from 'react-router-dom';
-import { Star, Map as MapIcon, ChevronRight, LayoutGrid, List, Crown, CheckCircle2, Heart } from 'lucide-react';
+import { Star, Map as MapIcon, ChevronRight, LayoutGrid, List, Crown, CheckCircle2, Heart, Building2 } from 'lucide-react';
 import SEO from '../components/SEO';
 import './ProjectsPage.css';
 import './SearchPage.css';
@@ -10,6 +11,7 @@ import './SearchPage.css';
 export default function ProjectsPage() {
   const { properties, heroImage } = useProperties();
   const { toggleFavorite, isFavorite } = useFavorites();
+  const { workplace, calculateCommute, setIsWorkplaceModalOpen } = useWorkplace();
   const [activeCategory, setActiveCategory] = useState('all');
   const [viewMode, setViewMode] = useState('grid');
   const [sortBy, setSortBy] = useState('recommended');
@@ -43,6 +45,12 @@ export default function ProjectsPage() {
     }
 
     return filtered.sort((a, b) => {
+      if (sortBy === 'commute_asc' && workplace) {
+        const cA = calculateCommute(a.location?.lat, a.location?.lng)?.distanceKm ?? 999999;
+        const cB = calculateCommute(b.location?.lat, b.location?.lng)?.distanceKm ?? 999999;
+        return cA - cB;
+      }
+
       if (sortBy === 'recommended') {
         const tierWeights = { super: 4, sponsored: 3, premium: 2, standard: 1 };
         const weightA = tierWeights[a.package_tier] || tierWeights['standard'];
@@ -161,10 +169,21 @@ export default function ProjectsPage() {
             <div className="sort-dropdown">
               <select 
                 value={sortBy} 
-                onChange={(e) => setSortBy(e.target.value)}
+                onChange={(e) => {
+                  if (e.target.value === 'set_workplace') {
+                    setIsWorkplaceModalOpen(true);
+                  } else {
+                    setSortBy(e.target.value);
+                  }
+                }}
                 className="px-3 py-1.5 border border-gray-200 rounded-md text-sm bg-white focus:outline-none focus:ring-1 focus:ring-[var(--primary)] text-gray-700 shadow-sm cursor-pointer"
               >
                 <option value="recommended">เรียงตาม: แนะนำ</option>
+                {workplace ? (
+                  <option value="commute_asc">📍 ใกล้ที่ทำงานที่สุด ({workplace.name})</option>
+                ) : (
+                  <option value="set_workplace">📍 + ระบุที่ทำงานเพื่อเรียงลำดับ</option>
+                )}
                 <option value="price_asc">ราคา: ต่ำ-สูง</option>
                 <option value="price_desc">ราคา: สูง-ต่ำ</option>
                 <option value="newest">มาใหม่ล่าสุด</option>
@@ -175,8 +194,10 @@ export default function ProjectsPage() {
 
         {/* Projects Grid/List */}
         <div className={viewMode === 'grid' ? 'projects-grid' : 'property-list'}>
-          {displayedProperties.map(prop => (
-            viewMode === 'grid' ? (
+          {displayedProperties.map(prop => {
+            const commute = calculateCommute(prop.location?.lat, prop.location?.lng);
+
+            return viewMode === 'grid' ? (
               <Link to={`/property/${prop.id}`} key={prop.id} className="project-card-large">
                 <div className="project-img-wrapper">
                   <img 
@@ -211,7 +232,7 @@ export default function ProjectsPage() {
                     </h3>
                     <p className="developer text-sm text-light mb-4">{prop.developer}</p>
                     
-                    <div className="flex justify-between items-center mb-4 text-sm">
+                    <div className="flex justify-between items-center mb-3 text-sm">
                       <div className="flex items-center gap-1 text-light line-clamp-1">
                         <MapIcon size={14} /> {prop.station}
                       </div>
@@ -219,6 +240,14 @@ export default function ProjectsPage() {
                         <Star size={14} fill="gold" color="gold" /> {prop.rating}
                       </div>
                     </div>
+
+                    {commute && (
+                      <div className="mb-3 flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-blue-50/90 border border-blue-200/80 text-blue-700 text-xs font-semibold">
+                        <Building2 size={13} className="text-blue-600 shrink-0" />
+                        <span className="truncate">ถึง {workplace.name}:</span>
+                        <span className="font-bold shrink-0">🚗 ~{commute.driveMinutes} น. ({commute.distanceKm} กม.)</span>
+                      </div>
+                    )}
                   </div>
 
                   <div className="flex justify-between items-end border-t border-gray-100 pt-4 mt-auto">
@@ -253,6 +282,11 @@ export default function ProjectsPage() {
                       ? `เริ่มต้น ${prop.price} ${prop.listingType === 'เช่า' ? 'บาท/เดือน' : 'ลบ.'}` 
                       : 'ราคาติดต่อสอบถาม'}
                   </p>
+                  {commute && (
+                    <p className="text-[11px] font-bold text-blue-600 mt-1 flex items-center gap-1">
+                      <span>🚗 ~{commute.driveMinutes} นาที ({commute.distanceKm} กม. ถึง {workplace.name})</span>
+                    </p>
+                  )}
                 </div>
                 <button 
                   onClick={(e) => { e.preventDefault(); toggleFavorite(prop.id); }}
@@ -262,8 +296,8 @@ export default function ProjectsPage() {
                   <Heart size={14} fill={isFavorite(prop.id) ? "var(--primary)" : "none"} strokeWidth={isFavorite(prop.id) ? 0 : 2} color="var(--primary)" />
                 </button>
               </Link>
-            )
-          ))}
+            );
+          })}
           
           {filteredProperties.length === 0 && (
             <div className="col-span-full text-center p-12 text-light bg-neutral-1 rounded-lg">

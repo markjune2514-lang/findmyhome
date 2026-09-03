@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { MapPin, Star, Heart, Share2, Info, LayoutDashboard, ChevronLeft, ChevronRight, Navigation, ExternalLink, Building, Landmark, GraduationCap, Hospital, ShoppingBag, Search, Phone, Waves, Sparkles, ShieldCheck, Activity, BellRing, Gift, Home, Ruler, ZoomIn, Image as ImageIcon, Train, Car, Map, Sofa, X, HelpCircle, ChevronDown } from 'lucide-react';
+import { MapPin, Star, Heart, Share2, Info, LayoutDashboard, ChevronLeft, ChevronRight, Navigation, ExternalLink, Building, Landmark, GraduationCap, Hospital, ShoppingBag, Search, Phone, Waves, Sparkles, ShieldCheck, Activity, BellRing, Gift, Home, Ruler, ZoomIn, Image as ImageIcon, Train, Car, Map, Sofa, X, HelpCircle, ChevronDown, Building2 } from 'lucide-react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import LoanCalculator from '../components/LoanCalculator';
 import L from 'leaflet';
@@ -8,6 +8,7 @@ import 'leaflet/dist/leaflet.css';
 import { useCompare } from '../CompareContext';
 import { useProperties } from '../PropertiesContext';
 import { useFavorites } from '../FavoritesContext';
+import { useWorkplace } from '../WorkplaceContext';
 import SEO from '../components/SEO';
 import './PropertyDetail.css';
 
@@ -16,6 +17,7 @@ export default function PropertyDetail({ previewData }) {
   const { properties, loading: globalLoading, fetchPropertyById } = useProperties();
   const { addToCompare } = useCompare();
   const { isFavorite, toggleFavorite } = useFavorites();
+  const { workplace, calculateCommute, setIsWorkplaceModalOpen } = useWorkplace();
 
   const [fullProp, setFullProp] = useState(null);
   const [detailLoading, setDetailLoading] = useState(false);
@@ -839,6 +841,88 @@ export default function PropertyDetail({ previewData }) {
         </div>
         
         <div className="side-map flex-1">
+          {/* Workplace Commute Box */}
+          {(() => {
+            const commute = calculateCommute(prop?.location?.lat, prop?.location?.lng);
+            return (
+              <div className="mb-4 bg-white rounded-2xl border border-blue-100/90 shadow-sm p-4 bg-gradient-to-br from-white via-blue-50/20 to-indigo-50/30">
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-8 h-8 rounded-xl bg-blue-600 text-white flex items-center justify-center shadow-xs">
+                      <Building2 size={16} />
+                    </div>
+                    <div>
+                      <h4 className="m-0 text-sm font-extrabold text-slate-900 leading-tight">
+                        การเดินทางจากที่ทำงาน
+                      </h4>
+                      <span className="text-[11px] text-slate-500 block truncate max-w-[180px]">
+                        {workplace ? workplace.name : 'ยังไม่ได้ระบุที่ทำงาน'}
+                      </span>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setIsWorkplaceModalOpen(true)}
+                    className="text-xs font-bold text-blue-600 hover:text-blue-700 bg-blue-50 hover:bg-blue-100 px-2.5 py-1 rounded-lg border border-blue-200 transition-colors cursor-pointer"
+                  >
+                    {workplace ? 'เปลี่ยน' : '+ ระบุที่ทำงาน'}
+                  </button>
+                </div>
+
+                {workplace && commute ? (
+                  <div className="space-y-2.5">
+                    <div className="grid grid-cols-2 gap-2">
+                      <div className="p-2.5 rounded-xl bg-white border border-blue-100 text-center shadow-2xs">
+                        <div className="flex items-center justify-center gap-1 text-slate-500 text-[10px] font-bold">
+                          <Car size={13} className="text-blue-600" /> ขับรถยนต์
+                        </div>
+                        <p className="text-base font-black text-slate-900 mt-0.5">
+                          ~{commute.driveMinutes} <span className="text-xs font-bold">นาที</span>
+                        </p>
+                        <span className="text-[10px] text-slate-400 font-medium">ระยะทาง {commute.distanceKm} กม.</span>
+                      </div>
+
+                      <div className="p-2.5 rounded-xl bg-white border border-indigo-100 text-center shadow-2xs">
+                        <div className="flex items-center justify-center gap-1 text-slate-500 text-[10px] font-bold">
+                          <Train size={13} className="text-indigo-600" /> รถไฟฟ้า/สาธารณะ
+                        </div>
+                        <p className="text-base font-black text-slate-900 mt-0.5">
+                          ~{commute.transitMinutes} <span className="text-xs font-bold">นาที</span>
+                        </p>
+                        <span className={`inline-block text-[10px] font-bold px-1.5 rounded ${commute.tierColor}`}>
+                          {commute.tier}
+                        </span>
+                      </div>
+                    </div>
+
+                    <a
+                      href={commute.googleMapsUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full py-2 px-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-sm transition-all cursor-pointer no-underline"
+                    >
+                      <Navigation size={13} />
+                      <span>เปิดนำทาง Google Maps (โครงการ ➜ ที่ทำงาน)</span>
+                    </a>
+                  </div>
+                ) : (
+                  <div className="p-3 bg-blue-50/60 rounded-xl border border-dashed border-blue-200 text-center">
+                    <p className="text-xs text-slate-600 mb-2">
+                      ระบุสถานที่ทำงานของคุณ (เช่น สาทร, อโศก, พระราม 9) เพื่อคำนวณเวลาเดินทางด้วยรถยนต์และรถไฟฟ้า
+                    </p>
+                    <button
+                      type="button"
+                      onClick={() => setIsWorkplaceModalOpen(true)}
+                      className="px-4 py-1.5 rounded-xl bg-blue-600 text-white text-xs font-bold shadow-xs hover:bg-blue-700 transition-colors cursor-pointer"
+                    >
+                      + ระบุที่ทำงานตอนนี้
+                    </button>
+                  </div>
+                )}
+              </div>
+            );
+          })()}
+
           <div className="map-card-small overflow-hidden rounded-2xl border border-gray-100 shadow-sm bg-white p-4">
             <div className="flex items-center justify-between mb-3">
               <h4 className="m-0 text-base font-bold text-gray-800 flex items-center gap-1.5">

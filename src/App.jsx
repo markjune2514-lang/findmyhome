@@ -16,6 +16,8 @@ import { CompareProvider } from './CompareContext';
 import { PropertiesProvider } from './PropertiesContext';
 import { AuthProvider } from './AuthContext';
 import { FavoritesProvider } from './FavoritesContext';
+import { WorkplaceProvider } from './WorkplaceContext';
+import WorkplaceModal from './components/WorkplaceModal';
 import ProtectedRoute from './ProtectedRoute';
 import AnalyticsTracker from './components/AnalyticsTracker';
 import ScrollToTop from './components/ScrollToTop';
@@ -29,9 +31,11 @@ function App() {
       <PropertiesProvider>
         <CompareProvider>
           <FavoritesProvider>
+          <WorkplaceProvider>
           <Router>
             <ScrollToTop />
             <AnalyticsTracker />
+            <WorkplaceModal />
             <Routes>
               <Route path="/" element={<Layout />}>
                 <Route index element={<HomePage />} />
@@ -58,6 +62,7 @@ function App() {
               </Route>
             </Routes>
           </Router>
+          </WorkplaceProvider>
           </FavoritesProvider>
         </CompareProvider>
       </PropertiesProvider>

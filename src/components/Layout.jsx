@@ -1,14 +1,16 @@
 import { useState } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
-import { Home, Heart, Bell, User, Menu, X, Search, Building, Scale, Newspaper, Info } from 'lucide-react';
+import { Home, Heart, Bell, User, Menu, X, Search, Building, Scale, Newspaper, Info, Building2 } from 'lucide-react';
 import { useCompare } from '../CompareContext';
 import { useFavorites } from '../FavoritesContext';
+import { useWorkplace } from '../WorkplaceContext';
 import './Layout.css';
 
 export default function Layout() {
   const location = useLocation();
   const { compareList } = useCompare();
   const { favorites } = useFavorites();
+  const { workplace, setIsWorkplaceModalOpen } = useWorkplace();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
@@ -34,7 +36,24 @@ export default function Layout() {
           </nav>
 
           {/* User Actions & Mobile Hamburger */}
-          <div className="user-actions flex items-center gap-3">
+          <div className="user-actions flex items-center gap-2.5">
+            {/* Workplace Selector Badge */}
+            <button
+              type="button"
+              onClick={() => setIsWorkplaceModalOpen(true)}
+              className={`hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold transition-all border cursor-pointer ${
+                workplace 
+                  ? 'bg-blue-50 text-blue-700 border-blue-200 hover:bg-blue-100 shadow-xs' 
+                  : 'bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100 hover:text-slate-900'
+              }`}
+              title="คลิกเพื่อระบุหรือเปลี่ยนสถานที่ทำงาน เพื่อดูระยะทางและเวลาเดินทาง"
+            >
+              <Building2 size={14} className={workplace ? 'text-blue-600' : 'text-slate-400'} />
+              <span className="max-w-[140px] truncate">
+                {workplace ? workplace.name : '+ ระบุที่ทำงาน'}
+              </span>
+            </button>
+
             <Link to="/favorites" className="icon-btn relative" title="รายการโปรด">
               <Heart size={20} />
               {favorites?.length > 0 && (
@@ -59,6 +78,25 @@ export default function Layout() {
         {/* Mobile Navigation Drawer */}
         {mobileMenuOpen && (
           <div className="mobile-menu-drawer">
+            {/* Workplace Mobile Card */}
+            <div 
+              onClick={() => { setIsWorkplaceModalOpen(true); setMobileMenuOpen(false); }}
+              className="p-3 mx-2 my-2 rounded-2xl bg-blue-50 border border-blue-200 flex items-center justify-between cursor-pointer"
+            >
+              <div className="flex items-center gap-2.5 min-w-0">
+                <Building2 size={18} className="text-blue-600 flex-shrink-0" />
+                <div className="min-w-0">
+                  <span className="text-[10px] text-blue-600 font-bold uppercase block leading-none">สถานที่ทำงาน</span>
+                  <span className="text-xs font-black text-blue-950 truncate block mt-0.5">
+                    {workplace ? workplace.name : 'ระบุที่ทำงานของคุณ'}
+                  </span>
+                </div>
+              </div>
+              <span className="text-[10px] font-bold text-blue-700 bg-white px-2 py-0.5 rounded-md border border-blue-200 flex-shrink-0">
+                {workplace ? 'เปลี่ยน' : 'ตั้งค่า'}
+              </span>
+            </div>
+
             <Link 
               to="/search" 
               className={`mobile-menu-link ${location.pathname === '/search' ? 'active' : ''}`}

@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMap, useMapEvents, LayersControl, ZoomControl } from 'react-leaflet';
-import { Search, SlidersHorizontal, Heart, Map as MapIcon, Star, X, ChevronDown, Plus, Check, PenTool, MapPin, LayoutGrid, List, Crown, CheckCircle2 } from 'lucide-react';
+import { Search, SlidersHorizontal, Heart, Map as MapIcon, Star, X, ChevronDown, Plus, Check, PenTool, MapPin, LayoutGrid, List, Crown, CheckCircle2, Building2 } from 'lucide-react';
 import { provincesAndDistricts, transitData } from '../data/locations';
 import { Link } from 'react-router-dom';
 import { useProperties } from '../PropertiesContext';
 import { useCompare } from '../CompareContext';
 import { useFavorites } from '../FavoritesContext';
+import { useWorkplace } from '../WorkplaceContext';
 import { supabase } from '../supabaseClient';
 import SEO from '../components/SEO';
 import './SearchPage.css';
@@ -139,6 +140,7 @@ export default function SearchPage() {
   const { properties } = useProperties();
   const { addToCompare, removeFromCompare, compareList } = useCompare();
   const { isFavorite, toggleFavorite } = useFavorites();
+  const { workplace, calculateCommute, setIsWorkplaceModalOpen } = useWorkplace();
   const [activeTab, setActiveTab] = useState(() => sessionStorage.getItem('search_activeTab') || 'buy');
   const [polygonFilter, setPolygonFilter] = useState(null);
   const [mapBounds, setMapBounds] = useState(null);
@@ -374,6 +376,11 @@ export default function SearchPage() {
     }
     
     // Priority 2: User's Sort Choice
+    if (sortBy === 'commute_asc' && workplace) {
+      const cA = calculateCommute(a.location?.lat, a.location?.lng)?.distanceKm ?? 999999;
+      const cB = calculateCommute(b.location?.lat, b.location?.lng)?.distanceKm ?? 999999;
+      return cA - cB;
+    }
     if (sortBy === 'price_asc') {
       const priceA = a.price || 999999;
       const priceB = b.price || 999999;
@@ -807,6 +814,29 @@ export default function SearchPage() {
           <MapDrawControl onPolygonDrawn={handlePolygonDrawn} polygonFilter={polygonFilter} />
           <MapBoundsObserver onBoundsChange={setMapBounds} isEnabled={isMapSearchActive} />
           <MapUpdater properties={filteredProperties} />
+
+          {/* User's Workplace Marker on Map */}
+          {workplace && workplace.lat && workplace.lng && (
+            <Marker 
+              position={[workplace.lat, workplace.lng]}
+              icon={L.divIcon({
+                className: 'workplace-map-marker',
+                html: `<div style="background: linear-gradient(135deg, #2563eb, #1d4ed8); color: white; width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 14px rgba(37,99,235,0.45); border: 2.5px solid white; font-size: 18px;">🏢</div>`,
+                iconSize: [38, 38],
+                iconAnchor: [19, 19],
+                popupAnchor: [0, -19]
+              })}
+            >
+              <Popup>
+                <div style={{ fontSize: '12px', fontWeight: 'bold', padding: '2px' }}>
+                  <div style={{ color: '#2563eb', fontSize: '11px', textTransform: 'uppercase', marginBottom: '2px' }}>🏢 สถานที่ทำงานของคุณ</div>
+                  <div style={{ fontSize: '13px', color: '#0f172a' }}>{workplace.name}</div>
+                  <div style={{ fontSize: '10px', color: '#64748b', marginTop: '2px' }}>{workplace.landmark || workplace.area}</div>
+                </div>
+              </Popup>
+            </Marker>
+          )}
+
           {filteredProperties.map(prop => {
             const safeImage = prop.image ? (Array.isArray(prop.image) ? prop.image[0] : (typeof prop.image === 'string' ? prop.image.split(',')[0] : '')) : '';
             const fallbackImage = safeImage || 'https://placehold.co/100x100?text=No+Image';
@@ -819,6 +849,8 @@ export default function SearchPage() {
               popupAnchor: [0, -54]
             });
             if (!prop.location?.lat || !prop.location?.lng) return null;
+            const popupCommute = calculateCommute(prop.location.lat, prop.location.lng);
+
             return (
             <Marker key={prop.id} position={[prop.location.lat, prop.location.lng]} icon={customIcon}>
               <Popup className="property-popup">
@@ -842,6 +874,12 @@ export default function SearchPage() {
                         <Star size={12} fill="gold" color="gold" /> {prop.rating}
                       </div>
                     </div>
+                    {popupCommute && (
+                      <div className="mt-2 p-1.5 px-2 rounded-lg bg-blue-50 border border-blue-200 text-blue-800 text-[11px] font-bold flex items-center justify-between">
+                        <span>🚗 ถึงที่ทำงาน:</span>
+                        <span>~{popupCommute.driveMinutes} นาที ({popupCommute.distanceKm} กม.)</span>
+                      </div>
+                    )}
                     <div className="price-specs flex justify-between mt-2">
                       <div>
                         <span className="label">{prop.price ? 'ราคาเริ่มต้น' : 'ราคา'}</span>
@@ -894,10 +932,21 @@ export default function SearchPage() {
             <div className="sort-dropdown">
               <select 
                 value={sortBy} 
-                onChange={(e) => setSortBy(e.target.value)}
+                onChange={(e) => {
+                  if (e.target.value === 'set_workplace') {
+                    setIsWorkplaceModalOpen(true);
+                  } else {
+                    setSortBy(e.target.value);
+                  }
+                }}
                 className="px-2 py-1.5 border border-gray-200 rounded-md text-xs sm:text-sm bg-white focus:outline-none focus:ring-1 focus:ring-[var(--primary)] text-gray-700 shadow-sm cursor-pointer"
               >
                 <option value="recommended">เรียงตาม: แนะนำ</option>
+                {workplace ? (
+                  <option value="commute_asc">📍 ใกล้ที่ทำงานที่สุด ({workplace.name})</option>
+                ) : (
+                  <option value="set_workplace">📍 + ระบุที่ทำงานเพื่อเรียงลำดับ</option>
+                )}
                 <option value="price_asc">ราคา: ต่ำ-สูง</option>
                 <option value="price_desc">ราคา: สูง-ต่ำ</option>
                 <option value="newest">มาใหม่ล่าสุด</option>
@@ -905,6 +954,40 @@ export default function SearchPage() {
             </div>
           </div>
         </div>
+
+        {/* Workplace Mini Banner */}
+        {workplace ? (
+          <div className="mx-4 mb-2 p-2 px-3 bg-blue-50/90 border border-blue-200/90 rounded-xl flex items-center justify-between gap-2 shadow-2xs">
+            <div className="flex items-center gap-2 min-w-0">
+              <Building2 size={15} className="text-blue-600 flex-shrink-0" />
+              <div className="min-w-0 text-xs">
+                <span className="text-slate-500 mr-1">ที่ทำงาน:</span>
+                <span className="font-bold text-blue-900 truncate">{workplace.name}</span>
+              </div>
+            </div>
+            <button
+              type="button"
+              onClick={() => setIsWorkplaceModalOpen(true)}
+              className="text-[10px] font-bold text-blue-600 hover:text-blue-700 bg-white px-2 py-0.5 rounded-md border border-blue-200 cursor-pointer flex-shrink-0"
+            >
+              เปลี่ยน
+            </button>
+          </div>
+        ) : (
+          <div 
+            onClick={() => setIsWorkplaceModalOpen(true)}
+            className="mx-4 mb-2 p-2 px-3 bg-slate-50 hover:bg-blue-50/70 border border-slate-200/80 rounded-xl flex items-center justify-between gap-2 cursor-pointer transition-colors"
+          >
+            <div className="flex items-center gap-1.5 text-xs text-slate-600">
+              <Building2 size={15} className="text-slate-400" />
+              <span>ระบุที่ทำงาน เพื่อดูระยะทางและเวลาเดินทาง</span>
+            </div>
+            <span className="text-[10px] font-bold text-blue-600 bg-white px-2 py-0.5 rounded-md border border-slate-200">
+              + ตั้งค่า
+            </span>
+          </div>
+        )}
+
         <div 
           className={`property-list ${viewMode === 'grid' ? 'grid-view-mode' : ''}`}
           onScroll={(e) => { 
@@ -916,6 +999,8 @@ export default function SearchPage() {
           {filteredProperties.length > 0 ? (
             filteredProperties.slice(0, visibleCount).map(prop => {
               const isCompared = compareList.some(item => item.id === prop.id);
+              const commute = calculateCommute(prop.location?.lat, prop.location?.lng);
+
               return (
                 <Link to={`/property/${prop.id}`} key={prop.id} className="prop-card-small" style={{ position: 'relative' }}>
                   <img 
@@ -937,6 +1022,11 @@ export default function SearchPage() {
                         ? `เริ่มต้น ${prop.price} ${prop.listingType === 'เช่า' ? 'บาท/เดือน' : 'ลบ.'}` 
                         : 'ราคาติดต่อสอบถาม'}
                     </p>
+                    {commute && (
+                      <p className="text-[10px] font-bold text-blue-600 mt-1 flex items-center gap-1 truncate">
+                        <span>🚗 ~{commute.driveMinutes} นาที ({commute.distanceKm} กม.)</span>
+                      </p>
+                    )}
                   </div>
                   <button 
                     onClick={(e) => { e.preventDefault(); toggleFavorite(prop.id); }}
