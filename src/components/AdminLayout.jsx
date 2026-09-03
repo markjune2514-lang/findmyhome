@@ -25,10 +25,10 @@ export default function AdminLayout() {
   const userInitial = user?.email ? user.email.charAt(0).toUpperCase() : 'A';
 
   return (
-    <div className="min-h-screen bg-slate-100 flex flex-col font-sans antialiased text-slate-800">
+    <div className="min-h-screen bg-slate-100 flex flex-col font-sans antialiased text-slate-800 overflow-x-hidden">
       {/* ── TOP HORIZONTAL NAVBAR (แนวนอนด้านบน) ── */}
-      <header className="bg-slate-900 border-b border-slate-800 text-white sticky top-0 z-40 shadow-xl">
-        <div className="w-full max-w-[1800px] mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <header className="bg-slate-900 border-b border-slate-800 text-white sticky top-0 z-40 shadow-xl w-full">
+        <div className="w-full px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           
           {/* Left: Brand + Desktop Horizontal Nav Links */}
           <div className="flex items-center gap-6 lg:gap-8">

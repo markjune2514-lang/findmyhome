@@ -478,71 +478,71 @@ export default function AdminDashboard() {
   return (
     <div className="min-h-screen pb-24 text-slate-800">
       {/* ── Top Command Center Bar ── */}
-      <div className="bg-white border-b border-slate-200/80 sticky top-0 z-20 shadow-xs px-4 sm:px-8 py-4">
-        <div className="w-full max-w-[1800px] mx-auto flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+      <div className="bg-white border-b border-slate-200/80 sticky top-16 z-20 shadow-xs px-4 sm:px-6 py-3">
+        <div className="w-full flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
           <div>
-            <div className="flex items-center gap-2.5">
-              <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight flex items-center gap-2">
+            <div className="flex items-center gap-2">
+              <h1 className="text-lg sm:text-xl font-black text-slate-900 tracking-tight">
                 Admin Management Suite
               </h1>
-              <span className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+              <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
                 Online
               </span>
             </div>
-            <p className="text-xs text-slate-500 mt-0.5">
-              จัดการข้อมูลอสังหาริมทรัพย์ • สถิติ • SEO • ระบบอัตโนมัติครบวงจร
+            <p className="text-[11px] text-slate-500 mt-0.5">
+              จัดการข้อมูลอสังหาริมทรัพย์ • สถิติ • SEO ครบวงจรในหน้าจอเดียว
             </p>
           </div>
 
           {/* Quick Action Toolbar */}
-          <div className="flex items-center gap-2 flex-wrap w-full sm:w-auto">
+          <div className="flex items-center gap-2 flex-wrap">
             <button
               onClick={handleForceRefresh}
               disabled={isRefreshing}
-              className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 transition-colors border border-slate-200"
+              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 transition-colors border border-slate-200"
               title="ดึงข้อมูลล่าสุดจาก Supabase"
             >
-              <RefreshCw size={14} className={isRefreshing ? 'animate-spin text-blue-600' : ''} />
+              <RefreshCw size={13} className={isRefreshing ? 'animate-spin text-blue-600' : ''} />
               <span>รีเฟรช</span>
             </button>
 
             <button
               onClick={() => setSeoModalOpen(true)}
-              className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 transition-colors border border-indigo-200"
+              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 transition-colors border border-indigo-200"
               title="ดูสถานะ Sitemap และ AEO"
             >
-              <Globe size={14} />
-              <span>Sitemap & SEO</span>
+              <Globe size={13} />
+              <span>SEO</span>
             </button>
 
             <button
               onClick={() => setSettingsOpen(true)}
-              className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 transition-colors border border-slate-200"
+              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 transition-colors border border-slate-200"
               title="เปลี่ยนภาพ Hero Banner"
             >
-              <Sparkles size={14} className="text-amber-500" />
+              <Sparkles size={13} className="text-amber-500" />
               <span>ภาพหน้าแรก</span>
             </button>
 
             <div className="relative group">
               <button
-                className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 transition-colors border border-slate-200"
+                className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 transition-colors border border-slate-200"
               >
-                <Download size={14} />
+                <Download size={13} />
                 <span>Export</span>
-                <ChevronDown size={12} />
+                <ChevronDown size={11} />
               </button>
-              <div className="absolute right-0 mt-1 w-36 bg-white border border-slate-200 rounded-xl shadow-xl py-1 hidden group-hover:block z-30">
+              <div className="absolute right-0 mt-1 w-32 bg-white border border-slate-200 rounded-xl shadow-xl py-1 hidden group-hover:block z-30">
                 <button 
                   onClick={() => exportData('csv')}
-                  className="w-full text-left px-3.5 py-1.5 text-xs text-slate-700 hover:bg-blue-50 hover:text-blue-600 font-semibold"
+                  className="w-full text-left px-3 py-1.5 text-xs text-slate-700 hover:bg-blue-50 hover:text-blue-600 font-semibold"
                 >
                   ดาวน์โหลด CSV
                 </button>
                 <button 
                   onClick={() => exportData('json')}
-                  className="w-full text-left px-3.5 py-1.5 text-xs text-slate-700 hover:bg-blue-50 hover:text-blue-600 font-semibold"
+                  className="w-full text-left px-3 py-1.5 text-xs text-slate-700 hover:bg-blue-50 hover:text-blue-600 font-semibold"
                 >
                   ดาวน์โหลด JSON
                 </button>
@@ -551,23 +551,23 @@ export default function AdminDashboard() {
 
             <Link
               to="/admin/add"
-              className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-extrabold text-white bg-blue-600 hover:bg-blue-700 shadow-md shadow-blue-500/25 transition-all"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-extrabold text-white bg-blue-600 hover:bg-blue-700 shadow-md shadow-blue-500/20 transition-all"
             >
-              <Plus size={16} />
-              <span>เพิ่มโครงการใหม่</span>
+              <Plus size={14} />
+              <span>เพิ่มโครงการ</span>
             </Link>
           </div>
         </div>
       </div>
 
-      <div className="w-full max-w-[1800px] mx-auto px-4 sm:px-8 pt-6">
-        {/* ── KPI Interactive Metric Cards ── */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3 mb-6">
+      <div className="w-full px-4 sm:px-6 pt-4 pb-16">
+        {/* ── KPI Interactive Metric Cards (Compact & Responsive) ── */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 xl:grid-cols-8 gap-2 mb-4">
           {[
             { 
-              label: 'โครงการทั้งหมด', 
+              label: 'ทั้งหมด', 
               value: properties.length, 
-              icon: <LayoutList size={18} />, 
+              icon: <LayoutList size={15} />, 
               color: 'text-indigo-600', 
               bg: 'bg-indigo-50',
               active: typeFilter === 'ทั้งหมด' && statusFilter === 'ทั้งหมด' && tierFilter === 'ทั้งหมด',
@@ -576,25 +576,25 @@ export default function AdminDashboard() {
             { 
               label: 'เผยแพร่แล้ว', 
               value: publishedCount, 
-              icon: <CheckCircle2 size={18} />, 
+              icon: <CheckCircle2 size={15} />, 
               color: 'text-emerald-600', 
               bg: 'bg-emerald-50',
               active: statusFilter === 'เผยแพร่แล้ว',
               onClick: () => setStatusFilter(statusFilter === 'เผยแพร่แล้ว' ? 'ทั้งหมด' : 'เผยแพร่แล้ว')
             },
             { 
-              label: 'ฉบับร่าง (Draft)', 
+              label: 'ฉบับร่าง', 
               value: draftCount, 
-              icon: <FileEdit size={18} />, 
+              icon: <FileEdit size={15} />, 
               color: 'text-slate-600', 
               bg: 'bg-slate-100',
               active: statusFilter === 'ฉบับร่าง',
               onClick: () => setStatusFilter(statusFilter === 'ฉบับร่าง' ? 'ทั้งหมด' : 'ฉบับร่าง')
             },
             { 
-              label: 'คอนโดมิเนียม', 
+              label: 'คอนโด', 
               value: condoCount, 
-              icon: <Building2 size={18} />, 
+              icon: <Building2 size={15} />, 
               color: 'text-purple-600', 
               bg: 'bg-purple-50',
               active: typeFilter === 'คอนโด',
@@ -603,25 +603,25 @@ export default function AdminDashboard() {
             { 
               label: 'บ้าน & ทาวน์โฮม', 
               value: houseCount, 
-              icon: <HomeIcon size={18} />, 
+              icon: <HomeIcon size={15} />, 
               color: 'text-teal-600', 
               bg: 'bg-teal-50',
               active: typeFilter === 'บ้าน',
               onClick: () => setTypeFilter(typeFilter === 'บ้าน' ? 'ทั้งหมด' : 'บ้าน')
             },
             { 
-              label: '👑 Super Tier', 
+              label: 'Super Tier', 
               value: superCount, 
-              icon: <Crown size={18} />, 
+              icon: <Crown size={15} />, 
               color: 'text-amber-600', 
               bg: 'bg-amber-50',
               active: tierFilter === 'super',
               onClick: () => setTierFilter(tierFilter === 'super' ? 'ทั้งหมด' : 'super')
             },
             { 
-              label: '⭐ Sponsored', 
+              label: 'Sponsored', 
               value: sponsoredCount, 
-              icon: <Star size={18} />, 
+              icon: <Star size={15} />, 
               color: 'text-blue-600', 
               bg: 'bg-blue-50',
               active: tierFilter === 'sponsored',
@@ -630,7 +630,7 @@ export default function AdminDashboard() {
             { 
               label: 'ผู้เข้าชมรวม', 
               value: totalViews.toLocaleString(), 
-              icon: <Eye size={18} />, 
+              icon: <Eye size={15} />, 
               color: 'text-pink-600', 
               bg: 'bg-pink-50',
               active: activeTab === 'analytics',
@@ -640,21 +640,21 @@ export default function AdminDashboard() {
             <div
               key={idx}
               onClick={card.onClick}
-              className={`p-3 rounded-2xl border transition-all cursor-pointer select-none ${
+              className={`p-2.5 rounded-xl border transition-all cursor-pointer select-none ${
                 card.active 
-                  ? 'bg-white border-blue-500 shadow-md shadow-blue-500/10 ring-2 ring-blue-400/20' 
-                  : 'bg-white/80 border-slate-200/80 hover:bg-white hover:border-slate-300 hover:shadow-xs'
+                  ? 'bg-white border-blue-500 shadow-xs ring-2 ring-blue-400/20' 
+                  : 'bg-white/90 border-slate-200/80 hover:bg-white hover:border-slate-300'
               }`}
             >
-              <div className="flex items-center justify-between mb-1.5">
-                <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider truncate">
+              <div className="flex items-center justify-between mb-1">
+                <span className="text-[10px] font-bold text-slate-500 uppercase tracking-tight truncate">
                   {card.label}
                 </span>
-                <div className={`w-7 h-7 rounded-lg ${card.bg} ${card.color} flex items-center justify-center flex-shrink-0`}>
+                <div className={`w-6 h-6 rounded-lg ${card.bg} ${card.color} flex items-center justify-center flex-shrink-0`}>
                   {card.icon}
                 </div>
               </div>
-              <div className="text-lg font-black text-slate-900 leading-tight">
+              <div className="text-base font-black text-slate-900 leading-none">
                 {card.value}
               </div>
             </div>
@@ -662,17 +662,17 @@ export default function AdminDashboard() {
         </div>
 
         {/* ── Primary Workspace Tabs ── */}
-        <div className="flex items-center gap-2 border-b border-slate-200/80 mb-6 overflow-x-auto pb-px">
+        <div className="flex items-center gap-1 border-b border-slate-200/80 mb-4 overflow-x-auto pb-px">
           {[
-            { id: 'properties', label: 'ตารางจัดการโครงการ', icon: <LayoutList size={16} />, count: filteredProperties.length },
-            { id: 'developers', label: 'จำแนกตามผู้พัฒนา', icon: <Building2 size={16} />, count: developerList.length },
-            { id: 'analytics', label: 'สถิติการเข้าชม & คำค้นหา', icon: <BarChart3 size={16} /> },
-            { id: 'system', label: 'ความปลอดภัย & SEO', icon: <Shield size={16} /> },
+            { id: 'properties', label: 'ตารางจัดการโครงการ', icon: <LayoutList size={15} />, count: filteredProperties.length },
+            { id: 'developers', label: 'จำแนกตามผู้พัฒนา', icon: <Building2 size={15} />, count: developerList.length },
+            { id: 'analytics', label: 'สถิติการเข้าชม', icon: <BarChart3 size={15} /> },
+            { id: 'system', label: 'ความปลอดภัย & SEO', icon: <Shield size={15} /> },
           ].map(tab => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center gap-2 px-4 py-2.5 rounded-t-xl text-xs font-bold transition-all border-b-2 whitespace-nowrap ${
+              className={`flex items-center gap-1.5 px-3.5 py-2 rounded-t-xl text-xs font-bold transition-all border-b-2 whitespace-nowrap ${
                 activeTab === tab.id
                   ? 'border-blue-600 text-blue-600 bg-white shadow-xs'
                   : 'border-transparent text-slate-500 hover:text-slate-800 hover:bg-white/50'
@@ -681,7 +681,7 @@ export default function AdminDashboard() {
               {tab.icon}
               <span>{tab.label}</span>
               {tab.count !== undefined && (
-                <span className={`px-2 py-0.5 rounded-full text-[10px] font-extrabold ${
+                <span className={`px-1.5 py-0.2 rounded-full text-[10px] font-extrabold ${
                   activeTab === tab.id ? 'bg-blue-100 text-blue-700' : 'bg-slate-100 text-slate-600'
                 }`}>
                   {tab.count}
@@ -693,24 +693,24 @@ export default function AdminDashboard() {
 
         {/* ── TAB 1: PROPERTIES TABLE & CONTROLS ── */}
         {activeTab === 'properties' && (
-          <div className="bg-white rounded-2xl border border-slate-200/80 shadow-xs overflow-hidden">
+          <div className="bg-white rounded-2xl border border-slate-200/80 shadow-xs overflow-hidden w-full">
             {/* Filter & Toolbar Area */}
-            <div className="p-4 sm:p-5 border-b border-slate-100 bg-slate-50/50 space-y-4">
-              {/* Row 1: Search & Dropdown Selectors */}
-              <div className="flex flex-col lg:flex-row gap-3 items-stretch lg:items-center justify-between">
+            <div className="p-3.5 sm:p-4 border-b border-slate-100 bg-slate-50/50 space-y-3">
+              {/* Row 1: Search & Dropdowns */}
+              <div className="flex flex-col lg:flex-row gap-2.5 items-stretch lg:items-center justify-between">
                 {/* Search Bar */}
-                <div className="relative flex-1 max-w-md">
-                  <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
+                <div className="relative flex-1 max-w-sm">
+                  <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
                   <input
                     type="text"
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
-                    placeholder="ค้นหาชื่อโครงการ, ผู้พัฒนา, จังหวัด, สถานี, ID..."
-                    className="w-full pl-9 pr-8 py-2 bg-white border border-slate-200 rounded-xl text-xs font-medium focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                    placeholder="ค้นหาชื่อ, บริษัท, ทำเล, สถานี, ID..."
+                    className="w-full pl-8 pr-7 py-1.5 bg-white border border-slate-200 rounded-xl text-xs font-medium focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
                   />
                   {search && (
-                    <button onClick={() => setSearch('')} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
-                      <X size={14} />
+                    <button onClick={() => setSearch('')} className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
+                      <X size={13} />
                     </button>
                   )}
                 </div>
@@ -718,12 +718,12 @@ export default function AdminDashboard() {
                 {/* Dropdowns */}
                 <div className="flex flex-wrap items-center gap-2">
                   {/* Developer Dropdown */}
-                  <div className="flex items-center gap-1.5 bg-white border border-slate-200 rounded-xl px-3 py-1.5">
-                    <Building2 size={14} className="text-slate-400" />
+                  <div className="flex items-center gap-1 bg-white border border-slate-200 rounded-lg px-2.5 py-1">
+                    <Building2 size={13} className="text-slate-400" />
                     <select
                       value={developerFilter}
                       onChange={(e) => setDeveloperFilter(e.target.value)}
-                      className="bg-transparent text-xs font-bold text-slate-700 outline-none cursor-pointer max-w-[150px]"
+                      className="bg-transparent text-xs font-bold text-slate-700 outline-none cursor-pointer max-w-[130px]"
                     >
                       <option value="ทั้งหมด">ทุกบริษัท ({properties.length})</option>
                       {developerList.map(([dev, count]) => (
@@ -733,7 +733,7 @@ export default function AdminDashboard() {
                   </div>
 
                   {/* Status Dropdown */}
-                  <div className="flex items-center gap-1.5 bg-white border border-slate-200 rounded-xl px-3 py-1.5">
+                  <div className="flex items-center gap-1 bg-white border border-slate-200 rounded-lg px-2.5 py-1">
                     <select
                       value={statusFilter}
                       onChange={(e) => setStatusFilter(e.target.value)}
@@ -748,47 +748,47 @@ export default function AdminDashboard() {
                   </div>
 
                   {/* Tier Dropdown */}
-                  <div className="flex items-center gap-1.5 bg-white border border-slate-200 rounded-xl px-3 py-1.5">
+                  <div className="flex items-center gap-1 bg-white border border-slate-200 rounded-lg px-2.5 py-1">
                     <select
                       value={tierFilter}
                       onChange={(e) => setTierFilter(e.target.value)}
                       className="bg-transparent text-xs font-bold text-slate-700 outline-none cursor-pointer"
                     >
-                      <option value="ทั้งหมด">ทุกเทียร์ (All Tiers)</option>
+                      <option value="ทั้งหมด">ทุกเทียร์</option>
                       <option value="super">👑 Super</option>
                       <option value="sponsored">⭐ Sponsored</option>
                       <option value="premium">✅ Premium</option>
-                      <option value="standard">⚪ Standard</option>
+                      <option value="standard">Standard</option>
                     </select>
                   </div>
 
                   {/* Sort Dropdown */}
-                  <div className="flex items-center gap-1.5 bg-white border border-slate-200 rounded-xl px-3 py-1.5">
-                    <ArrowUpDown size={14} className="text-slate-400" />
+                  <div className="flex items-center gap-1 bg-white border border-slate-200 rounded-lg px-2.5 py-1">
+                    <ArrowUpDown size={13} className="text-slate-400" />
                     <select
                       value={sortBy}
                       onChange={(e) => setSortBy(e.target.value)}
                       className="bg-transparent text-xs font-bold text-slate-700 outline-none cursor-pointer"
                     >
-                      <option value="newest">ล่าสุด (Newest)</option>
-                      <option value="price_asc">ราคา ต่ำ ➜ สูง</option>
-                      <option value="price_desc">ราคา สูง ➜ ต่ำ</option>
-                      <option value="name_asc">ชื่อ (ก - ฮ)</option>
-                      <option value="units_desc">จำนวนยูนิตมากสุด</option>
+                      <option value="newest">ล่าสุด</option>
+                      <option value="price_asc">ราคา ต่ำ➜สูง</option>
+                      <option value="price_desc">ราคา สูง➜ต่ำ</option>
+                      <option value="name_asc">ชื่อ ก-ฮ</option>
+                      <option value="units_desc">ยูนิตมากสุด</option>
                     </select>
                   </div>
                 </div>
               </div>
 
-              {/* Row 2: Property Type Pills & Reset */}
-              <div className="flex items-center justify-between flex-wrap gap-2 pt-2 border-t border-slate-200/60">
-                <div className="flex items-center gap-1.5 flex-wrap">
-                  <span className="text-[11px] font-bold text-slate-400 mr-1 uppercase">ประเภท:</span>
+              {/* Row 2: Type Pills & Reset */}
+              <div className="flex items-center justify-between flex-wrap gap-2 pt-1 border-t border-slate-200/60">
+                <div className="flex items-center gap-1 flex-wrap">
+                  <span className="text-[10px] font-bold text-slate-400 mr-1 uppercase">ประเภท:</span>
                   {['ทั้งหมด', 'คอนโด', 'บ้าน', 'ทาวน์โฮม'].map(t => (
                     <button
                       key={t}
                       onClick={() => setTypeFilter(t)}
-                      className={`px-3 py-1 rounded-lg text-xs font-bold transition-colors ${
+                      className={`px-2.5 py-0.5 rounded-md text-xs font-bold transition-colors ${
                         typeFilter === t
                           ? 'bg-blue-600 text-white shadow-xs'
                           : 'bg-white text-slate-600 hover:bg-slate-200 border border-slate-200'
@@ -799,24 +799,23 @@ export default function AdminDashboard() {
                   ))}
                 </div>
 
-                {/* Active Filter Clear */}
                 {(search || typeFilter !== 'ทั้งหมด' || developerFilter !== 'ทั้งหมด' || statusFilter !== 'ทั้งหมด' || tierFilter !== 'ทั้งหมด') && (
                   <button
                     onClick={() => { setSearch(''); setTypeFilter('ทั้งหมด'); setDeveloperFilter('ทั้งหมด'); setStatusFilter('ทั้งหมด'); setTierFilter('ทั้งหมด'); }}
                     className="text-xs font-bold text-rose-600 hover:text-rose-700 flex items-center gap-1"
                   >
-                    <X size={13} /> ล้างตัวกรองทั้งหมด
+                    <X size={12} /> ล้างตัวกรอง
                   </button>
                 )}
               </div>
             </div>
 
-            {/* Table */}
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs border-collapse">
+            {/* Streamlined Table (5 Proportional Columns - ZERO Horizontal Scroll) */}
+            <div className="w-full">
+              <table className="w-full text-left text-xs border-collapse table-auto">
                 <thead>
-                  <tr className="bg-slate-50 text-slate-500 font-bold border-b border-slate-200">
-                    <th className="p-3.5 w-10 text-center">
+                  <tr className="bg-slate-50/80 text-slate-500 font-bold border-b border-slate-200">
+                    <th className="p-3 w-10 text-center">
                       <input
                         type="checkbox"
                         checked={paginatedProperties.length > 0 && selectedIds.size === paginatedProperties.length}
@@ -824,15 +823,11 @@ export default function AdminDashboard() {
                         className="rounded text-blue-600 focus:ring-blue-500 cursor-pointer"
                       />
                     </th>
-                    <th className="p-3.5">ชื่อโครงการ / ID</th>
-                    <th className="p-3.5">ผู้พัฒนา / ผู้รับเหมา</th>
-                    <th className="p-3.5">ประเภท</th>
-                    <th className="p-3.5">ราคาเริ่มต้น</th>
-                    <th className="p-3.5">ทำเล / จังหวัด</th>
-                    <th className="p-3.5">สถานะ</th>
-                    <th className="p-3.5">แพ็กเกจเทียร์</th>
-                    <th className="p-3.5 text-center">แบบบ้าน/ห้อง</th>
-                    <th className="p-3.5 text-right">การจัดการ</th>
+                    <th className="p-3">โครงการ & ผู้พัฒนา</th>
+                    <th className="p-3 w-36">ราคา / ยูนิต</th>
+                    <th className="p-3 w-36">สถานะ</th>
+                    <th className="p-3 w-32">แพ็กเกจเทียร์</th>
+                    <th className="p-3 w-28 text-right">การจัดการ</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
@@ -847,7 +842,7 @@ export default function AdminDashboard() {
                         className={`hover:bg-blue-50/40 transition-colors ${isSelected ? 'bg-blue-50/70' : ''}`}
                       >
                         {/* Checkbox */}
-                        <td className="p-3.5 text-center">
+                        <td className="p-3 text-center align-middle">
                           <input
                             type="checkbox"
                             checked={isSelected}
@@ -856,8 +851,8 @@ export default function AdminDashboard() {
                           />
                         </td>
 
-                        {/* Project Name & Thumbnail */}
-                        <td className="p-3.5">
+                        {/* Combined Project Details: Image + Name + Developer + Type + Location */}
+                        <td className="p-3">
                           <div className="flex items-center gap-3">
                             <img
                               src={imgUrl || 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=200&q=80'}
@@ -865,64 +860,73 @@ export default function AdminDashboard() {
                               className="w-11 h-11 rounded-xl object-cover border border-slate-200 flex-shrink-0 bg-slate-100"
                               onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=200&q=80'; }}
                             />
-                            <div className="min-w-0">
-                              <p className="font-extrabold text-slate-900 text-xs truncate max-w-[200px]" title={prop.name}>
-                                {prop.name}
-                              </p>
-                              <span className="text-[10px] text-slate-400 font-mono block">
-                                {prop.id}
-                              </span>
+                            <div className="min-w-0 flex-1">
+                              <div className="flex items-center gap-2 flex-wrap">
+                                <Link
+                                  to={`/property/${prop.id}`}
+                                  target="_blank"
+                                  className="font-extrabold text-slate-900 text-xs hover:text-blue-600 transition-colors"
+                                  title={prop.name}
+                                >
+                                  {prop.name}
+                                </Link>
+                                <span className="px-1.5 py-0.2 rounded text-[10px] font-bold bg-slate-100 text-slate-600 border border-slate-200">
+                                  {prop.type || '-'}
+                                </span>
+                              </div>
+                              <div className="flex items-center gap-1.5 mt-0.5 text-[11px] text-slate-500 flex-wrap">
+                                <button
+                                  onClick={() => setDeveloperFilter(prop.developer?.trim() || 'ไม่ระบุผู้พัฒนา')}
+                                  className="font-bold text-blue-600 hover:underline"
+                                >
+                                  {prop.developer || 'ไม่ระบุผู้พัฒนา'}
+                                </button>
+                                <span>•</span>
+                                <span>{prop.district ? `${prop.district}, ` : ''}{prop.province || '-'}</span>
+                                <span>•</span>
+                                <span className="font-mono text-[10px] text-slate-400">{prop.id}</span>
+                              </div>
                             </div>
                           </div>
                         </td>
 
-                        {/* Developer */}
-                        <td className="p-3.5">
-                          <button
-                            onClick={() => setDeveloperFilter(prop.developer?.trim() || 'ไม่ระบุผู้พัฒนา')}
-                            className="px-2 py-1 rounded-md text-[11px] font-bold bg-slate-100 hover:bg-blue-50 text-slate-700 hover:text-blue-600 transition-colors border border-slate-200"
-                          >
-                            {prop.developer || 'ไม่ระบุ'}
-                          </button>
-                        </td>
-
-                        {/* Type */}
-                        <td className="p-3.5">
-                          <span className="px-2 py-0.5 rounded-full text-[11px] font-bold bg-slate-100 text-slate-700">
-                            {prop.type || '-'}
-                          </span>
-                        </td>
-
-                        {/* Price */}
-                        <td className="p-3.5 font-bold text-slate-900 whitespace-nowrap">
-                          {prop.price ? `${prop.price} ล้านบาท` : 'ติดต่อสอบถาม'}
-                        </td>
-
-                        {/* Location */}
-                        <td className="p-3.5 text-slate-600 whitespace-nowrap">
-                          {prop.district ? `${prop.district}, ` : ''}{prop.province || '-'}
+                        {/* Price & Unit Types */}
+                        <td className="p-3 align-middle">
+                          <div className="space-y-0.5">
+                            <span className="font-extrabold text-slate-900 text-xs block">
+                              {prop.price ? `${prop.price} ลบ.` : 'ติดต่อสอบถาม'}
+                            </span>
+                            <button
+                              onClick={() => setManagingProp(prop)}
+                              className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-bold bg-slate-100 hover:bg-blue-50 text-slate-600 hover:text-blue-600 border border-slate-200 transition-colors"
+                              title="คลิกเพื่อจัดการแบบบ้าน/แปลนห้อง"
+                            >
+                              <Layers size={10} />
+                              <span>{prop.unitTypes?.length || 0} แบบ</span>
+                            </button>
+                          </div>
                         </td>
 
                         {/* Status Select */}
-                        <td className="p-3.5">
+                        <td className="p-3 align-middle">
                           <select
                             value={prop.status || 'พร้อมอยู่'}
                             onChange={(e) => handleQuickStatusChange(prop, e.target.value)}
-                            className={`px-2.5 py-1 rounded-full text-[11px] font-bold border outline-none cursor-pointer ${statusBadge(prop.status)}`}
+                            className={`w-full px-2 py-1 rounded-lg text-[11px] font-bold border outline-none cursor-pointer ${statusBadge(prop.status)}`}
                           >
                             <option value="พร้อมอยู่">พร้อมอยู่</option>
                             <option value="เปิด Presale">เปิด Presale</option>
                             <option value="กำลังก่อสร้าง">กำลังก่อสร้าง</option>
-                            <option value="ฉบับร่าง">ฉบับร่าง (Unpublished)</option>
+                            <option value="ฉบับร่าง">ฉบับร่าง (Draft)</option>
                           </select>
                         </td>
 
                         {/* Tier Select */}
-                        <td className="p-3.5">
+                        <td className="p-3 align-middle">
                           <select
                             value={prop.package_tier || 'standard'}
                             onChange={(e) => handleChangeTier(prop, e.target.value)}
-                            className={`px-2 py-1 rounded-lg text-[11px] font-bold border outline-none cursor-pointer ${tierInfo.cls}`}
+                            className={`w-full px-2 py-1 rounded-lg text-[11px] font-bold border outline-none cursor-pointer ${tierInfo.cls}`}
                           >
                             <option value="super">👑 Super</option>
                             <option value="sponsored">⭐ Sponsored</option>
@@ -931,27 +935,16 @@ export default function AdminDashboard() {
                           </select>
                         </td>
 
-                        {/* Unit Types Count Button */}
-                        <td className="p-3.5 text-center">
-                          <button
-                            onClick={() => setManagingProp(prop)}
-                            className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg font-bold text-[11px] bg-slate-100 hover:bg-blue-50 text-slate-700 hover:text-blue-600 border border-slate-200 transition-colors"
-                          >
-                            <Layers size={13} />
-                            <span>{prop.unitTypes?.length || 0} แบบ</span>
-                          </button>
-                        </td>
-
                         {/* Action Buttons */}
-                        <td className="p-3.5 text-right">
-                          <div className="inline-flex items-center gap-1">
+                        <td className="p-3 text-right align-middle">
+                          <div className="inline-flex items-center justify-end gap-1">
                             <Link
                               to={`/property/${prop.id}`}
                               target="_blank"
                               title="ดูหน้าเว็บจริง"
                               className="p-1.5 rounded-lg text-emerald-600 hover:bg-emerald-50 transition-colors"
                             >
-                              <ExternalLink size={15} />
+                              <ExternalLink size={14} />
                             </Link>
 
                             <Link
@@ -959,7 +952,7 @@ export default function AdminDashboard() {
                               title="แก้ไขรายละเอียด"
                               className="p-1.5 rounded-lg text-blue-600 hover:bg-blue-50 transition-colors"
                             >
-                              <Edit size={15} />
+                              <Edit size={14} />
                             </Link>
 
                             <Link
@@ -968,7 +961,7 @@ export default function AdminDashboard() {
                               title="คัดลอกสร้างใหม่ (Duplicate)"
                               className="p-1.5 rounded-lg text-slate-600 hover:bg-slate-100 transition-colors"
                             >
-                              <Copy size={15} />
+                              <Copy size={14} />
                             </Link>
 
                             <button
@@ -976,7 +969,7 @@ export default function AdminDashboard() {
                               title="ลบโครงการ"
                               className="p-1.5 rounded-lg text-rose-600 hover:bg-rose-50 transition-colors"
                             >
-                              <Trash2 size={15} />
+                              <Trash2 size={14} />
                             </button>
                           </div>
                         </td>
