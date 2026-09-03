@@ -479,7 +479,7 @@ export default function AdminDashboard() {
     <div className="min-h-screen pb-24 text-slate-800">
       {/* ── Top Command Center Bar ── */}
       <div className="bg-white border-b border-slate-200/80 sticky top-0 z-20 shadow-xs px-4 sm:px-8 py-4">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div className="w-full max-w-[1800px] mx-auto flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div>
             <div className="flex items-center gap-2.5">
               <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight flex items-center gap-2">
@@ -560,7 +560,7 @@ export default function AdminDashboard() {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-8 pt-6">
+      <div className="w-full max-w-[1800px] mx-auto px-4 sm:px-8 pt-6">
         {/* ── KPI Interactive Metric Cards ── */}
         <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3 mb-6">
           {[
