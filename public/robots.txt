@@ -1,4 +1,32 @@
-﻿User-agent: *
-Allow: /
+# Robots.txt for Find My Home (SEO & AEO Optimized)
 
-Sitemap: https://findmyhome.example.com/sitemap.xml
+# 1. Search Engine Crawlers
+User-agent: Googlebot
+User-agent: Bingbot
+User-agent: Applebot
+User-agent: YandexBot
+User-agent: DuckDuckBot
+Allow: /
+Disallow: /admin
+Disallow: /admin/*
+
+# 2. AI Answer Engine Crawlers (AEO / Generative Search)
+User-agent: GPTBot
+User-agent: ChatGPT-User
+User-agent: PerplexityBot
+User-agent: ClaudeBot
+User-agent: Google-Extended
+User-agent: Applebot-Extended
+Allow: /
+Disallow: /admin
+Disallow: /admin/*
+
+# 3. General Fallback
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /admin/*
+
+# 4. Sitemap Location
+Sitemap: https://findmyhome.in.th/sitemap.xml
+

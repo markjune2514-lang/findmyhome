@@ -84,11 +84,33 @@ export default function ProjectsPage() {
   const filteredProperties = getFilteredProperties();
   const displayedProperties = filteredProperties.slice(0, visibleCount);
 
+  const baseUrl = typeof window !== 'undefined' ? window.location.origin : 'https://findmyhome.in.th';
+  const collectionSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    'name': 'รวมโครงการบ้านเดี่ยว คอนโด และทาวน์โฮมใหม่ทั่วไทย',
+    'description': 'เลือกดูโครงการอสังหาริมทรัพย์คุณภาพจากแสนสิริ, AP Thai, SC Asset, Origin และอีกมากมาย พร้อมเปรียบเทียบสเปกและราคา',
+    'url': `${baseUrl}/projects`,
+    'mainEntity': {
+      '@type': 'ItemList',
+      'numberOfItems': filteredProperties.length,
+      'itemListElement': filteredProperties.slice(0, 15).map((p, i) => ({
+        '@type': 'ListItem',
+        'position': i + 1,
+        'url': `${baseUrl}/property/${p.id}`,
+        'name': p.name
+      }))
+    }
+  };
+
   return (
     <div className="projects-page">
       <SEO 
-        title="รวมโครงการอสังหาริมทรัพย์ที่น่าสนใจ" 
-        description="เลือกดูโครงการบ้านเดี่ยว ทาวน์โฮม คอนโดมิเนียมที่คุณสนใจ เรียงตามโครงการใหม่ โครงการติดรถไฟฟ้า และอื่นๆ" 
+        title="รวมโครงการบ้านเดี่ยว คอนโด ทาวน์โฮมใหม่ 2026 - ค้นหาโครงการคุณภาพ" 
+        description="เลือกดูโครงการบ้านเดี่ยว ทาวน์โฮม คอนโดมิเนียมที่คุณสนใจ เรียงตามโครงการใหม่ โครงการติดรถไฟฟ้า พร้อมข้อมูลแปลนบ้าน และสิ่งอำนวยความสะดวกครบครัน" 
+        canonical={`${baseUrl}/projects`}
+        keywords="รวมโครงการบ้าน, โครงการคอนโดใหม่, ทาวน์โฮมพร้อมอยู่, โครงการบ้านแสนสิริ, บ้าน AP Thai, SC Asset, Origin Condo"
+        jsonLd={collectionSchema}
       />
       {/* Hero Section */}
       <section 

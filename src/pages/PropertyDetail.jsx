@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { MapPin, Star, Heart, Share2, Info, LayoutDashboard, ChevronLeft, ChevronRight, Navigation, ExternalLink, Building, Landmark, GraduationCap, Hospital, ShoppingBag, Search, Phone, Waves, Sparkles, ShieldCheck, Activity, BellRing, Gift, Home, Ruler, ZoomIn, Image as ImageIcon, Train, Car, Map, Sofa, X } from 'lucide-react';
+import { MapPin, Star, Heart, Share2, Info, LayoutDashboard, ChevronLeft, ChevronRight, Navigation, ExternalLink, Building, Landmark, GraduationCap, Hospital, ShoppingBag, Search, Phone, Waves, Sparkles, ShieldCheck, Activity, BellRing, Gift, Home, Ruler, ZoomIn, Image as ImageIcon, Train, Car, Map, Sofa, X, HelpCircle, ChevronDown } from 'lucide-react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import LoanCalculator from '../components/LoanCalculator';
 import L from 'leaflet';
@@ -148,12 +148,120 @@ export default function PropertyDetail({ previewData }) {
 
   const handleAction = (action) => alert(`กำลังดำเนินการ: ${action}`);
 
+  // Base URL & Canonicals
+  const baseUrl = typeof window !== 'undefined' ? window.location.origin : 'https://findmyhome.in.th';
+  const pageUrl = typeof window !== 'undefined' ? window.location.href : `${baseUrl}/property/${prop.id}`;
+
+  // 1. Schema.org RealEstateListing / Residence for Search Engines
+  const propertySchema = {
+    '@context': 'https://schema.org',
+    '@type': prop.type === 'คอนโด' ? 'ApartmentComplex' : 'SingleFamilyResidence',
+    'additionalType': 'https://schema.org/RealEstateListing',
+    'name': prop.name,
+    'description': `${prop.name} โครงการ${prop.type} โดย ${prop.developer || ''} ทำเล ${prop.district || ''} ${prop.province || ''} ราคาเริ่มต้น ${prop.price} ${prop.listingType === 'เช่า' ? 'บาท/เดือน' : 'ล้านบาท'} พื้นที่ใช้สอย ${prop.size || '-'} ตร.ม.`,
+    'url': pageUrl,
+    'image': allImages.slice(0, 6),
+    ...(prop.location?.lat && prop.location?.lng ? {
+      'geo': {
+        '@type': 'GeoCoordinates',
+        'latitude': prop.location.lat,
+        'longitude': prop.location.lng
+      }
+    } : {}),
+    'address': {
+      '@type': 'PostalAddress',
+      'addressLocality': prop.district || '',
+      'addressRegion': prop.province || 'กรุงเทพมหานคร',
+      'addressCountry': 'TH'
+    },
+    'offers': {
+      '@type': 'Offer',
+      'price': prop.price ? (prop.listingType === 'เช่า' ? parseFloat(prop.price) : parseFloat(prop.price) * 1000000) : undefined,
+      'priceCurrency': 'THB',
+      'availability': 'https://schema.org/InStock',
+      'url': pageUrl
+    },
+    ...(prop.bedrooms ? { 'numberOfRooms': parseInt(prop.bedrooms, 10) } : {}),
+    ...(prop.size ? { 'floorSize': { '@type': 'QuantitativeValue', 'value': parseFloat(prop.size), 'unitCode': 'MTK' } } : {}),
+    'amenityFeature': (prop.facilities || []).slice(0, 15).map(f => ({
+      '@type': 'LocationFeatureSpecification',
+      'name': f,
+      'value': true
+    }))
+  };
+
+  // 2. Schema.org FAQPage for Answer Engine Optimization (AEO - Perplexity, ChatGPT, Gemini, Google AI)
+  const faqItems = [
+    {
+      q: `โครงการ ${prop.name} ราคาเริ่มต้นเท่าไหร่?`,
+      a: `โครงการ ${prop.name} มีราคาเริ่มต้นอยู่ที่ ${prop.price} ${prop.listingType === 'เช่า' ? 'บาท/เดือน' : 'ล้านบาท'} พัฒนาโดย ${prop.developer || 'ผู้พัฒนาอสังหาริมทรัพย์ชั้นนำ'}`
+    },
+    {
+      q: `โครงการ ${prop.name} ตั้งอยู่ที่ไหน และการเดินทางสะดวกไหม?`,
+      a: `โครงการตั้งอยู่ที่ ${prop.district ? `${prop.district}, ` : ''}${prop.province || 'ประเทศไทย'} ${prop.station ? `ใกล้สถานีรถไฟฟ้า ${prop.station} ${prop.distanceToStation ? `(${prop.distanceToStation})` : ''}` : 'เดินทางสะดวกเชื่อมต่อถนนสายหลักและทางด่วน'}`
+    },
+    {
+      q: `สิ่งอำนวยความสะดวกในโครงการ ${prop.name} มีอะไรบ้าง?`,
+      a: prop.facilities && prop.facilities.length > 0 
+        ? `สิ่งอำนวยความสะดวกภายในโครงการ ได้แก่ ${prop.facilities.slice(0, 8).join(', ')} พร้อมระบบรักษาความปลอดภัยตลอด 24 ชั่วโมง` 
+        : `โครงการมีสิ่งอำนวยความสะดวกและพื้นที่ส่วนกลางครบครันตามมาตรฐานโครงการคุณภาพ`
+    },
+    {
+      q: `โครงการ ${prop.name} มีแบบบ้านหรือยูนิตประเภทใดบ้าง?`,
+      a: prop.unitTypes && prop.unitTypes.length > 0
+        ? `มีแบบยูนิตทั้งหมด ${prop.unitTypes.length} แบบ ได้แก่ ${prop.unitTypes.map(u => `${u.name} (ขนาด ${u.size} ตร.ม.)`).join(', ')}`
+        : `มีขนาดพื้นที่ใช้สอยประมาณ ${prop.size || '-'} ตร.ม. พร้อมฟังก์ชันห้องครบครัน`
+    }
+  ];
+
+  const faqSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    'mainEntity': faqItems.map(item => ({
+      '@type': 'Question',
+      'name': item.q,
+      'acceptedAnswer': {
+        '@type': 'Answer',
+        'text': item.a
+      }
+    }))
+  };
+
+  // 3. Schema.org Breadcrumbs
+  const breadcrumbSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    'itemListElement': [
+      {
+        '@type': 'ListItem',
+        'position': 1,
+        'name': 'หน้าแรก',
+        'item': baseUrl
+      },
+      {
+        '@type': 'ListItem',
+        'position': 2,
+        'name': 'โครงการทั้งหมด',
+        'item': `${baseUrl}/projects`
+      },
+      {
+        '@type': 'ListItem',
+        'position': 3,
+        'name': prop.name,
+        'item': pageUrl
+      }
+    ]
+  };
+
   return (
     <div className="container py-4 sm:py-8">
       <SEO 
-        title={prop.name} 
-        description={`${prop.name} โดย ${prop.developer} - ${prop.type} เริ่มต้น ${prop.price} ${prop.listingType === 'เช่า' ? 'บาท/เดือน' : 'ล้านบาท'} ${prop.province}`} 
+        title={`${prop.name} (${prop.type}) เริ่มต้น ${prop.price} ${prop.listingType === 'เช่า' ? 'บาท/เดือน' : 'ล้านบาท'} - ${prop.developer || 'Find My Home'}`}
+        description={`${prop.name} โครงการ${prop.type} โดย ${prop.developer || ''} ทำเล ${prop.district || ''} ${prop.province} ราคาเริ่มต้น ${prop.price} ${prop.listingType === 'เช่า' ? 'บาท/เดือน' : 'ล้านบาท'} ขนาด ${prop.size || '-'} ตร.ม. ดูข้อมูลโครงการ แผนที่ แบบบ้าน และสถานที่ใกล้เคียง`} 
         image={allImages.length > 0 ? allImages[0] : null}
+        canonical={pageUrl}
+        keywords={`${prop.name}, ${prop.type} ${prop.name}, ${prop.developer}, ${prop.province}, ${prop.district}, ซื้อ${prop.type}, บ้านมือหนึ่ง, คอนโดใกล้รถไฟฟ้า, รีวิว ${prop.name}`}
+        jsonLd={[propertySchema, faqSchema, breadcrumbSchema]}
       />
       {/* Title & Developer Row */}
       {/* Header Section: Name & Developer */}
@@ -869,6 +977,27 @@ export default function PropertyDetail({ previewData }) {
             >
               <ExternalLink size={14} /> เปิดดูแผนที่สถานที่สำคัญรอบข้างทั้งหมดบน Google Maps
             </a>
+          </div>
+
+          {/* AEO / SEO Semantic Q&A Section */}
+          <div className="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 my-6">
+            <h3 className="text-base font-bold text-gray-900 mb-3 flex items-center gap-2">
+              <HelpCircle className="text-primary" size={18} />
+              คำถามที่พบบ่อยเกี่ยวกับ {prop.name} (FAQ)
+            </h3>
+            <div className="space-y-3">
+              {faqItems.map((item, idx) => (
+                <details key={idx} className="group border border-gray-100 rounded-xl p-3.5 bg-gray-50/50 open:bg-white transition-all">
+                  <summary className="font-semibold text-xs text-gray-800 cursor-pointer list-none flex justify-between items-center gap-2 select-none">
+                    <span>{item.q}</span>
+                    <ChevronDown size={14} className="text-gray-400 group-open:rotate-180 transition-transform flex-shrink-0" />
+                  </summary>
+                  <p className="mt-2.5 text-xs text-gray-600 leading-relaxed border-t border-gray-100 pt-2">
+                    {item.a}
+                  </p>
+                </details>
+              ))}
+            </div>
           </div>
 
           <LoanCalculator priceStr={displayPrice} />

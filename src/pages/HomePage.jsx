@@ -21,11 +21,31 @@ export default function HomePage() {
     return 0;
   }).slice(0, 3);
 
+  const homeSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'RealEstateAgent',
+    'name': 'Find My Home',
+    'url': typeof window !== 'undefined' ? window.location.origin : 'https://findmyhome.in.th',
+    'description': 'แพลตฟอร์มค้นหาบ้านเดี่ยว คอนโด ทาวน์โฮม โครงการใหม่ทั่วไทย พร้อมข้อมูลแปลนบ้าน ระยะทางรถไฟฟ้า และรีวิวครบวงจร',
+    'areaServed': {
+      '@type': 'Country',
+      'name': 'Thailand'
+    },
+    'potentialAction': {
+      '@type': 'SearchAction',
+      'target': `${typeof window !== 'undefined' ? window.location.origin : 'https://findmyhome.in.th'}/search?q={search_term_string}`,
+      'query-input': 'required name=search_term_string'
+    }
+  };
+
   return (
     <div className="flex flex-col min-h-screen">
       <SEO 
-        title="หน้าแรก" 
-        description="Find My Home แพลตฟอร์มค้นหาบ้าน คอนโด ทาวน์โฮม และที่ดิน พร้อมรายละเอียดครบถ้วนเพื่อการตัดสินใจที่ดีที่สุดของคุณ"
+        title="Find My Home - แพลตฟอร์มค้นหาบ้าน คอนโด ทาวน์โฮม โครงการใหม่ทั่วไทย" 
+        description="ค้นหาบ้านเดี่ยว คอนโด ทาวน์โฮม โครงการใหม่ 2026 จากผู้พัฒนาชั้นนำ (แสนสิริ, AP Thai, SC Asset, Origin) พร้อมข้อมูลแปลนบ้าน สเปกห้อง และระยะทางรถไฟฟ้าครบถ้วน"
+        canonical={typeof window !== 'undefined' ? window.location.origin : 'https://findmyhome.in.th'}
+        keywords="หาบ้าน, ค้นหาบ้าน, คอนโดใหม่, บ้านเดี่ยว, ทาวน์โฮม, คอนโดใกล้รถไฟฟ้า, แสนสิริ, AP Thai, SC Asset, Origin, อสังหาริมทรัพย์"
+        jsonLd={homeSchema}
       />
       
       {/* Hero Section - Designed using UI/UX Pro Max 'Hero-Centric' Pattern */}

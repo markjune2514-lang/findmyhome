@@ -416,11 +416,23 @@ export default function SearchPage() {
     setFilters(initialFiltersState);
   };
 
+  const baseUrl = typeof window !== 'undefined' ? window.location.origin : 'https://findmyhome.in.th';
+  const searchPageSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'SearchResultsPage',
+    'name': 'ค้นหาโครงการบ้านเดี่ยว คอนโด ทาวน์โฮม บนแผนที่',
+    'description': 'ค้นหาโครงการอสังหาริมทรัพย์พร้อมดูพิกัด GPS แผนที่รถไฟฟ้า ราคา และสิ่งอำนวยความสะดวกทั่วประเทศไทย',
+    'url': `${baseUrl}/search`
+  };
+
   return (
     <div className="search-page relative">
       <SEO 
-        title="ค้นหาโครงการบ้านและคอนโด" 
-        description="ค้นหาโครงการอสังหาริมทรัพย์ บ้านเดี่ยว ทาวน์โฮม และคอนโดมิเนียมที่คุณสนใจ พร้อมดูตำแหน่งบนแผนที่" 
+        title="ค้นหาบ้านและคอนโดบนแผนที่ - กรองราคา สถานีรถไฟฟ้า และทำเล" 
+        description="ค้นหาโครงการอสังหาริมทรัพย์ บ้านเดี่ยว ทาวน์โฮม และคอนโดมิเนียม พร้อมดูตำแหน่งบนแผนที่ interactive กรองตามสถานีรถไฟฟ้า ราคา และทำเลทั่วประเทศ" 
+        canonical={`${baseUrl}/search`}
+        keywords="ค้นหาบ้านบนแผนที่, แผนที่คอนโด, บ้านใกล้รถไฟฟ้า, คอนโดตามแนวรถไฟฟ้า, แผนที่อสังหาริมทรัพย์"
+        jsonLd={searchPageSchema}
       />
       {/* Advanced Filters Drawer/Modal */}
       {showAdvanced && (
