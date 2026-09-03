@@ -463,7 +463,7 @@ export default function SearchPage() {
   };
 
   return (
-    <div className="search-page relative">
+    <div className="search-page relative w-full max-w-full overflow-x-hidden">
       <SEO 
         title="ค้นหาบ้านและคอนโดบนแผนที่ - กรองราคา สถานีรถไฟฟ้า และทำเล" 
         description="ค้นหาโครงการอสังหาริมทรัพย์ บ้านเดี่ยว ทาวน์โฮม และคอนโดมิเนียม พร้อมดูตำแหน่งบนแผนที่ interactive กรองตามสถานีรถไฟฟ้า ราคา และทำเลทั่วประเทศ" 
@@ -757,7 +757,7 @@ export default function SearchPage() {
 
                     {/* Dropdown Menu */}
                     {isDistrictDropdownOpen && selectedProvince && (
-                      <div className="absolute top-full left-0 right-0 mt-1.5 bg-white border border-slate-200 rounded-2xl shadow-xl z-50 p-2.5 max-h-80 flex flex-col min-w-[220px] animate-in fade-in zoom-in-95">
+                      <div className="absolute top-full right-0 mt-1.5 bg-white border border-slate-200 rounded-2xl shadow-xl z-50 p-2.5 max-h-80 flex flex-col w-[260px] max-w-[calc(100vw-32px)] animate-in fade-in zoom-in-95">
                         {/* District Search Box */}
                         <div className="relative mb-2 shrink-0">
                           <Search size={13} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
@@ -978,7 +978,7 @@ export default function SearchPage() {
 
       {/* Main Map Area */}
       <main className="map-area" style={{ position: 'relative' }}>
-        <div style={{ position: 'absolute', top: '10px', left: '50%', transform: 'translateX(-50%)', zIndex: 1000, backgroundColor: 'white', padding: '8px 16px', borderRadius: '20px', boxShadow: '0 2px 10px rgba(0,0,0,0.1)', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', fontWeight: 600 }}>
+        <div style={{ position: 'absolute', top: '10px', left: '50%', transform: 'translateX(-50%)', zIndex: 1000, backgroundColor: 'white', padding: '8px 16px', borderRadius: '20px', boxShadow: '0 2px 10px rgba(0,0,0,0.1)', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', fontWeight: 600, maxWidth: 'calc(100% - 32px)', whiteSpace: 'nowrap' }}>
           <input type="checkbox" id="mapSearchToggle" checked={isMapSearchActive} onChange={e => setIsMapSearchActive(e.target.checked)} style={{ cursor: 'pointer' }} />
           <label htmlFor="mapSearchToggle" style={{ cursor: 'pointer' }}>ค้นหาโครงการในบริเวณนี้</label>
         </div>
@@ -1108,7 +1108,7 @@ export default function SearchPage() {
 
       {/* Right Sidebar - List */}
       <aside className="list-sidebar">
-        <div className="list-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div className="list-header flex flex-wrap justify-between items-center gap-2">
           <div>
             <h3>โครงการในพื้นที่นี้</h3>
             <p>{filteredProperties.length} โครงการ {polygonFilter && `| ขอบเขต ${polygonFilter.areaSqKm?.toFixed(2) || 0} ตร.กม.`}</p>
