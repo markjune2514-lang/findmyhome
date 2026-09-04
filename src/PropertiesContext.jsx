@@ -85,7 +85,12 @@ export const PropertiesProvider = ({ children }) => {
       priceSqm: item.price_sqm,
       priceTo: item.price_to,
       totalUnits: item.total_units,
-      unitTypes: Array.isArray(item.unit_types) ? item.unit_types : [],
+      unitTypes: Array.isArray(item.unit_types) 
+        ? item.unit_types.map(u => ({
+            ...u,
+            multipurpose: (u.multipurpose === 0 || u.multipurpose === '0' || !u.multipurpose) ? '' : u.multipurpose
+          })) 
+        : [],
       projectParking: item.project_parking,
       totalLandArea: item.total_land_area,
       facilityType: item.facility_type,
@@ -257,6 +262,12 @@ export const PropertiesProvider = ({ children }) => {
       if (validDbFields.includes(key)) {
         cleaned[key] = payload[key];
       }
+    }
+    if (Array.isArray(cleaned.unit_types)) {
+      cleaned.unit_types = cleaned.unit_types.map(u => ({
+        ...u,
+        multipurpose: (u.multipurpose === '0' || u.multipurpose === 0 || !u.multipurpose) ? '' : u.multipurpose
+      }));
     }
     return cleaned;
   };

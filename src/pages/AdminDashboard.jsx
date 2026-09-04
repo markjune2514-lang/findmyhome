@@ -11,9 +11,14 @@ import {
 
 // ── Unit Types Manager Modal ────────────────────────────────────────────────
 function UnitTypesModal({ prop, onClose, onSaved }) {
-  const emptyType = { name: '', price: '', priceMode: 'specify', size: '', bedrooms: '', bathrooms: '', parking: '', roomType: '', landSize: '', planImages: [], roomImages: [], useProjectFacilities: true, facilities: [] };
+  const emptyType = { name: '', price: '', priceMode: 'specify', size: '', bedrooms: '', bathrooms: '', parking: '', multipurpose: '', roomType: '', landSize: '', planImages: [], roomImages: [], useProjectFacilities: true, facilities: [] };
   const [units, setUnits] = useState(
-    prop.unitTypes?.length ? prop.unitTypes.map(u => ({ ...emptyType, ...u, priceMode: (u.price === '' || u.price === null) ? 'contact' : 'specify' })) : [{ ...emptyType, priceMode: 'specify' }]
+    prop.unitTypes?.length ? prop.unitTypes.map(u => ({
+      ...emptyType,
+      ...u,
+      multipurpose: (u.multipurpose === 0 || u.multipurpose === '0' || !u.multipurpose) ? '' : u.multipurpose,
+      priceMode: (u.price === '' || u.price === null) ? 'contact' : 'specify'
+    })) : [{ ...emptyType, priceMode: 'specify' }]
   );
   const [saving, setSaving] = useState(false);
   const [expanded, setExpanded] = useState(0);
@@ -35,8 +40,11 @@ function UnitTypesModal({ prop, onClose, onSaved }) {
         minPrice = parseFloat(minPriceUnit.price);
       }
 
-      // Clean up priceMode before saving to DB
-      const cleanedUnits = units.map(({ priceMode, ...rest }) => rest);
+      // Clean up priceMode before saving to DB and normalize multipurpose
+      const cleanedUnits = units.map(({ priceMode, ...rest }) => ({
+        ...rest,
+        multipurpose: (rest.multipurpose === '0' || rest.multipurpose === 0 || !rest.multipurpose) ? '' : rest.multipurpose
+      }));
 
       const { error } = await supabase.from('properties')
         .update({ 
@@ -122,7 +130,7 @@ function UnitTypesModal({ prop, onClose, onSaved }) {
                       { label: 'ห้องนอน', field: 'bedrooms', placeholder: 'เช่น 3' },
                       { label: 'ห้องน้ำ', field: 'bathrooms', placeholder: 'เช่น 2' },
                       { label: 'ที่จอดรถ', field: 'parking', placeholder: 'เช่น 2' },
-                      { label: 'ห้องอเนกประสงค์', field: 'multipurpose', placeholder: 'เช่น 1' },
+                      { label: 'ห้องอเนกประสงค์', field: 'multipurpose', placeholder: 'เช่น 1 (เว้นว่างได้ถ้าไม่มี)' },
                       { label: 'จุดเด่นพิเศษ', field: 'special', placeholder: 'เช่น ระเบียงกว้าง' },
                       { label: 'รูปแบบห้อง', field: 'roomType', placeholder: 'เช่น 2 Bed' },
                     ].map(({ label, field, placeholder, type }) => (

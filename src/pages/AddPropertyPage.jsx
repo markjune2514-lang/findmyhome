@@ -71,7 +71,7 @@ export default function AddPropertyPage() {
     facilityType: '',
     fullyFurnished: false,
     listingType: 'ซื้อ',
-    unitTypes: [{ name: '', price: '', landSize: '', size: '', bedrooms: '', bathrooms: '', parking: '', roomType: '', planImages: [], roomImages: [], useProjectFacilities: true, facilities: [] }]
+    unitTypes: [{ name: '', price: '', landSize: '', size: '', bedrooms: '', bathrooms: '', parking: '', multipurpose: '', roomType: '', planImages: [], roomImages: [], useProjectFacilities: true, facilities: [] }]
   });
   
   const [customInputs, setCustomInputs] = useState({});
@@ -112,8 +112,9 @@ export default function AddPropertyPage() {
             building_details: propToEdit.building_details || [],
             distanceToStation: propToEdit.distanceToStation === '300 ม.' ? '' : (propToEdit.distanceToStation || ''),
             listingType: propToEdit.listingType || 'ซื้อ',
-            unitTypes: (propToEdit.unitTypes && propToEdit.unitTypes.length > 0 ? propToEdit.unitTypes : [{ name: '', price: '', landSize: '', size: '', bedrooms: '', bathrooms: '', parking: '', roomType: '', planImages: [], roomImages: [], useProjectFacilities: true, facilities: [] }]).map(u => ({
+            unitTypes: (propToEdit.unitTypes && propToEdit.unitTypes.length > 0 ? propToEdit.unitTypes : [{ name: '', price: '', landSize: '', size: '', bedrooms: '', bathrooms: '', parking: '', multipurpose: '', roomType: '', planImages: [], roomImages: [], useProjectFacilities: true, facilities: [] }]).map(u => ({
               ...u,
+              multipurpose: (u.multipurpose === 0 || u.multipurpose === '0' || !u.multipurpose) ? '' : u.multipurpose,
               priceMode: (u.price === null || u.price === '' || u.priceMode === 'contact') ? 'contact' : 'specify',
               price: u.price !== null && u.price !== undefined ? u.price : ''
             }))
@@ -146,8 +147,9 @@ export default function AddPropertyPage() {
         building_details: propToCopy.building_details || [],
         distanceToStation: propToCopy.distanceToStation === '300 ม.' ? '' : (propToCopy.distanceToStation || ''),
         listingType: propToCopy.listingType || 'ซื้อ',
-        unitTypes: (propToCopy.unitTypes && propToCopy.unitTypes.length > 0 ? propToCopy.unitTypes : [{ name: '', price: '', landSize: '', size: '', bedrooms: '', bathrooms: '', parking: '', roomType: '', planImages: [], roomImages: [], useProjectFacilities: true, facilities: [] }]).map(u => ({
+        unitTypes: (propToCopy.unitTypes && propToCopy.unitTypes.length > 0 ? propToCopy.unitTypes : [{ name: '', price: '', landSize: '', size: '', bedrooms: '', bathrooms: '', parking: '', multipurpose: '', roomType: '', planImages: [], roomImages: [], useProjectFacilities: true, facilities: [] }]).map(u => ({
           ...u,
+          multipurpose: (u.multipurpose === 0 || u.multipurpose === '0' || !u.multipurpose) ? '' : u.multipurpose,
           priceMode: (u.price === null || u.price === '' || u.priceMode === 'contact') ? 'contact' : 'specify',
           price: u.price !== null && u.price !== undefined ? u.price : ''
         }))
@@ -365,7 +367,7 @@ export default function AddPropertyPage() {
   const handleAddUnitType = () => {
     setFormData(prev => ({
       ...prev,
-      unitTypes: [...prev.unitTypes, { name: '', price: '', priceMode: 'specify', landSize: '', size: '', bedrooms: '', bathrooms: '', parking: '', roomType: '', planImages: [], roomImages: [], useProjectFacilities: true, facilities: [] }]
+      unitTypes: [...prev.unitTypes, { name: '', price: '', priceMode: 'specify', landSize: '', size: '', bedrooms: '', bathrooms: '', parking: '', multipurpose: '', roomType: '', planImages: [], roomImages: [], useProjectFacilities: true, facilities: [] }]
     }));
   };
 
@@ -423,7 +425,10 @@ export default function AddPropertyPage() {
     // Prepare the final object shape expected by the app
     const newProperty = {
       ...formData,
-      unitTypes: (formData.unitTypes || []).map(({ priceMode, ...u }) => u),
+      unitTypes: (formData.unitTypes || []).map(({ priceMode, ...u }) => ({
+        ...u,
+        multipurpose: (u.multipurpose === '0' || u.multipurpose === 0 || !u.multipurpose) ? '' : u.multipurpose
+      })),
       // If there are valid units, use calculatedPrice (min unit price). Otherwise use formData.price.
       price: calculatedPrice ? calculatedPrice : parseNumberClean(formData.price),
       priceTo: parseNumberClean(formData.priceTo),
@@ -931,7 +936,7 @@ export default function AddPropertyPage() {
                         type="text" 
                         value={unit.multipurpose || ''} 
                         onChange={(e) => handleUnitTypeChange(idx, 'multipurpose', e.target.value)} 
-                        placeholder="เช่น 1" 
+                        placeholder="เช่น 1 (เว้นว่างได้ถ้าไม่มี)" 
                         className="text-sm"
                       />
                     </div>

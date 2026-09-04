@@ -106,6 +106,8 @@ export default function PropertyDetail({ previewData }) {
   const displayMultipurpose = selectedUnit?.multipurpose || prop?.multipurpose;
   
   const cleanSpec = (s) => typeof s === 'string' ? s.replace(/beds?|bedrooms?|ห้องนอน|ห้องน้ำ|ที่จอดรถ|ห้องอเนกประสงค์/gi, '').trim() : s;
+  const cleanMulti = cleanSpec(displayMultipurpose);
+  const hasMultipurpose = Boolean(cleanMulti) && cleanMulti !== '0' && cleanMulti !== '-' && cleanMulti !== '';
 
   // Helper to split comma-separated strings into arrays for distinct tags
   const splitTags = (arr) => {
@@ -382,9 +384,9 @@ export default function PropertyDetail({ previewData }) {
               <Car size={16} className="text-slate-500" /> {cleanSpec(displayParking)} <span className="hidden sm:inline">ที่จอดรถ</span>
             </div>
           )}
-          {displayMultipurpose && (
+          {hasMultipurpose && (
             <div className="flex items-center gap-1.5 bg-amber-50 text-amber-700 px-2.5 py-1.5 rounded-lg text-sm font-bold border border-amber-100">
-              <Star size={16} className="text-amber-500" /> {cleanSpec(displayMultipurpose)} <span className="hidden sm:inline">อเนกประสงค์</span>
+              <Star size={16} className="text-amber-500" /> {cleanMulti} <span className="hidden sm:inline">อเนกประสงค์</span>
             </div>
           )}
           {displaySize && (
@@ -795,7 +797,7 @@ export default function PropertyDetail({ previewData }) {
                     {[
                       displayBedrooms ? `${cleanSpec(displayBedrooms)} ห้องนอน` : null,
                       displayBathrooms ? `${cleanSpec(displayBathrooms)} ห้องน้ำ` : null,
-                      displayMultipurpose ? `${cleanSpec(displayMultipurpose)} อเนกประสงค์` : null,
+                      hasMultipurpose ? `${cleanMulti} อเนกประสงค์` : null,
                       displayParking ? `${cleanSpec(displayParking)} ที่จอดรถ` : null
                     ].filter(Boolean).join(' / ') || 'ไม่ระบุ'}
                   </span>
