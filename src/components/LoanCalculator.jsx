@@ -18,6 +18,11 @@ export default function LoanCalculator({ priceStr }) {
 
   const [monthlyPayment, setMonthlyPayment] = useState(0);
 
+  // Sync price when user selects a different unit type
+  useEffect(() => {
+    setPropertyPrice(getInitialPrice(priceStr));
+  }, [priceStr]);
+
   useEffect(() => {
     const principal = propertyPrice - (propertyPrice * (downPaymentPercent / 100));
     const monthlyRate = (interestRate / 100) / 12;

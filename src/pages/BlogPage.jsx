@@ -4,9 +4,9 @@ import { Search } from 'lucide-react';
 import './BlogPage.css';
 
 export default function BlogPage() {
-  const featured = blogArticles.find(a => a.isFeatured);
+  const featured = blogArticles.find(a => a.isFeatured) || blogArticles[0];
   const trending = blogArticles.filter(a => a.isTrending).sort((a, b) => a.trendRank - b.trendRank);
-  const latest = blogArticles.filter(a => !a.isFeatured && !a.isTrending);
+  const latest = blogArticles.filter(a => a.id !== featured?.id && !a.isTrending);
 
   return (
     <div className="container py-8">
@@ -31,20 +31,22 @@ export default function BlogPage() {
       </div>
 
       <div className="featured-section flex gap-6 mb-12">
-        <div className="hero-article" style={{ backgroundImage: `url(${featured.image})` }}>
-          <div className="hero-content">
-            <span className="badge">{featured.category}</span>
-            <h1 className="text-white mt-4">{featured.title}</h1>
-            <p className="text-white mt-2 mb-6">{featured.description}</p>
-            <div className="flex items-center gap-4">
-              <div className="author-info text-white">
-                <span className="text-sm">By {featured.author}</span>
-                <span className="text-sm block">{featured.date}</span>
+        {featured && (
+          <div className="hero-article" style={{ backgroundImage: `url(${featured.image || ''})` }}>
+            <div className="hero-content">
+              <span className="badge">{featured.category}</span>
+              <h1 className="text-white mt-4">{featured.title}</h1>
+              <p className="text-white mt-2 mb-6">{featured.description}</p>
+              <div className="flex items-center gap-4">
+                <div className="author-info text-white">
+                  <span className="text-sm">By {featured.author}</span>
+                  <span className="text-sm block">{featured.date}</span>
+                </div>
               </div>
+              <button className="btn btn-primary mt-6">อ่านต่อ</button>
             </div>
-            <button className="btn btn-primary mt-6">อ่านต่อ</button>
           </div>
-        </div>
+        )}
         
         <div className="trending-sidebar">
           <h3 className="mb-4">TRENDING</h3>

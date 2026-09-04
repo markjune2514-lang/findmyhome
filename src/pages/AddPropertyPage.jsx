@@ -111,6 +111,7 @@ export default function AddPropertyPage() {
             transport: propToEdit.transport || [],
             building_details: propToEdit.building_details || [],
             distanceToStation: propToEdit.distanceToStation === '300 ม.' ? '' : (propToEdit.distanceToStation || ''),
+            landSize: propToEdit.landSize || propToEdit.land_size || '',
             listingType: propToEdit.listingType || 'ซื้อ',
             unitTypes: (propToEdit.unitTypes && propToEdit.unitTypes.length > 0 ? propToEdit.unitTypes : [{ name: '', price: '', landSize: '', size: '', bedrooms: '', bathrooms: '', parking: '', multipurpose: '', roomType: '', planImages: [], roomImages: [], useProjectFacilities: true, facilities: [] }]).map(u => ({
               ...u,
@@ -146,6 +147,7 @@ export default function AddPropertyPage() {
         transport: propToCopy.transport || [],
         building_details: propToCopy.building_details || [],
         distanceToStation: propToCopy.distanceToStation === '300 ม.' ? '' : (propToCopy.distanceToStation || ''),
+        landSize: propToCopy.landSize || propToCopy.land_size || '',
         listingType: propToCopy.listingType || 'ซื้อ',
         unitTypes: (propToCopy.unitTypes && propToCopy.unitTypes.length > 0 ? propToCopy.unitTypes : [{ name: '', price: '', landSize: '', size: '', bedrooms: '', bathrooms: '', parking: '', multipurpose: '', roomType: '', planImages: [], roomImages: [], useProjectFacilities: true, facilities: [] }]).map(u => ({
           ...u,
@@ -625,11 +627,11 @@ export default function AddPropertyPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="form-group">
                 <label>จำนวนชั้นทั้งหมด</label>
-                <input type="text" name="floors" value={formData.floors} onChange={handleChange} placeholder="เช่น 32 หรือ 2-3 ชั้น" />
+                <input type="text" name="floors" value={formData.floors || ''} onChange={handleChange} placeholder="เช่น 32 หรือ 2-3 ชั้น" />
               </div>
               <div className="form-group">
                 <label>จำนวนยูนิตทั้งหมด</label>
-                <input type="number" name="totalUnits" value={formData.totalUnits} onChange={handleChange} placeholder="เช่น 450" />
+                <input type="number" name="totalUnits" value={formData.totalUnits || ''} onChange={handleChange} placeholder="เช่น 450" />
               </div>
               <div className="form-group">
                 <label>พื้นที่โครงการ (ขนาดที่ดินรวม)</label>
@@ -884,7 +886,7 @@ export default function AddPropertyPage() {
                       <label className="text-xs">พื้นที่ใช้สอย (ตร.ม.)</label>
                       <input 
                         type="text" 
-                        value={unit.size} 
+                        value={unit.size || ''} 
                         onChange={(e) => handleUnitTypeChange(idx, 'size', e.target.value)} 
                         placeholder="เช่น 150" 
                         className="text-sm"
@@ -894,7 +896,7 @@ export default function AddPropertyPage() {
                       <label className="text-xs">รูปแบบห้อง</label>
                       <input 
                         type="text" 
-                        value={unit.roomType} 
+                        value={unit.roomType || ''} 
                         onChange={(e) => handleUnitTypeChange(idx, 'roomType', e.target.value)} 
                         placeholder="เช่น 1 Bed, Studio" 
                         className="text-sm"
@@ -904,7 +906,7 @@ export default function AddPropertyPage() {
                       <label className="text-xs">ห้องนอน</label>
                       <input 
                         type="text" 
-                        value={unit.bedrooms} 
+                        value={unit.bedrooms || ''} 
                         onChange={(e) => handleUnitTypeChange(idx, 'bedrooms', e.target.value)} 
                         placeholder="เช่น 1" 
                         className="text-sm"
@@ -1076,7 +1078,7 @@ export default function AddPropertyPage() {
               </div>
               <div className="form-group">
                 <label>ระยะห่างจากสถานี</label>
-                <input type="text" name="distanceToStation" value={formData.distanceToStation} onChange={handleChange} placeholder="เช่น 200 ม. หรือ 1.5 กม." />
+                <input type="text" name="distanceToStation" value={formData.distanceToStation || ''} onChange={handleChange} placeholder="เช่น 200 ม. หรือ 1.5 กม." />
               </div>
             </div>
 

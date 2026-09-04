@@ -33,7 +33,7 @@ export default function ComparePage() {
   return (
     <div className="container py-8">
       <div className="breadcrumb mb-4 text-sm text-light">
-        <Link to="/search">หน้าหลัก</Link> &gt; <span className="text-main">เปรียบเทียบโครงการ</span>
+        <Link to="/">หน้าหลัก</Link> &gt; <span className="text-main">เปรียบเทียบโครงการ</span>
       </div>
 
       <div className="mb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">

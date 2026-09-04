@@ -85,6 +85,7 @@ export const PropertiesProvider = ({ children }) => {
       priceSqm: item.price_sqm,
       priceTo: item.price_to,
       totalUnits: item.total_units,
+      landSize: item.land_size || item.landSize || '',
       unitTypes: Array.isArray(item.unit_types) 
         ? item.unit_types.map(u => ({
             ...u,
@@ -283,6 +284,7 @@ export const PropertiesProvider = ({ children }) => {
       price_sqm: newProperty.priceSqm,
       price_to: newProperty.priceTo,
       total_units: newProperty.totalUnits,
+      land_size: (newProperty.landSize !== undefined && newProperty.landSize !== null) ? newProperty.landSize : (newProperty.land_size || ''),
       unit_types: newProperty.unitTypes,
       project_parking: newProperty.projectParking,
       total_land_area: newProperty.totalLandArea,
@@ -323,6 +325,7 @@ export const PropertiesProvider = ({ children }) => {
       price_sqm: updatedProperty.priceSqm,
       price_to: updatedProperty.priceTo,
       total_units: updatedProperty.totalUnits,
+      land_size: (updatedProperty.landSize !== undefined && updatedProperty.landSize !== null) ? updatedProperty.landSize : (updatedProperty.land_size || ''),
       unit_types: updatedProperty.unitTypes,
       project_parking: updatedProperty.projectParking,
       total_land_area: updatedProperty.totalLandArea,

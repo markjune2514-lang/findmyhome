@@ -34,10 +34,14 @@ export default function ProjectsPage() {
         filtered = baseProperties.filter(p => p.status === 'กำลังก่อสร้าง' || p.status === 'เปิด Presale');
         break;
       case 'transit':
-        filtered = baseProperties.filter(p => p.distanceToStation && p.distanceToStation.includes('ม.') && parseInt(p.distanceToStation) < 500);
+        filtered = baseProperties.filter(p => {
+          const d = parseInt(p.distanceToStation, 10);
+          const hasCloseTransit = p.categorizedLandmarks?.transit?.some(t => parseInt(t.distance, 10) <= 500);
+          return (!isNaN(d) && d <= 500) || hasCloseTransit;
+        });
         break;
       case 'family':
-        filtered = baseProperties.filter(p => p.projectType && p.projectType.includes('บ้าน'));
+        filtered = baseProperties.filter(p => (p.type && p.type.includes('บ้าน')) || (p.projectType && p.projectType.includes('บ้าน')));
         break;
       case 'luxury':
         filtered = baseProperties.filter(p => p.price >= 10);

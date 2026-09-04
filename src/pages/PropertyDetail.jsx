@@ -984,18 +984,10 @@ export default function PropertyDetail({ previewData }) {
                         </div>
                       ))
                     ) : (
-                      <>
-                        <div className="flex justify-between items-center text-xs">
-                          <span className="text-gray-700 font-medium">{prop.station || 'สถานีรถไฟฟ้าใกล้เคียง'}</span>
-                          <span className="font-bold text-blue-600 bg-white px-2 py-0.5 rounded border border-blue-200">{prop.distanceToStation || '500 ม.'}</span>
-                        </div>
-                        {prop.province === 'นครปฐม' && (
-                          <div className="flex justify-between items-center text-xs">
-                            <span className="text-gray-700 font-medium">ทางด่วนศรีรัช-วงแหวนรอบนอก</span>
-                            <span className="font-bold text-blue-600 bg-white px-2 py-0.5 rounded border border-blue-200">12.5 กม.</span>
-                          </div>
-                        )}
-                      </>
+                      <div className="flex justify-between items-center text-xs">
+                        <span className="text-gray-700 font-medium">{prop.station || 'สถานีรถไฟฟ้าใกล้เคียง'}</span>
+                        <span className="font-bold text-blue-600 bg-white px-2 py-0.5 rounded border border-blue-200">{prop.distanceToStation || '500 ม.'}</span>
+                      </div>
                     )}
                   </div>
                 </div>
