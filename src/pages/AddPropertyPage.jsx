@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { useProperties } from '../PropertiesContext';
 import { provincesAndDistricts, transitData } from '../data/locations';
@@ -25,7 +25,9 @@ export default function AddPropertyPage() {
   const location = useLocation();
   const { id } = useParams();
   const isEditMode = Boolean(id);
-  const { addProperty, updateProperty, properties } = useProperties();
+  const { addProperty, updateProperty, properties, fetchPropertyById } = useProperties();
+  const isLoadedRef = useRef(false);
+  const loadedIdRef = useRef(null);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -77,35 +79,61 @@ export default function AddPropertyPage() {
   const [showPreview, setShowPreview] = useState(false);
 
   useEffect(() => {
-    if (isEditMode && properties.length > 0) {
-      const propToEdit = properties.find(p => p.id === id);
-      if (propToEdit) {
-        // Provide safe defaults for arrays and objects that might be null in older properties
-        const safeProp = {
-          ...propToEdit,
-          location: propToEdit.location || { lat: 13.7563, lng: 100.5018 },
-          categorizedLandmarks: propToEdit.categorizedLandmarks || { transit: [], malls: [], hospitals: [], schools: [] },
-          special: propToEdit.special || [],
-          facilities: propToEdit.facilities || [],
-          healthFacilities: propToEdit.healthFacilities || [],
-          services: propToEdit.services || [],
-          security: propToEdit.security || [],
-          promotions: propToEdit.promotions || [],
-          transport: propToEdit.transport || [],
-          building_details: propToEdit.building_details || [],
-          distanceToStation: propToEdit.distanceToStation === '300 ม.' ? '' : (propToEdit.distanceToStation || ''),
-          listingType: propToEdit.listingType || 'ซื้อ',
-          unitTypes: propToEdit.unitTypes && propToEdit.unitTypes.length > 0 ? propToEdit.unitTypes : [{ name: '', price: '', landSize: '', size: '', bedrooms: '', bathrooms: '', parking: '', roomType: '', planImages: [], roomImages: [], useProjectFacilities: true, facilities: [] }]
-        };
-        setFormData(safeProp);
-        setLocationInput(`${safeProp.location.lat}, ${safeProp.location.lng}`);
-      }
+    isLoadedRef.current = false;
+    loadedIdRef.current = null;
+  }, [id]);
+
+  useEffect(() => {
+    if (isEditMode) {
+      if (isLoadedRef.current && loadedIdRef.current === id) return;
+
+      const loadProperty = async () => {
+        let propToEdit = properties.find(p => p.id === id);
+        if (!propToEdit && fetchPropertyById) {
+          propToEdit = await fetchPropertyById(id);
+        }
+        if (propToEdit) {
+          isLoadedRef.current = true;
+          loadedIdRef.current = id;
+          const safeProp = {
+            ...propToEdit,
+            priceMode: (propToEdit.price === null || propToEdit.price === '' || propToEdit.priceMode === 'contact') ? 'contact' : 'specify',
+            price: propToEdit.price !== null && propToEdit.price !== undefined ? propToEdit.price : '',
+            priceTo: propToEdit.priceTo !== null && propToEdit.priceTo !== undefined ? propToEdit.priceTo : '',
+            location: propToEdit.location || { lat: 13.7563, lng: 100.5018 },
+            categorizedLandmarks: propToEdit.categorizedLandmarks || { transit: [], malls: [], hospitals: [], schools: [] },
+            special: propToEdit.special || [],
+            facilities: propToEdit.facilities || [],
+            healthFacilities: propToEdit.healthFacilities || [],
+            services: propToEdit.services || [],
+            security: propToEdit.security || [],
+            promotions: propToEdit.promotions || [],
+            transport: propToEdit.transport || [],
+            building_details: propToEdit.building_details || [],
+            distanceToStation: propToEdit.distanceToStation === '300 ม.' ? '' : (propToEdit.distanceToStation || ''),
+            listingType: propToEdit.listingType || 'ซื้อ',
+            unitTypes: (propToEdit.unitTypes && propToEdit.unitTypes.length > 0 ? propToEdit.unitTypes : [{ name: '', price: '', landSize: '', size: '', bedrooms: '', bathrooms: '', parking: '', roomType: '', planImages: [], roomImages: [], useProjectFacilities: true, facilities: [] }]).map(u => ({
+              ...u,
+              priceMode: (u.price === null || u.price === '' || u.priceMode === 'contact') ? 'contact' : 'specify',
+              price: u.price !== null && u.price !== undefined ? u.price : ''
+            }))
+          };
+          setFormData(safeProp);
+          setLocationInput(`${safeProp.location.lat}, ${safeProp.location.lng}`);
+        }
+      };
+      loadProperty();
     } else if (!isEditMode && location.state && location.state.duplicateFrom) {
+      if (isLoadedRef.current) return;
+      isLoadedRef.current = true;
       const propToCopy = location.state.duplicateFrom;
       const safeProp = {
         ...propToCopy,
         name: propToCopy.name + " (Copy)",
         id: undefined,
+        priceMode: (propToCopy.price === null || propToCopy.price === '' || propToCopy.priceMode === 'contact') ? 'contact' : 'specify',
+        price: propToCopy.price !== null && propToCopy.price !== undefined ? propToCopy.price : '',
+        priceTo: propToCopy.priceTo !== null && propToCopy.priceTo !== undefined ? propToCopy.priceTo : '',
         location: propToCopy.location || { lat: 13.7563, lng: 100.5018 },
         categorizedLandmarks: propToCopy.categorizedLandmarks || { transit: [], malls: [], hospitals: [], schools: [] },
         special: propToCopy.special || [],
@@ -118,12 +146,16 @@ export default function AddPropertyPage() {
         building_details: propToCopy.building_details || [],
         distanceToStation: propToCopy.distanceToStation === '300 ม.' ? '' : (propToCopy.distanceToStation || ''),
         listingType: propToCopy.listingType || 'ซื้อ',
-        unitTypes: propToCopy.unitTypes && propToCopy.unitTypes.length > 0 ? propToCopy.unitTypes : [{ name: '', price: '', landSize: '', size: '', bedrooms: '', bathrooms: '', parking: '', roomType: '', planImages: [], roomImages: [], useProjectFacilities: true, facilities: [] }]
+        unitTypes: (propToCopy.unitTypes && propToCopy.unitTypes.length > 0 ? propToCopy.unitTypes : [{ name: '', price: '', landSize: '', size: '', bedrooms: '', bathrooms: '', parking: '', roomType: '', planImages: [], roomImages: [], useProjectFacilities: true, facilities: [] }]).map(u => ({
+          ...u,
+          priceMode: (u.price === null || u.price === '' || u.priceMode === 'contact') ? 'contact' : 'specify',
+          price: u.price !== null && u.price !== undefined ? u.price : ''
+        }))
       };
       setFormData(safeProp);
       setLocationInput(`${safeProp.location.lat}, ${safeProp.location.lng}`);
     }
-  }, [id, isEditMode, properties, location.state]);
+  }, [id, isEditMode, properties, location.state, fetchPropertyById]);
   
   const handleLocationStringChange = (e) => {
     const val = e.target.value;
@@ -333,7 +365,7 @@ export default function AddPropertyPage() {
   const handleAddUnitType = () => {
     setFormData(prev => ({
       ...prev,
-      unitTypes: [...prev.unitTypes, { name: '', price: '', landSize: '', size: '', bedrooms: '', bathrooms: '', parking: '', roomType: '', planImages: [], roomImages: [], useProjectFacilities: true, facilities: [] }]
+      unitTypes: [...prev.unitTypes, { name: '', price: '', priceMode: 'specify', landSize: '', size: '', bedrooms: '', bathrooms: '', parking: '', roomType: '', planImages: [], roomImages: [], useProjectFacilities: true, facilities: [] }]
     }));
   };
 
@@ -391,6 +423,7 @@ export default function AddPropertyPage() {
     // Prepare the final object shape expected by the app
     const newProperty = {
       ...formData,
+      unitTypes: (formData.unitTypes || []).map(({ priceMode, ...u }) => u),
       // If there are valid units, use calculatedPrice (min unit price). Otherwise use formData.price.
       price: calculatedPrice ? calculatedPrice : parseNumberClean(formData.price),
       priceTo: parseNumberClean(formData.priceTo),
@@ -517,13 +550,13 @@ export default function AddPropertyPage() {
                 <label>การแสดงราคาเริ่มต้น</label>
                 <select 
                   className="form-control mb-2"
-                  value={formData.priceMode || ((formData.price === '' || formData.price === null) ? 'contact' : 'specify')} 
+                  value={formData.priceMode === 'contact' ? 'contact' : 'specify'} 
                   onChange={(e) => {
                     const mode = e.target.value;
                     if (mode === 'contact') {
-                      setFormData(prev => ({ ...prev, priceMode: mode, price: '', priceTo: '' }));
+                      setFormData(prev => ({ ...prev, priceMode: 'contact', price: '', priceTo: '' }));
                     } else {
-                      setFormData(prev => ({ ...prev, priceMode: mode, price: '' }));
+                      setFormData(prev => ({ ...prev, priceMode: 'specify' }));
                     }
                   }}
                 >
@@ -531,15 +564,29 @@ export default function AddPropertyPage() {
                   <option value="contact">แสดงเป็น "สอบถามราคา"</option>
                 </select>
 
-                {((formData.priceMode ? formData.priceMode === 'specify' : (formData.price !== '' && formData.price !== null))) && (
+                {formData.priceMode !== 'contact' && (
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                     <div>
                       <label style={{ fontSize: '0.8rem', color: '#64748b' }}>ราคาเริ่มต้น (ล้านบาท)</label>
-                      <input type="number" step="0.01" name="price" value={formData.price} onChange={handleChange} placeholder="เช่น 3.5" />
+                      <input 
+                        type="number" 
+                        step="0.01" 
+                        name="price" 
+                        value={formData.price ?? ''} 
+                        onChange={handleChange} 
+                        placeholder="เช่น 3.5" 
+                      />
                     </div>
                     <div>
                       <label style={{ fontSize: '0.8rem', color: '#64748b' }}>ราคาสูงสุด <span className="text-light">(ไม่บังคับ)</span></label>
-                      <input type="number" step="0.01" name="priceTo" value={formData.priceTo} onChange={handleChange} placeholder="เช่น 5.9" />
+                      <input 
+                        type="number" 
+                        step="0.01" 
+                        name="priceTo" 
+                        value={formData.priceTo ?? ''} 
+                        onChange={handleChange} 
+                        placeholder="เช่น 5.9" 
+                      />
                     </div>
                   </div>
                 )}
@@ -763,23 +810,31 @@ export default function AddPropertyPage() {
                       <label className="text-xs">การแสดงราคา</label>
                       <select 
                         className="form-control text-sm"
-                        value={(unit.price === '' || unit.price === null) ? 'contact' : 'specify'}
+                        value={unit.priceMode === 'contact' ? 'contact' : 'specify'}
                         onChange={(e) => {
-                          if (e.target.value === 'contact') handleUnitTypeChange(idx, 'price', '');
-                          else handleUnitTypeChange(idx, 'price', '0');
+                          const mode = e.target.value;
+                          setFormData(prev => {
+                            const list = [...prev.unitTypes];
+                            list[idx] = { 
+                              ...list[idx], 
+                              priceMode: mode, 
+                              price: mode === 'contact' ? '' : list[idx].price 
+                            };
+                            return { ...prev, unitTypes: list };
+                          });
                         }}
                       >
                         <option value="specify">ระบุราคาเป็นตัวเลข</option>
                         <option value="contact">แสดงเป็น "สอบถามราคา"</option>
                       </select>
                     </div>
-                    {(unit.price !== '' && unit.price !== null) && (
+                    {unit.priceMode !== 'contact' && (
                       <div className="form-group mb-0 md:col-span-2">
                         <label className="text-xs">ราคา (ล้านบาท)</label>
                         <input 
                           type="number" 
                           step="0.01" 
-                          value={unit.price} 
+                          value={unit.price ?? ''} 
                           onChange={(e) => handleUnitTypeChange(idx, 'price', e.target.value)} 
                           placeholder="เช่น 2.59" 
                           className="form-control text-sm"

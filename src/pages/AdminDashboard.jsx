@@ -11,9 +11,9 @@ import {
 
 // ── Unit Types Manager Modal ────────────────────────────────────────────────
 function UnitTypesModal({ prop, onClose, onSaved }) {
-  const emptyType = { name: '', price: '', size: '', bedrooms: '', bathrooms: '', parking: '', roomType: '', landSize: '', planImages: [], roomImages: [], useProjectFacilities: true, facilities: [] };
+  const emptyType = { name: '', price: '', priceMode: 'specify', size: '', bedrooms: '', bathrooms: '', parking: '', roomType: '', landSize: '', planImages: [], roomImages: [], useProjectFacilities: true, facilities: [] };
   const [units, setUnits] = useState(
-    prop.unitTypes?.length ? prop.unitTypes.map(u => ({ ...emptyType, ...u })) : [{ ...emptyType }]
+    prop.unitTypes?.length ? prop.unitTypes.map(u => ({ ...emptyType, ...u, priceMode: (u.price === '' || u.price === null) ? 'contact' : 'specify' })) : [{ ...emptyType, priceMode: 'specify' }]
   );
   const [saving, setSaving] = useState(false);
   const [expanded, setExpanded] = useState(0);
@@ -21,7 +21,7 @@ function UnitTypesModal({ prop, onClose, onSaved }) {
   const handleChange = (idx, field, value) =>
     setUnits(prev => prev.map((u, i) => i === idx ? { ...u, [field]: value } : u));
 
-  const addUnit = () => { setUnits(prev => [...prev, { ...emptyType }]); setExpanded(units.length); };
+  const addUnit = () => { setUnits(prev => [...prev, { ...emptyType, priceMode: 'specify' }]); setExpanded(units.length); };
   const removeUnit = (idx) => { setUnits(prev => prev.filter((_, i) => i !== idx)); setExpanded(Math.max(0, expanded - 1)); };
 
   const handleSave = async () => {
@@ -35,9 +35,12 @@ function UnitTypesModal({ prop, onClose, onSaved }) {
         minPrice = parseFloat(minPriceUnit.price);
       }
 
+      // Clean up priceMode before saving to DB
+      const cleanedUnits = units.map(({ priceMode, ...rest }) => rest);
+
       const { error } = await supabase.from('properties')
         .update({ 
-          unit_types: units,
+          unit_types: cleanedUnits,
           price: minPrice 
         })
         .eq('id', prop.id);
@@ -92,20 +95,21 @@ function UnitTypesModal({ prop, onClose, onSaved }) {
                         <label style={labelStyle}>การแสดงราคา</label>
                         <select 
                           style={inputStyle}
-                          value={(unit.price === '' || unit.price === null) ? 'contact' : 'specify'}
+                          value={unit.priceMode === 'contact' ? 'contact' : 'specify'}
                           onChange={e => {
-                            if (e.target.value === 'contact') handleChange(idx, 'price', '');
-                            else handleChange(idx, 'price', '0');
+                            const mode = e.target.value;
+                            handleChange(idx, 'priceMode', mode);
+                            if (mode === 'contact') handleChange(idx, 'price', '');
                           }}
                         >
                           <option value="specify">ระบุราคาเป็นตัวเลข</option>
                           <option value="contact">แสดงเป็น "สอบถามราคา"</option>
                         </select>
                       </div>
-                      {(unit.price !== '' && unit.price !== null) && (
+                      {unit.priceMode !== 'contact' && (
                         <div>
                           <label style={labelStyle}>ราคา (ล้านบาท)</label>
-                          <input type="number" step="0.01" value={unit.price || ''} onChange={e => handleChange(idx, 'price', e.target.value)} placeholder="เช่น 3.5" style={inputStyle} onFocus={e => e.target.style.borderColor = 'var(--primary)'} onBlur={e => e.target.style.borderColor = '#e2e8f0'} />
+                          <input type="number" step="0.01" value={unit.price ?? ''} onChange={e => handleChange(idx, 'price', e.target.value)} placeholder="เช่น 3.5" style={inputStyle} onFocus={e => e.target.style.borderColor = 'var(--primary)'} onBlur={e => e.target.style.borderColor = '#e2e8f0'} />
                         </div>
                       )}
                     </div>
