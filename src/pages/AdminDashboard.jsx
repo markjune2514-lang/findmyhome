@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { useProperties } from '../PropertiesContext';
 import { supabase } from '../supabaseClient';
 import {
@@ -165,19 +165,33 @@ function UnitTypesModal({ prop, onClose, onSaved }) {
 // ── Main Dashboard ──────────────────────────────────────────────────────────
 export default function AdminDashboard() {
   const { properties, deleteProperty, fetchProperties, updateProperty, heroImage, setHeroImage } = useProperties();
-  
+  const location = useLocation();
+
+  // Restore dashboard view state if returning from edit
+  const [savedView] = useState(() => {
+    try {
+      const raw = sessionStorage.getItem('fmh_admin_dashboard_state');
+      return raw ? JSON.parse(raw) : null;
+    } catch {
+      return null;
+    }
+  });
+
   // Navigation & Workspace Tabs
-  const [activeTab, setActiveTab] = useState('properties'); // 'properties' | 'developers' | 'analytics' | 'system'
+  const [activeTab, setActiveTab] = useState(() => savedView?.activeTab || 'properties'); // 'properties' | 'developers' | 'analytics' | 'system'
   
   // Search, Filters, Sorting & Pagination
-  const [search, setSearch] = useState('');
-  const [typeFilter, setTypeFilter] = useState('ทั้งหมด');
-  const [developerFilter, setDeveloperFilter] = useState('ทั้งหมด');
-  const [statusFilter, setStatusFilter] = useState('ทั้งหมด');
-  const [tierFilter, setTierFilter] = useState('ทั้งหมด');
-  const [sortBy, setSortBy] = useState('newest'); // 'newest' | 'price_asc' | 'price_desc' | 'name_asc' | 'units_desc'
-  const [pageSize, setPageSize] = useState(25);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [search, setSearch] = useState(() => savedView?.search || '');
+  const [typeFilter, setTypeFilter] = useState(() => savedView?.typeFilter || 'ทั้งหมด');
+  const [developerFilter, setDeveloperFilter] = useState(() => savedView?.developerFilter || 'ทั้งหมด');
+  const [statusFilter, setStatusFilter] = useState(() => savedView?.statusFilter || 'ทั้งหมด');
+  const [tierFilter, setTierFilter] = useState(() => savedView?.tierFilter || 'ทั้งหมด');
+  const [sortBy, setSortBy] = useState(() => savedView?.sortBy || 'newest'); // 'newest' | 'price_asc' | 'price_desc' | 'name_asc' | 'units_desc'
+  const [pageSize, setPageSize] = useState(() => savedView?.pageSize || 25);
+  const [currentPage, setCurrentPage] = useState(() => savedView?.currentPage || 1);
+  const [highlightedPropId, setHighlightedPropId] = useState(null);
+
+  const isInitialFilterMount = useRef(true);
 
   // Modals & Selection State
   const [managingProp, setManagingProp] = useState(null);
@@ -337,10 +351,96 @@ export default function AdminDashboard() {
     return filteredProperties.slice(start, start + pageSize);
   }, [filteredProperties, currentPage, pageSize]);
 
-  // Reset page on filter changes
+  // Persist view state across dashboard interactions
   useEffect(() => {
+    try {
+      sessionStorage.setItem('fmh_admin_dashboard_state', JSON.stringify({
+        activeTab,
+        search,
+        typeFilter,
+        developerFilter,
+        statusFilter,
+        tierFilter,
+        sortBy,
+        pageSize,
+        currentPage
+      }));
+    } catch (e) {}
+  }, [activeTab, search, typeFilter, developerFilter, statusFilter, tierFilter, sortBy, pageSize, currentPage]);
+
+  // Reset page on filter changes (skip initial mount so restored page is preserved)
+  useEffect(() => {
+    if (isInitialFilterMount.current) {
+      isInitialFilterMount.current = false;
+      return;
+    }
     setCurrentPage(1);
   }, [search, typeFilter, developerFilter, statusFilter, tierFilter, pageSize]);
+
+  // If returning to a specific project, ensure the page displaying it is active
+  useEffect(() => {
+    const targetId = location.state?.returnToPropId || sessionStorage.getItem('fmh_admin_last_prop_id');
+    if (targetId && filteredProperties.length > 0 && pageSize !== 'all') {
+      const targetIndex = filteredProperties.findIndex(p => p.id === targetId);
+      if (targetIndex !== -1) {
+        const requiredPage = Math.floor(targetIndex / pageSize) + 1;
+        if (requiredPage !== currentPage) {
+          setCurrentPage(requiredPage);
+        }
+      }
+    }
+  }, [filteredProperties, pageSize, location.state]);
+
+  // Smooth scroll back to the edited project and highlight it
+  useEffect(() => {
+    const targetId = location.state?.returnToPropId || sessionStorage.getItem('fmh_admin_last_prop_id');
+    const savedScrollY = sessionStorage.getItem('fmh_admin_last_scroll_y');
+
+    if (!targetId && !savedScrollY) return;
+
+    let attempts = 0;
+    const interval = setInterval(() => {
+      attempts++;
+      const el = targetId ? document.getElementById(`prop-row-${targetId}`) : null;
+      if (el) {
+        clearInterval(interval);
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        setHighlightedPropId(targetId);
+        sessionStorage.removeItem('fmh_admin_last_prop_id');
+        sessionStorage.removeItem('fmh_admin_last_scroll_y');
+        setTimeout(() => setHighlightedPropId(null), 3500);
+      } else if (attempts >= 20) {
+        clearInterval(interval);
+        if (savedScrollY) {
+          window.scrollTo({ top: parseInt(savedScrollY, 10), behavior: 'smooth' });
+        }
+        sessionStorage.removeItem('fmh_admin_last_prop_id');
+        sessionStorage.removeItem('fmh_admin_last_scroll_y');
+      }
+    }, 100);
+
+    return () => clearInterval(interval);
+  }, [paginatedProperties, location.state]);
+
+  const handleSaveScrollState = (propId) => {
+    try {
+      sessionStorage.setItem('fmh_admin_last_prop_id', propId);
+      sessionStorage.setItem('fmh_admin_last_scroll_y', window.scrollY.toString());
+      sessionStorage.setItem('fmh_admin_dashboard_state', JSON.stringify({
+        activeTab,
+        search,
+        typeFilter,
+        developerFilter,
+        statusFilter,
+        tierFilter,
+        sortBy,
+        pageSize,
+        currentPage
+      }));
+    } catch (e) {
+      console.warn('Failed to save admin scroll state', e);
+    }
+  };
 
   // Selection Handlers
   const toggleSelectAll = () => {
@@ -893,8 +993,13 @@ export default function AdminDashboard() {
 
                     return (
                       <tr 
+                        id={`prop-row-${prop.id}`}
                         key={prop.id} 
-                        className={`hover:bg-blue-50/40 transition-colors ${isSelected ? 'bg-blue-50/70' : ''}`}
+                        className={`transition-all duration-500 ${
+                          highlightedPropId === prop.id 
+                            ? 'bg-amber-100/90 ring-2 ring-amber-500 shadow-md font-medium' 
+                            : isSelected ? 'bg-blue-50/70' : 'hover:bg-blue-50/40'
+                        }`}
                       >
                         {/* Checkbox */}
                         <td className="p-3 text-center align-middle">
@@ -925,6 +1030,11 @@ export default function AdminDashboard() {
                                 >
                                   {prop.name}
                                 </Link>
+                                {highlightedPropId === prop.id && (
+                                  <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-500 text-white shadow-xs animate-pulse">
+                                    เพิ่งแก้ไข
+                                  </span>
+                                )}
                                 <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold bg-slate-100 text-slate-600 border border-slate-200/80">
                                   {prop.type || '-'}
                                 </span>
@@ -1084,6 +1194,7 @@ export default function AdminDashboard() {
 
                             <Link
                               to={`/admin/edit/${prop.id}`}
+                              onClick={() => handleSaveScrollState(prop.id)}
                               title="แก้ไขรายละเอียด"
                               className="p-1.5 rounded-lg text-blue-600 hover:bg-blue-50 transition-colors"
                             >
@@ -1093,6 +1204,7 @@ export default function AdminDashboard() {
                             <Link
                               to={`/admin/add`}
                               state={{ duplicateFrom: prop }}
+                              onClick={() => handleSaveScrollState(prop.id)}
                               title="คัดลอกสร้างใหม่ (Duplicate)"
                               className="p-1.5 rounded-lg text-slate-600 hover:bg-slate-100 transition-colors"
                             >
@@ -1474,7 +1586,14 @@ export default function AdminDashboard() {
         <UnitTypesModal
           prop={managingProp}
           onClose={() => setManagingProp(null)}
-          onSaved={() => { if (fetchProperties) fetchProperties(); }}
+          onSaved={() => { 
+            const savedId = managingProp?.id;
+            if (fetchProperties) fetchProperties(); 
+            if (savedId) {
+              setHighlightedPropId(savedId);
+              setTimeout(() => setHighlightedPropId(null), 3500);
+            }
+          }}
         />
       )}
 

@@ -454,7 +454,7 @@ export default function AddPropertyPage() {
         const result = await updateProperty(id, newProperty);
         if (result?.success || result === true) {
           alert('บันทึกการแก้ไขโครงการเรียบร้อยแล้ว!');
-          navigate('/admin');
+          navigate('/admin', { state: { returnToPropId: id } });
         } else {
           const msg = result?.message || 'ไม่ทราบสาเหตุ';
           alert('เกิดข้อผิดพลาด: ' + msg);
@@ -1294,7 +1294,19 @@ export default function AddPropertyPage() {
 
 
           <div className="form-actions flex flex-col sm:flex-row justify-end gap-3 mt-8 pt-8 border-t">
-            <button type="button" className="btn btn-secondary w-full sm:w-auto px-8 py-2.5" onClick={() => navigate(-1)}>ยกเลิก</button>
+            <button 
+              type="button" 
+              className="btn btn-secondary w-full sm:w-auto px-8 py-2.5" 
+              onClick={() => {
+                if (isEditMode) {
+                  navigate('/admin', { state: { returnToPropId: id } });
+                } else {
+                  navigate(-1);
+                }
+              }}
+            >
+              ยกเลิก
+            </button>
             <button type="button" className="btn w-full sm:w-auto px-8 py-2.5 flex justify-center items-center gap-2 bg-blue-50 text-blue-600 hover:bg-blue-100 border border-blue-200" onClick={() => setShowPreview(true)}>
               <Eye size={18} /> ดูตัวอย่าง (Preview)
             </button>

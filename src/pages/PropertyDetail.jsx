@@ -105,6 +105,16 @@ export default function PropertyDetail({ previewData }) {
   const displayParking = selectedUnit?.parking || prop?.parking;
   const displayMultipurpose = selectedUnit?.multipurpose || prop?.multipurpose;
   
+  // Luxury Rooms
+  const displayLivingRoom = selectedUnit?.living_room || selectedUnit?.livingRoom;
+  const displayFamilyRoom = selectedUnit?.family_room || selectedUnit?.familyRoom;
+  const displayKitchen = selectedUnit?.kitchen;
+  const displayDiningRoom = selectedUnit?.dining_room || selectedUnit?.diningRoom;
+  const displayMaidRoom = selectedUnit?.maid_room || selectedUnit?.maidRoom;
+  const displayPrayerRoom = selectedUnit?.prayer_room || selectedUnit?.prayerRoom;
+  const displayElevator = selectedUnit?.elevator;
+  const displayPool = selectedUnit?.private_pool || selectedUnit?.privatePool;
+  
   const cleanSpec = (s) => typeof s === 'string' ? s.replace(/beds?|bedrooms?|ห้องนอน|ห้องน้ำ|ที่จอดรถ|ห้องอเนกประสงค์/gi, '').trim() : s;
   const cleanMulti = cleanSpec(displayMultipurpose);
   const hasMultipurpose = Boolean(cleanMulti) && cleanMulti !== '0' && cleanMulti !== '-' && cleanMulti !== '';
@@ -387,6 +397,36 @@ export default function PropertyDetail({ previewData }) {
           {hasMultipurpose && (
             <div className="flex items-center gap-1.5 bg-amber-50 text-amber-700 px-2.5 py-1.5 rounded-lg text-sm font-bold border border-amber-100">
               <Star size={16} className="text-amber-500" /> {cleanMulti} <span className="hidden sm:inline">อเนกประสงค์</span>
+            </div>
+          )}
+          {displayLivingRoom && (
+            <div className="flex items-center gap-1.5 bg-orange-50 text-orange-700 px-2.5 py-1.5 rounded-lg text-sm font-bold border border-orange-100" title="ห้องนั่งเล่น / ห้องรับแขก">
+              <span>🛋️</span> {displayLivingRoom} <span className="hidden sm:inline">ห้องนั่งเล่น</span>
+            </div>
+          )}
+          {displayFamilyRoom && (
+            <div className="flex items-center gap-1.5 bg-indigo-50 text-indigo-700 px-2.5 py-1.5 rounded-lg text-sm font-bold border border-indigo-100" title="ห้องพักผ่อนชั้นบน">
+              <span>👨‍👩‍👧</span> {displayFamilyRoom} <span className="hidden sm:inline">พักผ่อนบน</span>
+            </div>
+          )}
+          {displayDiningRoom && (
+            <div className="flex items-center gap-1.5 bg-amber-50 text-amber-800 px-2.5 py-1.5 rounded-lg text-sm font-bold border border-amber-200" title="ส่วนรับประทานอาหาร">
+              <span>🍽️</span> {displayDiningRoom} <span className="hidden sm:inline">ทานอาหาร</span>
+            </div>
+          )}
+          {displayKitchen && (
+            <div className="flex items-center gap-1.5 bg-emerald-50 text-emerald-800 px-2.5 py-1.5 rounded-lg text-sm font-bold border border-emerald-200" title="ห้องครัวไทย">
+              <span>🍳</span> {displayKitchen} <span className="hidden sm:inline">ครัวไทย</span>
+            </div>
+          )}
+          {displayMaidRoom && (
+            <div className="flex items-center gap-1.5 bg-rose-50 text-rose-700 px-2.5 py-1.5 rounded-lg text-sm font-bold border border-rose-100" title="ห้องแม่บ้าน">
+              <span>🧹</span> {displayMaidRoom} <span className="hidden sm:inline">ห้องแม่บ้าน</span>
+            </div>
+          )}
+          {displayPrayerRoom && (
+            <div className="flex items-center gap-1.5 bg-purple-50 text-purple-700 px-2.5 py-1.5 rounded-lg text-sm font-bold border border-purple-100" title="ห้องพระ">
+              <span>🪷</span> {displayPrayerRoom} <span className="hidden sm:inline">ห้องพระ</span>
             </div>
           )}
           {displaySize && (
@@ -791,16 +831,80 @@ export default function PropertyDetail({ previewData }) {
                     <span className="text-sm font-bold text-gray-800">{selectedUnit.depth} ม.</span>
                   </div>
                 )}
-                <div className="p-3 bg-neutral-50 rounded-xl">
-                  <span className="text-xs text-gray-400 block">ห้องนอน / ห้องน้ำ / อเนกประสงค์ / ที่จอดรถ</span>
-                  <span className="text-sm font-bold text-gray-800">
-                    {[
-                      displayBedrooms ? `${cleanSpec(displayBedrooms)} ห้องนอน` : null,
-                      displayBathrooms ? `${cleanSpec(displayBathrooms)} ห้องน้ำ` : null,
-                      hasMultipurpose ? `${cleanMulti} อเนกประสงค์` : null,
-                      displayParking ? `${cleanSpec(displayParking)} ที่จอดรถ` : null
-                    ].filter(Boolean).join(' / ') || 'ไม่ระบุ'}
+                <div className="p-3.5 bg-neutral-50 rounded-xl col-span-2 sm:col-span-4 border border-neutral-100">
+                  <span className="text-xs text-gray-500 font-bold block mb-2 flex items-center gap-1.5">
+                    <span>🏡</span> ฟังก์ชันห้องและพื้นที่ใช้สอย (Room Functions)
                   </span>
+                  <div className="flex flex-wrap gap-2">
+                    {displayBedrooms && (
+                      <span className="inline-flex items-center gap-1 bg-white border border-blue-200 text-blue-900 px-2.5 py-1 rounded-lg text-xs font-bold shadow-2xs">
+                        🛏️ {cleanSpec(displayBedrooms)} ห้องนอน
+                      </span>
+                    )}
+                    {displayBathrooms && (
+                      <span className="inline-flex items-center gap-1 bg-white border border-cyan-200 text-cyan-900 px-2.5 py-1 rounded-lg text-xs font-bold shadow-2xs">
+                        🚿 {cleanSpec(displayBathrooms)} ห้องน้ำ
+                      </span>
+                    )}
+                    {displayParking && (
+                      <span className="inline-flex items-center gap-1 bg-white border border-slate-200 text-slate-800 px-2.5 py-1 rounded-lg text-xs font-bold shadow-2xs">
+                        🚗 {cleanSpec(displayParking)} ที่จอดรถ
+                      </span>
+                    )}
+                    {hasMultipurpose && (
+                      <span className="inline-flex items-center gap-1 bg-white border border-amber-200 text-amber-900 px-2.5 py-1 rounded-lg text-xs font-bold shadow-2xs">
+                        ⭐ {cleanMulti} ห้องอเนกประสงค์
+                      </span>
+                    )}
+                    {displayLivingRoom && (
+                      <span className="inline-flex items-center gap-1 bg-white border border-orange-200 text-orange-900 px-2.5 py-1 rounded-lg text-xs font-bold shadow-2xs">
+                        🛋️ {displayLivingRoom} ห้องนั่งเล่น/รับแขก
+                      </span>
+                    )}
+                    {displayFamilyRoom && (
+                      <span className="inline-flex items-center gap-1 bg-white border border-indigo-200 text-indigo-900 px-2.5 py-1 rounded-lg text-xs font-bold shadow-2xs">
+                        👨‍👩‍👧 {displayFamilyRoom} ห้องพักผ่อนชั้นบน
+                      </span>
+                    )}
+                    {displayDiningRoom && (
+                      <span className="inline-flex items-center gap-1 bg-white border border-amber-200 text-amber-900 px-2.5 py-1 rounded-lg text-xs font-bold shadow-2xs">
+                        🍽️ {displayDiningRoom} ส่วนรับประทานอาหาร
+                      </span>
+                    )}
+                    {displayKitchen && (
+                      <span className="inline-flex items-center gap-1 bg-white border border-emerald-200 text-emerald-900 px-2.5 py-1 rounded-lg text-xs font-bold shadow-2xs">
+                        🍳 {displayKitchen} ห้องครัวไทย
+                      </span>
+                    )}
+                    {displayMaidRoom && (
+                      <span className="inline-flex items-center gap-1 bg-white border border-rose-200 text-rose-900 px-2.5 py-1 rounded-lg text-xs font-bold shadow-2xs">
+                        🧹 {displayMaidRoom} ห้องแม่บ้าน
+                      </span>
+                    )}
+                    {displayPrayerRoom && (
+                      <span className="inline-flex items-center gap-1 bg-white border border-purple-200 text-purple-900 px-2.5 py-1 rounded-lg text-xs font-bold shadow-2xs">
+                        🪷 {displayPrayerRoom} ห้องพระ
+                      </span>
+                    )}
+                    {displayElevator && (
+                      <span className="inline-flex items-center gap-1 bg-white border border-cyan-200 text-cyan-900 px-2.5 py-1 rounded-lg text-xs font-bold shadow-2xs">
+                        🛗 {displayElevator} ลิฟต์โดยสาร
+                      </span>
+                    )}
+                    {displayPool && (
+                      <span className="inline-flex items-center gap-1 bg-white border border-blue-300 text-blue-900 px-2.5 py-1 rounded-lg text-xs font-bold shadow-2xs">
+                        🏊 สระว่ายน้ำส่วนตัว
+                      </span>
+                    )}
+                    {Array.isArray(selectedUnit?.rooms_detail) && selectedUnit.rooms_detail.map((rm, rIdx) => {
+                      if (['ห้องนอน', 'ห้องน้ำ', 'ที่จอดรถ', 'ห้องอเนกประสงค์', 'ห้องนั่งเล่น', 'ห้องรับแขก', 'ดับเบิ้ลลิฟวิ่งรูม', 'ห้องพักผ่อนชั้นบน', 'ส่วนพักผ่อนขนาดใหญ่', 'ส่วนรับประทานอาหาร', 'ห้องครัว', 'ห้องครัวไทยขนาดใหญ่ส่วนเตรียมอาหาร', 'ห้องแม่บ้าน', 'ห้องพระ', 'ลิฟต์', 'สระว่ายน้ำส่วนตัว'].includes(rm.title)) return null;
+                      return (
+                        <span key={rIdx} className="inline-flex items-center gap-1 bg-white border border-gray-200 text-gray-700 px-2.5 py-1 rounded-lg text-xs font-semibold shadow-2xs">
+                          ✨ {rm.amount}x {rm.title}
+                        </span>
+                      );
+                    })}
+                  </div>
                 </div>
                 {selectedUnit.special && (
                   <div className="p-3 bg-neutral-50 rounded-xl col-span-2">
