@@ -200,6 +200,7 @@ export default function ImageUploader({ images = [], onChange, label = 'รู�
               <img 
                 src={img} 
                 alt={`Uploaded ${idx}`} 
+                referrerPolicy="no-referrer"
                 className={`w-full h-full ${isLogo ? 'object-contain' : 'object-cover'}`}
                 onError={(e) => {
                   e.target.onerror = null;

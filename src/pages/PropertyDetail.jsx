@@ -82,22 +82,29 @@ export default function PropertyDetail({ previewData }) {
     : null;
 
   // Filter Images based on activeTab
-  const mainImages = prop?.image ? (Array.isArray(prop.image) ? prop.image : (typeof prop.image === 'string' ? prop.image.split(',') : [String(prop.image)])).filter(Boolean) : [];
-  const selectedUnitImages = selectedUnit
-    ? [...(selectedUnit.planImages || []), ...(selectedUnit.roomImages || [])].filter(Boolean)
+  const propOverviewImages = Array.isArray(prop?.images) 
+    ? prop.images 
+    : (typeof prop?.images === 'string' ? prop.images.split(',') : []);
+  const mainImages = prop?.image 
+    ? (Array.isArray(prop.image) ? prop.image : (typeof prop.image === 'string' ? prop.image.split(',') : [String(prop.image)])).filter(Boolean) 
     : [];
-  const allUnitImages = prop?.unitTypes ? prop.unitTypes.flatMap(u => [...(u.planImages || []), ...(u.roomImages || [])]) : [];
+  const combinedOverviewImages = [...new Set([...mainImages, ...propOverviewImages])].filter(Boolean);
+
+  const selectedUnitImages = selectedUnit
+    ? [selectedUnit.image, ...(selectedUnit.planImages || []), ...(selectedUnit.roomImages || [])].filter(Boolean)
+    : [];
+  const allUnitImages = prop?.unitTypes ? prop.unitTypes.flatMap(u => [u.image, ...(u.planImages || []), ...(u.roomImages || [])]).filter(Boolean) : [];
 
   // When 'overview', show main project images + overview photos; when specific unit, show that unit's images first!
   const allImages = selectedUnit && selectedUnitImages.length > 0
-    ? [...new Set([...selectedUnitImages, ...mainImages])].filter(Boolean)
-    : [...new Set([...mainImages, ...allUnitImages])].filter(Boolean);
+    ? [...new Set([...selectedUnitImages, ...combinedOverviewImages])].filter(Boolean)
+    : [...new Set([...combinedOverviewImages, ...allUnitImages])].filter(Boolean);
 
   const selectedImage = allImages.length > 0 ? allImages[currentIndex] : '';
 
   // Dynamic Price & Specs
-  const displayPriceLabel = selectedUnit ? `ราคาสำหรับ ${selectedUnit.name ? 'TYPE: ' + selectedUnit.name : 'TYPE นี้'}` : 'ราคาเริ่มต้น';
-  const displayPrice = selectedUnit ? selectedUnit.price : prop?.price;
+  const displayPriceLabel = (selectedUnit && selectedUnit.price) ? `ราคาสำหรับ ${selectedUnit.name ? 'TYPE: ' + selectedUnit.name : 'TYPE นี้'}` : (prop?.price ? 'ราคาเริ่มต้น' : 'ราคา');
+  const displayPrice = (selectedUnit && selectedUnit.price) ? selectedUnit.price : prop?.price;
   const displayPriceTo = selectedUnit ? '' : prop?.priceTo;
   const displaySize = selectedUnit?.size || prop?.size;
   const displayBedrooms = selectedUnit?.bedrooms || prop?.bedrooms;
@@ -443,6 +450,7 @@ export default function PropertyDetail({ previewData }) {
           <img
             src={selectedImage}
             alt="property"
+            referrerPolicy="no-referrer"
             onClick={() => setIsLightboxOpen(true)}
             style={{width: '100%', height: '400px', objectFit: 'contain', objectPosition: 'center', display: 'block', transition: 'opacity 0.3s', cursor: 'pointer'}}
           />
@@ -503,6 +511,7 @@ export default function PropertyDetail({ previewData }) {
                 key={idx} 
                 src={img} 
                 alt={`thumb-${idx}`} 
+                referrerPolicy="no-referrer"
                 onClick={() => setCurrentIndex(idx)}
                 className={`w-24 h-16 sm:w-32 sm:h-20 object-cover rounded-xl cursor-pointer border-2 shrink-0 snap-start transition-all ${currentIndex === idx ? 'border-primary shadow-md scale-95' : 'border-transparent opacity-75 hover:opacity-100'}`} 
               />
@@ -1198,6 +1207,7 @@ export default function PropertyDetail({ previewData }) {
             <img 
               src={selectedImage} 
               alt="Full size property" 
+              referrerPolicy="no-referrer"
               className="max-w-full h-auto rounded-lg shadow-2xl"
               style={{ objectFit: 'contain' }}
             />

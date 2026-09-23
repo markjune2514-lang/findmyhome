@@ -209,6 +209,7 @@ export default function ProjectsPage() {
                     alt={prop.name} 
                     loading="lazy"
                     decoding="async"
+                    referrerPolicy="no-referrer"
                   />
                   <button 
                     onClick={(e) => { e.preventDefault(); toggleFavorite(prop.id); }}
@@ -272,6 +273,7 @@ export default function ProjectsPage() {
                   alt={prop.name} 
                   loading="lazy"
                   decoding="async"
+                  referrerPolicy="no-referrer"
                 />
                 <div className="prop-card-info" style={{ paddingRight: '30px', flex: 1 }}>
                   <h4 className="flex items-center gap-1">

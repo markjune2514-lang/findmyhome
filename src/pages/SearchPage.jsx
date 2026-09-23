@@ -1209,6 +1209,7 @@ export default function SearchPage() {
                     alt={prop.name} 
                     loading="lazy"
                     decoding="async"
+                    referrerPolicy="no-referrer"
                   />
                   <div className="prop-card-info" style={{ paddingRight: '30px' }}>
                     <h4 className="flex items-center gap-1">

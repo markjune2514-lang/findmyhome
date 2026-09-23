@@ -10,8 +10,8 @@ const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes
 
 export const PropertiesProvider = ({ children }) => {
   const { user } = useAuth() || {};
-  const cacheKey = user ? 'fmh_properties_admin_v4_cache' : 'fmh_properties_public_v4_cache';
-  const cacheTimeKey = user ? 'fmh_properties_admin_v4_time' : 'fmh_properties_public_v4_time';
+  const cacheKey = user ? 'fmh_properties_admin_v26_cache' : 'fmh_properties_public_v26_cache';
+  const cacheTimeKey = user ? 'fmh_properties_admin_v26_time' : 'fmh_properties_public_v26_time';
   const CACHE_KEY = cacheKey;
 
   const clearSessionCaches = () => {
@@ -20,6 +20,90 @@ export const PropertiesProvider = ({ children }) => {
       sessionStorage.removeItem('fmh_properties_admin_v4_time');
       sessionStorage.removeItem('fmh_properties_public_v4_cache');
       sessionStorage.removeItem('fmh_properties_public_v4_time');
+      sessionStorage.removeItem('fmh_properties_admin_v5_cache');
+      sessionStorage.removeItem('fmh_properties_admin_v5_time');
+      sessionStorage.removeItem('fmh_properties_public_v5_cache');
+      sessionStorage.removeItem('fmh_properties_public_v5_time');
+      sessionStorage.removeItem('fmh_properties_admin_v6_cache');
+      sessionStorage.removeItem('fmh_properties_admin_v6_time');
+      sessionStorage.removeItem('fmh_properties_public_v6_cache');
+      sessionStorage.removeItem('fmh_properties_public_v6_time');
+      sessionStorage.removeItem('fmh_properties_admin_v7_cache');
+      sessionStorage.removeItem('fmh_properties_admin_v7_time');
+      sessionStorage.removeItem('fmh_properties_public_v7_cache');
+      sessionStorage.removeItem('fmh_properties_public_v7_time');
+      sessionStorage.removeItem('fmh_properties_admin_v8_cache');
+      sessionStorage.removeItem('fmh_properties_admin_v8_time');
+      sessionStorage.removeItem('fmh_properties_public_v8_cache');
+      sessionStorage.removeItem('fmh_properties_public_v8_time');
+      sessionStorage.removeItem('fmh_properties_admin_v9_cache');
+      sessionStorage.removeItem('fmh_properties_admin_v9_time');
+      sessionStorage.removeItem('fmh_properties_public_v9_cache');
+      sessionStorage.removeItem('fmh_properties_public_v9_time');
+      sessionStorage.removeItem('fmh_properties_admin_v10_cache');
+      sessionStorage.removeItem('fmh_properties_admin_v10_time');
+      sessionStorage.removeItem('fmh_properties_public_v10_cache');
+      sessionStorage.removeItem('fmh_properties_public_v10_time');
+      sessionStorage.removeItem('fmh_properties_admin_v11_cache');
+      sessionStorage.removeItem('fmh_properties_admin_v11_time');
+      sessionStorage.removeItem('fmh_properties_public_v11_cache');
+      sessionStorage.removeItem('fmh_properties_public_v11_time');
+      sessionStorage.removeItem('fmh_properties_admin_v12_cache');
+      sessionStorage.removeItem('fmh_properties_admin_v12_time');
+      sessionStorage.removeItem('fmh_properties_public_v12_cache');
+      sessionStorage.removeItem('fmh_properties_public_v12_time');
+      sessionStorage.removeItem('fmh_properties_admin_v13_cache');
+      sessionStorage.removeItem('fmh_properties_admin_v13_time');
+      sessionStorage.removeItem('fmh_properties_public_v13_cache');
+      sessionStorage.removeItem('fmh_properties_public_v13_time');
+      sessionStorage.removeItem('fmh_properties_admin_v14_cache');
+      sessionStorage.removeItem('fmh_properties_admin_v14_time');
+      sessionStorage.removeItem('fmh_properties_public_v14_cache');
+      sessionStorage.removeItem('fmh_properties_public_v14_time');
+      sessionStorage.removeItem('fmh_properties_admin_v15_cache');
+      sessionStorage.removeItem('fmh_properties_admin_v15_time');
+      sessionStorage.removeItem('fmh_properties_public_v15_cache');
+      sessionStorage.removeItem('fmh_properties_public_v15_time');
+      sessionStorage.removeItem('fmh_properties_admin_v16_cache');
+      sessionStorage.removeItem('fmh_properties_admin_v16_time');
+      sessionStorage.removeItem('fmh_properties_public_v16_cache');
+      sessionStorage.removeItem('fmh_properties_public_v16_time');
+      sessionStorage.removeItem('fmh_properties_admin_v17_cache');
+      sessionStorage.removeItem('fmh_properties_admin_v17_time');
+      sessionStorage.removeItem('fmh_properties_public_v17_cache');
+      sessionStorage.removeItem('fmh_properties_public_v17_time');
+      sessionStorage.removeItem('fmh_properties_admin_v18_cache');
+      sessionStorage.removeItem('fmh_properties_admin_v18_time');
+      sessionStorage.removeItem('fmh_properties_public_v18_cache');
+      sessionStorage.removeItem('fmh_properties_public_v18_time');
+      sessionStorage.removeItem('fmh_properties_admin_v19_cache');
+      sessionStorage.removeItem('fmh_properties_admin_v19_time');
+      sessionStorage.removeItem('fmh_properties_public_v19_cache');
+      sessionStorage.removeItem('fmh_properties_public_v19_time');
+      sessionStorage.removeItem('fmh_properties_admin_v20_cache');
+      sessionStorage.removeItem('fmh_properties_admin_v20_time');
+      sessionStorage.removeItem('fmh_properties_public_v20_cache');
+      sessionStorage.removeItem('fmh_properties_public_v20_time');
+      sessionStorage.removeItem('fmh_properties_admin_v21_cache');
+      sessionStorage.removeItem('fmh_properties_admin_v21_time');
+      sessionStorage.removeItem('fmh_properties_public_v21_cache');
+      sessionStorage.removeItem('fmh_properties_public_v21_time');
+      sessionStorage.removeItem('fmh_properties_admin_v22_cache');
+      sessionStorage.removeItem('fmh_properties_admin_v22_time');
+      sessionStorage.removeItem('fmh_properties_public_v22_cache');
+      sessionStorage.removeItem('fmh_properties_public_v22_time');
+      sessionStorage.removeItem('fmh_properties_admin_v23_cache');
+      sessionStorage.removeItem('fmh_properties_admin_v23_time');
+      sessionStorage.removeItem('fmh_properties_public_v23_cache');
+      sessionStorage.removeItem('fmh_properties_public_v23_time');
+      sessionStorage.removeItem('fmh_properties_admin_v24_cache');
+      sessionStorage.removeItem('fmh_properties_admin_v24_time');
+      sessionStorage.removeItem('fmh_properties_public_v24_cache');
+      sessionStorage.removeItem('fmh_properties_public_v24_time');
+      sessionStorage.removeItem('fmh_properties_admin_v25_cache');
+      sessionStorage.removeItem('fmh_properties_admin_v25_time');
+      sessionStorage.removeItem('fmh_properties_public_v25_cache');
+      sessionStorage.removeItem('fmh_properties_public_v25_time');
     } catch (e) {
       console.warn('Failed to clear session cache', e);
     }
@@ -28,8 +112,8 @@ export const PropertiesProvider = ({ children }) => {
   // Try initializing from session cache for instant render
   const [properties, setProperties] = useState(() => {
     try {
-      const activeCacheKey = user ? 'fmh_properties_admin_v4_cache' : 'fmh_properties_public_v4_cache';
-      const activeTimeKey = user ? 'fmh_properties_admin_v4_time' : 'fmh_properties_public_v4_time';
+      const activeCacheKey = user ? 'fmh_properties_admin_v26_cache' : 'fmh_properties_public_v26_cache';
+      const activeTimeKey = user ? 'fmh_properties_admin_v26_time' : 'fmh_properties_public_v26_time';
       const cached = sessionStorage.getItem(activeCacheKey);
       const cachedTime = sessionStorage.getItem(activeTimeKey);
       if (cached && cachedTime && (Date.now() - parseInt(cachedTime, 10) < CACHE_TTL_MS)) {
@@ -60,6 +144,19 @@ export const PropertiesProvider = ({ children }) => {
       imageStr = String(item.image);
     }
 
+    let imagesArr = [];
+    if (Array.isArray(item.images)) {
+      imagesArr = item.images.filter(Boolean);
+    } else if (typeof item.images === 'string') {
+      imagesArr = item.images.split(',').map(s => s.trim()).filter(Boolean);
+    } else if (imageStr) {
+      imagesArr = imageStr.split(',').map(s => s.trim()).filter(Boolean);
+    }
+
+    if (imagesArr.length > 1 && (!imageStr || !imageStr.includes(','))) {
+      imageStr = imagesArr.join(',');
+    }
+
     const toArray = (val) => {
       if (!val) return [];
       if (Array.isArray(val)) return val;
@@ -77,6 +174,7 @@ export const PropertiesProvider = ({ children }) => {
       ...item,
       price: normalizedPrice,
       image: imageStr,
+      images: imagesArr,
       location: { 
         lat: typeof item.location_lat === 'number' ? item.location_lat : (parseFloat(item.location_lat) || 13.7563), 
         lng: typeof item.location_lng === 'number' ? item.location_lng : (parseFloat(item.location_lng) || 100.5018) 

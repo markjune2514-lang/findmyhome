@@ -146,7 +146,7 @@ export default function ComparePage() {
                     <div className="prop-card-compare relative">
                       <span className="badge absolute-badge-top">{index + 1}</span>
                       <button className="remove-btn" onClick={() => removeFromCompare(prop.id)}><X size={14} /></button>
-                      <img src={prop.image ? (Array.isArray(prop.image) ? prop.image[0] : (typeof prop.image === 'string' ? prop.image.split(',')[0] : '')) : ''} alt={prop.name} />
+                      <img src={prop.image ? (Array.isArray(prop.image) ? prop.image[0] : (typeof prop.image === 'string' ? prop.image.split(',')[0] : '')) : ''} alt={prop.name} referrerPolicy="no-referrer" />
                       <div className="p-4">
                         {isFastest && (
                           <div className="mb-2 inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">

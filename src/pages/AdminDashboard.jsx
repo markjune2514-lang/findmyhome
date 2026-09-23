@@ -1018,6 +1018,7 @@ export default function AdminDashboard() {
                               src={imgUrl || 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=200&q=80'}
                               alt={prop.name}
                               className="w-11 h-11 rounded-xl object-cover border border-slate-200 flex-shrink-0 bg-slate-100"
+                              referrerPolicy="no-referrer"
                               onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=200&q=80'; }}
                             />
                             <div className="min-w-0 flex-1">
