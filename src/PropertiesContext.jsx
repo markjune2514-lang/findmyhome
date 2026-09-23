@@ -10,8 +10,8 @@ const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes
 
 export const PropertiesProvider = ({ children }) => {
   const { user } = useAuth() || {};
-  const cacheKey = user ? 'fmh_properties_admin_v28_cache' : 'fmh_properties_public_v28_cache';
-  const cacheTimeKey = user ? 'fmh_properties_admin_v28_time' : 'fmh_properties_public_v28_time';
+  const cacheKey = user ? 'fmh_properties_admin_v29_cache' : 'fmh_properties_public_v29_cache';
+  const cacheTimeKey = user ? 'fmh_properties_admin_v29_time' : 'fmh_properties_public_v29_time';
   const CACHE_KEY = cacheKey;
 
   const clearSessionCaches = () => {
@@ -112,6 +112,10 @@ export const PropertiesProvider = ({ children }) => {
       sessionStorage.removeItem('fmh_properties_admin_v27_time');
       sessionStorage.removeItem('fmh_properties_public_v27_cache');
       sessionStorage.removeItem('fmh_properties_public_v27_time');
+      sessionStorage.removeItem('fmh_properties_admin_v28_cache');
+      sessionStorage.removeItem('fmh_properties_admin_v28_time');
+      sessionStorage.removeItem('fmh_properties_public_v28_cache');
+      sessionStorage.removeItem('fmh_properties_public_v28_time');
     } catch (e) {
       console.warn('Failed to clear session cache', e);
     }
@@ -120,8 +124,8 @@ export const PropertiesProvider = ({ children }) => {
   // Try initializing from session cache for instant render
   const [properties, setProperties] = useState(() => {
     try {
-      const activeCacheKey = user ? 'fmh_properties_admin_v28_cache' : 'fmh_properties_public_v28_cache';
-      const activeTimeKey = user ? 'fmh_properties_admin_v28_time' : 'fmh_properties_public_v28_time';
+      const activeCacheKey = user ? 'fmh_properties_admin_v29_cache' : 'fmh_properties_public_v29_cache';
+      const activeTimeKey = user ? 'fmh_properties_admin_v29_time' : 'fmh_properties_public_v29_time';
       const cached = sessionStorage.getItem(activeCacheKey);
       const cachedTime = sessionStorage.getItem(activeTimeKey);
       if (cached && cachedTime && (Date.now() - parseInt(cachedTime, 10) < CACHE_TTL_MS)) {
