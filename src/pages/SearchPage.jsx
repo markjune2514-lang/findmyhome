@@ -881,14 +881,14 @@ export default function SearchPage() {
                 </select>
                 <select className="select-input flex-1" value={transitLine} onChange={(e) => { setTransitLine(e.target.value); setTransitStation(''); }} disabled={!transitSystem}>
                   <option value="">เลือกสาย</option>
-                  {transitSystem && Object.keys(transitData[transitSystem]).map(line => (
+                  {transitSystem && transitData[transitSystem] && Object.keys(transitData[transitSystem]).map(line => (
                     <option key={line} value={line}>{line}</option>
                   ))}
                 </select>
               </div>
               <select className="select-input w-full" value={transitStation} onChange={(e) => setTransitStation(e.target.value)} disabled={!transitLine}>
                 <option value="">เลือกสถานี</option>
-                {transitLine && transitData[transitSystem][transitLine].map(station => (
+                {transitLine && transitData[transitSystem]?.[transitLine]?.map(station => (
                   <option key={station} value={station}>{station}</option>
                 ))}
               </select>

@@ -1062,7 +1062,7 @@ export default function AddPropertyPage() {
                 <label>สายรถไฟฟ้า</label>
                 <select name="transitLine" value={formData.transitLine} onChange={(e) => { handleChange(e); setFormData(p => ({...p, station: ''})) }} disabled={!formData.transitSystem}>
                   <option value="">เลือกสาย</option>
-                  {formData.transitSystem && Object.keys(transitData[formData.transitSystem]).map(line => (
+                  {formData.transitSystem && transitData[formData.transitSystem] && Object.keys(transitData[formData.transitSystem]).map(line => (
                     <option key={line} value={line}>{line}</option>
                   ))}
                 </select>
@@ -1071,7 +1071,7 @@ export default function AddPropertyPage() {
                 <label>สถานีรถไฟฟ้า</label>
                 <select name="station" value={formData.station} onChange={handleChange} disabled={!formData.transitLine}>
                   <option value="">เลือกสถานี</option>
-                  {formData.transitLine && transitData[formData.transitSystem][formData.transitLine].map(st => (
+                  {formData.transitLine && transitData[formData.transitSystem]?.[formData.transitLine]?.map(st => (
                     <option key={st} value={st}>{st}</option>
                   ))}
                 </select>

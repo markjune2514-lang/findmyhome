@@ -10,12 +10,16 @@ const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes
 
 export const PropertiesProvider = ({ children }) => {
   const { user } = useAuth() || {};
-  const cacheKey = user ? 'fmh_properties_admin_v31_cache' : 'fmh_properties_public_v31_cache';
-  const cacheTimeKey = user ? 'fmh_properties_admin_v31_time' : 'fmh_properties_public_v31_time';
+  const cacheKey = user ? 'fmh_properties_admin_v32_cache' : 'fmh_properties_public_v32_cache';
+  const cacheTimeKey = user ? 'fmh_properties_admin_v32_time' : 'fmh_properties_public_v32_time';
   const CACHE_KEY = cacheKey;
 
   const clearSessionCaches = () => {
     try {
+      sessionStorage.removeItem('fmh_properties_admin_v31_cache');
+      sessionStorage.removeItem('fmh_properties_admin_v31_time');
+      sessionStorage.removeItem('fmh_properties_public_v31_cache');
+      sessionStorage.removeItem('fmh_properties_public_v31_time');
       sessionStorage.removeItem('fmh_properties_admin_v30_cache');
       sessionStorage.removeItem('fmh_properties_admin_v30_time');
       sessionStorage.removeItem('fmh_properties_public_v30_cache');
@@ -132,12 +136,15 @@ export const PropertiesProvider = ({ children }) => {
   // Try initializing from session cache for instant render
   const [properties, setProperties] = useState(() => {
     try {
-      const activeCacheKey = user ? 'fmh_properties_admin_v31_cache' : 'fmh_properties_public_v31_cache';
-      const activeTimeKey = user ? 'fmh_properties_admin_v31_time' : 'fmh_properties_public_v31_time';
+      const activeCacheKey = user ? 'fmh_properties_admin_v32_cache' : 'fmh_properties_public_v32_cache';
+      const activeTimeKey = user ? 'fmh_properties_admin_v32_time' : 'fmh_properties_public_v32_time';
       const cached = sessionStorage.getItem(activeCacheKey);
       const cachedTime = sessionStorage.getItem(activeTimeKey);
       if (cached && cachedTime && (Date.now() - parseInt(cachedTime, 10) < CACHE_TTL_MS)) {
-        return JSON.parse(cached);
+        const parsed = JSON.parse(cached);
+        if (Array.isArray(parsed)) {
+          return parsed.filter(Boolean);
+        }
       }
     } catch (e) {}
     return [];
@@ -155,6 +162,7 @@ export const PropertiesProvider = ({ children }) => {
 
   // Format a raw Supabase property row
   const formatProperty = (item, isFull = false) => {
+    if (!item || typeof item !== 'object') return null;
     let imageStr = '';
     if (Array.isArray(item.image)) {
       imageStr = item.image.filter(Boolean).join(',');
@@ -257,14 +265,19 @@ export const PropertiesProvider = ({ children }) => {
       if (error) {
         console.error("Error fetching properties:", error);
       } else {
-        const formattedData = (data || []).map(item => formatProperty(item, true));
+        const formattedData = (data || []).map(item => formatProperty(item, true)).filter(Boolean);
         setProperties(formattedData);
         
         // Save to sessionStorage using active user/public cache key
         try {
           sessionStorage.setItem(cacheKey, JSON.stringify(formattedData));
           sessionStorage.setItem(cacheTimeKey, String(Date.now()));
-        } catch (e) {}
+        } catch (e) {
+          try {
+            sessionStorage.removeItem(cacheKey);
+            sessionStorage.removeItem(cacheTimeKey);
+          } catch (cleanErr) {}
+        }
       }
     } catch (err) {
       console.error("Unexpected error in fetchProperties:", err);
@@ -377,6 +390,7 @@ export const PropertiesProvider = ({ children }) => {
       'package_tier', 'rank_score'
     ];
     const cleaned = {};
+    if (!payload || typeof payload !== 'object') return cleaned;
     for (const key of Object.keys(payload)) {
       if (validDbFields.includes(key)) {
         cleaned[key] = payload[key];
