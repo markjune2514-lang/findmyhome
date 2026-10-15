@@ -10,12 +10,132 @@ const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes
 
 export const PropertiesProvider = ({ children }) => {
   const { user } = useAuth() || {};
-  const cacheKey = user ? 'fmh_properties_admin_v32_cache' : 'fmh_properties_public_v32_cache';
-  const cacheTimeKey = user ? 'fmh_properties_admin_v32_time' : 'fmh_properties_public_v32_time';
+  const cacheKey = user ? 'fmh_properties_admin_v63_cache' : 'fmh_properties_public_v63_cache';
+  const cacheTimeKey = user ? 'fmh_properties_admin_v63_time' : 'fmh_properties_public_v63_time';
   const CACHE_KEY = cacheKey;
 
   const clearSessionCaches = () => {
     try {
+      sessionStorage.removeItem('fmh_properties_admin_v62_cache');
+      sessionStorage.removeItem('fmh_properties_admin_v62_time');
+      sessionStorage.removeItem('fmh_properties_public_v62_cache');
+      sessionStorage.removeItem('fmh_properties_public_v62_time');
+      sessionStorage.removeItem('fmh_properties_admin_v61_cache');
+      sessionStorage.removeItem('fmh_properties_admin_v61_time');
+      sessionStorage.removeItem('fmh_properties_public_v61_cache');
+      sessionStorage.removeItem('fmh_properties_public_v61_time');
+      sessionStorage.removeItem('fmh_properties_admin_v60_cache');
+      sessionStorage.removeItem('fmh_properties_admin_v60_time');
+      sessionStorage.removeItem('fmh_properties_public_v60_cache');
+      sessionStorage.removeItem('fmh_properties_public_v60_time');
+      sessionStorage.removeItem('fmh_properties_admin_v59_cache');
+      sessionStorage.removeItem('fmh_properties_admin_v59_time');
+      sessionStorage.removeItem('fmh_properties_public_v59_cache');
+      sessionStorage.removeItem('fmh_properties_public_v59_time');
+      sessionStorage.removeItem('fmh_properties_admin_v58_cache');
+      sessionStorage.removeItem('fmh_properties_admin_v58_time');
+      sessionStorage.removeItem('fmh_properties_public_v58_cache');
+      sessionStorage.removeItem('fmh_properties_public_v58_time');
+      sessionStorage.removeItem('fmh_properties_admin_v57_cache');
+      sessionStorage.removeItem('fmh_properties_admin_v57_time');
+      sessionStorage.removeItem('fmh_properties_public_v57_cache');
+      sessionStorage.removeItem('fmh_properties_public_v57_time');
+      sessionStorage.removeItem('fmh_properties_admin_v56_cache');
+      sessionStorage.removeItem('fmh_properties_admin_v56_time');
+      sessionStorage.removeItem('fmh_properties_public_v56_cache');
+      sessionStorage.removeItem('fmh_properties_public_v56_time');
+      sessionStorage.removeItem('fmh_properties_admin_v55_cache');
+      sessionStorage.removeItem('fmh_properties_admin_v55_time');
+      sessionStorage.removeItem('fmh_properties_public_v55_cache');
+      sessionStorage.removeItem('fmh_properties_public_v55_time');
+      sessionStorage.removeItem('fmh_properties_admin_v54_cache');
+      sessionStorage.removeItem('fmh_properties_admin_v54_time');
+      sessionStorage.removeItem('fmh_properties_public_v54_cache');
+      sessionStorage.removeItem('fmh_properties_public_v54_time');
+      sessionStorage.removeItem('fmh_properties_admin_v53_cache');
+      sessionStorage.removeItem('fmh_properties_admin_v53_time');
+      sessionStorage.removeItem('fmh_properties_public_v53_cache');
+      sessionStorage.removeItem('fmh_properties_public_v53_time');
+      sessionStorage.removeItem('fmh_properties_admin_v52_cache');
+      sessionStorage.removeItem('fmh_properties_admin_v52_time');
+      sessionStorage.removeItem('fmh_properties_public_v52_cache');
+      sessionStorage.removeItem('fmh_properties_public_v52_time');
+      sessionStorage.removeItem('fmh_properties_admin_v51_cache');
+      sessionStorage.removeItem('fmh_properties_admin_v51_time');
+      sessionStorage.removeItem('fmh_properties_public_v51_cache');
+      sessionStorage.removeItem('fmh_properties_public_v51_time');
+      sessionStorage.removeItem('fmh_properties_admin_v50_cache');
+      sessionStorage.removeItem('fmh_properties_admin_v50_time');
+      sessionStorage.removeItem('fmh_properties_public_v50_cache');
+      sessionStorage.removeItem('fmh_properties_public_v50_time');
+      sessionStorage.removeItem('fmh_properties_admin_v49_cache');
+      sessionStorage.removeItem('fmh_properties_admin_v49_time');
+      sessionStorage.removeItem('fmh_properties_public_v49_cache');
+      sessionStorage.removeItem('fmh_properties_public_v49_time');
+      sessionStorage.removeItem('fmh_properties_admin_v48_cache');
+      sessionStorage.removeItem('fmh_properties_admin_v48_time');
+      sessionStorage.removeItem('fmh_properties_public_v48_cache');
+      sessionStorage.removeItem('fmh_properties_public_v48_time');
+      sessionStorage.removeItem('fmh_properties_admin_v47_cache');
+      sessionStorage.removeItem('fmh_properties_admin_v47_time');
+      sessionStorage.removeItem('fmh_properties_public_v47_cache');
+      sessionStorage.removeItem('fmh_properties_public_v47_time');
+      sessionStorage.removeItem('fmh_properties_admin_v46_cache');
+      sessionStorage.removeItem('fmh_properties_admin_v46_time');
+      sessionStorage.removeItem('fmh_properties_public_v46_cache');
+      sessionStorage.removeItem('fmh_properties_public_v46_time');
+      sessionStorage.removeItem('fmh_properties_admin_v44_cache');
+      sessionStorage.removeItem('fmh_properties_admin_v44_time');
+      sessionStorage.removeItem('fmh_properties_public_v44_cache');
+      sessionStorage.removeItem('fmh_properties_public_v44_time');
+      sessionStorage.removeItem('fmh_properties_admin_v43_cache');
+      sessionStorage.removeItem('fmh_properties_admin_v43_time');
+      sessionStorage.removeItem('fmh_properties_public_v43_cache');
+      sessionStorage.removeItem('fmh_properties_public_v43_time');
+      sessionStorage.removeItem('fmh_properties_admin_v42_cache');
+      sessionStorage.removeItem('fmh_properties_admin_v42_time');
+      sessionStorage.removeItem('fmh_properties_public_v42_cache');
+      sessionStorage.removeItem('fmh_properties_public_v42_time');
+      sessionStorage.removeItem('fmh_properties_admin_v41_cache');
+      sessionStorage.removeItem('fmh_properties_admin_v41_time');
+      sessionStorage.removeItem('fmh_properties_public_v41_cache');
+      sessionStorage.removeItem('fmh_properties_public_v41_time');
+      sessionStorage.removeItem('fmh_properties_admin_v40_cache');
+      sessionStorage.removeItem('fmh_properties_admin_v40_time');
+      sessionStorage.removeItem('fmh_properties_public_v40_cache');
+      sessionStorage.removeItem('fmh_properties_public_v40_time');
+      sessionStorage.removeItem('fmh_properties_admin_v39_cache');
+      sessionStorage.removeItem('fmh_properties_admin_v39_time');
+      sessionStorage.removeItem('fmh_properties_public_v39_cache');
+      sessionStorage.removeItem('fmh_properties_public_v39_time');
+      sessionStorage.removeItem('fmh_properties_admin_v38_cache');
+      sessionStorage.removeItem('fmh_properties_admin_v38_time');
+      sessionStorage.removeItem('fmh_properties_public_v38_cache');
+      sessionStorage.removeItem('fmh_properties_public_v38_time');
+      sessionStorage.removeItem('fmh_properties_admin_v37_cache');
+      sessionStorage.removeItem('fmh_properties_admin_v37_time');
+      sessionStorage.removeItem('fmh_properties_public_v37_cache');
+      sessionStorage.removeItem('fmh_properties_public_v37_time');
+      sessionStorage.removeItem('fmh_properties_admin_v36_cache');
+      sessionStorage.removeItem('fmh_properties_admin_v36_time');
+      sessionStorage.removeItem('fmh_properties_public_v36_cache');
+      sessionStorage.removeItem('fmh_properties_public_v36_time');
+      sessionStorage.removeItem('fmh_properties_admin_v35_cache');
+      sessionStorage.removeItem('fmh_properties_admin_v35_time');
+      sessionStorage.removeItem('fmh_properties_public_v35_cache');
+      sessionStorage.removeItem('fmh_properties_public_v35_time');
+      sessionStorage.removeItem('fmh_properties_admin_v34_cache');
+      sessionStorage.removeItem('fmh_properties_admin_v34_time');
+      sessionStorage.removeItem('fmh_properties_public_v34_cache');
+      sessionStorage.removeItem('fmh_properties_public_v34_time');
+      sessionStorage.removeItem('fmh_properties_admin_v33_cache');
+      sessionStorage.removeItem('fmh_properties_admin_v33_time');
+      sessionStorage.removeItem('fmh_properties_public_v33_cache');
+      sessionStorage.removeItem('fmh_properties_public_v33_time');
+      sessionStorage.removeItem('fmh_properties_admin_v32_cache');
+      sessionStorage.removeItem('fmh_properties_admin_v32_time');
+      sessionStorage.removeItem('fmh_properties_public_v32_cache');
+      sessionStorage.removeItem('fmh_properties_public_v32_time');
       sessionStorage.removeItem('fmh_properties_admin_v31_cache');
       sessionStorage.removeItem('fmh_properties_admin_v31_time');
       sessionStorage.removeItem('fmh_properties_public_v31_cache');
@@ -136,10 +256,8 @@ export const PropertiesProvider = ({ children }) => {
   // Try initializing from session cache for instant render
   const [properties, setProperties] = useState(() => {
     try {
-      const activeCacheKey = user ? 'fmh_properties_admin_v32_cache' : 'fmh_properties_public_v32_cache';
-      const activeTimeKey = user ? 'fmh_properties_admin_v32_time' : 'fmh_properties_public_v32_time';
-      const cached = sessionStorage.getItem(activeCacheKey);
-      const cachedTime = sessionStorage.getItem(activeTimeKey);
+      const cached = sessionStorage.getItem(cacheKey);
+      const cachedTime = sessionStorage.getItem(cacheTimeKey);
       if (cached && cachedTime && (Date.now() - parseInt(cachedTime, 10) < CACHE_TTL_MS)) {
         const parsed = JSON.parse(cached);
         if (Array.isArray(parsed)) {
@@ -250,34 +368,53 @@ export const PropertiesProvider = ({ children }) => {
     }
 
     try {
-      let query = supabase
-        .from('properties')
-        .select('*')
-        .order('created_at', { ascending: false });
+      let allRows = [];
+      let page = 0;
+      const pageSize = 1000;
+      let hasMore = true;
 
-      // Security hardening: Public visitors do not fetch unpublished drafts
-      if (!user) {
-        query = query.neq('status', 'ฉบับร่าง');
+      while (hasMore) {
+        let query = supabase
+          .from('properties')
+          .select('*')
+          .order('created_at', { ascending: false })
+          .range(page * pageSize, (page + 1) * pageSize - 1);
+
+        // Security hardening: Public visitors do not fetch unpublished drafts
+        if (!user) {
+          query = query.neq('status', 'ฉบับร่าง');
+        }
+
+        const { data, error } = await query;
+        if (error) {
+          console.error(`Error fetching properties page ${page}:`, error);
+          break;
+        }
+
+        if (data && data.length > 0) {
+          allRows = allRows.concat(data);
+          if (data.length < pageSize) {
+            hasMore = false;
+          } else {
+            page++;
+          }
+        } else {
+          hasMore = false;
+        }
       }
 
-      const { data, error } = await query;
+      const formattedData = allRows.map(item => formatProperty(item, true)).filter(Boolean);
+      setProperties(formattedData);
         
-      if (error) {
-        console.error("Error fetching properties:", error);
-      } else {
-        const formattedData = (data || []).map(item => formatProperty(item, true)).filter(Boolean);
-        setProperties(formattedData);
-        
-        // Save to sessionStorage using active user/public cache key
+      // Save to sessionStorage using active user/public cache key
+      try {
+        sessionStorage.setItem(cacheKey, JSON.stringify(formattedData));
+        sessionStorage.setItem(cacheTimeKey, String(Date.now()));
+      } catch (e) {
         try {
-          sessionStorage.setItem(cacheKey, JSON.stringify(formattedData));
-          sessionStorage.setItem(cacheTimeKey, String(Date.now()));
-        } catch (e) {
-          try {
-            sessionStorage.removeItem(cacheKey);
-            sessionStorage.removeItem(cacheTimeKey);
-          } catch (cleanErr) {}
-        }
+          sessionStorage.removeItem(cacheKey);
+          sessionStorage.removeItem(cacheTimeKey);
+        } catch (cleanErr) {}
       }
     } catch (err) {
       console.error("Unexpected error in fetchProperties:", err);
@@ -379,7 +516,7 @@ export const PropertiesProvider = ({ children }) => {
   // Strip frontend-only fields and any fields not explicitly in the DB schema
   const cleanPayload = (payload) => {
     const validDbFields = [
-      'id', 'name', 'developer', 'price', 'price_str', 'price_sqm', 'price_to', 'bedrooms', 'size',
+      'id', 'name', 'developer', 'price', 'price_str', 'price_sqm', 'price_to', 'bedrooms', 'size', 'land_size',
       'type', 'project_type', 'status', 'location_lat', 'location_lng', 'station',
       'distance_to_station', 'rating', 'reviews', 'image', 'logo', 'images', 'facilities',
       'building_details', 'promotions', 'floors', 'total_units',

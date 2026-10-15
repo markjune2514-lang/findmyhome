@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { MapPin, Star, Heart, Share2, Info, LayoutDashboard, ChevronLeft, ChevronRight, Navigation, ExternalLink, Building, Landmark, GraduationCap, Hospital, ShoppingBag, Search, Phone, Waves, Sparkles, ShieldCheck, Activity, BellRing, Gift, Home, Ruler, ZoomIn, Image as ImageIcon, Train, Car, Map, Sofa, X, HelpCircle, ChevronDown, Building2 } from 'lucide-react';
+import { MapPin, Star, Heart, Share2, Info, LayoutDashboard, ChevronLeft, ChevronRight, Navigation, ExternalLink, Building, Landmark, GraduationCap, Hospital, ShoppingBag, Search, Phone, Waves, Sparkles, ShieldCheck, Activity, BellRing, Gift, Home, Ruler, ZoomIn, ZoomOut, Maximize2, RotateCcw, Image as ImageIcon, Train, Car, Map, Sofa, X, HelpCircle, ChevronDown, Building2 } from 'lucide-react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import LoanCalculator from '../components/LoanCalculator';
 import L from 'leaflet';
@@ -11,6 +11,24 @@ import { useFavorites } from '../FavoritesContext';
 import { useWorkplace } from '../WorkplaceContext';
 import SEO from '../components/SEO';
 import './PropertyDetail.css';
+
+// Resilient helper to extract floor plan images across various data conventions
+const getUnitPlans = (unit) => {
+  if (!unit) return [];
+  const rawPlans = unit.planImages || unit.plan_images || unit.floorPlans || unit.floorPlan || unit.planImage || [];
+  let plans = [];
+  if (Array.isArray(rawPlans)) {
+    plans = rawPlans.flatMap(p => typeof p === 'string' ? (p.includes(',') ? p.split(',') : [p]) : [p]);
+  } else if (typeof rawPlans === 'string' && rawPlans.trim()) {
+    plans = rawPlans.split(',');
+  }
+  const unitImg = typeof unit.image === 'string' ? unit.image.trim() : '';
+  const cleaned = plans
+    .map(s => typeof s === 'string' ? s.trim() : '')
+    .filter(Boolean)
+    .filter(url => !unitImg || url !== unitImg);
+  return [...new Set(cleaned)];
+};
 
 export default function PropertyDetail({ previewData }) {
   const { id } = useParams();
@@ -25,6 +43,7 @@ export default function PropertyDetail({ previewData }) {
   // Use previewData if provided, or fullProp if loaded, or summary fallback
   const summaryProp = properties.find(p => p.id === id) || null;
   const prop = previewData || fullProp || summaryProp;
+  const loading = (globalLoading && !prop) || (detailLoading && !prop);
 
   // On-demand fetch of heavy property details (unit_types, landmarks, facilities)
   React.useEffect(() => {
@@ -47,6 +66,35 @@ export default function PropertyDetail({ previewData }) {
   const [activeTab, setActiveTab] = useState('overview'); // 'overview' or unit index '0', '1', '2'
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+  const [lightboxImage, setLightboxImage] = useState(null);
+  const [lightboxTitle, setLightboxTitle] = useState('');
+  const [lightboxZoom, setLightboxZoom] = useState(1);
+  const [cardPlanIndex, setCardPlanIndex] = useState({}); // Track active floor plan index per unit card
+
+  const openLightbox = (imgUrl, title = '') => {
+    setLightboxImage(imgUrl || selectedImage);
+    setLightboxTitle(title || prop?.name || '');
+    setLightboxZoom(1);
+    setIsLightboxOpen(true);
+  };
+
+  // Keyboard navigation & zoom shortcuts for lightbox
+  React.useEffect(() => {
+    if (!isLightboxOpen) return;
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        setIsLightboxOpen(false);
+      } else if (e.key === '+' || e.key === '=') {
+        setLightboxZoom(z => Math.min(3, +(z + 0.5).toFixed(1)));
+      } else if (e.key === '-') {
+        setLightboxZoom(z => Math.max(1, +(z - 0.5).toFixed(1)));
+      } else if (e.key === '0') {
+        setLightboxZoom(1);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isLightboxOpen]);
 
   // Scroll Tab Logic
   const tabScrollRef = React.useRef(null);
@@ -88,17 +136,27 @@ export default function PropertyDetail({ previewData }) {
   const mainImages = prop?.image 
     ? (Array.isArray(prop.image) ? prop.image : (typeof prop.image === 'string' ? prop.image.split(',') : [String(prop.image)])).filter(Boolean) 
     : [];
-  const combinedOverviewImages = [...new Set([...mainImages, ...propOverviewImages])].filter(Boolean);
+  const combinedOverviewImages = [...new Set([...mainImages, ...propOverviewImages].map(s => typeof s === 'string' ? s.trim() : s).filter(Boolean))];
 
   const selectedUnitImages = selectedUnit
-    ? [selectedUnit.image, ...(selectedUnit.planImages || []), ...(selectedUnit.roomImages || [])].filter(Boolean)
+    ? [...new Set([
+        selectedUnit.image, 
+        ...getUnitPlans(selectedUnit), 
+        ...(Array.isArray(selectedUnit.roomImages) ? selectedUnit.roomImages : (typeof selectedUnit.roomImages === 'string' ? selectedUnit.roomImages.split(',') : []))
+      ].map(s => typeof s === 'string' ? s.trim() : s).filter(Boolean))]
     : [];
-  const allUnitImages = prop?.unitTypes ? prop.unitTypes.flatMap(u => [u.image, ...(u.planImages || []), ...(u.roomImages || [])]).filter(Boolean) : [];
+  const allUnitImages = prop?.unitTypes 
+    ? [...new Set(prop.unitTypes.flatMap(u => [
+        u.image, 
+        ...getUnitPlans(u), 
+        ...(Array.isArray(u.roomImages) ? u.roomImages : (typeof u.roomImages === 'string' ? u.roomImages.split(',') : []))
+      ]).map(s => typeof s === 'string' ? s.trim() : s).filter(Boolean))] 
+    : [];
 
   // When 'overview', show main project images + overview photos; when specific unit, show that unit's images first!
   const allImages = selectedUnit && selectedUnitImages.length > 0
-    ? [...new Set([...selectedUnitImages, ...combinedOverviewImages])].filter(Boolean)
-    : [...new Set([...combinedOverviewImages, ...allUnitImages])].filter(Boolean);
+    ? [...new Set([...selectedUnitImages, ...combinedOverviewImages])]
+    : [...new Set([...combinedOverviewImages, ...allUnitImages])];
 
   const selectedImage = allImages.length > 0 ? allImages[currentIndex] : '';
 
@@ -354,6 +412,7 @@ export default function PropertyDetail({ previewData }) {
                 className={`tab-btn ${activeTab === i.toString() ? 'active' : ''}`}
               >
                 {u.name ? `TYPE: ${u.name}` : `TYPE ${i + 1}`}
+                {u.size ? <span className="ml-1 text-[11px] opacity-75 font-normal">({u.size} ตร.ม.)</span> : null}
               </button>
             ))}
           </div>
@@ -451,7 +510,7 @@ export default function PropertyDetail({ previewData }) {
             src={selectedImage}
             alt="property"
             referrerPolicy="no-referrer"
-            onClick={() => setIsLightboxOpen(true)}
+            onClick={() => openLightbox(selectedImage, `${prop?.name || 'ภาพโครงการ'} (${currentIndex + 1}/${allImages.length})`)}
             style={{width: '100%', height: '400px', objectFit: 'contain', objectPosition: 'center', display: 'block', transition: 'opacity 0.3s', cursor: 'pointer'}}
           />
 
@@ -556,16 +615,225 @@ export default function PropertyDetail({ previewData }) {
           {activeTab === 'overview' && (
             <>
               {/* Project Highlights */}
-              {prop.projectHighlights && (
+              {(prop.projectHighlights || prop.project_highlights) && (
                 <div className="mb-8 bg-white p-5 rounded-xl border border-gray-100 shadow-sm">
                   <div className="flex items-center gap-2 mb-3 border-b border-gray-100 pb-2">
                     <Sparkles className="text-primary" size={20} />
                     <h3 className="text-lg font-black text-gray-900 m-0 tracking-tight">จุดเด่นของโครงการ</h3>
                   </div>
                   <p className="text-gray-700 leading-relaxed whitespace-pre-line text-sm sm:text-base">
-                    {prop.projectHighlights}
+                    {prop.projectHighlights || prop.project_highlights}
                   </p>
                 </div>
+              )}
+
+              {/* แบบบ้านและแปลนห้อง (Unit Models & Floor Plans) Showcase on Overview Tab */}
+              {Array.isArray(prop.unitTypes) && prop.unitTypes.length > 0 && (
+                <section className="mb-8" id="overview-floor-plans-section">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4 border-b border-gray-100 pb-3">
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center border border-blue-100 shadow-2xs">
+                        <Ruler size={22} />
+                      </div>
+                      <div>
+                        <h3 className="text-xl font-black text-gray-900 m-0 tracking-tight flex items-center gap-2">
+                          แบบบ้านและแปลนห้อง
+                          <span className="text-xs font-bold text-gray-400 hidden sm:inline">(Unit Models & Floor Plans)</span>
+                        </h3>
+                        <p className="text-xs text-gray-500 m-0 mt-0.5">
+                          แบบบ้านและแปลนอาคารทั้งหมดในโครงการ คลิกเพื่อซูมดูแปลน 2D หรือเลือกดูรายละเอียดแต่ละแบบ
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2 self-start sm:self-center">
+                      <span className="text-xs font-bold text-blue-700 bg-blue-50 px-3 py-1 rounded-full border border-blue-200">
+                        ทั้งหมด {prop.unitTypes.length} แบบบ้าน
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+                    {prop.unitTypes.map((u, idx) => {
+                      const unitPlans = getUnitPlans(u);
+                      const hasPlans = unitPlans.length > 0;
+                      const currentFloorIdx = cardPlanIndex[idx] || 0;
+                      const activePlanImg = hasPlans ? (unitPlans[currentFloorIdx] || unitPlans[0]) : null;
+                      const previewImg = activePlanImg || u.image || (allImages.length > 0 ? allImages[0] : null);
+
+                      return (
+                        <div 
+                          key={idx} 
+                          className="bg-white rounded-2xl border border-gray-200/90 shadow-sm hover:shadow-md transition-all overflow-hidden flex flex-col group"
+                        >
+                          {/* Card Header */}
+                          <div className="p-4 bg-gradient-to-r from-gray-50/90 via-white to-blue-50/30 border-b border-gray-100 flex items-start justify-between gap-3">
+                            <div>
+                              <div className="flex items-center gap-2 flex-wrap mb-1">
+                                <span className="text-xs font-black px-2 py-0.5 rounded-md bg-blue-600 text-white shadow-2xs">
+                                  TYPE {idx + 1}
+                                </span>
+                                <h4 className="text-base font-extrabold text-gray-900 m-0 tracking-tight">
+                                  {u.name ? `แบบบ้าน ${u.name}` : `ยูนิตแบบที่ ${idx + 1}`}
+                                </h4>
+                                {(u.type || u.roomType || u.house_type) && (
+                                  <span className="text-[11px] font-bold text-blue-700 bg-blue-50 border border-blue-200 px-2 py-0.5 rounded-md">
+                                    {u.type || u.roomType || u.house_type}
+                                  </span>
+                                )}
+                              </div>
+                              <div className="text-xs text-gray-500">
+                                {u.landSize ? `ที่ดิน ${u.landSize} ตร.วา • ` : ''}
+                                พื้นที่ใช้สอย <strong className="text-gray-800">{u.size || u.usableArea || prop.size || '-'}</strong> ตร.ม.
+                              </div>
+                            </div>
+
+                            {/* Price */}
+                            <div className="text-right shrink-0">
+                              <span className="text-[11px] text-gray-400 block font-medium">ราคา</span>
+                              <span className="text-base font-black text-primary">
+                                {u.price 
+                                  ? `${u.price} ${prop.listingType === 'เช่า' ? 'บ./ด.' : 'ลบ.'}`
+                                  : (prop.price ? `เริ่ม ${prop.price} ${prop.listingType === 'เช่า' ? 'บ./ด.' : 'ลบ.'}` : 'สอบถาม')
+                                }
+                              </span>
+                            </div>
+                          </div>
+
+                          {/* Quick Specs Strip */}
+                          <div className="px-4 py-2 bg-gray-50/70 border-b border-gray-100 flex flex-wrap items-center gap-2 text-xs">
+                            {(u.bedrooms || prop.bedrooms) && (
+                              <span className="inline-flex items-center gap-1 font-semibold text-slate-700 bg-white px-2 py-0.5 rounded border border-gray-200">
+                                🛏️ {cleanSpec(u.bedrooms || prop.bedrooms)} นอน
+                              </span>
+                            )}
+                            {(u.bathrooms || prop.bathrooms) && (
+                              <span className="inline-flex items-center gap-1 font-semibold text-slate-700 bg-white px-2 py-0.5 rounded border border-gray-200">
+                                🚿 {cleanSpec(u.bathrooms || prop.bathrooms)} น้ำ
+                              </span>
+                            )}
+                            {(u.parking || prop.parking) && (
+                              <span className="inline-flex items-center gap-1 font-semibold text-slate-700 bg-white px-2 py-0.5 rounded border border-gray-200">
+                                🚗 {cleanSpec(u.parking || prop.parking)} จอด
+                              </span>
+                            )}
+                            {Boolean(u.multipurpose || prop.multipurpose) && (
+                              <span className="inline-flex items-center gap-1 font-semibold text-amber-800 bg-amber-50 px-2 py-0.5 rounded border border-amber-200">
+                                ⭐ {cleanSpec(u.multipurpose || prop.multipurpose)} อเนกประสงค์
+                              </span>
+                            )}
+                          </div>
+
+                          {/* Floor Plan Showcase Area */}
+                          <div className="p-4 flex-1 flex flex-col justify-between">
+                            <div>
+                              {/* Floor selector tabs if multiple plans */}
+                              {unitPlans.length > 1 && (
+                                <div className="flex items-center gap-1.5 mb-2.5 overflow-x-auto pb-1">
+                                  <span className="text-[11px] font-bold text-gray-400 shrink-0 mr-1">เลือกชั้น:</span>
+                                  {unitPlans.map((_, pIdx) => (
+                                    <button
+                                      key={pIdx}
+                                      type="button"
+                                      onClick={() => setCardPlanIndex(prev => ({ ...prev, [idx]: pIdx }))}
+                                      className={`text-xs px-2.5 py-1 rounded-lg font-bold transition-all cursor-pointer ${
+                                        currentFloorIdx === pIdx 
+                                          ? 'bg-blue-600 text-white shadow-xs' 
+                                          : 'bg-gray-100 hover:bg-gray-200 text-gray-600'
+                                      }`}
+                                    >
+                                      แปลนชั้น {pIdx + 1}
+                                    </button>
+                                  ))}
+                                </div>
+                              )}
+
+                              {/* Plan Image Display Container */}
+                              <div 
+                                className="relative rounded-xl border-2 border-dashed border-gray-200 bg-slate-50/50 hover:bg-white hover:border-blue-400 transition-all cursor-pointer overflow-hidden group/plan flex items-center justify-center min-h-[220px] max-h-[260px] p-2"
+                                onClick={() => {
+                                  if (previewImg) {
+                                    openLightbox(
+                                      previewImg, 
+                                      `แบบบ้าน ${u.name || `TYPE ${idx + 1}`} • ${hasPlans ? `แปลนชั้น ${currentFloorIdx + 1}` : 'ภาพตัวอย่างแบบบ้าน'}`
+                                    );
+                                  }
+                                }}
+                                title="คลิกเพื่อซูมดูแปลนขนาดใหญ่เต็มจอ"
+                              >
+                                {previewImg ? (
+                                  <>
+                                    <img 
+                                      src={previewImg} 
+                                      alt={`แบบบ้าน ${u.name || idx + 1} ${hasPlans ? `แปลนชั้น ${currentFloorIdx + 1}` : ''}`}
+                                      className="max-h-[240px] w-auto max-w-full object-contain mx-auto transition-transform duration-300 group-hover/plan:scale-105"
+                                      loading="lazy"
+                                      referrerPolicy="no-referrer"
+                                    />
+                                    
+                                    {/* Floor Badge on top-left of image */}
+                                    <div className="absolute top-2.5 left-2.5 bg-blue-900/85 backdrop-blur-xs text-white text-[11px] font-bold px-2.5 py-1 rounded-md shadow-xs flex items-center gap-1">
+                                      <Ruler size={12} />
+                                      {hasPlans ? `แปลนชั้น ${currentFloorIdx + 1}` : 'ภาพแบบบ้าน'}
+                                    </div>
+
+                                    {/* Zoom hint badge on top-right */}
+                                    <div className="absolute top-2.5 right-2.5 bg-black/60 text-white text-[11px] font-bold px-2 py-1 rounded-md shadow-xs flex items-center gap-1 opacity-80 group-hover/plan:opacity-100 transition-opacity">
+                                      <ZoomIn size={12} /> ซูมแปลน
+                                    </div>
+
+                                    {/* Hover Overlay Button */}
+                                    <div className="absolute inset-0 bg-blue-950/30 opacity-0 group-hover/plan:opacity-100 transition-opacity flex items-center justify-center">
+                                      <span className="bg-white text-blue-700 text-xs font-black px-3.5 py-1.5 rounded-xl shadow-lg flex items-center gap-1.5 transform translate-y-2 group-hover/plan:translate-y-0 transition-transform">
+                                        <Maximize2 size={14} /> ดูแปลนขนาดใหญ่ (High-Res)
+                                      </span>
+                                    </div>
+                                  </>
+                                ) : (
+                                  <div className="text-center py-8 text-gray-400">
+                                    <Ruler size={32} className="mx-auto mb-2 text-gray-300" />
+                                    <p className="text-xs font-semibold m-0">แบบแปลนอยู่ระหว่างจัดทำ</p>
+                                    <p className="text-[11px] text-gray-400 m-0 mt-0.5">ติดต่อโครงการเพื่อขอรับแบบแปลน</p>
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+
+                            {/* Action Buttons */}
+                            <div className="grid grid-cols-2 gap-2 mt-4 pt-3 border-t border-gray-100">
+                              {previewImg ? (
+                                <button
+                                  type="button"
+                                  onClick={() => openLightbox(
+                                    previewImg, 
+                                    `แบบบ้าน ${u.name || `TYPE ${idx + 1}`} • ${hasPlans ? `แปลนชั้น ${currentFloorIdx + 1}` : 'ภาพตัวอย่าง'}`
+                                  )}
+                                  className="w-full py-2 px-3 rounded-xl border border-blue-200 bg-blue-50/70 hover:bg-blue-100 text-blue-700 text-xs font-bold flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                                >
+                                  <ZoomIn size={14} /> ซูมแปลนห้อง
+                                </button>
+                              ) : null}
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setActiveTab(idx.toString());
+                                  window.scrollTo({ top: 320, behavior: 'smooth' });
+                                }}
+                                className={`w-full py-2 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
+                                  previewImg 
+                                    ? 'bg-blue-600 hover:bg-blue-700 text-white shadow-xs' 
+                                    : 'col-span-2 bg-blue-600 hover:bg-blue-700 text-white shadow-xs'
+                                }`}
+                              >
+                                <span>ดูรายละเอียดแบบนี้</span>
+                                <ChevronRight size={14} />
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </section>
               )}
 
               {/* Project Specs */}
@@ -574,14 +842,12 @@ export default function PropertyDetail({ previewData }) {
                 <h3 className="text-xl font-black text-gray-900 m-0 tracking-tight">รายละเอียดและสเปกโครงการ</h3>
               </div>
               <div className="specs-grid mb-8 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
-                {prop.projectType && (
+                {(prop.project_type || prop.projectType || prop.type) && (
                   <div className="spec-item p-3 bg-white rounded-xl border border-gray-100 shadow-sm flex flex-col items-center text-center">
                     <Building size={22} color="var(--primary)" />
                     <p className="label text-xs text-gray-400 mt-1">ประเภท</p>
                     <p className="val text-sm font-bold text-gray-800">
-                      {(prop.type === 'บ้าน' || prop.type === 'ทาวน์โฮม') && ['High Rise', 'Low Rise', 'Mixed Use'].includes(prop.projectType) 
-                        ? prop.type 
-                        : prop.projectType}
+                      {prop.project_type || prop.projectType || prop.type}
                     </p>
                   </div>
                 )}
@@ -765,7 +1031,7 @@ export default function PropertyDetail({ previewData }) {
                           <div 
                             key={i} 
                             className="relative rounded-xl overflow-hidden border border-gray-200 group cursor-pointer bg-gray-50 aspect-[4/3] shadow-sm hover:shadow-md transition-all flex items-center justify-center"
-                            onClick={() => { setCurrentIndex(i); setIsLightboxOpen(true); }}
+                            onClick={() => { setCurrentIndex(i); openLightbox(img, `${prop?.name || 'ภาพบรรยากาศห้องตัวอย่างและโครงการ'} (${i + 1}/${allImages.length})`); }}
                           >
                             <img 
                               src={img} 
@@ -783,7 +1049,7 @@ export default function PropertyDetail({ previewData }) {
                       {allImages.length > 12 && (
                         <div className="mt-4 text-center">
                           <button 
-                            onClick={() => setIsLightboxOpen(true)}
+                            onClick={() => openLightbox(allImages[0], `${prop?.name || 'ภาพบรรยากาศห้องตัวอย่างและโครงการ'}`)}
                             className="px-5 py-2.5 bg-neutral-100 hover:bg-primary hover:text-white text-gray-700 text-xs font-bold rounded-xl transition-all inline-flex items-center gap-1.5 shadow-sm border border-gray-200"
                           >
                             <ImageIcon size={14} /> ดูรูปภาพบรรยากาศทั้งหมด ({allImages.length} รูป)
@@ -799,23 +1065,32 @@ export default function PropertyDetail({ previewData }) {
 
           {activeTab !== 'overview' && selectedUnit && (
             <div className="mb-8 bg-white p-5 rounded-2xl border border-gray-100 shadow-sm">
-              <div className="flex justify-between items-center mb-4 border-b border-gray-100 pb-3">
+              <div className="flex justify-between items-center mb-4 border-b border-gray-100 pb-3 flex-wrap gap-2">
                 <div className="flex items-center gap-2">
                   <Home className="text-primary" size={24} />
                   <h3 className="text-xl font-black text-gray-900 m-0 tracking-tight">รายละเอียด TYPE: {selectedUnit.name}</h3>
                 </div>
-                {selectedUnit.price ? (
-                  <span className="text-lg font-black text-primary">
-                    {selectedUnit.price} {prop.listingType === 'เช่า' ? 'บาท/เดือน' : 'ล้านบาท'}
-                  </span>
-                ) : null}
+                <div className="flex items-center gap-2.5">
+                  {selectedUnit.price ? (
+                    <span className="text-lg font-black text-primary">
+                      {selectedUnit.price} {prop.listingType === 'เช่า' ? 'บาท/เดือน' : 'ล้านบาท'}
+                    </span>
+                  ) : null}
+                  <button
+                    type="button"
+                    onClick={() => setActiveTab('overview')}
+                    className="text-xs font-bold text-gray-600 hover:text-blue-600 bg-gray-100 hover:bg-gray-200 px-3 py-1.5 rounded-xl transition-all cursor-pointer flex items-center gap-1 border border-gray-200"
+                  >
+                    <span>← ดูทุกแบบบ้าน (ภาพรวม)</span>
+                  </button>
+                </div>
               </div>
 
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-5">
-                {selectedUnit.roomType && (
+                {(selectedUnit.type || selectedUnit.roomType || selectedUnit.house_type) && (
                   <div className="p-3 bg-neutral-50 rounded-xl">
                     <span className="text-xs text-gray-400 block">รูปแบบ</span>
-                    <span className="text-sm font-bold text-gray-800">{selectedUnit.roomType}</span>
+                    <span className="text-sm font-bold text-gray-800">{selectedUnit.type || selectedUnit.roomType || selectedUnit.house_type}</span>
                   </div>
                 )}
                 <div className="p-3 bg-neutral-50 rounded-xl">
@@ -923,20 +1198,89 @@ export default function PropertyDetail({ previewData }) {
                 )}
               </div>
 
-              {/* Floor Plan Images */}
-              {Array.isArray(selectedUnit.planImages) && selectedUnit.planImages.length > 0 && (
-                <div className="mb-5">
-                  <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 flex items-center gap-1.5"><Ruler size={14} /> แปลนห้อง (Floor Plan)</h4>
-                  <div className="grid grid-cols-2 gap-3">
-                    {selectedUnit.planImages.map((img, i) => (
-                      <div key={i} className="relative rounded-xl overflow-hidden border border-gray-200 group cursor-pointer bg-gray-50 flex items-center justify-center" onClick={() => { const idx = allImages.indexOf(img); if (idx !== -1) setCurrentIndex(idx); }}>
-                        <img src={img} alt={`plan-${i}`} className="w-full h-44 object-contain group-hover:scale-105 transition-all" />
-                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-all flex items-center justify-center text-white font-bold text-xs gap-1"><ZoomIn size={14} /> ขยายภาพ</div>
+              {/* Floor Plan Showcase (Individual Unit Tab) */}
+              {(() => {
+                const selectedPlans = getUnitPlans(selectedUnit);
+                if (selectedPlans.length === 0) {
+                  return (
+                    <div className="mb-6 p-4 rounded-2xl bg-slate-50 border border-slate-200/80">
+                      <div className="flex items-center justify-between mb-2">
+                        <h4 className="text-sm font-extrabold text-slate-800 m-0 flex items-center gap-2">
+                          <Ruler size={16} className="text-primary" /> แปลนบ้านและผังห้อง (Floor Plan)
+                        </h4>
+                        <span className="text-[11px] text-slate-500 font-semibold bg-white px-2 py-0.5 rounded border border-slate-200">
+                          รออัปเดตแปลน 2D
+                        </span>
                       </div>
-                    ))}
+                      <p className="text-xs text-slate-600 m-0">
+                        สำหรับแบบบ้าน TYPE: {selectedUnit.name || ''} ข้อมูลแปลน 2D กำลังอยู่ระหว่างการอัปเดตลายเส้นสถาปัตยกรรม ท่านสามารถติดต่อโครงการเพื่อขอรับแปลนห้องแบบละเอียดได้
+                      </p>
+                    </div>
+                  );
+                }
+
+                return (
+                  <div className="mb-6 bg-white p-5 rounded-2xl border border-gray-100 shadow-sm">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4 border-b border-gray-100 pb-3">
+                      <div>
+                        <h4 className="text-base font-black text-gray-900 m-0 flex items-center gap-2">
+                          <Ruler size={18} className="text-primary" /> แปลนบ้านและผังห้อง 2D (Floor Plans)
+                        </h4>
+                        <p className="text-xs text-gray-500 m-0 mt-0.5">
+                          แบบแปลนสถาปัตยกรรมแสดงตำแหน่งห้อง ประตู หน้าต่าง และการจัดวางพื้นที่ใช้สอย
+                        </p>
+                      </div>
+                      <span className="text-xs font-bold text-blue-700 bg-blue-50 px-2.5 py-1 rounded-full border border-blue-200 self-start sm:self-center">
+                        {selectedPlans.length} ชั้น / แบบแปลน
+                      </span>
+                    </div>
+
+                    <div className={`grid gap-4 ${selectedPlans.length === 1 ? 'grid-cols-1' : 'grid-cols-1 sm:grid-cols-2'}`}>
+                      {selectedPlans.map((img, i) => (
+                        <div 
+                          key={i} 
+                          className="bg-slate-50/70 border border-gray-200 rounded-2xl overflow-hidden shadow-2xs hover:shadow-md transition-all flex flex-col group/item"
+                        >
+                          {/* Floor Header Label */}
+                          <div className="px-3.5 py-2 bg-white border-b border-gray-100 flex items-center justify-between">
+                            <span className="text-xs font-extrabold text-gray-800 flex items-center gap-1.5">
+                              <span className="w-2 h-2 rounded-full bg-blue-600"></span>
+                              {selectedPlans.length > 1 ? `แปลนชั้น ${i + 1} (Floor ${i + 1})` : 'แปลนแบบบ้านมาตรฐาน (Master Plan)'}
+                            </span>
+                            <button
+                              type="button"
+                              onClick={() => openLightbox(img, `TYPE: ${selectedUnit.name || ''} • ${selectedPlans.length > 1 ? `แปลนชั้น ${i + 1}` : 'แปลนบ้าน'}`)}
+                              className="text-[11px] font-bold text-blue-600 hover:text-blue-800 flex items-center gap-1 cursor-pointer bg-blue-50 px-2 py-0.5 rounded"
+                            >
+                              <ZoomIn size={12} /> ขยายเต็มจอ
+                            </button>
+                          </div>
+
+                          {/* Image Box */}
+                          <div 
+                            className="p-3 bg-white flex items-center justify-center cursor-pointer relative min-h-[240px] sm:min-h-[280px]"
+                            onClick={() => openLightbox(img, `TYPE: ${selectedUnit.name || ''} • ${selectedPlans.length > 1 ? `แปลนชั้น ${i + 1}` : 'แปลนบ้าน'}`)}
+                          >
+                            <img 
+                              src={img} 
+                              alt={`แปลนชั้น ${i + 1}`} 
+                              className="w-full h-56 sm:h-72 object-contain group-hover/item:scale-102 transition-transform duration-300"
+                              loading="lazy"
+                              referrerPolicy="no-referrer"
+                            />
+                            
+                            <div className="absolute inset-0 bg-blue-950/20 opacity-0 group-hover/item:opacity-100 transition-opacity flex items-center justify-center">
+                              <span className="bg-white/95 backdrop-blur-xs text-blue-700 text-xs font-bold px-3 py-1.5 rounded-xl shadow-md flex items-center gap-1.5">
+                                <Maximize2 size={14} /> กดเพื่อซูมและสำรวจสเปกลายเส้นแปลน
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              )}
+                );
+              })()}
 
               {/* Room Photos */}
               {Array.isArray(selectedUnit.roomImages) && selectedUnit.roomImages.length > 0 && (
@@ -944,7 +1288,11 @@ export default function PropertyDetail({ previewData }) {
                   <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 flex items-center gap-1.5"><ImageIcon size={14} /> ภาพบรรยากาศห้องจริง</h4>
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                     {selectedUnit.roomImages.map((img, i) => (
-                      <div key={i} className="relative rounded-xl overflow-hidden border border-gray-200 group cursor-pointer bg-gray-50 flex items-center justify-center" onClick={() => { const idx = allImages.indexOf(img); if (idx !== -1) setCurrentIndex(idx); }}>
+                      <div 
+                        key={i} 
+                        className="relative rounded-xl overflow-hidden border border-gray-200 group cursor-pointer bg-gray-50 flex items-center justify-center" 
+                        onClick={() => openLightbox(img, `TYPE: ${selectedUnit.name || ''} • ภาพบรรยากาศห้องจริง (${i + 1}/${selectedUnit.roomImages.length})`)}
+                      >
                         <img src={img} alt={`room-${i}`} className="w-full h-32 object-contain group-hover:scale-105 transition-all" />
                       </div>
                     ))}
@@ -1195,22 +1543,126 @@ export default function PropertyDetail({ previewData }) {
         </div>
       </div>
 
-      {/* Lightbox Modal for Full Image Viewing */}
+      {/* Lightbox Modal for Full Image & Floor Plan Viewing */}
       {isLightboxOpen && (
-        <div className="fixed inset-0 z-[200] bg-black/95 flex flex-col p-4 overflow-y-auto">
-          <div className="flex justify-end mb-4 sticky top-0 z-[210]">
-            <button onClick={() => setIsLightboxOpen(false)} className="text-white bg-white/10 p-2 rounded-full hover:bg-white/20 transition-colors">
-              <X size={24} />
-            </button>
+        <div 
+          className="fixed inset-0 z-[200] bg-black/95 backdrop-blur-sm flex flex-col select-none"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) {
+              setIsLightboxOpen(false);
+            }
+          }}
+        >
+          {/* Lightbox Header Toolbar */}
+          <div className="flex items-center justify-between px-4 py-3 bg-black/60 border-b border-white/10 sticky top-0 z-[210] backdrop-blur-md">
+            <div className="flex items-center gap-2 text-white max-w-[50vw] sm:max-w-[60vw]">
+              <Ruler size={18} className="text-primary shrink-0" />
+              <span className="text-xs sm:text-sm font-bold truncate">
+                {lightboxTitle || prop?.name || 'ภาพขยาย'}
+              </span>
+            </div>
+
+            {/* Zoom Controls & Close */}
+            <div className="flex items-center gap-2">
+              <div className="flex items-center bg-white/10 rounded-xl p-1 gap-1 border border-white/10">
+                <button
+                  type="button"
+                  onClick={() => setLightboxZoom(z => Math.max(1, +(z - 0.5).toFixed(1)))}
+                  disabled={lightboxZoom <= 1}
+                  className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg flex items-center justify-center text-white/80 hover:text-white hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed transition-all cursor-pointer"
+                  title="ซูมออก (-)"
+                >
+                  <ZoomOut size={16} />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setLightboxZoom(1)}
+                  className="px-2 text-[11px] font-mono font-bold text-white/90 hover:text-white cursor-pointer"
+                  title="รีเซ็ตขนาด 100%"
+                >
+                  {Math.round(lightboxZoom * 100)}%
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setLightboxZoom(z => Math.min(3, +(z + 0.5).toFixed(1)))}
+                  disabled={lightboxZoom >= 3}
+                  className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg flex items-center justify-center text-white/80 hover:text-white hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed transition-all cursor-pointer"
+                  title="ซูมเข้า (+)"
+                >
+                  <ZoomIn size={16} />
+                </button>
+                {lightboxZoom !== 1 && (
+                  <button
+                    type="button"
+                    onClick={() => setLightboxZoom(1)}
+                    className="w-7 h-7 rounded-lg flex items-center justify-center text-white/70 hover:text-white hover:bg-white/10 text-xs transition-all cursor-pointer"
+                    title="รีเซ็ตการซูม"
+                  >
+                    <RotateCcw size={14} />
+                  </button>
+                )}
+              </div>
+
+              {/* View original link */}
+              {(lightboxImage || selectedImage) && (
+                <a
+                  href={lightboxImage || selectedImage}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hidden sm:flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white/80 hover:text-white text-xs font-semibold border border-white/10 transition-colors"
+                  title="เปิดดูภาพต้นฉบับในแท็บใหม่"
+                >
+                  <ExternalLink size={14} />
+                  <span className="hidden md:inline">ภาพต้นฉบับ</span>
+                </a>
+              )}
+
+              {/* Close Button */}
+              <button 
+                type="button"
+                onClick={() => setIsLightboxOpen(false)} 
+                className="w-8 h-8 sm:w-9 sm:h-9 text-white bg-white/10 hover:bg-red-600 rounded-xl flex items-center justify-center transition-colors cursor-pointer"
+                title="ปิด (Esc)"
+              >
+                <X size={20} />
+              </button>
+            </div>
           </div>
-          <div className="flex-1 flex items-start justify-center pb-10">
-            <img 
-              src={selectedImage} 
-              alt="Full size property" 
-              referrerPolicy="no-referrer"
-              className="max-w-full h-auto rounded-lg shadow-2xl"
-              style={{ objectFit: 'contain' }}
-            />
+
+          {/* Lightbox Body (Scrollable container for zoomed pan) */}
+          <div 
+            className="flex-1 overflow-auto flex items-center justify-center p-4 sm:p-8"
+            onClick={(e) => {
+              if (e.target === e.currentTarget) {
+                setIsLightboxOpen(false);
+              }
+            }}
+          >
+            <div 
+              className="relative transition-all max-w-full flex items-center justify-center"
+              style={{
+                transform: `scale(${lightboxZoom})`,
+                transformOrigin: 'center center',
+                transition: lightboxZoom === 1 ? 'transform 0.2s ease-out' : 'transform 0.1s ease-out',
+                cursor: lightboxZoom > 1 ? 'zoom-out' : 'zoom-in'
+              }}
+              onClick={() => {
+                setLightboxZoom(z => (z === 1 ? 2 : 1));
+              }}
+              title={lightboxZoom === 1 ? 'คลิกเพื่อซูมขยาย 200%' : 'คลิกเพื่อย่อกลับ 100%'}
+            >
+              <img 
+                src={lightboxImage || selectedImage} 
+                alt="Full size plan or property" 
+                referrerPolicy="no-referrer"
+                className="max-w-[92vw] max-h-[82vh] object-contain rounded-xl shadow-2xl bg-white/5 border border-white/10 pointer-events-auto"
+              />
+            </div>
+          </div>
+
+          {/* Lightbox Footer Hints */}
+          <div className="py-2.5 px-4 bg-black/60 border-t border-white/10 text-center text-[11px] text-white/60">
+            <span>💡 คลิกที่รูปเพื่อสลับซูมเข้า/ออก (100% / 200%) • ใช้ปุ่ม +/- บนแถบควบคุม • กด Esc เพื่อปิด</span>
           </div>
         </div>
       )}

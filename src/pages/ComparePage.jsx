@@ -169,7 +169,7 @@ export default function ComparePage() {
                       {activeTab === 'ข้อมูลทั่วไป' && (
                         <>
                           <div className="metric-row">
-                            {(prop.type === 'บ้าน' || prop.type === 'ทาวน์โฮม') && ['High Rise', 'Low Rise', 'Mixed Use'].includes(prop.projectType) 
+                            {(prop.type === 'บ้าน' || prop.type === 'บ้านเดี่ยว' || prop.type === 'ทาวน์โฮม') && ['High Rise', 'Low Rise', 'Mixed Use'].includes(prop.projectType) 
                               ? prop.type 
                               : prop.projectType}
                           </div>

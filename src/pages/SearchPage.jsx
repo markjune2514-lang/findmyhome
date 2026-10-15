@@ -196,7 +196,7 @@ export default function SearchPage() {
   }, [searchQuery]);
 
   // Property Type State
-  const [activePropertyType, setActivePropertyType] = useState(() => sessionStorage.getItem('search_propertyType') || 'condo');
+  const [activePropertyType, setActivePropertyType] = useState(() => sessionStorage.getItem('search_propertyType') || 'all');
 
   useEffect(() => {
     sessionStorage.setItem('search_activeTab', activeTab);
@@ -373,11 +373,25 @@ export default function SearchPage() {
 
     // Property Type Filter
     if (activePropertyType === 'condo' && prop.type !== 'คอนโด') return false;
-    if (activePropertyType === 'house' && prop.type !== 'บ้าน' && prop.type !== 'ทาวน์โฮม') return false;
+    if (activePropertyType === 'house') {
+      const pType = prop.type || '';
+      const pProjType = prop.project_type || prop.projectType || '';
+      const isHouse = pType === 'บ้าน' || pType === 'บ้านเดี่ยว' || pType === 'บ้านแฝด' || pType === 'ทาวน์โฮม' ||
+        pType.includes('บ้าน') || pType.includes('ทาวน์') ||
+        pProjType.includes('บ้าน') || pProjType.includes('ทาวน์');
+      if (!isHouse) return false;
+    }
     if (activePropertyType === 'senior' && prop.type !== 'ผู้สูงอายุ') return false;
 
     // Advanced Project Type
-    if (filters.projectType && filters.projectType.length > 0 && !filters.projectType.some(pt => prop.projectType?.includes(pt))) return false;
+    if (filters.projectType && filters.projectType.length > 0) {
+      const matchesProjectType = filters.projectType.some(pt => {
+        const pProjType = prop.project_type || prop.projectType || '';
+        const pType = prop.type || '';
+        return pProjType.includes(pt) || pType.includes(pt);
+      });
+      if (!matchesProjectType) return false;
+    }
 
     // Advanced Filters (Array matching)
     if (filters.size && filters.size.length > 0 && !filters.size.includes(prop.size)) return false;
@@ -443,7 +457,7 @@ export default function SearchPage() {
   const handleResetFilters = () => {
     setSearchQuery('');
     setActiveTab('buy');
-    setActivePropertyType('condo');
+    setActivePropertyType('all');
     setSelectedProvince('กรุงเทพมหานคร');
     setSelectedDistricts([]);
     setTransitSystem('');
@@ -489,7 +503,17 @@ export default function SearchPage() {
             </div>
             
             <div className="modal-content" style={{ maxHeight: '60vh', overflowY: 'auto' }}>
-              
+              {activePropertyType === 'all' && (
+                <div className="filter-section-block">
+                  <h4 className="mb-2">เลือกประเภทอสังหาฯ เพื่อระบุตัวกรองเฉพาะ</h4>
+                  <div className="toggle-group flex gap-2" style={{ display: 'flex' }}>
+                    <button className="toggle-btn flex-1 py-2" onClick={() => { setActivePropertyType('condo'); setFilters(initialFiltersState); }}>คอนโด</button>
+                    <button className="toggle-btn flex-1 py-2" onClick={() => { setActivePropertyType('house'); setFilters(initialFiltersState); }}>บ้าน</button>
+                    <button className="toggle-btn flex-1 py-2" onClick={() => { setActivePropertyType('senior'); setFilters(initialFiltersState); }}>ผู้สูงอายุ</button>
+                  </div>
+                  <p className="text-xs text-light mt-2">* เมื่อเลือกประเภทแล้ว ระบบจะแสดงตัวกรองเฉพาะ เช่น รูปแบบห้อง ขนาดที่ดิน หรือสิ่งอำนวยความสะดวก</p>
+                </div>
+              )}
 
               {activePropertyType === 'condo' && (
                 <>
@@ -673,6 +697,7 @@ export default function SearchPage() {
           <div className="filter-group">
             <label>ประเภทอสังหาฯ</label>
             <div className="toggle-group flex" style={{ display: 'flex' }}>
+              <button className={`toggle-btn flex-1 ${activePropertyType === 'all' ? 'active' : ''}`} onClick={() => { setActivePropertyType('all'); setFilters(initialFiltersState); }}>ทั้งหมด</button>
               <button className={`toggle-btn flex-1 ${activePropertyType === 'condo' ? 'active' : ''}`} onClick={() => { setActivePropertyType('condo'); setFilters(initialFiltersState); }}>คอนโด</button>
               <button className={`toggle-btn flex-1 ${activePropertyType === 'house' ? 'active' : ''}`} onClick={() => { setActivePropertyType('house'); setFilters(initialFiltersState); }}>บ้าน</button>
               <button className={`toggle-btn flex-1 ${activePropertyType === 'senior' ? 'active' : ''}`} onClick={() => { setActivePropertyType('senior'); setFilters(initialFiltersState); }}>ผู้สูงอายุ</button>

@@ -41,7 +41,11 @@ export default function ProjectsPage() {
         });
         break;
       case 'family':
-        filtered = baseProperties.filter(p => (p.type && p.type.includes('บ้าน')) || (p.projectType && p.projectType.includes('บ้าน')));
+        filtered = baseProperties.filter(p => {
+          const pType = p.type || '';
+          const pProj = p.project_type || p.projectType || '';
+          return pType.includes('บ้าน') || pType.includes('ทาวน์') || pProj.includes('บ้าน') || pProj.includes('ทาวน์');
+        });
         break;
       case 'luxury':
         filtered = baseProperties.filter(p => p.price >= 10);
@@ -220,9 +224,7 @@ export default function ProjectsPage() {
                   </button>
                   <div className="project-badges">
                     <span className="badge badge-dark">
-                      {(prop.type === 'บ้าน' || prop.type === 'ทาวน์โฮม') && ['High Rise', 'Low Rise', 'Mixed Use'].includes(prop.projectType) 
-                          ? prop.type 
-                          : prop.projectType}
+                      {prop.project_type || prop.projectType || prop.type || 'โครงการ'}
                     </span>
                     {prop.status === 'เปิด Presale' && <span className="badge badge-primary">Presale</span>}
                   </div>

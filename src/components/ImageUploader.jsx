@@ -4,7 +4,10 @@ import { Upload, Link as LinkIcon, X, Loader2 } from 'lucide-react';
 import ImageCropper from './ImageCropper';
 
 export default function ImageUploader({ images = [], onChange, label = 'รูปภาพ', multiple = true, isLogo = false }) {
-  const safeImages = Array.isArray(images) ? images : (images && typeof images === 'string' ? images.split(',').filter(Boolean) : []);
+  const safeImages = (Array.isArray(images) ? images : (images && typeof images === 'string' ? images.split(',') : []))
+    .flatMap(img => typeof img === 'string' ? img.split(',') : img)
+    .map(img => typeof img === 'string' ? img.trim() : img)
+    .filter(Boolean);
   const [uploading, setUploading] = useState(false);
   const [urlInput, setUrlInput] = useState('');
   const [mode, setMode] = useState('file'); // 'file' or 'url'
@@ -204,7 +207,9 @@ export default function ImageUploader({ images = [], onChange, label = 'รู�
                 className={`w-full h-full ${isLogo ? 'object-contain' : 'object-cover'}`}
                 onError={(e) => {
                   e.target.onerror = null;
-                  e.target.src = 'https://placehold.co/400x300?text=Invalid+Image';
+                  e.target.src = isLogo 
+                    ? 'https://placehold.co/200x200?text=No+Logo'
+                    : 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=400&q=80';
                 }}
               />
               <button

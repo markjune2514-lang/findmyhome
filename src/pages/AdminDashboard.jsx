@@ -290,9 +290,48 @@ export default function AdminDashboard() {
     return Object.entries(counts).sort((a, b) => b[1] - a[1]);
   }, [properties]);
 
+  // Helper for house / townhome / Prinsiri property detection
+  const isHouseProperty = (p) => {
+    if (!p) return false;
+    const projType = String(p.project_type || p.projectType || '');
+    const propId = String(p.id || '').toLowerCase();
+    const dev = String(p.developer || '').toLowerCase();
+    const name = String(p.name || '').toLowerCase();
+
+    return (
+      p.type === 'บ้าน' ||
+      p.type === 'บ้านเดี่ยว' ||
+      p.type === 'บ้านแฝด' ||
+      p.type === 'ทาวน์โฮม' ||
+      projType.includes('บ้าน') ||
+      projType.includes('ทาวน์') ||
+      propId.includes('sh_') ||
+      propId.includes('th_') ||
+      propId.includes('house') ||
+      propId.includes('townhome') ||
+      propId.includes('prinsiri') ||
+      dev.includes('ปริญสิริ') ||
+      dev.includes('prinsiri') ||
+      name.includes('อิคอนเนเจอร์') ||
+      name.includes('ซิตี้เซนส์') ||
+      name.includes('ซีรีน') ||
+      name.includes('iconature') ||
+      name.includes('citysense') ||
+      name.includes('zerene') ||
+      name.includes('บ้าน') ||
+      name.includes('ทาวน์')
+    );
+  };
+
   // KPI Metrics
-  const condoCount = useMemo(() => properties.filter(p => p.type === 'คอนโด').length, [properties]);
-  const houseCount = useMemo(() => properties.filter(p => p.type === 'บ้าน' || p.type === 'ทาวน์โฮม').length, [properties]);
+  const condoCount = useMemo(() => properties.filter(p => {
+    return !isHouseProperty(p) && (p.type === 'คอนโด' || (!p.type && !p.project_type));
+  }).length, [properties]);
+
+  const houseCount = useMemo(() => properties.filter(p => {
+    return isHouseProperty(p);
+  }).length, [properties]);
+
   const draftCount = useMemo(() => properties.filter(p => p.status === 'ฉบับร่าง').length, [properties]);
   const publishedCount = properties.length - draftCount;
   
@@ -313,7 +352,25 @@ export default function AdminDashboard() {
         p.id?.toLowerCase().includes(q) ||
         (adminNotes[p.id] && adminNotes[p.id].toLowerCase().includes(q));
       
-      const matchType = typeFilter === 'ทั้งหมด' || p.type === typeFilter;
+      const isHouse = isHouseProperty(p);
+      const projType = String(p.project_type || p.projectType || '');
+      const propId = String(p.id || '').toLowerCase();
+
+      const matchType = typeFilter === 'ทั้งหมด' || 
+        (typeFilter === 'บ้าน' && isHouse) ||
+        (typeFilter === 'บ้านเดี่ยว' && (
+          p.type === 'บ้านเดี่ยว' || 
+          projType.includes('บ้านเดี่ยว') || 
+          propId.includes('sh_') || 
+          (isHouse && !projType.includes('ทาวน์') && !propId.includes('th_') && !p.type?.includes('ทาวน์'))
+        )) ||
+        (typeFilter === 'ทาวน์โฮม' && (
+          p.type === 'ทาวน์โฮม' || 
+          projType.includes('ทาวน์') || 
+          propId.includes('th_')
+        )) ||
+        (typeFilter === 'คอนโด' && (!isHouse && (p.type === 'คอนโด' || !p.type))) ||
+        (p.type === typeFilter);
       
       const devName = p.developer?.trim() || 'ไม่ระบุผู้พัฒนา';
       const matchDeveloper = developerFilter === 'ทั้งหมด' || devName === developerFilter;
@@ -760,8 +817,8 @@ export default function AdminDashboard() {
               icon: <HomeIcon size={15} />, 
               color: 'text-teal-600', 
               bg: 'bg-teal-50',
-              active: typeFilter === 'บ้าน',
-              onClick: () => setTypeFilter(typeFilter === 'บ้าน' ? 'ทั้งหมด' : 'บ้าน')
+              active: typeFilter === 'บ้าน' || typeFilter === 'บ้านเดี่ยว' || typeFilter === 'ทาวน์โฮม',
+              onClick: () => setTypeFilter((typeFilter === 'บ้าน' || typeFilter === 'บ้านเดี่ยว' || typeFilter === 'ทาวน์โฮม') ? 'ทั้งหมด' : 'บ้าน')
             },
             { 
               label: 'Super Tier', 
@@ -938,7 +995,7 @@ export default function AdminDashboard() {
               <div className="flex items-center justify-between flex-wrap gap-2 pt-1 border-t border-slate-200/60">
                 <div className="flex items-center gap-1 flex-wrap">
                   <span className="text-[10px] font-bold text-slate-400 mr-1 uppercase">ประเภท:</span>
-                  {['ทั้งหมด', 'คอนโด', 'บ้าน', 'ทาวน์โฮม'].map(t => (
+                  {['ทั้งหมด', 'คอนโด', 'บ้านเดี่ยว', 'บ้าน', 'ทาวน์โฮม'].map(t => (
                     <button
                       key={t}
                       onClick={() => setTypeFilter(t)}
@@ -1036,9 +1093,30 @@ export default function AdminDashboard() {
                                     เพิ่งแก้ไข
                                   </span>
                                 )}
-                                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold bg-slate-100 text-slate-600 border border-slate-200/80">
-                                  {prop.type || '-'}
-                                </span>
+                                {(() => {
+                                  const isHouse = isHouseProperty(prop);
+                                  let badgeLabel = 'คอนโด';
+                                  let badgeColor = 'bg-purple-50 text-purple-700 border-purple-200/80';
+
+                                  if (isHouse) {
+                                    badgeLabel = prop.project_type || prop.projectType || (prop.type !== 'คอนโด' ? prop.type : '') || (prop.id?.includes('th_') ? 'ทาวน์โฮม' : 'บ้านเดี่ยว') || 'บ้าน';
+                                    badgeColor = 'bg-teal-50 text-teal-700 border-teal-200/80';
+                                  } else if (prop.type === 'ผู้สูงอายุ' || prop.project_type?.includes('ผู้สูงอายุ')) {
+                                    badgeLabel = 'ผู้สูงอายุ';
+                                    badgeColor = 'bg-rose-50 text-rose-700 border-rose-200/80';
+                                  } else if (prop.type === 'ที่ดิน' || prop.project_type?.includes('ที่ดิน')) {
+                                    badgeLabel = 'ที่ดิน';
+                                    badgeColor = 'bg-amber-50 text-amber-700 border-amber-200/80';
+                                  } else {
+                                    badgeLabel = prop.type || 'คอนโด';
+                                  }
+
+                                  return (
+                                    <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold border ${badgeColor}`}>
+                                      {badgeLabel}
+                                    </span>
+                                  );
+                                })()}
                               </div>
                               <div className="flex items-center gap-2 mt-1 text-[11px] text-slate-500 flex-wrap">
                                 <button

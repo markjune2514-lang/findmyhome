@@ -20,6 +20,62 @@ function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
   return R * c;
 }
 
+const VALID_PROPERTY_TYPES = ['บ้าน', 'คอนโด', 'บ้านเดี่ยว', 'ทาวน์โฮม', 'ผู้สูงอายุ', 'ที่ดิน'];
+
+function inferPropertyType(prop) {
+  if (!prop) return 'คอนโด';
+  const projType = String(prop.project_type || prop.projectType || '');
+  const propId = String(prop.id || '').toLowerCase();
+  const dev = String(prop.developer || '').toLowerCase();
+  const name = String(prop.name || '').toLowerCase();
+
+  // If project markers indicate a house, townhome, or Prinsiri project
+  const isHouseProject = 
+    projType.includes('บ้าน') ||
+    projType.includes('ทาวน์') ||
+    propId.includes('sh_') ||
+    propId.includes('th_') ||
+    propId.includes('house') ||
+    propId.includes('townhome') ||
+    propId.includes('prinsiri') ||
+    dev.includes('ปริญสิริ') ||
+    dev.includes('prinsiri') ||
+    name.includes('อิคอนเนเจอร์') ||
+    name.includes('ซิตี้เซนส์') ||
+    name.includes('ซีรีน') ||
+    name.includes('iconature') ||
+    name.includes('citysense') ||
+    name.includes('zerene') ||
+    name.includes('บ้าน') ||
+    name.includes('ทาวน์') ||
+    prop.type === 'บ้าน' ||
+    prop.type === 'บ้านเดี่ยว' ||
+    prop.type === 'บ้านแฝด' ||
+    prop.type === 'ทาวน์โฮม';
+
+  if (isHouseProject) {
+    return 'บ้าน';
+  }
+
+  if (prop.type === 'ผู้สูงอายุ' || projType.includes('ผู้สูงอายุ')) {
+    return 'ผู้สูงอายุ';
+  }
+
+  if (prop.type === 'ที่ดิน' || projType.includes('ที่ดิน')) {
+    return 'ที่ดิน';
+  }
+
+  // If prop.type exists and is valid
+  if (prop.type && VALID_PROPERTY_TYPES.includes(prop.type)) {
+    if (prop.type === 'บ้านเดี่ยว' || prop.type === 'ทาวน์โฮม') {
+      return 'บ้าน';
+    }
+    return prop.type;
+  }
+
+  return 'คอนโด';
+}
+
 export default function AddPropertyPage() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -29,11 +85,20 @@ export default function AddPropertyPage() {
   const isLoadedRef = useRef(false);
   const loadedIdRef = useRef(null);
 
+  const queryParams = new URLSearchParams(location.search);
+  const paramType = queryParams.get('type');
+  const defaultInitialType = (paramType && VALID_PROPERTY_TYPES.includes(paramType)) 
+    ? ((paramType === 'บ้านเดี่ยว' || paramType === 'ทาวน์โฮม') ? 'บ้าน' : paramType) 
+    : 'คอนโด';
+  const defaultInitialProjectType = (defaultInitialType === 'บ้าน' || defaultInitialType === 'บ้านเดี่ยว') 
+    ? 'บ้านเดี่ยว' 
+    : (defaultInitialType === 'ทาวน์โฮม' ? 'ทาวน์โฮม' : 'High Rise');
+
   const [formData, setFormData] = useState({
     name: '',
     developer: '',
-    type: 'คอนโด',
-    projectType: 'High Rise',
+    type: defaultInitialType,
+    projectType: defaultInitialProjectType,
     price: '',
     priceMode: 'specify',
     priceTo: '',
@@ -95,8 +160,18 @@ export default function AddPropertyPage() {
         if (propToEdit) {
           isLoadedRef.current = true;
           loadedIdRef.current = id;
+          const resolvedType = inferPropertyType(propToEdit);
+          let resolvedProjectType = propToEdit.project_type || propToEdit.projectType || '';
+          if (resolvedType === 'บ้าน' || resolvedType === 'บ้านเดี่ยว' || resolvedType === 'ทาวน์โฮม') {
+            if (!resolvedProjectType || ['High Rise', 'Low Rise', 'Mixed Use'].includes(resolvedProjectType)) {
+              resolvedProjectType = (propToEdit.id?.includes('th_') || propToEdit.project_type?.includes('ทาวน์') || propToEdit.name?.includes('ทาวน์')) ? 'ทาวน์โฮม' : 'บ้านเดี่ยว';
+            }
+          }
           const safeProp = {
             ...propToEdit,
+            type: resolvedType,
+            projectType: resolvedProjectType,
+            project_type: resolvedProjectType,
             priceMode: (propToEdit.price === null || propToEdit.price === '' || propToEdit.priceMode === 'contact') ? 'contact' : 'specify',
             price: propToEdit.price !== null && propToEdit.price !== undefined ? propToEdit.price : '',
             priceTo: propToEdit.priceTo !== null && propToEdit.priceTo !== undefined ? propToEdit.priceTo : '',
@@ -129,10 +204,20 @@ export default function AddPropertyPage() {
       if (isLoadedRef.current) return;
       isLoadedRef.current = true;
       const propToCopy = location.state.duplicateFrom;
+      const resolvedType = inferPropertyType(propToCopy);
+      let resolvedProjectType = propToCopy.project_type || propToCopy.projectType || '';
+      if (resolvedType === 'บ้าน' || resolvedType === 'บ้านเดี่ยว' || resolvedType === 'ทาวน์โฮม') {
+        if (!resolvedProjectType || ['High Rise', 'Low Rise', 'Mixed Use'].includes(resolvedProjectType)) {
+          resolvedProjectType = (propToCopy.id?.includes('th_') || propToCopy.project_type?.includes('ทาวน์') || propToCopy.name?.includes('ทาวน์')) ? 'ทาวน์โฮม' : 'บ้านเดี่ยว';
+        }
+      }
       const safeProp = {
         ...propToCopy,
         name: propToCopy.name + " (Copy)",
         id: undefined,
+        type: resolvedType,
+        projectType: resolvedProjectType,
+        project_type: resolvedProjectType,
         priceMode: (propToCopy.price === null || propToCopy.price === '' || propToCopy.priceMode === 'contact') ? 'contact' : 'specify',
         price: propToCopy.price !== null && propToCopy.price !== undefined ? propToCopy.price : '',
         priceTo: propToCopy.priceTo !== null && propToCopy.priceTo !== undefined ? propToCopy.priceTo : '',
@@ -324,10 +409,25 @@ export default function AddPropertyPage() {
     setFormData(prev => {
       let updates = { [name]: value };
       if (name === 'type') {
-        if (value === 'คอนโด') updates.projectType = condoProjectTypes[0];
-        else if (value === 'บ้าน' || value === 'ทาวน์โฮม') updates.projectType = houseProjectTypes[0];
-        else if (value === 'ผู้สูงอายุ') updates.projectType = seniorLivingFormats[0];
-        else updates.projectType = '';
+        if (value === 'คอนโด') {
+          updates.projectType = condoProjectTypes[0];
+          updates.project_type = condoProjectTypes[0];
+        } else if (value === 'บ้าน' || value === 'บ้านเดี่ยว') {
+          const current = prev.projectType || prev.project_type || '';
+          const hasHouseType = houseProjectTypes.some(ht => current.includes(ht));
+          const pt = hasHouseType ? current : 'บ้านเดี่ยว';
+          updates.projectType = pt;
+          updates.project_type = pt;
+        } else if (value === 'ทาวน์โฮม') {
+          updates.projectType = 'ทาวน์โฮม';
+          updates.project_type = 'ทาวน์โฮม';
+        } else if (value === 'ผู้สูงอายุ') {
+          updates.projectType = seniorLivingFormats[0];
+          updates.project_type = seniorLivingFormats[0];
+        } else {
+          updates.projectType = '';
+          updates.project_type = '';
+        }
       }
       if (name === 'buildings') {
         const numBuildings = parseInt(value, 10);
@@ -425,8 +525,12 @@ export default function AddPropertyPage() {
     }
 
     // Prepare the final object shape expected by the app
+    const resolvedProjectType = formData.projectType || formData.project_type || '';
     const newProperty = {
       ...formData,
+      type: formData.type,
+      projectType: resolvedProjectType,
+      project_type: resolvedProjectType,
       unitTypes: (formData.unitTypes || []).map(({ priceMode, ...u }) => ({
         ...u,
         multipurpose: (u.multipurpose === '0' || u.multipurpose === 0 || !u.multipurpose) ? '' : u.multipurpose
@@ -509,9 +613,10 @@ export default function AddPropertyPage() {
               </div>
               <div className="form-group">
                 <label>กลุ่มอสังหาฯ (ประเภทใหญ่)</label>
-                                <select name="type" value={formData.type} onChange={handleChange}>
-                  <option value="คอนโด">คอนโด (Condo)</option>
+                <select name="type" value={formData.type} onChange={handleChange}>
                   <option value="บ้าน">บ้าน (House)</option>
+                  <option value="คอนโด">คอนโด (Condo)</option>
+                  <option value="บ้านเดี่ยว">บ้านเดี่ยว (Single House)</option>
                   <option value="ทาวน์โฮม">ทาวน์โฮม (Townhome)</option>
                   <option value="ผู้สูงอายุ">ผู้สูงอายุ (Senior Living)</option>
                   <option value="ที่ดิน">ที่ดินเปล่า (Land)</option>
@@ -521,28 +626,37 @@ export default function AddPropertyPage() {
               {formData.type !== 'ที่ดิน' && (
                 <div className="form-group">
                   <label>รูปแบบโครงการย่อย</label>
-                  {(formData.type === 'บ้าน' || formData.type === 'ทาวน์โฮม') ? (
+                  {(formData.type === 'บ้าน' || formData.type === 'บ้านเดี่ยว' || formData.type === 'ทาวน์โฮม') ? (
                     <div className="flex flex-wrap gap-4 mt-2">
-                      {houseProjectTypes.map(opt => (
-                        <label key={opt} className="flex items-center gap-2 cursor-pointer">
-                          <input 
-                            type="checkbox" 
-                            checked={(formData.projectType || '').includes(opt)}
-                            onChange={(e) => {
-                              const currentTypes = (formData.projectType || '').split(',').map(s => s.trim()).filter(Boolean);
-                              let newTypes;
-                              if (e.target.checked) {
-                                newTypes = [...currentTypes, opt];
-                              } else {
-                                newTypes = currentTypes.filter(t => t !== opt);
-                              }
-                              setFormData(prev => ({ ...prev, projectType: newTypes.join(', ') }));
-                            }}
-                            className="w-4 h-4 text-primary rounded border-gray-300 focus:ring-primary"
-                          />
-                          <span className="text-sm">{opt}</span>
-                        </label>
-                      ))}
+                      {houseProjectTypes.map(opt => {
+                        const currentRaw = formData.projectType || formData.project_type || '';
+                        const currentTypes = currentRaw.split(',').map(s => s.trim()).filter(Boolean);
+                        const isChecked = currentTypes.includes(opt);
+                        return (
+                          <label key={opt} className="flex items-center gap-2 cursor-pointer">
+                            <input 
+                              type="checkbox" 
+                              checked={isChecked}
+                              onChange={(e) => {
+                                let newTypes;
+                                if (e.target.checked) {
+                                  newTypes = Array.from(new Set([...currentTypes, opt]));
+                                } else {
+                                  newTypes = currentTypes.filter(t => t !== opt);
+                                }
+                                const joined = newTypes.join(', ');
+                                setFormData(prev => ({ 
+                                  ...prev, 
+                                  projectType: joined,
+                                  project_type: joined 
+                                }));
+                              }}
+                              className="w-4 h-4 text-primary rounded border-gray-300 focus:ring-primary"
+                            />
+                            <span className="text-sm">{opt}</span>
+                          </label>
+                        );
+                      })}
                     </div>
                   ) : (
                     <select name="projectType" value={formData.projectType} onChange={handleChange}>
@@ -803,12 +917,16 @@ export default function AddPropertyPage() {
                   
                   <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
                     <div className="form-group mb-0 md:col-span-2">
-                      <label className="text-xs">ชื่อแบบ (เช่น Type A, 1 Bedroom)</label>
+                      <label className="text-xs">
+                        {(formData.type === 'บ้าน' || formData.type === 'บ้านเดี่ยว' || formData.type === 'ทาวน์โฮม')
+                          ? 'ชื่อแบบบ้าน (เช่น แบบบ้านศุภลักขณา, Type A)'
+                          : 'ชื่อแบบ (เช่น Type A, 1 Bedroom)'}
+                      </label>
                       <input 
                         type="text" 
                         value={unit.name} 
                         onChange={(e) => handleUnitTypeChange(idx, 'name', e.target.value)} 
-                        placeholder="ชื่อแบบห้อง" 
+                        placeholder={(formData.type === 'บ้าน' || formData.type === 'บ้านเดี่ยว' || formData.type === 'ทาวน์โฮม') ? 'ชื่อแบบบ้าน' : 'ชื่อแบบห้อง'} 
                         required
                         className="text-sm"
                       />
@@ -858,7 +976,7 @@ export default function AddPropertyPage() {
                         className="text-sm"
                       />
                     </div>
-                    {(formData.type === 'บ้าน' || formData.type === 'ทาวน์โฮม') && (
+                    {(formData.type === 'บ้าน' || formData.type === 'บ้านเดี่ยว' || formData.type === 'ทาวน์โฮม') && (
                       <>
                         <div className="form-group mb-0">
                           <label className="text-xs">ความกว้าง (ม.)</label>
@@ -893,12 +1011,19 @@ export default function AddPropertyPage() {
                       />
                     </div>
                     <div className="form-group mb-0">
-                      <label className="text-xs">รูปแบบห้อง</label>
+                      <label className="text-xs">
+                        {(formData.type === 'บ้าน' || formData.type === 'บ้านเดี่ยว' || formData.type === 'ทาวน์โฮม') 
+                          ? 'รูปแบบแบบบ้าน / ประเภทแบบ' 
+                          : 'รูปแบบห้อง'}
+                      </label>
                       <input 
                         type="text" 
-                        value={unit.roomType || ''} 
-                        onChange={(e) => handleUnitTypeChange(idx, 'roomType', e.target.value)} 
-                        placeholder="เช่น 1 Bed, Studio" 
+                        value={unit.roomType || unit.type || ''} 
+                        onChange={(e) => {
+                          handleUnitTypeChange(idx, 'roomType', e.target.value);
+                          handleUnitTypeChange(idx, 'type', e.target.value);
+                        }} 
+                        placeholder={(formData.type === 'บ้าน' || formData.type === 'บ้านเดี่ยว' || formData.type === 'ทาวน์โฮม') ? "เช่น บ้านเดี่ยว 2 ชั้น, บ้านแฝด" : "เช่น 1 Bed, Studio"} 
                         className="text-sm"
                       />
                     </div>
@@ -1234,7 +1359,7 @@ export default function AddPropertyPage() {
                 </div>
               )}
               
-              {(formData.type === 'บ้าน' || formData.type === 'ทาวน์โฮม') && (
+              {(formData.type === 'บ้าน' || formData.type === 'บ้านเดี่ยว' || formData.type === 'ทาวน์โฮม') && (
                 <div className="grid grid-cols-1 gap-6">
                   {renderCheckboxes('สิ่งอำนวยความสะดวก (Facilities)', 'facilities', houseFacilities)}
                   {renderCheckboxes('การรักษาความปลอดภัย (Security)', 'security', houseSecurities)}
