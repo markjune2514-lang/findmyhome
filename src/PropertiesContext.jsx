@@ -10,12 +10,16 @@ const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes
 
 export const PropertiesProvider = ({ children }) => {
   const { user } = useAuth() || {};
-  const cacheKey = user ? 'fmh_properties_admin_v67_cache' : 'fmh_properties_public_v67_cache';
-  const cacheTimeKey = user ? 'fmh_properties_admin_v67_time' : 'fmh_properties_public_v67_time';
+  const cacheKey = user ? 'fmh_properties_admin_v68_cache' : 'fmh_properties_public_v68_cache';
+  const cacheTimeKey = user ? 'fmh_properties_admin_v68_time' : 'fmh_properties_public_v68_time';
   const CACHE_KEY = cacheKey;
 
   const clearSessionCaches = () => {
     try {
+      sessionStorage.removeItem('fmh_properties_admin_v67_cache');
+      sessionStorage.removeItem('fmh_properties_admin_v67_time');
+      sessionStorage.removeItem('fmh_properties_public_v67_cache');
+      sessionStorage.removeItem('fmh_properties_public_v67_time');
       sessionStorage.removeItem('fmh_properties_admin_v66_cache');
       sessionStorage.removeItem('fmh_properties_admin_v66_time');
       sessionStorage.removeItem('fmh_properties_public_v66_cache');
