@@ -15,7 +15,7 @@ import './PropertyDetail.css';
 // Resilient helper to extract floor plan images across various data conventions
 const getUnitPlans = (unit) => {
   if (!unit) return [];
-  const rawPlans = unit.planImages || unit.plan_images || unit.floorPlans || unit.floorPlan || unit.planImage || (unit.image ? (Array.isArray(unit.image) ? unit.image : [unit.image]) : []);
+  const rawPlans = unit.planImages || unit.plan_images || unit.floorPlans || unit.floor_plans || unit.floorPlan || unit.floor_plan || unit.layout_image || unit.planImage || (unit.image ? (Array.isArray(unit.image) ? unit.image : [unit.image]) : []);
   let plans = [];
   if (Array.isArray(rawPlans)) {
     plans = rawPlans.flatMap(p => typeof p === 'string' ? (p.includes(',') ? p.split(',') : [p]) : [p]);
